@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+content="$(w -h -s)"
+# Subject: less than 16 characters are readable
+subj="Login: $(w -h -s | grep -o "tty[1-7]" | head -n3) [PushToTel]"
+
+mail_ghost.py "${content}" "$(echo $subj)" && notify-send "Jarvis Mail Daemon : newlogin" "${content}"

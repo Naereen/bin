@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Script by Lilian Besson
+# http://besson.qc.to/
+
+xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { Mutt 1.5.21 } : for crans.org"
+
+clear
+
+/usr/bin/mutt-patched -F ~/.mutt/muttrc.crans "$@" && clear
+
+rm -vf yes

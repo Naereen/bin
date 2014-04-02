@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#
+# __author__ = 'Lilian BESSON'
+# __email__ = 'Lilian.BESSON[AT]ens-cachan[DOT]fr'
+# __date__ = '16-01-2014'
+#
+# A small wrapper around the output of rsync.
+# Can be save to ~/bin/CP for example.
+#
+version='.2'
+LANG='en'
+
+GREP="grep --color=always --line-buffered"
+# GREP="grep --color=always"
+
+echo -e "${reset}rsync: receiving the argument(s) $u${black}${@}${reset}"
+
+(/usr/bin/rsync --verbose --times --perms --compress --human-readable --progress --archive "$@" 2>&1) \
+ | $GREP -vP "^\s*((\[|\]|\(|\))\s*)+$" \
+ | GREP_COLOR="37" $GREP -P "^[\.\-_0-9a-zA-Z/]+$|$" \
+ | GREP_COLOR="4;01;32" $GREP -P "^(sending|sent|total).*|$" \
+ | GREP_COLOR="05;01;33" $GREP -P "[\.0-9]+.B/s|$" \
+ | GREP_COLOR="7;01;36" $GREP -P "^[ \t]*[\.0-9]+[KMGT]?|$" \
+ | GREP_COLOR="01;35" $GREP -P "to.check=[0-9]+/[0-9]+|$" \
+ | GREP_COLOR="01;30" $GREP -P "xfer#[0-9]+|$" \
+ | GREP_COLOR="01;36" $GREP -P "[0-9]:[0-9][0-9]:[0-9][0-9]|$" \
+ | GREP_COLOR="01;35" $GREP -P "^[0-9]+%|$" \
+ | GREP_COLOR="7;01;34" $GREP -P "100%|$"
