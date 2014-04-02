@@ -2,7 +2,7 @@
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Web version: http://besson.qc.to/bin/GenerateStatsMarkdown.sh
-# Web version (2): https://bitbucket.org/lbesson/home/src/master/bin/GenerateStatsMarkdown.sh
+# Web version (2): https://bitbucket.org/lbesson/bin/src/master/GenerateStatsMarkdown.sh
 # Date: 02-04-2013
 #
 # A small script to create a minimalistic Markdown status page for my machine,
@@ -48,7 +48,7 @@ fi
 # Header
 echo -e "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/><title>Stats pour jarvis.crans.org</title></head><body><xmp theme=\"${theme}\">" > "$dest"
 echo -e "# Informations systèmes pour [jarvis.crans.org](http://jarvis.crans.org)" >> "$dest"
-echo -e "> #### Signaler tout problème à [jarvisATcransDOTorg](mailto:jarvisATcransDOTorg) ou via [bitbucket](https://bitbucket.org/lbesson/home/issues/new).\n#### Données mises à jour le **$(date "+%c")**.\n\n***\n" >> "$dest"
+echo -e "> #### Signaler tout problème à [jarvisATcransDOTorg](mailto:jarvisATcransDOTorg) ou via [bitbucket](https://bitbucket.org/lbesson/bin/issues/new).\n#### Données mises à jour le **$(date "+%c")**.\n\n***\n" >> "$dest"
 
 MY_IP=$(/sbin/ifconfig | awk '/inet adr:/ { print $2 } ' | sed -e s/addr://)
 

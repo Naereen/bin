@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html><head>
-<!-- (C) Lilian Besson, 2014, for http://besson.qc.to/generatejplayer.sh/  -->
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8"> 
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jPlayer pour « CURRENTDIR »</title>
 
-    <link rel="stylesheet" type="text/css" href="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/jplayer/jplayer-app.css?1">
-    <link rel="stylesheet" type="text/css" href="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/jplayer/jplayer.blue.monday.css?1">
-    <link rel="stylesheet" type="text/css" href="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/buttons.css?1">
-    <link rel="stylesheet" type="text/css" href="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/nprogress.css?1">
+<!-- (C) Lilian Besson, 2014, for http://besson.qc.to/generatejplayer.sh/  -->
+    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/jplayer/jplayer-app.css?1">
+    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/jplayer/jplayer.blue.monday.css?1">
+    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/buttons.css?1">
+    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/nprogress.css?1">
 
-    <link rel="shortcut icon" type="image/gif" href="http://www.dptinfo.ens-cachan.fr/~lbesson/favicon.ico?1">
+    <link rel="shortcut icon" type="image/gif" href="http://perso.crans.org/besson/favicon.ico?1">
 
-    <script type="text/javascript" src="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/jquery.js?1"></script>
+    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.js?1"></script>
     <!-- jQuery.Noty.js (Source: http://needim.github.io/noty/#installation) -->
-    <script type="text/javascript" src="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/noty/jquery.noty.packaged.min.js?1"></script>
+    <script type="text/javascript" src="http://perso.crans.org/besson/_static/noty/jquery.noty.packaged.min.js?1"></script>
     <!-- MouseTrap.js (http://craig.is/killing/mice) -->
-    <script type="text/javascript" src="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/mousetrap.min.js?1"></script>
+    <script type="text/javascript" src="http://perso.crans.org/besson/_static/mousetrap.min.js?1"></script>
     <!-- NProgress.js (https://github.com/rstacruz/nprogress)-->
-    <script type="text/javascript" src="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/nprogress.js?1"></script>
+    <script type="text/javascript" src="http://perso.crans.org/besson/_static/nprogress.js?1"></script>
 
     <script type="text/javascript">
      console.log("[INFO] Loading jQuery, jQuery.noty, Moustrap, NProgress !");
@@ -61,8 +61,8 @@
         }; };
     </script>
     <!-- jPlayer.js (http://jplayer.org) -->
-    <script type="text/javascript" src="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/jplayer/jquery.jplayer.min.js?1"></script>
-    <script type="text/javascript" src="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/jplayer/jplayer.playlist.min.js?1"></script>
+    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jplayer/jquery.jplayer.min.js?1"></script>
+    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jplayer/jplayer.playlist.min.js?1"></script>
 
     <script type="text/javascript">
         var cssSelector = { jPlayer: "#jquery_jplayer_1", cssSelectorAncestor: "#jp_container_1" };
@@ -78,7 +78,7 @@
             };
         var options = {
             playlistOptions: valplaylistOptions,
-            swfPath: "http://www.dptinfo.ens-cachan.fr/~lbesson/_static/jplayer/",
+            swfPath: "http://perso.crans.org/besson/_static/jplayer/",
             supplied: "mp3, wma, wav", // FIXME
             wmode: "window",
             smoothPlayBar: true,
@@ -92,7 +92,7 @@
 	<p>
         Cette page a pour but d'<i>afficher</i> et de <i>lire</i> des morceaux de musique 
 		<a href="https://bitbucket.org/lbesson/web-sphinx-scripts/issues/new">(n'hésitez pas à signaler un <b>bug</b> !)</a><br>
-        Générée le DATE par <a title="Version VERSION !" href="https://bitbucket.org/lbesson/home/src/master/bin/generatejplayer.sh">generatejplayer.sh</a>
+        Générée le DATE par <a title="Version VERSION !" href="https://bitbucket.org/lbesson/bin/src/master/generatejplayer.sh">generatejplayer.sh</a>
         (utilise <a href="http://jplayer.org/">jplayer.js</a> comme lecteur de musique).
 		(C) 2014 <a href="http://besson.qc.to">Lilian BESSON</a>. <a href="http://fb.me/naereencorp.lbesson">Sur Facebook ?</a>
 		<a href="../index.html">Dossier parent!</a><br>

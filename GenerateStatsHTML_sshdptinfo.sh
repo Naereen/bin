@@ -2,7 +2,7 @@
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Web version: http://besson.qc.to/bin/GenerateStatsHTML.sh
-# Web version (2): https://bitbucket.org/lbesson/home/src/master/bin/GenerateStatsHTML.sh
+# Web version (2): https://bitbucket.org/lbesson/bin/src/master/GenerateStatsHTML.sh
 # Date: 26-03-2013
 #
 # A small script to create a minimalistic HTML status page for my machine,
@@ -22,7 +22,7 @@ echo -e "${cyan}Fichier de destination: ${dest}${white}"
 # Header
 echo -e "<html><head><meta charset=\"UTF-8\"><title>Stats pour ssh.dptinfo.ens-cachan.fr</title></head><body>" > "$dest"
 echo -e "<h1>Informations systèmes pour <a href=\"http://www.dptinfo.ens-cachan.fr/~lbesson/\">ssh.dptinfo.ens-cachan.fr</a></h1>" >> "$dest"
-echo -e "<small>Signaler tout problème à <a href=\"mailto:jarvisATcransDOTorg\">jarvisATcransDOTorg</a> ou via <a href=\"https://bitbucket.org/lbesson/home/issues/new\">bitbucket</a>.<br>Données mises à jour le $(date "+%c").<br>Accès restreint, privé uniquement !</small><hr>" >> "$dest"
+echo -e "<small>Signaler tout problème à <a href=\"mailto:jarvisATcransDOTorg\">jarvisATcransDOTorg</a> ou via <a href=\"https://bitbucket.org/lbesson/bin/issues/new\">bitbucket</a>.<br>Données mises à jour le $(date "+%c").<br>Accès restreint, privé uniquement !</small><hr>" >> "$dest"
 
 MY_IP=$(/sbin/ifconfig | grep 'inet')
 

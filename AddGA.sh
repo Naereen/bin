@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Website: https://bitbucket.org/lbesson/home/src/master/bin/AddGA.sh
+# Website: https://bitbucket.org/lbesson/bin/src/master/AddGA.sh
 # Date: 28-02-2013
 #
 # A small script to add a one-pixel beacon image to a HTML/PHP file

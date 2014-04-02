@@ -2,7 +2,7 @@
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Web version: http://besson.qc.to/bin/GenerateStatsMarkdown.sh
-# Web version (2): https://bitbucket.org/lbesson/home/src/master/bin/GenerateStatsMarkdown.sh
+# Web version (2): https://bitbucket.org/lbesson/bin/src/master/GenerateStatsMarkdown.sh
 # Date: 28-03-2013
 #
 # A small script to create a minimalistic Markdown status page for my machine,
@@ -51,7 +51,7 @@ fi
 # Header
 echo -e "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/><title>Stats pour ssh.dptinfo.ens-cachan.fr</title></head><body><xmp theme=\"${theme}\" style=\"display:none;\">" > "$dest"
 echo -e "# Informations systèmes pour [ssh.dptinfo.ens-cachan.fr](http://www.dptinfo.ens-cachan.fr/~lbesson/)" >> "$dest"
-echo -e "> #### Signaler tout problème à [jarvisATcransDOTorg](mailto:jarvisATcransDOTorg) ou via [bitbucket](https://bitbucket.org/lbesson/home/issues/new).\n#### Acces restreint via mot de passe.\n#### Données mises à jour le **$(date "+%c")**.\n\n***\n" >> "$dest"
+echo -e "> #### Signaler tout problème à [jarvisATcransDOTorg](mailto:jarvisATcransDOTorg) ou via [bitbucket](https://bitbucket.org/lbesson/bin/issues/new).\n#### Acces restreint via mot de passe.\n#### Données mises à jour le **$(date "+%c")**.\n\n***\n" >> "$dest"
 
 ## MY_IP=$(/sbin/ifconfig | awk '/inet adr:/ { print $2 } ' | sed -e s/addr://)
 MY_IP=$(/sbin/ifconfig | grep 'inet')

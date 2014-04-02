@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Website: https://bitbucket.org/lbesson/home/src/master/bin/fakega.sh
+# Website: https://bitbucket.org/lbesson/bin/src/master/fakega.sh
 # Date: 28-02-2013
 #
 # A small hack to generate random visit on any website which is monitored by Google Analytics.

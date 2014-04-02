@@ -2,7 +2,7 @@
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Web version: http://besson.qc.to/bin/Exercice.sh
-# Web version (2): https://bitbucket.org/lbesson/home/src/master/bin/Exercice.sh
+# Web version (2): https://bitbucket.org/lbesson/bin/src/master/Exercice.sh
 # Date: 10-03-2013
 #
 # A small script to do one random Maths Exercice, every single day !
