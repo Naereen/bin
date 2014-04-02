@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!-- © and (C) Lilian Besson, 2013 : for http://besson.qc.to/photos -->
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8"> 
+    <title>Galerie photo pour « CURRENTDIR »</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/nprogress.css?1">
+    <link rel="stylesheet" type="text/css" href="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/glisse.css?1">
+    <!-- <link rel="stylesheet" type="text/css" href="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/glisse-app-stack.css?1"> -->
+    <link rel="stylesheet" type="text/css" href="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/glisse-app-gallery.css?1">
+
+    <link rel="shortcut icon" type="image/gif" href="http://www.dptinfo.ens-cachan.fr/~lbesson/favicon.ico">
+
+    <script type="text/javascript" src="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/jquery.js?1"></script>
+    <!-- NProgress.js (https://github.com/rstacruz/nprogress)-->
+    <script type="text/javascript" src="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/nprogress.js?1"></script>
+    <!-- MouseTrap.js (http://craig.is/killing/mice) -->
+    <script type="text/javascript" src="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/mousetrap.min.js?1"></script>
+    <script type="text/javascript" src="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/jquery.lazyload.js?1"></script>
+</head>
+<body>
+    <div class="tabbar">
+		<p>
+			Cette page a pour but d'afficher des photos, et est toujours en bêta 
+			<a href="https://bitbucket.org/lbesson/web-sphinx-scripts/issues/new">(n'hésitez pas à signaler un bug !)</a><br>
+			Générée le DATE par <a title="Version VERSION !" href="https://bitbucket.org/lbesson/home/src/master/bin/generateglisse.sh">generateglisse.sh</a>
+			(utilise <a href="http://glisse.victorcoulon.fr/">glisse.js</a> pour la gallerie photo).<br>
+			(C) 2013 <a href="http://besson.qc.to">Lilian BESSON</a>. <a href="http://fb.me/naereencorp.lbesson">Sur Facebook !</a>
+			<a href="..">Dossier parent !</a>
+			Changer l'effet de transition :
+		</p>
+	    <select id="changefx">
+	        <option selected="selected" value="fadeBig">fadeBig</option>
+	        <option value="bounce">bounce</option>
+	        <option value="fade">fade</option>
+	        <option value="roll">roll</option>
+	        <option value="rotate">rotate</option>
+	        <option value="flipX">flipX</option>
+	        <option value="flipY">flipY</option>
+	    </select>
+    </div>
+
+    <div id="content">
+<!-- End of header.html -->
+

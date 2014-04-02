@@ -1,0 +1,119 @@
+
+<!-- Start of footer.html -->
+    </div>
+
+    <script type="text/javascript" src="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/glisse.js?1"></script>
+    <script type="text/javascript" src="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/jquery.timeago.js?1"></script>
+    <script type="text/javascript" src="http://www.dptinfo.ens-cachan.fr/~lbesson/_static/jquery.rotate.min.js?1"></script>
+    <script type="text/javascript">
+        NProgress.start();
+
+        // Add extra content to every images
+        var $imglazy = $("img.glisse-lazy"); // http://airbnb.github.io/javascript/#jquery, cache the jQuery lookup REALLY improve performance
+        // Use LazyLoad
+        $imglazy.lazyload({
+            skip_invisible  : true,
+            failure_limit   : 5,
+            effect          : "fadeIn",
+            threshold       : 144
+        });
+
+        // Adaptative Background Experiment !
+        // https://github.com/briangonzalez/jquery.adaptive-backgrounds.js
+		var baOpts = {
+		  selector: '.first',
+		  // parent:   '.some-parent-of-some-selector',
+		  normalizeTextColor: false,
+		  normalizedTextColors: {dark: '#000', light: '#fff'}
+		};
+		// $.adaptiveBackground.run(baOpts);
+
+
+        // MouseTrap (http://craig.is/killing/mice)
+        // Mousetrap.bind(["right", "n"], function() { alert("Gallery: next."); next();});
+        // Mousetrap.bind(["left", "p"], function() { alert("Gallery: previous."); previous();});
+        // Mousetrap.bind(["l"], function() { alert("Gallery."); launchGallery();});
+        Mousetrap.bind(["up", "u"], function() { location.href="..";});
+        Mousetrap.bind(["h", "?"], function() {
+          alert("Les raccourcis claviers suivants sont activés :\n"
+            +" - h : affiche ce message d'aide,\n"
+            // +" - Droite (→ ou n) : <a href=\"#\" title=\"Encore expérimental :)\" onClick=\"next();\">image suivante</a>,\n"
+            // +" - Gauche (← ou p) : <a href=\"#\" title=\"Encore expérimental :)\" onClick=\"previous();\">image précédente</a>,\n"
+            // +" - Lance la gallerie (l) : <a href=\"#\" title=\"Encore expérimental :)\" onClick=\"launchGallery();\">afficher la gallerie</a>,\n"
+            +" - Up (u ou ↑) : dossier parent,\n"
+            +"~~~ Ce site est maintenu par Lilian Besson © 2013 ~~~" );
+            // , {layout:'center', type:'information', timeout: false, closeWith: ['button']}); 
+        });
+
+        // Mousetrap.bind(["r"], function() { alert("Rotating +90°..."); rotatePos(); });
+        // Mousetrap.bind(["R"], function() { alert("Rotating -90°..."); rotateNeg(); });
+
+        // Rotate every 'rotation' element by its angle 
+        $('.rotation').each(function() {
+            var angle = $(this).attr("angle");
+            angle = angle=='' ? '90' : angle;
+            if (angle !== '0') {
+                console.log( "[jqrotate] Rotating " + $(this) + " with angle=" + angle );
+                $(this).jqrotate( angle );
+            };
+        });
+
+		// TimeAgo jQuery plugin, French options.
+		// Source : https://github.com/rmm5t/jquery-timeago/blob/master/locales/jquery.timeago.fr.js
+		jQuery.timeago.settings.strings = {
+		prefixAgo: "Il y a", prefixFromNow: "D'ici", seconds: "moins d'une minute", minute: "environ une minute", minutes: "environ %d minutes", hour: "environ une heure", hours: "environ %d heures", day: "environ un jour", days: "environ %d jours", month: "environ un mois", months: "environ %d mois", year: "un an", years: "%d ans"
+		};
+
+        // $imglazy.attr("width", "192");
+        // $imglazy.attr("height", "144");
+
+        $imglazy.each(function(){
+        	var jour = $(this).attr("jour");
+        	var heure = $(this).attr("heure");
+
+        	if (($(this).attr("title") == undefined) && ($.timeago !== undefined)) {
+            	// console.log("[timeago] called with :" + jour + "T" + heure + "Z" );
+                $(this).attr( "title",
+                    $.timeago( jour + "T" + heure + "Z" )
+                     + " (le " + jour + " à " + heure + ") [Fichier: " + $(this).attr("size") + " pixels, taille " + $(this).attr("filesize") + "]" );
+            };
+        });
+
+        NProgress.inc();
+
+        $(window).load(function(){
+            NProgress.inc();
+            // // for glisse
+            $imglazy.attr("rel", "group1");
+            $imglazy.attr("data-glisse-big", function(){
+                $(this).attr( "data-glisse-big", $(this).attr("data-original") );
+            });
+            // Load glisse
+            $(function () {
+                $imglazy.glisse({speed: 800, changeSpeed: 200, effect:'fadeBig', fullscreen: true}); 
+            });
+            // Button to change the effect.
+            $('#changefx').change(function() {
+                var val = $(this).val();
+                $imglazy.each(function(){
+                    $(this).data('glisse').changeEffect(val);
+                });
+            });
+
+            // Google Analytics
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+            ga('create', 'UA-38514290-14', 'bitbucket.org');
+            ga('send', 'pageview');
+            console.log( "[GA] Sending with ID=UA-38514290-14, DOMAIN=bitbucket.org" );
+
+            // Conclude the Nprogress bar
+            NProgress.inc();
+            setTimeout(function(){ NProgress.done(); }, 2000);
+        });
+    </script>
+</body>
+<!-- © and (C) Lilian Besson, 2013 : for http://besson.qc.to/photos -->
+</html>
