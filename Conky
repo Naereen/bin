@@ -1,0 +1,3 @@
+#!/usr/bin/env /bin/bash
+echo "$USER launching Conky." &>> /tmp/Conky.tmp
+conky -c ~/.ConkyWizardTheme/ConkyWizardTheme &>> /tmp/Conky.tmp

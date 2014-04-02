@@ -1,0 +1,134 @@
+<!-- (C) Lilian Besson, 201, for http://besson.qc.to/generatejplayer.sh/  -->
+    <div class="jp-type-playlist" style="margin-right:5%; margin-left:5%">
+        <div id="jquery_jplayer_1" class="jp-jplayer"></div>
+        <div id="jp_container_1" class="jp-audio">
+            <div class="jp-type-playlist">
+                <div class="jp-gui jp-interface">
+                    <ul class="jp-controls">
+                        <li><a href="javascript:;" class="jp-previous" tabindex="1">previous</a></li>
+                        <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
+                        <li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
+                        <li><a href="javascript:;" class="jp-next" tabindex="1">next</a></li>
+                        <li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
+                        <li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
+                        <li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
+                        <li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
+                    </ul>
+                    <div class="jp-progress">
+                        <div class="jp-seek-bar">
+                            <div class="jp-play-bar"></div>
+                        </div>
+                    </div>
+                    <div class="jp-volume-bar">
+                        <div class="jp-volume-bar-value"></div>
+                    </div>
+                    <div class="jp-current-time"></div>
+                    <div class="jp-duration"></div>
+                    <ul class="jp-toggles">
+                        <li><a href="javascript:;" class="jp-shuffle" tabindex="1" title="shuffle">shuffle</a></li>
+                        <li><a href="javascript:;" class="jp-shuffle-off" tabindex="1" title="shuffle off">shuffle off</a></li>
+                        <li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
+                        <li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
+                    </ul>
+                </div>
+                <div class="jp-playlist">
+                    <ul>
+                        <li></li>
+                    </ul>
+                </div>
+                <div class="jp-no-solution">
+                    <span>Update Required</span>
+                    To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.<br>
+                    <span>Mise à-jour requise</span>
+                    Pour pouvoir écouter ces morceaux, vous devez mettre à jour votre navigateur web vers une version récente, ou bien mettre à jour votre version du <a href="http://get.adobe.com/flashplayer/" target="_blank">micrologiciel Flash</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    console.log("[INFO] header.html stops now.");
+    // $(document).ready(function() {
+    	var firstTitle = window.document.title;
+    	var mytitle = firstTitle;
+        var myPlaylist = new jPlayerPlaylist(cssSelector, [], options);
+
+        var next = function() { myPlaylist.next(); };
+		var previous = function() { myPlaylist.previous(); };
+		var pause = function() { myPlaylist.pause(); };
+		var play = function() { myPlaylist.play(); };
+		var shuffle = function(a,b) { myPlaylist.shuffle(a,b);};
+        
+		// MouseTrap (http://craig.is/killing/mice)
+		Mousetrap.bind(["right", "n"], function() { alert("Playing next."); myPlaylist.next();});
+		Mousetrap.bind(["left", "p"], function() { alert("Playing previous."); myPlaylist.previous();});
+		Mousetrap.bind(["b"], function() { alert("Pausing."); myPlaylist.pause();});
+		Mousetrap.bind(["l"], function() { alert("Playing."); myPlaylist.play();});
+		Mousetrap.bind(["r"], function() { alert("Shuffling."); myPlaylist.shuffle(true, true);});
+		Mousetrap.bind(["h", "?"], function() {
+		  alert("Les raccourcis claviers suivants sont activés : </br>\n"
+			+" - h : affiche ce message d'aide, </br>\n"
+
+			+" - Droite (→ ou n) : <a href=\"#\" title=\"Joue le morceau suivant\" onClick=\"next();\">morceau suivant</a>,</br>\n"
+			+" - Gauche (← ou p) : <a href=\"#\" title=\"Joue le morceau précédent\" onClick=\"previous();\">morceau précédent</a>,</br>\n"
+			+" - Pause (b) : <a href=\"#\" title=\"Pause\" onClick=\"pause();\">pause</a>,</br>\n"
+			+" - Joue (l) : <a href=\"#\" title=\"Reprend la lecture\" onClick=\"play();\">joue</a>,</br>\n"
+			+" - Aléatoire (r) : <a href=\"#\" title=\"Mélange\" onClick=\"shuffle(true, true);\">active ou désactive la lecture aléatoire</a>,</br>\n"
+			+" - Up (u ou ↑) : <a href=\"#\" title=\"Expérimental\" onClick=\"location.href='../index.html';\">dossier parent</a>,</br>\n"
+			+"Ces pages sont générées par et pour <a href=\"http://besson.qc.to/\">Lilian Besson</a>, © 2014, Licence: <a href=\"http://besson.qc.to/LICENCE.html\">GPL v3</a>.",
+			{layout:'center', type:'information', timeout: false, closeWith: ['button']}); 
+		});
+
+        var printHereTheVolume = document.querySelector( '#printherethevolume' );
+        var printHereTheDuration = document.querySelector( '#printheretheduration' );
+        var printHereTheTitle = document.querySelector( '#printherethetitle' );
+		var volume = 1.0, currentTime = 0.0, duration = 1.0, currentPercentAbsolute = 0.0;
+
+		// Event handlers
+		$("#jquery_jplayer_1").unbind($.jPlayer.event.volumechange + ".jPlayer");
+		$("#jquery_jplayer_1").bind($.jPlayer.event.volumechange + ".jPlayer", function(e) {
+			volume = Math.floor(100.0 * e.jPlayer.options.volume);
+			printHereTheVolume.innerHTML = ' ' + 'Volume ' + volume + '%.';
+		});
+
+		$("#jquery_jplayer_1").unbind($.jPlayer.event.timeupdate + ".jPlayer");
+		$("#jquery_jplayer_1").bind($.jPlayer.event.timeupdate + ".jPlayer", function(e) {
+			currentTime = e.jPlayer.status.currentTime;
+			duration = e.jPlayer.status.duration;
+			currentPercentAbsolute = Math.floor(e.jPlayer.status.currentPercentAbsolute);
+			printHereTheDuration.innerHTML = ' Position : ' + $.jPlayer.convertTime(currentTime) + '/' + $.jPlayer.convertTime(duration) + ' (' + currentPercentAbsolute +'%).';
+			// window.document.title = $.jPlayer.convertTime(currentTime) + '/' + $.jPlayer.convertTime(duration) + '  ' + mytitle;
+		});
+
+		$("#jquery_jplayer_1").unbind($.jPlayer.event.play + ".jPlayer");
+		$("#jquery_jplayer_1").bind($.jPlayer.event.play + ".jPlayer", function(e) {
+			alert("[jPlayer] play handler called : now jPlayer should be playing.");
+			var artist = (e.jPlayer.status.media.artist !== undefined) ? ' (by ' + e.jPlayer.status.media.artist : '';
+			printHereTheTitle.innerHTML = 'Élément courant : <a href="' + e.jPlayer.status.src + '">' + e.jPlayer.status.media.title + artist + '</a> (jouant).';
+			// faviconincrease();
+		});
+
+		$("#jquery_jplayer_1").unbind($.jPlayer.event.pause + ".jPlayer");
+		$("#jquery_jplayer_1").bind($.jPlayer.event.pause + ".jPlayer", function(e) {
+      		NProgress.start();
+			alert("[jPlayer] pause handler called : now jPlayer should be paused.");
+			mytitle = "\"" + e.jPlayer.status.media.title + '\" (Pause)';
+			window.document.title = mytitle;
+			var artist = (e.jPlayer.status.media.artist !== undefined) ? ' (by ' + e.jPlayer.status.media.artist : '';
+			printHereTheTitle.innerHTML = 'Élément courant : <a href="' + e.jPlayer.status.src + '">' + e.jPlayer.status.media.title + artist + '</a> (en pause).';
+			setTimeout(function(){ NProgress.done(); }, 200);
+		});
+
+		$("#jquery_jplayer_1").unbind($.jPlayer.event.playing + ".jPlayer");
+		$("#jquery_jplayer_1").bind($.jPlayer.event.playing + ".jPlayer", function(e) {
+			alert("[jPlayer] playing handler called : now jPlayer is playing.");
+			mytitle = "\"" + e.jPlayer.status.media.title + '\" (Jouant)';
+			window.document.title = mytitle;
+			var artist = (e.jPlayer.status.media.artist !== undefined) ? ' (by ' + e.jPlayer.status.media.artist : '';
+			printHereTheTitle.innerHTML = 'Élément courant : <a href="' + e.jPlayer.status.src + '">' + e.jPlayer.status.media.title + artist + '</a> (jouant).';
+		});
+
+		// Start to play.
+		setTimeout(function(){ myPlaylist.shuffle(true, true); }, 50);
+
+    // This is where generatejplayer.sh add the items to the playlist.
