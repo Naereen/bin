@@ -1,0 +1,384 @@
+#!/usr/bin/env /bin/bash
+################################## INFO #####################################
+# A GNU Bash script to automatically TRY to compress PDF files in the current directory.
+# Copyright (C) 2013 Lilian BESSON (lbesson at ens-cachan dot fr)
+#
+# Find the latest version on http://perso.crans.org/besson/bin/PDFCompress
+#  
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+# 
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#     GNU General Public License for more details.
+#
+#     You should have received a copy of the GNU General Public License
+#     along with this program. If not, see <http://www.gnu.org/licenses/>,
+#     or <http://perso.crans.org/besson/LICENSE>.
+################################# CAUTION ###################################
+# Use with caution: sometime, the new PDF is bigger than the first one.
+# Good advice: in a git repository, compress before storing => a real improvement !
+##############################################################################
+
+version="1.2b"
+##LANG="en"
+
+GREP="grep --color=always --line-buffered"
+BIN=`basename "$0"`
+ECHO="echo -e"
+
+# If editing the meta data, change them to say that the PDF have been modified.
+# in fact, it is the default behavior :)
+## FIXME: if using '{' or '/' in $creator, warning when using sed ...
+creator="LaTeX, compressed with http://besson.qc.to/bin/PDFCompress v$version -- a script by Lilian BESSON (C) 2013"
+creator="`$ECHO \"$creator\" | tr { _`"
+
+# If possible, use .color.sh (http://besson.qc.to/bin/.color.sh or http://lbesson.qc.to/bin/.color.sh)
+if [ -f "$HOME/.color.sh" ]; then
+ . "$HOME/.color.sh" 
+else
+  $ECHO "\033[01;31m WARNING: ~/.color.sh have not been found...\033[01;37m" > /dev/stderr
+  $ECHO "\033[01;33m INFO: 1) You can download it on http://besson.qc.to/bin/.color.sh or http://lbesson.qc.to/bin/.color.sh \033[01;37m" > /dev/stderr
+  $ECHO "\033[01;33m INFO: 2) Then move it to "$"HOME/.color.sh (for example with 'move .color.sh ~/.color.sh' ...) \033[01;37m" > /dev/stderr
+  $ECHO "\033[01;33m INFO: 3) And finally, make it executable : 'chmod +x ~/.color.sh' . Now you can have colors in $BIN :) \033[01;37m" > /dev/stderr
+fi
+
+# Default quality. FIXME: in fact, does not change very much the result....
+quality="ebook"
+# False to simply change the meta data (and sign ?)
+compress="true"
+# True to force compression (even if pdfinfo said that Ghostscript or PDFCompress 
+# have already been used to compress the file.
+force="false"
+# Keep meta data : enabled by default.
+keep="true"
+# Sign the new PDF : disabled by default.
+sign="false"
+# Control the verbosity of gs. By default, quiet.
+quiet="-q"
+# To control the use of notify-send. By default, use it.
+notify="true"
+# To control the use of zenity. By default, use it.
+zenity="true"
+
+icon=""
+NOTIFY=""
+ZENITY=""
+
+############################# Argument handling ################################
+for i in "$@"
+do
+ case "$i" in
+ -V|--version)
+   $ECHO "$BIN $version"
+   exit 0
+  ;;
+ -h|--help)
+   $ECHO "$green$BIN$white --help | [options]"
+   $ECHO ""
+   $ECHO "Compress every PDF files in the current directory, using gs (part of the Ghostscript software)."
+   $ECHO "Help:"
+   $ECHO "    ${yellow}--help$white           to print this help message (and quit)."
+   $ECHO "    ${yellow}--version$white           to print just the version of $BIN (and quit)."
+   $ECHO ""
+   $ECHO "Options:"
+   $ECHO "    ${yellow}--quality QUALITY$white	setting the compression quality to QUALITY."
+   $ECHO "              ${yellow}screen${white}	High compression, low quality. Choose this to get the best compression."
+   $ECHO "              ${yellow}ebook${white}	High compression, mean quality. Maybe the best option :) (Default behavior)"
+   $ECHO "              ${yellow}printer${white}	Mean compression, mean quality."
+   $ECHO "              ${yellow}prepress${white}	Low compression, high quality."
+   $ECHO ""
+   $ECHO "    ${yellow}--no-keep$white	 erase the meta data of all PDF files. By default $BIN keeps the meta data (requires pdftk)."
+   $ECHO ""
+   $ECHO "    ${yellow}--sign$white	 sign all the new version of the PDF files, with GnuPG ($sign by default)."
+   $ECHO ""
+   $ECHO "    ${yellow}--no-compress$white	 do not compress the PDF files (default is to compress it)."
+   $ECHO ""
+   $ECHO "    ${yellow}--force$white	 force the compression process. Default is to compress only if it has not already been compressed (still a little experimental)."
+   $ECHO ""
+   $ECHO "    ${yellow}--no-notify$white	 disable notification sent by notify-send (enabled by default)."
+   $ECHO ""
+   $ECHO "    ${yellow}--no-zenity$white	 disable graphical progress window (with zenity) during the compression (enabled by default)."
+   $ECHO ""
+   $ECHO "    ${yellow}--verbose$white	 increase verbosity of gs (quiet by default, option '-q')."
+   $ECHO ""
+   $ECHO "$BIN v$version : Copyrights: (c) Lilian Besson 2011-2013."
+   $ECHO "Released under the term of the GPL v3 Licence (more details on http://besson.qc.to/LICENSE.html)."
+   $ECHO "In particular, $BIN is provided WITHOUT ANY WARANTY."
+   exit 0
+  ;;
+ -q|--quality)
+   $ECHO "${cyan} option quality found.${white}"
+   shift
+   quality="$1"
+   $ECHO "${cyan} compressing with the quality $u$quality$U.${white}"
+   shift
+  ;;
+ --no-keep)
+   $ECHO "${cyan} option no-keep found.${white}"
+   shift
+   keep="false"
+  ;;
+ --keep)
+   $ECHO "${cyan} option keep found.${white}"
+   shift
+   keep="true"
+  ;;
+ --sign)
+   $ECHO "${cyan} option sign found.${white}"
+   shift
+   sign="true"
+  ;;
+ --force)
+   $ECHO "${cyan} option force found.${white}"
+   shift
+   force="true"
+  ;;
+ --no-compress)
+   $ECHO "${cyan} option no-compress found.${white}"
+   shift
+   compress="false"
+  ;;
+ --no-notify)
+   $ECHO "${cyan} option no-notify found.${white}"
+   shift
+   notify="false"
+  ;;
+ --no-zenity)
+   $ECHO "${cyan} option no-zenity found.${white}"
+   shift
+   zenity="false"
+  ;;
+ -v|--verbose)
+   $ECHO "${cyan} option verbose found.${white}"
+   shift
+   quiet=""
+  ;;
+ *)
+   $ECHO "${white} Argument $i may have been NOT used.${white}" > /dev/null
+   ## FIXME
+  ;;
+ esac
+done
+
+
+########################## Copyrights and options ##############################
+$ECHO "${green}$BIN v$version : Copyright (C) 2013 Lilian BESSON"
+$ECHO "This is free software, and you are welcome to redistribute it under certain conditions."
+$ECHO "This program comes with ABSOLUTELY NO WARRANTY; for details see http://perso.crans.org/besson/LICENSE ${white}"
+
+
+##################### Auto detection of needed softwares #######################
+# $ECHO " Auto detection of needed softwares...."
+# # Detection of gs
+# ( ( gs --help | head -n1 | $GREP "Ghostscript" ) && $ECHO "$green - gs		is in your $"PATH" :)$reset$white" ) || \
+# ( $ECHO "$red Error:$white gs is not in your $"PATH" :(" > /dev/stderr ; exit 5 )
+
+# # Detection of pdftk
+# ( pdftk --help | $GREP "^pdftk" && $ECHO "$green - pdftk	is in your $"PATH" :)$reset$white" ) || \
+# ( $ECHO "$red Error:$white pdftk is not in your $"PATH" :(" > /dev/stderr ; touch "/tmp/nopdftk" )
+# if [ -f "/tmp/nopdftk" ]; then
+#   keep="false"
+# fi
+
+# # Detection of gpg
+# ( ( gpg --version | head -n1 | $GREP "^gpg" ) && $ECHO "$green - gpg		is in your $"PATH" :)$reset$white" ) || \
+# ( $ECHO "$red Error:$white gpg is not in your $"PATH" :(" > /dev/stderr ; touch "/tmp/nogpg" )
+# if [ -f "/tmp/nogpg" ]; then
+#   sign="false"
+# fi
+
+# # Detection of notify-send
+# ( ( notify-send --version | head -n1 | $GREP "^notify-send" ) && $ECHO "$green - notify-send		is in your $"PATH" :)$reset$white" ) || \
+# ( $ECHO "$red Error:$white notify-send is not in your $"PATH" :(" > /dev/stderr ; touch "/tmp/nonotify-send" )
+# if [ -f "/tmp/nonotify-send" ]; then
+#   notify="false"
+# else
+#   icon="`ls -H /usr/share/icons/*/*/*/*pdf*svg | uniq | shuf | head -n1`"
+#   NOTIFY="notify-send -t 500 -i \"$icon\" \"$BIN\""
+# fi
+
+# # Detection of zenity
+# ( ( zenity --version | $GREP "^3\..*" ) && $ECHO "$green - zenity		is in your $"PATH" :)$reset$white" ) || \
+# ( $ECHO "$red Error:$white zenity is not in your $"PATH" :(" > /dev/stderr ; touch "/tmp/nozenity" )
+# ##if [ -f "/tmp/nozenity" || ( "X$DISPLAY" = "X" ) ]; then
+# if [ -f "/tmp/nozenity" ]; then
+#   zenity="false"
+# else
+#   ZENITY="LANG=fr_FR.UTF-8 zenity --progress --pulsate --auto-kill --auto-close --title=\"$BIN $version\" --text=\"Compressing <b>'$i'</b>... \nWorking in <u>`pwd`</u>,\n Storing metadata to <i>'$meta'</i>\nPress '<b>Cancel</b>' to .. cancel :)\""
+
+# fi
+
+if [ "X$DISPLAY" = "X" ]; then
+	notify="false"
+	zenity="false"
+fi
+
+
+###################### Print infos about the parameters ########################
+$ECHO
+$ECHO "${cyan} Using quality=$white$quality$cyan. See $BIN --help to get a list of different possible parameters.${white}"
+
+[ "$keep" = "true" ] && $ECHO "${cyan} Trying to keep all meta datas...${white}"
+[ "$keep" = "false" ] && $ECHO "${cyan} Do not trying to keep all meta datas...${white}"
+
+[ "$sign" = "true" ] && $ECHO "${cyan} Trying to sign all pdf files...${white}"
+[ "$sign" = "false" ] && $ECHO "${cyan} Do not trying to sign all pdf files...${white}"
+
+[ "$compress" = "true" ] && $ECHO "${cyan} Trying to compress all pdf files...${white}"
+[ "$compress" = "false" ] && $ECHO "${cyan} Do not trying to compress all pdf files...${white}"
+
+$ECHO "${cyan} Using $reset'$white$creator'$cyan as the new Hyperref value for the 'Creator' item.${white}"
+
+if [ "$quiet" != "" ]; then
+ GS="/usr/bin/gs $quiet -dNOPAUSE -dBATCH -dSAFER -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dEmbedAllFonts=true -dSubsetFonts=true -dColorImageDownsampleType=/Bicubic -dColorImageResolution=72 -dGrayImageDownsampleType=/Bicubic -dGrayImageResolution=72 -dMonoImageDownsampleType=/Bicubic -dMonoImageResolution=72 -dPDFSETTINGS=/"$quality""
+ $ECHO "${cyan} Being quiet...${white}"
+else
+ GS="/usr/bin/gs -dNOPAUSE -dBATCH -dSAFER -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dEmbedAllFonts=true -dSubsetFonts=true -dColorImageDownsampleType=/Bicubic -dColorImageResolution=72 -dGrayImageDownsampleType=/Bicubic -dGrayImageResolution=72 -dMonoImageDownsampleType=/Bicubic -dMonoImageResolution=72 -dPDFSETTINGS=/"$quality""
+ $ECHO "${cyan} Being verbose...${white}"
+fi
+
+if [ "X$notify" = "Xtrue" ]; then
+  [ "$icon" != "" ] && $ECHO "$cyan For notify-send, using $reset'$white$icon'"
+  [ "$NOTIFY" != "" ] && $ECHO "$cyan For notify-send, using the command $reset'$white$NOTIFY'"
+fi
+
+if [ "X$zenity" = "Xtrue" ]; then
+  [ "$ZENITY" != "" ] && $ECHO "$cyan For zenity, using the command $reset'$white$ZENITY'"
+fi
+
+[ "$GS" != "" ] && $ECHO "$cyan For gs, using the command $reset'$white$GS'..."
+
+
+############################## Main function ###################################
+PDFCompress () 
+{ 
+    $ECHO "\n${white} File selection...."
+    arg=""
+    argt=""
+    
+    for i in "$@"; do
+     $ECHO "${reset}${white}${u}$i${U}"
+     
+      if [ -f "$i" ] || [ -f "${i%.pdf}.pdf" ]; then
+       $ECHO "${white}${Black}For $u$i$U${reset}:\
+        `pdfinfo \"$i\" 2>&1 | GREP_COLOR="01;33" $GREP -m1 "\(Title\|Error\)" `${reset}${white}."        
+       pdfinfo "$i" &>/dev/null
+       if [ "X$?" = "X0" ]; then
+          [ ! -f "${i%.pdf}.pdf" ] && $ECHO "${red}Warning${yellow}: file $i seems to be a valid PDF file but has not a .pdf file extension${white}" > /dev/stderr
+          arg="$arg $i"
+          $ECHO "${green}... adding $i as a valid PDF file${white}"
+          argt="$argt $i~"
+       else
+          $ECHO "${red}$BIN: cannot use $i: is not a valid PDF file${white}" > /dev/stderr
+       fi
+      else
+       $ECHO "${red}$BIN: cannot access $i: No such file or directory${white}" > /dev/stderr
+      fi
+     
+    done
+    
+    arg="${arg# }"
+    argt="${argt# }"
+    $ECHO "\n${white} Files selected : $arg" 
+    
+    # Print the comparaison between size at the end.
+    log1="/tmp/PDFCompress_before.log"
+    log2="/tmp/PDFCompress_after.log"
+    du -kh $arg > "$log1"
+    
+    $ECHO "${white}Compressing $arg ...${white}";
+    [ "`/bin/ls \"$argt\" 2>/dev/null`" != "" ] && /bin/mv -f -v "$argt" /tmp/;
+    
+    for i in $arg; do
+        $ECHO "${blue}For the file ${green}$i${white}...";
+        
+        meta="/tmp/${i}.meta"
+        
+        if [ "$keep" = "true" ]; then
+         [ -f "$meta" ] && rm -fv "$meta"
+         ( pdftk "$i" dump_data output "$meta" \
+            && $ECHO "$green meta data for $i well written to $meta :)$reset$white" \
+            && line=`cat "$meta" | grep -n Creator | grep -o -m1 ^[0-9]*` \
+            && ( 
+                 cat "$meta" | sed $((line+1))s{InfoValue:.*{"InfoValue: $creator"{ > "$meta"~ \
+               ) \
+            && /bin/cp -fv "$meta"~ "$meta" \
+         ) || \
+	 $ECHO "$red Error:$white meta data for $i not written to $meta :(" > /dev/stderr ;
+        fi
+        
+        if [ "X$force" = "Xtrue" ]; then
+		$ECHO "${yellow}Info:$white Forcing compression ..."
+        	[ "X$compress" != "Xtrue" ] && $ECHO "${red}Error:$white Compression have been forced, this bypass the option $compress which was set to $compress (not true)."
+       		compress="true"
+        else
+         if [ "X$compress" = "Xtrue" ]; then
+        	$ECHO "${yellow}Info:$white Not forcing compression."
+        	if ( pdfinfo "$i" | grep "\(Ghostscript\|PDFCompress\)" ); then
+        		$ECHO "${yellow}Info:$white The file ${u}'${i}'${U} seems to have already been compressed with Ghostscript, or $0 : ${red}NOT${white} recompressing it ..."
+        		compress="false"
+        	else
+        		$ECHO "${yellow}Info:$white The file ${u}'${i}'${U} seems to have not already been compressed with Ghostscript, nor $0 : ${green}recompressing it${white} ..."
+        	fi
+         fi
+        fi
+        
+        if [ "X$compress" = "Xtrue" ]; then
+		$ECHO "${yellow}Info:$white starting compression for $i...$reset$white";
+		$ECHO "$cyan Info: using $"GS"=${GS} as the gs command...$reset$white";
+	  if [ "X$zenity" = "Xtrue" ]; then
+		( $ECHO "0" ; $GS -sOutputFile="$i"~ "$i"; $ECHO "100"; ) | \
+               ( LANG="fr_FR.UTF-8" zenity --progress --pulsate --auto-kill --auto-close --title="$BIN $version" --text="Compressing <b>'$i'</b>... \nWorking in <u>`pwd`</u>,\n Storing metadata to <i>'$meta'</i>\nPress '<b>Cancel</b>' to .. cancel :)"; );
+          else
+		$ECHO "0%" ; $GS -sOutputFile="$i"~ "$i"; $ECHO "100%"
+          fi
+	else
+		$ECHO "${yellow}Info:$white starting copy for $i (emulated compression :p)..."
+		/bin/cp -fv "$i" "$i"~
+	fi
+	
+        if [ -f "$i"~ ]; then
+          /bin/cp "$i" /tmp/;
+          /bin/ls -hF --color=auto -s "$i" "$i"~;
+          /bin/cp -f -v "$i"~ "$i";
+          
+          if [ "$keep" = "true" ]; then
+         ( pdftk "$i"~ update_info /tmp/"$i".meta output "$i" \
+           && $ECHO "$green meta data for $i well re-written from /tmp/$i.meta :)$reset$white"
+         ) || \
+	 $ECHO "$red Error:$white meta data for $i not re-written from /tmp/$i.meta :(" > /dev/stderr 
+          fi          
+
+          if [ "$notify" = "true" ]; then
+           $ECHO "$green - notify-send: notifying..."
+           $NOTIFY "Old | New `ls --color=never -larth \"/tmp/$i\" \"$i\"`"
+          fi
+
+          if [ "$sign" = "true" ]; then
+           gpg --quiet --armor --detach-sign --yes --no-batch --use-agent "$i"
+          fi;
+          
+          /bin/mv -f -v "$i"~ /tmp/;
+          /bin/rm -v -f gs_*;
+        else
+         $ECHO "$red Error: $i~ no present (ie. the compression ${u}FAILED${U})... :($reset$white :(" > /dev/stderr
+        fi;
+    done;
+    /bin/rm -v -f gs_*
+    
+    du -kh $arg > "$log2"
+    
+    $ECHO "${blue}Difference between sizes before compression and after compression :${reset}${white}"
+    diff --side-by-side "$log1" "$log2"
+
+    exit 0
+}
+
+# Finally, run the function on the remaining args of the script.
+PDFCompress "$@"
+
+################################### END #######################################
