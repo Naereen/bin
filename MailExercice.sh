@@ -2,7 +2,7 @@
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Web version: http://besson.qc.to/bin/MailExercice.sh
-# Web version (2): https://bitbucket.org/lbesson/home/src/master/bin/MailExercice.sh
+# Web version (2): https://bitbucket.org/lbesson/bin/src/master/MailExercice.sh
 # Date: 22-03-2013
 #
 # A small script to do send one random Maths Exercice, by email, every single day !
@@ -68,7 +68,7 @@ SendExercice() {
 		echo -e "<big>Exercice aléatoire du jour</big> <small><a href=\"http://mp.cpgedupuydelome.fr/mesexos.php?numExo=${numexo}\">(plus de détails ici)</a></small>\n<big><tt>" > "/tmp/${numexo}.zenity.html"
 		cat "/tmp/${numexo}.txt" | grep -v "^$" >> "/tmp/${numexo}.zenity.html"
 		echo -e "</tt></big>\n\nVous avez 3 minutes pour le résoudre, après quoi il sera envoyé par courriel\n<small>-- \nAffiché via <tt>zenity --text</tt> et du <a href=\"https://developer.gnome.org/pygtk/stable/pango-markup-language.html\">balisage pango</a> sur <a href=\"http://jarvis.crans.org\">jarvis</a> avec <a href=\"http://besson.qc.to/bin/MailExercice.sh\">MailExercice.sh</a> (script open-source)</small>\n" >> "/tmp/${numexo}.zenity.html"
-		echo -e "<small><a href=\"https://bitbucket.org/lbesson/home/issues/new\">Soumettre un bug ?</a></small>" >> "/tmp/${numexo}.zenity.html"
+		echo -e "<small><a href=\"https://bitbucket.org/lbesson/bin/issues/new\">Soumettre un bug ?</a></small>" >> "/tmp/${numexo}.zenity.html"
 
 	## Fake a google analytics call
 	wget --quiet "https://ga-beacon.appspot.com/UA-38514290-15/exo/${numexo}/$(date '+%d-%m-%Y')?pixel" -O /dev/null >/dev/null 2>/dev/null
@@ -92,7 +92,7 @@ SendExercice() {
 			cat "/tmp/${numexo}.txt" | grep -v "^$" >> "/tmp/${numexo}.mail.html"
 			echo -e "</pre><br>-- <br>Envoyé par <a href=\"http://jarvis.crans.org\">jarvis</a> avec <a href=\"http://besson.qc.to/bin/MailExercice.sh\">MailExercice.sh</a> (script open-source)<br>" >> "/tmp/${numexo}.mail.html"
 			## echo -e "<br><img alt=\"GA\" src=\"https://ga-beacon.appspot.com/UA-38514290-15/exo/${numexo}/$(date '+%d-%m-%Y')\" />" >> "/tmp/${numexo}.mail.html"
-			echo -e "<small><a href=\"https://bitbucket.org/lbesson/home/issues/new\">Soumettre un bug ?</a></small>" >> "/tmp/${numexo}.mail.html"
+			echo -e "<small><a href=\"https://bitbucket.org/lbesson/bin/issues/new\">Soumettre un bug ?</a></small>" >> "/tmp/${numexo}.mail.html"
 			echo -e "<br><img style=\"display: none; vibility: hidden;\" src=\"https://ga-beacon.appspot.com/UA-38514290-15/exo/${numexo}/$(date '+%d-%m-%Y')?pixel\" />" >> "/tmp/${numexo}.mail.html"
 
 		SendEmail --html "/tmp/${numexo}.mail.html" "$@"

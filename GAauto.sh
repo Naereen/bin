@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Website: https://bitbucket.org/lbesson/home/src/master/bin/GAauto.sh
+# Website: https://bitbucket.org/lbesson/bin/src/master/GAauto.sh
 # Date: 28-02-2013
 #
 # A small script to add a one-pixel beacon image to every HTML files in a directory.

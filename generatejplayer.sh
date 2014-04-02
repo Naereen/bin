@@ -4,7 +4,7 @@
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Date: 28-03-2013
 # Web version: http://besson.qc.to/bin/generatejplayer.sh
-# Web version (2): https://bitbucket.org/lbesson/home/src/master/bin/generatejplayer.sh
+# Web version (2): https://bitbucket.org/lbesson/bin/src/master/generatejplayer.sh
 #
 # Auto generate an 'index.html' page to show and play music with jplayer.
 #

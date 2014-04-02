@@ -2,7 +2,7 @@
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Web version: http://besson.qc.to/bin/MailRandQuote.sh
-# Web version (2): https://bitbucket.org/lbesson/home/src/master/bin/MailRandQuote.sh
+# Web version (2): https://bitbucket.org/lbesson/bin/src/master/MailRandQuote.sh
 # Date: 10-03-2013
 #
 # A small script to do send one random quote, by email. Can easily be automatized,
