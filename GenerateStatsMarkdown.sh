@@ -83,7 +83,7 @@ head -n 1 "${HOME}"/current >> "$dest"
 echo -e "</pre>\n\n***\n\n##### Mis-à-jour régulièrement via *cron*, avec [GenerateStatsMarkdown.sh](http://besson.qc.to/bin/GenerateStatsMarkdown.sh), un script Bash écrit par et pour [Lilian Besson](http://besson.qc.to/)." >> "$dest"
 
 ## FIXME add http://www.dptinfo.ens-cachan.fr/~lbesson/ before _static/
-echo -e "\n</xmp><script type=\"text/javascript\" src=\"https://lbesson.bitbucket.org/md/strapdown.js?src=GSM.sh\"></script>\n<img alt=\"GA|Analytics\" style=\"visibility: hidden; display: none;\" src=\"https://ga-beacon.appspot.com/UA-38514290-1/stats.html/theme=${theme}/?pixel\"/>\n</body></html>" >> "$dest"
+echo -e "\n</xmp><script type=\"text/javascript\" src=\"_static/md/strapdown.js?src=GSM.sh\"></script>\n<img alt=\"GA|Analytics\" style=\"visibility: hidden; display: none;\" src=\"https://ga-beacon.appspot.com/UA-38514290-1/stats.html/theme=${theme}/?pixel\"/>\n</body></html>" >> "$dest"
 
 # Notify the user
 if [ "X$1" = "Xcron" ]; then
