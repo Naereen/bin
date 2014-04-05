@@ -20,7 +20,7 @@
 # Simply add ONE line in you .tex file :
 # '%autotex% Scale: 0.82' to import geometry with \usepackage[scale=0.82]{geometry}
 #
-# An example of LaTeX2e template to use with autotex :
+# An example of a LaTeX2e template to use with autotex :
 # (http://besson.qc.to/publis/latex/template.tex)
 #
 version='2.0'
