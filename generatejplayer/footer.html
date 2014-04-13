@@ -15,7 +15,7 @@
     $(document).ready(function() {
 		NProgress.inc();
 		Mousetrap.bind(["up", "u"], function() { alert("Parent directory."); location.href="../index.html";});
-		Mousetrap.bind(["i"], function() { alert("Home directory."); location.href="http://besson.qc.to/music/";});
+		Mousetrap.bind(["i"], function() { alert("Home directory."); location.href= (window.location.protocol + "//" + window.location.host + "/music/") ;}); // "http://besson.qc.to/music/"
 	});
     $(window).load(function(){
 		// Noty message.
@@ -24,18 +24,18 @@
 		buttons: [ // this = button element, $noty = $noty element
 		  {addClass: 'btn btn-primary', text: 'Oui !', onClick: function($noty) {
 		      $noty.close();
-		      noty({text: "<b>Normal, je code <i>bien</i> !</b>"
-		       + "\n</br>N'hésitez pas à consulter d'autre pages !", type: 'success'});
+		      noty({text: "<strong>Normal, je code <i>bien</i> !</strong>"
+		       + "\n</br>N'hésitez pas à consulter d'<a href=\"http://besson.qc.to/\">autres pages</a> !", type: 'success'});
 		    }
 		  }, 
 		  {addClass: 'btn btn-danger', text: 'Non ?!', onClick: function($noty) {
 		      $noty.close();
-		      noty({text: "<b>Oups !</b> Peut-être pouvez vous prendre quelques instants pour signaler un bug ? " +
-		       "\n</br>Via <a title=\"bitbucket.org\" href=\"https://bitbucket.org/lbesson/web-sphinx/issues/new\">bitbucket.org/lbesson/web-sphinx/issues/new</a>, <span style=\"color: blue\">c'est facile !</span>", 
-		       type: 'warning', timeout: false, onClick: function($noty){
+		      noty({text: "<span style=\"font-size: large;\"><b>Ooouups !</b>\n</br>Peut-être pouvez vous prendre quelques instants pour signaler un bug ? " +
+		       "\n</br>Via <a title=\"bitbucket.org\" href=\"https://bitbucket.org/lbesson/bin/issues/new\">bitbucket.org/lbesson/bin/issues/new</a>, <i>c'est facile !</i></span>", 
+		       type: 'error', layout: 'center', timeout: false, onClick: function($noty){
 		         $noty.close();
-		         console.log("[INFO] Opening a new window with https://bitbucket.org/lbesson/web-sphinx/issues/new.");
-		         window.open("https://bitbucket.org/lbesson/web-sphinx/issues/new");
+		         console.log("[INFO] Opening a new window with https://bitbucket.org/lbesson/bin/issues/new.");
+		         window.open("https://bitbucket.org/lbesson/bin/issues/new");
 		         return false;
 		      } });
 		    }
@@ -47,14 +47,14 @@
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create','UA-38514290-1','crans.org');ga('send','pageview');
+        ga('create','UA-38514290-1','crans.org'); ga('send','pageview');
         console.log( "[GA] Sending with ID=UA-38514290-1, DOMAIN=crans.org" );
         // Conclude the Nprogress bar
         NProgress.inc();
 		setTimeout(function(){ NProgress.done(); }, 1000);
     });
     </script>
-<script async type="text/javascript" src="http://perso.crans.org/besson/_static/ga.js?1"></script>
+<script async type="text/javascript" src="http://perso.crans.org/besson/_static/ga.js"></script>
 <img style="visibility: hidden; display: none;" src="https://ga-beacon.appspot.com/UA-38514290-1/music/PATHTOBECHANGED?pixel"/>
 <!-- (C) Lilian Besson, 2014, for http://besson.qc.to/generatejplayer.sh/ -->
 </body></html>
