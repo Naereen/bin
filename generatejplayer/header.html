@@ -6,20 +6,20 @@
     <title>jPlayer pour « CURRENTDIR »</title>
 
 <!-- (C) Lilian Besson, 2014, for http://besson.qc.to/generatejplayer.sh/  -->
-    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/jplayer/jplayer-app.css?1">
-    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/jplayer/jplayer.blue.monday.css?1">
-    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/buttons.css?1">
-    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/nprogress.css?1">
+    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/jplayer/jplayer-app.css">
+    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/jplayer/jplayer.blue.monday.css">
+    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/buttons.css">
+    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/nprogress.css">
 
-    <link rel="shortcut icon" type="image/gif" href="http://perso.crans.org/besson/favicon.ico?1">
+    <link rel="shortcut icon" type="image/gif" href="http://perso.crans.org/besson/favicon.ico">
 
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.js?1"></script>
-    <!-- jQuery.Noty.js (Source: http://needim.github.io/noty/#installation) -->
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/noty/jquery.noty.packaged.min.js?1"></script>
+    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.js"></script>
+    <!-- jQuery.Noty.js (Source: http://ned.im/noty/) -->
+    <script type="text/javascript" src="http://perso.crans.org/besson/_static/noty/jquery.noty.packaged.min.js"></script>
     <!-- MouseTrap.js (http://craig.is/killing/mice) -->
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/mousetrap.min.js?1"></script>
+    <script type="text/javascript" src="http://perso.crans.org/besson/_static/mousetrap.min.js"></script>
     <!-- NProgress.js (https://github.com/rstacruz/nprogress)-->
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/nprogress.js?1"></script>
+    <script type="text/javascript" src="http://perso.crans.org/besson/_static/nprogress.js"></script>
 
     <script type="text/javascript">
      console.log("[INFO] Loading jQuery, jQuery.noty, Moustrap, NProgress !");
@@ -38,7 +38,7 @@
         timeout: 1000, // delay for closing event. Set false for sticky notifications
         force: true, // adds notification to the beginning of queue when set to true
         modal: false, maxVisible: 15, // you can set max visible notification for dismissQueue true option
-        closeWith: ['click', 'button', 'hover'],
+        closeWith: ['click', 'button'],
         callback: {
             onShow: function() { },
             afterShow: function() { },
@@ -61,8 +61,8 @@
         }; };
     </script>
     <!-- jPlayer.js (http://jplayer.org) -->
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jplayer/jquery.jplayer.min.js?1"></script>
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jplayer/jplayer.playlist.min.js?1"></script>
+    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jplayer/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jplayer/jplayer.playlist.min.js"></script>
 
     <script type="text/javascript">
         var cssSelector = { jPlayer: "#jquery_jplayer_1", cssSelectorAncestor: "#jp_container_1" };
@@ -94,8 +94,8 @@
 		<a href="https://bitbucket.org/lbesson/web-sphinx-scripts/issues/new">(n'hésitez pas à signaler un <b>bug</b> !)</a><br>
         Générée le DATE par <a title="Version VERSION !" href="https://bitbucket.org/lbesson/bin/src/master/generatejplayer.sh">generatejplayer.sh</a>
         (utilise <a href="http://jplayer.org/">jplayer.js</a> comme lecteur de musique).
-		(C) 2014 <a href="http://besson.qc.to">Lilian BESSON</a>. <a href="http://fb.me/naereencorp.lbesson">Sur Facebook ?</a>
-		<a href="../index.html">Dossier parent!</a><br>
+		(C) 2014 <a href="http://besson.qc.to">Lilian BESSON</a>. <a href="https://bitbucket.org/lbesson/bin/">Sur BitBucket ?</a>
+		<a href="../index.html">Dossier parent !</a><br>
 		<span id="printherethetitle">
 			Aucun morceau sélectionné.
 		</span>
