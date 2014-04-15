@@ -25,6 +25,17 @@
 #
 version='2.0'
 
+# Add here options to use with PDFLaTeX
+# Automatically, my color wrapper [pdflatex](http://besson.qc.to/bin/pdflatex) uses "-synctex=1 -file-line-error"
+pdflatex="pdflatex"
+case "$1" in
+	batchmode|nonstopmode|scrollmode|errorstopmode )
+		echo -e "${magenta}Using \$1 as an option to pass to pdflatex : -interaction=${1}." | tee -a /tmp/autotex.log
+		pdflatex="${pdflatex} -interaction=${1}"
+		shift
+		;;
+esac
+
 f="`basename $1`"
 p="`pwd`"
 echo -e "Working with $u$f$U on $blue$p$white." | tee -a /tmp/autotex.log
@@ -42,7 +53,7 @@ echo -e "Scale: $green${scale}$white" | tee -a /tmp/autotex.log
 # There you can perform any automatic transfrom to ~/template.tex !
 cat $HOME/template.tex \
 	| sed s/"scale=[0-9\.]*"/"scale=${scale}"/ \
-	| sed s/MonTitreAChangerViaAutoTeX/"${title}"/ \
+	| sed s#MonTitreAChangerViaAutoTeX#"${title}"# \
 	| sed s/MyFileNameToChangeWithAutoTex/"${f%.tex}"/ \
 	> /tmp/template.tex
 
@@ -50,7 +61,10 @@ ln -s -f -v $HOME/naereen.sty /tmp/naereen.sty
 ln -s -f -v "$p"/"$f" /tmp/"$f"
 cd /tmp/
 
-pdflatex template.tex && pdflatex template.tex && \
+echo -e "${cyan}Using $pdflatex as the pdflatex command." | tee -a /tmp/autotex.log
+# read
+
+$pdflatex template.tex && $pdflatex template.tex && \
  mv template.pdf "$p"/${f%.tex}.pdf
 
 [ -f "$p"/${f%.tex}.pdf ] && evince "$p"/${f%.tex}.pdf &>/dev/null&
