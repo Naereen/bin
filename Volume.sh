@@ -69,7 +69,7 @@ ${blue}COPYRIGHTS${white}:\n\
 	mute*)
 		echo -e "${green}Mutting the volume${white} (command mute)..."
 		amixer sset 'Master',0 0% # | grep "Mono:"
-		notify-send --icon=sound "Volume.sh" "Information about the volume : `amixer sget 'Master',0 | grep \"Mono:\"` (after mutting)."
+		## notify-send --icon=sound "Volume.sh" "Information about the volume : `amixer sget 'Master',0 | grep \"Mono:\"` (after mutting)."
 		;;
 	unmute*)
 		echo -e "${green}Unmutting the volume${white} (command unmute)..."
@@ -78,7 +78,7 @@ ${blue}COPYRIGHTS${white}:\n\
 		#amixer sset 'Master',0 on 2> /dev/null > /dev/null
 		amixer sset 'Master',0 20% # | grep "Mono:"
 #		amixer sset 'Master',0 -- -42.75dB | grep "Mono:"
-		notify-send --icon=sound "Volume.sh" "Information about the volume : `amixer sget 'Master',0 | grep \"Mono:\"` (after unmutting)."
+		## notify-send --icon=sound "Volume.sh" "Information about the volume : `amixer sget 'Master',0 | grep \"Mono:\"` (after unmutting)."
 		;;
 	down*|-|moins*)
 		vol=`volume_value`
@@ -89,7 +89,7 @@ ${blue}COPYRIGHTS${white}:\n\
 		fi
 		echo -e "${green}Decreasing the volume${white} by 5% ($vol -> $newvol) (command down)..."
 		amixer sset 'Master',0 $newvol%  | grep "Mono:"
-		notify-send --icon=sound "Volume.sh" "Information about the volume : `amixer sget 'Master',0 | grep \"Mono:\"` (after decreasing by 5%)."
+		## notify-send --icon=sound "Volume.sh" "Information about the volume : `amixer sget 'Master',0 | grep \"Mono:\"` (after decreasing by 5%)."
 		;;
 	up*|+*|plus*)
 		vol=`volume_value`
@@ -100,7 +100,7 @@ ${blue}COPYRIGHTS${white}:\n\
 		fi
 		echo -e "${green}Increasing the volume${white} by 5% ($vol -> $newvol) (command up)..."
 		amixer sset 'Master',0 $newvol%  | grep "Mono:"
-		notify-send --icon=sound "Volume.sh" "Information about the volume : `amixer sget 'Master',0 | grep \"Mono:\"` (after increasing by 5%)."
+		## notify-send --icon=sound "Volume.sh" "Information about the volume : `amixer sget 'Master',0 | grep \"Mono:\"` (after increasing by 5%)."
 		;;
 	*)
 		echo -e "${green}Setting the volume to ${blue}$arg${white} (command PER% or VAL)..."
