@@ -3,9 +3,12 @@
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Date: 15-04-2014
 # Web: http://besson.qc.to/bin/strapdown2pdf
+# Web2: http://lbesson.bitbucket.org/strapdown2pdf.html
 #
 # strapdown2pdf, a small script to auto convert a StrapDown.js flavored 
 # HTML file (used to write with a Markdown syntax) to PDF
+# 
+# More details on http://lbesson.bitbucket.org/strapdown2pdf.html
 # 
 # Requirements:
 #  + [lunamark](http://jgm.github.io/lunamark/lunamark.1.html)
