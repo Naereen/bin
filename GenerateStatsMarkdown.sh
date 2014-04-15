@@ -64,6 +64,9 @@ w -h >> "$dest"
 echo -e "</pre>\n\n## Adresses IP\n> <pre>" >> "$dest"
 echo ${MY_IP:-"Not connected"} >> "$dest"
 
+echo -e "</pre>\n\n## Statut NGinx (\`nginx_status.sh\`)\n> <pre>" >> "$dest"
+nginx_status.sh >> "$dest"
+
 echo -e "</pre>\n\n## Durée d'activité (\`uptime\`)\n> <pre>" >> "$dest"
 uptime >> "$dest"
 
