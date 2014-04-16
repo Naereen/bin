@@ -10,6 +10,10 @@ then
 	exit 1
 fi
 
+grandr 
+
+read 
+
 simple() {
 xrandr --output CRT1 --off --output LVDS --mode 1366x768 --pos 0x0 --rotate normal --output DFP1 --off
 }
