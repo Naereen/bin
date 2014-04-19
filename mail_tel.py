@@ -30,7 +30,8 @@ def send_me_an_email(message, subj="[LOG] no object", me="jarvisATcransDOTorg".r
 	msg['Subject'] = subj
 	# Send the message via our own SMTP server, but don't include the
 	# envelope header.
-	s = smtplib.SMTP('localhost')
+	s = smtplib.SMTP('smtp.crans.org')
+	# s = smtplib.SMTP('localhost')
 	s.sendmail(me, [you], msg.as_string())
 	s.quit()
 	#print "An email has been sent to %s, from %s <%s>." % (you, my_identity, me)

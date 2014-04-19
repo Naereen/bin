@@ -41,7 +41,8 @@ def send_me_an_email(message, subj="[LOG] no object", me=defaultaddress,
 	
 	# Send the message via our own SMTP server, but don't include the
 	# envelope header.
-	s = smtplib.SMTP('localhost')
+	s = smtplib.SMTP('smtp.crans.org')
+	# s = smtplib.SMTP('localhost')
 	s.sendmail(me, [you], msg.as_string() )
 	s.quit()
 	print "A HTML email has been sent to <%s>, from %s <%s>." % (you, my_identity, me)

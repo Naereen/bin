@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-content="$(df -h -l -t ext3 -t fuseblk)"
+content="$(df -h -l -t ext4 -t fuseblk)"
 # Subject: less than 16 characters are readable
 subj="df: $(echo "$content" | grep -o "[0-9][0-9]*% /[a-z/]*" | head -n3) [PushToTel]"
 
