@@ -51,7 +51,7 @@ fi
 echo -e "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/><title>Stats pour jarvis.crans.org</title></head><body><xmp theme=\"${theme}\">" > "$dest"
 echo -e "# Informations systèmes pour [jarvis.crans.org](http://jarvis.crans.org)" >> "$dest"
 echo -e "> #### Signaler *tout problème* à [jarvisATcransDOTorg](mailto:jarvisATcransDOTorg) ou via [bitbucket](https://bitbucket.org/lbesson/bin/issues/new).\n#### Données mises à jour le **$(date "+%c")**." >> "$dest"
-echo -e "> #### Consulter [*les rapports munin*](http://jarvis/munin/localdomain/localhost.localdomain/index.html) (plus complets) ?\n\n***\n" >> "$dest"
+echo -e "> #### Consulter [*les rapports munin*](http://jarvis/lns_munin/localdomain/localhost.localdomain/index.html) (plus complets) ?\n\n***\n" >> "$dest"
 
 MY_IP=$(/sbin/ifconfig | awk '/inet adr:/ { print $2 } ' | sed -e s/addr://)
 
