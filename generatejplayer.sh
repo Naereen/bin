@@ -2,7 +2,7 @@
 #
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 28-03-2013
+# Date: 23-04-2013
 # Web version: http://besson.qc.to/bin/generatejplayer.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/generatejplayer.sh
 #
@@ -12,7 +12,7 @@
 # Last version is here : http://besson.qc.to/bin/generatejplayer.sh
 # with stylesheets and templates is here : http://besson.qc.to/bin/generatejplayer/
 #
-version='1.2'
+version='1.3'
 
 GeneratejPlayer() {
 	# Go to the directory.
@@ -142,7 +142,7 @@ GeneratejPlayer() {
 		 	nombrephotos=`echo $subphotos | tr A-Z a-z | grep -o "\(mp3\|ogg\|wav\|wma\)" | wc -l`
 		 	subdirs=`find "${dossier}" -maxdepth 1 -type d -iname '*'[A-Za-z]'*' 2>/dev/null`
 		 	nombredirs=`echo $subdirs | grep -o ./ | wc -l`
-		 	nombredirs=$(( nombredirs - 1 )) # does not count itself ? FIXME
+		 	nombredirs=$(( nombredirs / 2 )) # does not count itself ? FIXME
 
 			dossier="${dossier%/}"
 			dossier="${dossier#./}"
