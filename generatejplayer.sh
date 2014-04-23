@@ -12,7 +12,7 @@
 # Last version is here : http://besson.qc.to/bin/generatejplayer.sh
 # with stylesheets and templates is here : http://besson.qc.to/bin/generatejplayer/
 #
-version='1.3'
+version='1.5'
 
 GeneratejPlayer() {
 	# Go to the directory.

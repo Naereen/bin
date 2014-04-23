@@ -46,6 +46,16 @@
         </div>
     </div>
 
+	<div style="color: white; font-size: small; text-align: center">
+        <span id="wn-unsupported" class="hidden">
+            <br><hr><br>
+            <h2 style="color: red;">Warning : no notification</h2>
+        	Web Notifications API seems to be <strong>not supported</strong> on your browser. Maybe you should consider using <a href="http://www.mozilla.org/fr/firefox/new/" target="_blank">Firefox</a> instead! <br>
+            <h2 style="color: red;">Attention : pas de notification</h2>
+        	L'API de notifications Web semble ne <strong>pas être disponible</strong> pour votre navigateur. Peut-être devriez-vous envisager d'utiliser<a href="http://www.mozilla.org/fr/firefox/new/" target="_blank">Firefox</a> à la place !
+        </span>
+    </div>
+
     <script type="text/javascript">
     console.log("[INFO] header.html stops now.");
     // $(document).ready(function() {
@@ -53,18 +63,72 @@
     	var mytitle = firstTitle;
         var myPlaylist = new jPlayerPlaylist(cssSelector, [], options);
 
-        var next = function() { myPlaylist.next(); };
-		var previous = function() { myPlaylist.previous(); };
-		var pause = function() { myPlaylist.pause(); };
-		var play = function() { myPlaylist.play(); };
-		var shuffle = function(a,b) { myPlaylist.shuffle(a,b);};
-        
+		// Web Notification API stuff
+		// Reference: http://www.sitepoint.com/introduction-web-notifications-api/
+		if (!('Notification' in window)) {
+            document.getElementById('wn-unsupported').classList.remove('hidden');
+            function notifyUser(argtitle, argbody, argicon) {
+            	console.log("[ERROR] Web Notification API is <b>not available</b> (argtitle=" + argtitle + ", argbody=" + argbody + ", argicon=" + argicon + ").");
+            };
+        } else {
+        	var notificationEvents = ['onclick', 'onshow', 'onerror', 'onclose'];
+        	console.log("[INFO] Web Notification API is seems to be available. Defining notifyUser.");
+
+            function notifyUser(argtitle, argbody, argicon) {
+               var options = {
+                  body: argbody,
+                  tag: 'preset',
+                  icon: ('http://perso.crans.org/besson/_static/jplayer/' + argicon )
+                  // Icons are from https://www.iconfinder.com/search/?q=type
+                  // 3 sizes : 48 128 512 and 6 types : prev next pause play shuffle volume
+               };
+
+               Notification.requestPermission(function() {
+                  var notification = new Notification(argtitle, options);
+
+                  // notificationEvents.forEach(function(eventName) {
+                  //    notification[eventName] = function(event) {
+                  //       console.log( '[INFO] [Web Notification API] Event "' + event.type + '" triggered for notification "' + notification.tag + '".' );
+                  //    };
+                  // });
+               });
+            };
+        };
+
+        // Shortcuts, adding two notification (with noty and Web Notification API)
+        var next = function() {
+        	notifyUser("jPlayer", "Chanson suivante !", "next_512.png?src=next");
+        	alert("Playing next.");
+        	myPlaylist.next();
+        };
+		var previous = function() {
+			notifyUser("jPlayer", "Chanson précédente !", "prev_512.png?src=prev");
+			alert("Playing previous.");
+			myPlaylist.previous();
+		};
+		var pause = function() {
+			notifyUser("jPlayer", "Pause !", "pause_512.png?src=pause");
+			alert("Pausing.");
+			myPlaylist.pause();
+		};
+		var play = function() {
+			notifyUser("jPlayer", "Lecture de la chanson courrante !", "play_512.png?src=play");
+			alert("Playing.");
+			myPlaylist.play();
+		};
+		var shuffle = function(a,b) {
+			notifyUser("jPlayer", ("Mélange (" + a + ", " + b + ") !"), "shuffle_512.png?src=shuffle");
+			alert("Shuffling with a=" + a + " and b=" + b + " !");
+			myPlaylist.shuffle(a,b);
+		};
+
 		// MouseTrap (http://craig.is/killing/mice)
-		Mousetrap.bind(["right", "n"], function() { alert("Playing next."); myPlaylist.next();});
-		Mousetrap.bind(["left", "p"], function() { alert("Playing previous."); myPlaylist.previous();});
-		Mousetrap.bind(["b"], function() { alert("Pausing."); myPlaylist.pause();});
-		Mousetrap.bind(["l"], function() { alert("Playing."); myPlaylist.play();});
-		Mousetrap.bind(["r"], function() { alert("Shuffling."); myPlaylist.shuffle(true, true);});
+		Mousetrap.bind(["right", "n"], function() { next();});
+		Mousetrap.bind(["left", "p"], function() { previous();});
+		Mousetrap.bind(["b"], function() { pause();});
+		Mousetrap.bind(["l"], function() { play();});
+		Mousetrap.bind(["r"], function() { shuffle(true, true);});
+		Mousetrap.bind(["R"], function() { shuffle(false, false);});
 		Mousetrap.bind(["h", "?"], function() {
 		  alert("Les raccourcis claviers suivants sont activés : </br>\n"
 			+" - h : affiche ce message d'aide, </br>\n"
@@ -88,6 +152,7 @@
 		$("#jquery_jplayer_1").bind($.jPlayer.event.volumechange + ".jPlayer", function(e) {
 			volume = Math.floor(100.0 * e.jPlayer.options.volume);
 			printHereTheVolume.innerHTML = ' ' + 'Volume ' + volume + '%.';
+			notifyUser("Volume changé", ("Le volume est désormais à " + volume + "%."), "volume_512.png?src=event_volumechange");
 		});
 
 		$("#jquery_jplayer_1").unbind($.jPlayer.event.timeupdate + ".jPlayer");
@@ -104,7 +169,8 @@
 			alert("[jPlayer] play handler called : now jPlayer should be playing.");
 			var artist = (e.jPlayer.status.media.artist !== undefined) ? ' (by ' + e.jPlayer.status.media.artist : '';
 			printHereTheTitle.innerHTML = 'Élément courant : <a href="' + e.jPlayer.status.src + '">' + e.jPlayer.status.media.title + artist + '</a> (jouant).';
-			// faviconincrease();
+			notifyUser("jPlayer", ("Lecture de " + e.jPlayer.status.media.title + artist + " !"), "play_512.png?src=event_play");
+			alert("Playing.");
 		});
 
 		$("#jquery_jplayer_1").unbind($.jPlayer.event.pause + ".jPlayer");
@@ -116,6 +182,7 @@
 			var artist = (e.jPlayer.status.media.artist !== undefined) ? ' (by ' + e.jPlayer.status.media.artist : '';
 			printHereTheTitle.innerHTML = 'Élément courant : <a href="' + e.jPlayer.status.src + '">' + e.jPlayer.status.media.title + artist + '</a> (en pause).';
 			setTimeout(function(){ NProgress.done(); }, 200);
+			notifyUser("jPlayer", ("Pause (chanson courrante : " + e.jPlayer.status.media.title + artist + ")."), "pause_512.png?src=event_pause");
 		});
 
 		$("#jquery_jplayer_1").unbind($.jPlayer.event.playing + ".jPlayer");
