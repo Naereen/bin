@@ -84,6 +84,10 @@ img {
   max-width: 100%; }
 
 /* header */
+.hidden {
+  display: none;
+}
+
 .tabbar {
   position: fixed;
   z-index: 1;
