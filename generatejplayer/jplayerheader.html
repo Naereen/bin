@@ -112,7 +112,7 @@
 			myPlaylist.pause();
 		};
 		var play = function() {
-			notifyUser("jPlayer", "Lecture de la chanson courrante !", "play_512.png?src=play");
+			notifyUser("jPlayer", "Lecture de la chanson courante !", "play_512.png?src=play");
 			alert("Playing.");
 			myPlaylist.play();
 		};
@@ -182,7 +182,7 @@
 			var artist = (e.jPlayer.status.media.artist !== undefined) ? ' (by ' + e.jPlayer.status.media.artist : '';
 			printHereTheTitle.innerHTML = 'Élément courant : <a href="' + e.jPlayer.status.src + '">' + e.jPlayer.status.media.title + artist + '</a> (en pause).';
 			setTimeout(function(){ NProgress.done(); }, 200);
-			notifyUser("jPlayer", ("Pause (chanson courrante : " + e.jPlayer.status.media.title + artist + ")."), "pause_512.png?src=event_pause");
+			notifyUser("jPlayer", ("Pause (chanson courante : " + e.jPlayer.status.media.title + artist + ")."), "pause_512.png?src=event_pause");
 		});
 
 		$("#jquery_jplayer_1").unbind($.jPlayer.event.playing + ".jPlayer");
