@@ -1,7 +1,8 @@
 #!/bin/bash
 #
-# by Sairon Istyar, 2012
-# Source: https://github.com/saironiq/shellscripts/blob/master/wolframalpha_com/wa.sh
+# by Sairon Istyar, 2012, modified by Lilian Besson, 2014
+# Now: https://bitbucket.org/lbesson/bin/wa_nocolor.sh
+# OldSource: https://github.com/saironiq/shellscripts/blob/master/wolframalpha_com/wa.sh
 # distributed under the GPLv3 license
 # http://www.opensource.org/licenses/gpl-3.0.html
 #
