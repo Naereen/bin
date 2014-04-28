@@ -73,8 +73,8 @@ echo -e "</pre>\n\n## Statut NGinx (\`nginx_status.sh\`)\n> <pre>" >> "$dest"
 echo -e "</pre>\n\n## Durée d'activité (\`uptime\`)\n> <pre>" >> "$dest"
 uptime >> "$dest"
 
-echo -e "\n\n***\n\n## Disques (\`df -h -l -t ext3 -t fuseblk\`)\n> <pre>" >> "$dest"
-df -h -l -t ext3 -t fuseblk >> "$dest"
+echo -e "\n\n***\n\n## Disques (\`df -h -T -l -t ext3 -t ext4 -t fuseblk\`)\n> <pre>" >> "$dest"
+df -h -T -l -t ext3 -t ext4 -t fuseblk >> "$dest"
 
 echo -e "</pre>\n\n## Mémoire RAM et swap (\`free\`)\n> <pre>" >> "$dest"
 free >> "$dest"
