@@ -40,7 +40,7 @@ else
 	 > "${f}"~
 	diff "${f}" "${f}~"
 	#read
-	if [ $(diff "${f}" "${f}~" | wc -l) -gt 8 ]; then
+	if [ $(diff "${f}" "${f}~" | wc -l) -gt 10 ]; then
 		echo -e "${red}Too many different line on $u${f}$U: I'm afraid of doing something that might be dangerous..."
 	else
 		cp -v "${f}" /tmp/
