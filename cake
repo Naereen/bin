@@ -1,1 +1,0 @@
-/home/lilian/.npm/coffee-script/1.7.1/package/bin/cake
