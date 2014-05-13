@@ -776,13 +776,13 @@ alias GenP="base64 < /dev/urandom | tr -d +/ | head -c 18; echo"
 # Pour checker les soucis de droits.
 alias MoinsOwner='chmod -vR o-w ./ | tee /tmp/.script_droit_owner.log'
 alias MoinsGroup='chmod -vR g-w ./ | tee /tmp/.script_droit_group.log'
-alias MOINS='( MoinsOwner ; MoinsGroup) | grep modif'
+alias MOINS='( MoinsOwner ; MoinsGroup) | grep -v symbolique | grep modif'
 
 alias CheckPerms='find ./ -type d -perm /022'
 
 alias PlusROwner='chmod -vR o+r ./ | tee /tmp/.script_droit_Rowner.log'
 alias PlusRGroup='chmod -vR g+r ./ | tee /tmp/.script_droit_Rgroup.log'
-alias PLUS='( PlusROwner ; PlusRGroup) | grep modif'
+alias PLUS='( PlusROwner ; PlusRGroup) | grep -v symbolique | grep modif'
 
 # SuperMake
 # alert=notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e 's/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//')"
