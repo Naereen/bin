@@ -112,7 +112,7 @@ GeneratejPlayer() {
 		 echo -e "</ul><br>" >> index.html
 		 echo -e "</noscript>" >> index.html
 	fi
-	
+
 	# Listing of sub directories
 	targets=`find . -maxdepth 1 -type d -iname '*'[A-Za-z]'*' 2>/dev/null`
 
@@ -121,18 +121,18 @@ GeneratejPlayer() {
 	echo -e $red$targets$white > /dev/stderr
 
 	if [ "X$targets" != "X" ]; then
-		
+
 		nombre=`echo $targets | grep -o ./ | wc -l`
-		
+
 		if (( nombre > 0 )); then
 			echo -e "<br><hr><br><div class=\"subdirs\" style=\"color: white\"><h2>Liste des sous-dossiers (au nombre de $nombre) :</h2>" >> index.html
 		else
 			echo -e "<br><hr><br><div class=\"subdirs\" style=\"color: white\"><h2>Un sous-dossier :</h2>" >> index.html
 		fi
-		
+
 		echo -e "<span style=\"font-size: 130%\"><ul>" >> index.html
 		echo -e "<li><a href=\"../index.html\" title=\"Dossier parent !\">..</a> (dossier parent)</li>" >> index.html
-		
+
 		# For every sub directories
 		for d in $targets; do
 		 	dossier="${d//'%20'/ }"
@@ -146,9 +146,10 @@ GeneratejPlayer() {
 
 			dossier="${dossier%/}"
 			dossier="${dossier#./}"
+			dossier="${dossier//_/ }"
 
 			d="${d}/index.html"
-			
+
 		 	# Adapt what to print according to the number of subdirs and photos
 			if (( nombrephotos > 1 )); then
 				if (( nombredirs > 1 )); then
@@ -175,7 +176,7 @@ GeneratejPlayer() {
 		 	fi
 
 		 	echo -e "For ${u}${dossier}${U}: ${yellow}${nombrephotos}${white} photos, ${magenta}${nombredirs}${white} subdirs."
-			
+
 		 	#echo -e "<li><a href=\"${d}/\" title=\"Descendre dans ce dossier !\">${title}/index.html</a></li>" >> index.html
 			# FIXME here we force the destination to be ${d}/index.html
 		done
