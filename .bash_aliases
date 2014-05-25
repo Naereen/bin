@@ -1089,6 +1089,8 @@ alias dropbox='( dropbox start ; alert ) &>/dev/null&'
 alias veille='date >> /tmp/veille.log ; ( gnome-session-quit --power-off || xfce4-session-logout || (Lock ; gksudo pm-suspend) )'
 alias veille2='Lock ; dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend'
 
+alias ETTelephoneMaison='linphone -c 0492202627@crans.org'
+
 ##############################################################################
 #	(c) 2011-2014 Lilian BESSON
 #		ENS de Cachan & Cr@ns
@@ -1098,4 +1100,3 @@ alias veille2='Lock ; dbus-send --system --print-reply --dest="org.freedesktop.U
 #	http://bitbucket.org/lbesson/home/
 #
 # Put a blank line after to autorize echo "alias newalias='newentry'" >> ~/.bash_aliases
-
