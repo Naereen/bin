@@ -304,7 +304,11 @@ Wavemon(){
 }
 
 # alias captureEcran='scrot --delay 3 --count --quality 100 "captureEcran_$USER@$HOSTNAME[display=$DISPLAY]_%Y-%m-%d_%H-%M-%S_\$wx\$h.jpg"'
-alias captureEcran='xfce4-screenshooter -r -d 5 || gnome-screenshot -i'
+captureEcran() {
+	sleep 3s
+	xfce4-screenshooter -r -d 5 || gnome-screenshot -i
+	clear
+}
 
 alias EditXMLConf='dconf-editor &'
 alias manH='man -Helinks'
@@ -1090,6 +1094,12 @@ alias veille='date >> /tmp/veille.log ; ( gnome-session-quit --power-off || xfce
 alias veille2='Lock ; dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend'
 
 alias ETTelephoneMaison='linphone -c 0492202627@crans.org'
+Appeler() {
+	echo -e linphone -c "$1"@crans.org
+	echo -e "Confirmez-vous l'appel au numéro $1 ?"
+	read
+	linphone -c "$1"@crans.org
+}
 
 ##############################################################################
 #	(c) 2011-2014 Lilian BESSON
