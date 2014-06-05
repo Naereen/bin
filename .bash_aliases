@@ -62,13 +62,13 @@ alias lD='find . -maxdepth 1 -type d'
 
 alias ll='/bin/ls --color=auto -larth'
 alias lt='/bin/ls --color=auto -lSrh'
-alias ltime='/bin/ls --color=auto -time-style=+%D | grep `date +%D`' 
+alias ltime='/bin/ls --color=auto -time-style=+%D | grep `date +%D`'
 alias lx='/bin/ls --color=auto -lXB' # sort by extension
 alias lk='/bin/ls --color=auto -lSr' # sort by size
-alias lc='/bin/ls --color=auto -lcr' # sort by change time  
-alias lu='/bin/ls --color=auto -lur' # sort by access time 
+alias lc='/bin/ls --color=auto -lcr' # sort by change time
+alias lu='/bin/ls --color=auto -lur' # sort by access time
 alias lr='/bin/ls --color=auto -lR' # recursive ls
-alias lm='/bin/ls --color=auto -al | less' # pipe through 'more' 
+alias lm='/bin/ls --color=auto -al | less' # pipe through 'more'
 
 alias tree='tree -Csuh' # nice alternative to 'ls'
 
@@ -102,7 +102,7 @@ mymake() {
   echo -e "${red}${old}${c}/Makefile${white} is not there, going up ..."
   c="../${c}"
   cd "$c"
-  [ `pwd` = "/" ] && break 
+  [ `pwd` = "/" ] && break
   #read
  done
  if [ -f ${old}${c}/Makefile ]; then
@@ -112,7 +112,7 @@ mymake() {
  else
   cd "$old"
   echo -e "${red}${old}${c}/Makefile${white} is not there and I'm in '/' I cannot go up ..."
-  return 2  
+  return 2
  fi
 }
 # alias make='xtitle "Making $(basename "`pwd -P`")..." ; mymake'
@@ -285,8 +285,8 @@ voirImage() {
 complete -f -X '!*.@(gif|GIF|jp?(e)g|pn[gm]|PN[GM]|ico|ICO)' voirImage
 
 xtitle() {
- echo -e "${reset}Setting title to $@..." >> /tmp/xtitle.log 
- echo -e "${cyan}Setting title to ${white}${u}$@${U}...${reset}${white}" 
+ echo -e "${reset}Setting title to $@..." >> /tmp/xtitle.log
+ echo -e "${cyan}Setting title to ${white}${u}$@${U}...${reset}${white}"
  if [ -x /usr/bin/xtitle ]; then
   /usr/bin/xtitle "$@"
  fi
@@ -347,6 +347,7 @@ export SZAM='besson@zamok.crans.org'
 ##export SCML='besson@ssh.cmla.ens-cachan.fr'
 export Sdpt='lbesson@ssh.dptinfo.ens-cachan.fr:~/public_html/'
 export Szam='besson@zamok.crans.org:~/www/'
+export toprint="${Szam}dl/.p/toprint/"
 ##export Svo='besson@vo.crans.org:~/'
 export Sjarvis='~/Public/'
 
@@ -408,7 +409,7 @@ TEX2PDF() {
  ( pdflatex "$@" && pdflatex "$@" | tee /tmp/tex2pdf.log) \
  || (clear ; chktex "$@" ; alert )
  out="$(grep -m1 -o "Output written on .*.pdf" /tmp/tex2pdf.log | grep -o "[^ ]*.pdf")" ;
- [ "$(PDFCompress --help)" != "" ] && PDFCompress --sign "$out" 
+ [ "$(PDFCompress --help)" != "" ] && PDFCompress --sign "$out"
 }
 
 # N'afficher que les processus lances par l'utilisateur courant dans htop.
@@ -735,7 +736,7 @@ eval "$(/bin/lesspipe)"
 # Man visual
 Man() { yelp "man:$@" ; }
 
-#  Le script suivant permet de decompresser un large eventail de types de fichiers compresses. Il vous suffira juste de taper quel que soit le type d'archive : 
+#  Le script suivant permet de decompresser un large eventail de types de fichiers compresses. Il vous suffira juste de taper quel que soit le type d'archive :
 extract() {
   echo -e "$reset${neg}Extracting $1...$reset"
   if [ -f "$1" ] ; then
@@ -878,10 +879,10 @@ rmGit() {
 
 # A test to improve reactivity of Bash when used into a nautilus terminal ?
 pstree() {
- /usr/bin/pstree -a -h -s -c -U "$@" 
+ /usr/bin/pstree -a -h -s -c -U "$@"
 }
 PStree() {
- /usr/bin/pstree -a -h -s -c -U "$@" | less -r 
+ /usr/bin/pstree -a -h -s -c -U "$@" | less -r
 }
 
 sshtmux() {
@@ -961,7 +962,7 @@ alias CalendarRandQuote='google calendar add "`randquote`"'
 # With nginx
 Nginx_Access() { watch tail -n 10 /var/log/nginx/access.log || alert; }
 Nginx_Error() { watch tail -n 10 /var/log/nginx/error.log || alert; }
-Nginx_Start() { 
+Nginx_Start() {
  echo -e "${blue} Last changes on ~/nginx.conf on local git repository :${reset}"
  git diff ~/nginx.conf
  echo -e "${blue} Last changes on ~/nginx.conf compared with /etc/nginx/nginx.conf :${reset}"
@@ -981,7 +982,7 @@ Nginx_Start() {
 }
 
 # With Munin
-Munin_Start() { 
+Munin_Start() {
  echo -e "${blue} Last changes on ~/munin.conf on local git repository :${reset}"
  git diff ~/munin.conf
  echo -e "${blue} Last changes on ~/munin.conf compared with /etc/munin/munin.conf :${reset}"
@@ -1091,7 +1092,7 @@ NewPostBlog() {
 alias dropbox='( dropbox start ; alert ) &>/dev/null&'
 
 alias veille='date >> /tmp/veille.log ; ( gnome-session-quit --power-off || xfce4-session-logout || (Lock ; gksudo pm-suspend) )'
-alias veille2='Lock ; dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend'
+alias veille2='date >> /tmp/veille.log ; Lock ; dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend'
 
 alias ETTelephoneMaison='linphone -c 0492202627@crans.org'
 Appeler() {
