@@ -11,7 +11,7 @@ echo "$USER, vous avez demandé une sauvegarde de votre installation d'Ubuntu, n
 
 directory_to_save="/host/ubuntu/disks/"
 # TODO : choisir ICI son disque dur externe !
-directory_where_save="/media/Disque Dur - Naereen/.SAVE/Save_disks_"`date "+%d_%m_%y"`/
+directory_where_save="/media/lilian/Disque Dur - Naereen1/.SAVE/Save_disks_"`date "+%d_%m_%y"`/
 
 echo "La sauvegarde va commencer entre le répertoire : \n $directory_to_save\n et le répertoire situé sur votre DDE :\n$directory_where_save"
 
