@@ -1052,11 +1052,12 @@ Currents() {
 
 alias UPDATE='( clear ; sudo apt-get update ; sudo apt-get upgrade ; sudo apt-get autoremove ; sudo apt-get clean ; sudo apt-get autoclean ) || alert | tee /tmp/apt.log'
 
-# TO avoid painfull &>$null& at the end of some commands
+# To avoid painfull &>$null& at the end of some commands
 evince() { ( /usr/bin/evince "$@" || /usr/bin/firefox "$@" ) &> /dev/null & }
 eog() { ( /usr/bin/eog "$@" || /usr/bin/ristretto "$@" ) &> /dev/null & }
 firefox() { ( /usr/bin/firefox "$@" || /usr/bin/elinks "$@" ) &> /dev/null & }
 vlc() { /usr/bin/vlc --random "$@" &> /dev/null & }
+linphone() { /usr/bin/linphone "$@" &> /dev/null & } 
 
 # Better .rst → .html and .md → .html (simpler)
 alias rst2html='rst2html -v -t --no-generator -l fr --cloak-email-addresses '
