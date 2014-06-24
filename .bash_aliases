@@ -664,8 +664,8 @@ function ii()   # get current host related info
 ###############################################################################
 # FOR Python
 export PYTHONSTARTUP="$HOME/.pythonrc"
-export PYTHONOPTIMIZE=	# no optimization.
-export PYTHONVERBOSE=	# no verbose adds.
+#export PYTHONOPTIMIZE=	# no optimization.
+#export PYTHONVERBOSE=	# no verbose adds.
 export PYTHONWARNINGS="ignore"
 # # For a non global installation of Python 3.3 (or higher).
 # export PYTOHN3_3HOME="$HOME/.local/python3/bin/"
