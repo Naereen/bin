@@ -782,6 +782,7 @@ alias GenP="base64 < /dev/urandom | tr -d +/ | head -c 18; echo"
 alias MoinsOwner='chmod -vR o-w ./ | tee /tmp/.script_droit_owner.log'
 alias MoinsGroup='chmod -vR g-w ./ | tee /tmp/.script_droit_group.log'
 alias MOINS='( MoinsOwner ; MoinsGroup) | grep -v symbolique | grep modif'
+alias M=MOINS
 
 alias CheckPerms='find ./ -type d -perm /022'
 
