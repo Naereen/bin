@@ -1,15 +1,15 @@
 #!/usr/bin/env /bin/bash
 ################################## INFO #####################################
 # A GNU Bash script to automatically TRY to compress PDF files in the current directory.
-# Copyright (C) 2013 Lilian BESSON (lbesson at ens-cachan dot fr)
+# Copyright (C) 2013-2014 Lilian BESSON (lbesson at ens-cachan dot fr)
 #
 # Find the latest version on http://perso.crans.org/besson/bin/PDFCompress
-#  
+#
 #     This program is free software: you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
 #     the Free Software Foundation, either version 3 of the License, or
 #     (at your option) any later version.
-# 
+#
 #     This program is distributed in the hope that it will be useful,
 #     but WITHOUT ANY WARRANTY; without even the implied warranty of
 #     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
@@ -23,7 +23,7 @@
 # Good advice: in a git repository, compress before storing => a real improvement !
 ##############################################################################
 
-version="1.2b"
+version="1.3a"
 ##LANG="en"
 
 GREP="grep --color=always --line-buffered"
@@ -33,12 +33,12 @@ ECHO="echo -e"
 # If editing the meta data, change them to say that the PDF have been modified.
 # in fact, it is the default behavior :)
 ## FIXME: if using '{' or '/' in $creator, warning when using sed ...
-creator="LaTeX, compressed with http://besson.qc.to/bin/PDFCompress v$version -- a script by Lilian BESSON (C) 2013"
+creator="LaTeX, compressed with http://besson.qc.to/bin/PDFCompress v$version -- a script by Lilian BESSON (C) 2013-2014"
 creator="`$ECHO \"$creator\" | tr { _`"
 
 # If possible, use .color.sh (http://besson.qc.to/bin/.color.sh or http://lbesson.qc.to/bin/.color.sh)
 if [ -f "$HOME/.color.sh" ]; then
- . "$HOME/.color.sh" 
+ . "$HOME/.color.sh"
 else
   $ECHO "\033[01;31m WARNING: ~/.color.sh have not been found...\033[01;37m" > /dev/stderr
   $ECHO "\033[01;33m INFO: 1) You can download it on http://besson.qc.to/bin/.color.sh or http://lbesson.qc.to/bin/.color.sh \033[01;37m" > /dev/stderr
@@ -50,7 +50,7 @@ fi
 quality="ebook"
 # False to simply change the meta data (and sign ?)
 compress="true"
-# True to force compression (even if pdfinfo said that Ghostscript or PDFCompress 
+# True to force compression (even if pdfinfo said that Ghostscript or PDFCompress
 # have already been used to compress the file.
 force="false"
 # Keep meta data : enabled by default.
@@ -105,7 +105,7 @@ do
    $ECHO ""
    $ECHO "    ${yellow}--verbose$white	 increase verbosity of gs (quiet by default, option '-q')."
    $ECHO ""
-   $ECHO "$BIN v$version : Copyrights: (c) Lilian Besson 2011-2013."
+   $ECHO "$BIN v$version : Copyrights: (c) Lilian Besson 2011-2014."
    $ECHO "Released under the term of the GPL v3 Licence (more details on http://besson.qc.to/LICENSE.html)."
    $ECHO "In particular, $BIN is provided WITHOUT ANY WARANTY."
    exit 0
@@ -166,7 +166,7 @@ done
 
 
 ########################## Copyrights and options ##############################
-$ECHO "${green}$BIN v$version : Copyright (C) 2013 Lilian BESSON"
+$ECHO "${green}$BIN v$version : Copyright (C) 2013-2014 Lilian BESSON"
 $ECHO "This is free software, and you are welcome to redistribute it under certain conditions."
 $ECHO "This program comes with ABSOLUTELY NO WARRANTY; for details see http://perso.crans.org/besson/LICENSE ${white}"
 
@@ -197,8 +197,10 @@ $ECHO "This program comes with ABSOLUTELY NO WARRANTY; for details see http://pe
 # if [ -f "/tmp/nonotify-send" ]; then
 #   notify="false"
 # else
-#   icon="`ls -H /usr/share/icons/*/*/*/*pdf*svg | uniq | shuf | head -n1`"
-#   NOTIFY="notify-send -t 500 -i \"$icon\" \"$BIN\""
+
+icon="-i $(ls -H /usr/share/icons/*/*/*/*pdf*svg | uniq | shuf | head -n1) "
+NOTIFY="notify-send -t 500 $icon \"$BIN\""
+
 # fi
 
 # # Detection of zenity
@@ -254,18 +256,18 @@ fi
 
 
 ############################## Main function ###################################
-PDFCompress () 
-{ 
+PDFCompress ()
+{
     $ECHO "\n${white} File selection...."
     arg=""
     argt=""
-    
+
     for i in "$@"; do
      $ECHO "${reset}${white}${u}$i${U}"
-     
+
       if [ -f "$i" ] || [ -f "${i%.pdf}.pdf" ]; then
        $ECHO "${white}${Black}For $u$i$U${reset}:\
-        `pdfinfo \"$i\" 2>&1 | GREP_COLOR="01;33" $GREP -m1 "\(Title\|Error\)" `${reset}${white}."        
+        `pdfinfo \"$i\" 2>&1 | GREP_COLOR="01;33" $GREP -m1 "\(Title\|Error\)" `${reset}${white}."
        pdfinfo "$i" &>/dev/null
        if [ "X$?" = "X0" ]; then
           [ ! -f "${i%.pdf}.pdf" ] && $ECHO "${red}Warning${yellow}: file $i seems to be a valid PDF file but has not a .pdf file extension${white}" > /dev/stderr
@@ -278,39 +280,39 @@ PDFCompress ()
       else
        $ECHO "${red}$BIN: cannot access $i: No such file or directory${white}" > /dev/stderr
       fi
-     
+
     done
-    
+
     arg="${arg# }"
     argt="${argt# }"
-    $ECHO "\n${white} Files selected : $arg" 
-    
+    $ECHO "\n${white} Files selected : $arg"
+
     # Print the comparaison between size at the end.
     log1="/tmp/PDFCompress_before.log"
     log2="/tmp/PDFCompress_after.log"
     du -kh $arg > "$log1"
-    
+
     $ECHO "${white}Compressing $arg ...${white}";
     [ "`/bin/ls \"$argt\" 2>/dev/null`" != "" ] && /bin/mv -f -v "$argt" /tmp/;
-    
+
     for i in $arg; do
         $ECHO "${blue}For the file ${green}$i${white}...";
-        
+
         meta="/tmp/${i}.meta"
-        
+
         if [ "$keep" = "true" ]; then
          [ -f "$meta" ] && rm -fv "$meta"
          ( pdftk "$i" dump_data output "$meta" \
             && $ECHO "$green meta data for $i well written to $meta :)$reset$white" \
             && line=`cat "$meta" | grep -n Creator | grep -o -m1 ^[0-9]*` \
-            && ( 
+            && (
                  cat "$meta" | sed $((line+1))s{InfoValue:.*{"InfoValue: $creator"{ > "$meta"~ \
                ) \
             && /bin/cp -fv "$meta"~ "$meta" \
          ) || \
 	 $ECHO "$red Error:$white meta data for $i not written to $meta :(" > /dev/stderr ;
         fi
-        
+
         if [ "X$force" = "Xtrue" ]; then
 		$ECHO "${yellow}Info:$white Forcing compression ..."
         	[ "X$compress" != "Xtrue" ] && $ECHO "${red}Error:$white Compression have been forced, this bypass the option $compress which was set to $compress (not true)."
@@ -326,13 +328,20 @@ PDFCompress ()
         	fi
          fi
         fi
-        
+
         if [ "X$compress" = "Xtrue" ]; then
 		$ECHO "${yellow}Info:$white starting compression for $i...$reset$white";
 		$ECHO "$cyan Info: using $"GS"=${GS} as the gs command...$reset$white";
 	  if [ "X$zenity" = "Xtrue" ]; then
-		( $ECHO "0" ; $GS -sOutputFile="$i"~ "$i"; $ECHO "100"; ) | \
-               ( LANG="fr_FR.UTF-8" zenity --progress --pulsate --auto-kill --auto-close --title="$BIN $version" --text="Compressing <b>'$i'</b>... \nWorking in <u>`pwd`</u>,\n Storing metadata to <i>'$meta'</i>\nPress '<b>Cancel</b>' to .. cancel :)"; );
+            LANG="fr_FR.UTF-8"
+            $ECHO "Starting zenity interactive window."
+            ## The --auto-kill was not working as I thought it was. Too bad.
+            ( $ECHO "0"; $GS -sOutputFile="$i"~ "$i"; $ECHO "100"; ) | \
+            ( zenity --progress --pulsate --auto-close \
+                    --title="$BIN  v$version   (program by Lilian Besson)" \
+                    --text="Compressing the PDF <b>'$i'</b>... \nWorking in the directory <u>$(pwd)</u>,\n Metadata stored to <i>'$meta'</i>\n\nPress '<b>Cancel</b>' to try to cancel the operation (still experimental)." || ( $ECHO "${red}Error:${white} Canceled by you ? Well anyway, I failed, so I will try to restore the backup PDF from /tmp/ ..."; pkill gs; cp -fv ./"$i" ./"$i"~ ; return 8; ) ; \
+                $ECHO "Done"; pkill gs; )
+            # || (pkill gs; export ANS="8"; $ECHO "Fail, would you like to restore the backup ?"; cp -vi /tmp/"$i" ./"$i"  exit 8);
           else
 		$ECHO "0%" ; $GS -sOutputFile="$i"~ "$i"; $ECHO "100%"
           fi
@@ -340,40 +349,53 @@ PDFCompress ()
 		$ECHO "${yellow}Info:$white starting copy for $i (emulated compression :p)..."
 		/bin/cp -fv "$i" "$i"~
 	fi
-	
+
         if [ -f "$i"~ ]; then
           /bin/cp "$i" /tmp/;
           /bin/ls -hF --color=auto -s "$i" "$i"~;
           /bin/cp -f -v "$i"~ "$i";
-          
+
           if [ "$keep" = "true" ]; then
          ( pdftk "$i"~ update_info /tmp/"$i".meta output "$i" \
            && $ECHO "$green meta data for $i well re-written from /tmp/$i.meta :)$reset$white"
          ) || \
-	 $ECHO "$red Error:$white meta data for $i not re-written from /tmp/$i.meta :(" > /dev/stderr 
-          fi          
+	 $ECHO "$red Error:$white meta data for $i not re-written from /tmp/$i.meta :(" > /dev/stderr
+          fi
 
           if [ "$notify" = "true" ]; then
            $ECHO "$green - notify-send: notifying..."
-           $NOTIFY "Old | New `ls --color=never -larth \"/tmp/$i\" \"$i\"`"
+           $NOTIFY "Old | New $(ls --color=never -larth \"/tmp/$i\" \"$i\" 2>/dev/null)"
           fi
 
           if [ "$sign" = "true" ]; then
            gpg --quiet --armor --detach-sign --yes --no-batch --use-agent "$i"
           fi;
-          
+
           /bin/mv -f -v "$i"~ /tmp/;
           /bin/rm -v -f gs_*;
         else
          $ECHO "$red Error: $i~ no present (ie. the compression ${u}FAILED${U})... :($reset$white :(" > /dev/stderr
         fi;
+
+        # Check that the file's size have been really reduced.
+        size_old=$( du -b /tmp/"$i" | grep -v "^[0-9][0-9]*" )
+        size_new=$( du -b "$i" | grep -v "^[0-9][0-9]*" )
+
+        if (( size_old > size_new )); then
+            $ECHO "\n${red} Maybe the compression failed, because \n - the new file (${i} of size ${size_new}) seems larger than \n - the old one (/tmp/${i} of size ${size_old}). ${white}"
+        else
+            $ECHO "\n${green} Maybe the compression worked, because \n - the new file (${i} of size ${size_new}) seems smaller than \n - the old one (/tmp/${i} of size ${siz_old}). ${white}"
+        fi
+
     done;
     /bin/rm -v -f gs_*
-    
+
     du -kh $arg > "$log2"
-    
+
     $ECHO "${blue}Difference between sizes before compression and after compression :${reset}${white}"
     diff --side-by-side "$log1" "$log2"
+
+    # $ECHO "${yellow} You would like to restore backups for the following files ? Still in beta ...${white}"
 
     exit 0
 }
