@@ -1007,7 +1007,7 @@ Munin_Start() {
 Munin_UpdateMunstrap(){
   cd ~/.local/etc/munin/munstrap/
   git pull
-  cd
+  cdBack
 }
 
 # Shortcut : long command &>$null& is shorten that &>/dev/null& :)

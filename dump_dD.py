@@ -9,6 +9,9 @@
 # A small script to dump all Maths Exercice LaTeX sources from some website.
 #
 
+# Doc: http://www.crummy.com/software/BeautifulSoup/bs3/documentation.html#Printing%20a%20Document
+# And an exemple: http://mp.cpgedupuydelome.fr/mesexos.php?idTeX=1485
+
 try:
     from ANSIColors import printc
 except:
