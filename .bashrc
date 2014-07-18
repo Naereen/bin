@@ -73,7 +73,7 @@ fi
 
 #-------------------------------------------------------------
 # Automatic setting of $DISPLAY (if not set already)
-# This works for linux - your mileage may vary.... 
+# This works for linux - your mileage may vary....
 # The problem is that different types of terminals give
 # different answers to 'who am i'......
 # I have not found a 'universal' method yet
@@ -83,7 +83,7 @@ function get_xserver ()
 {
     case $TERM in
         xterm )
-            XSERVER=$(who am i | awk '{print $NF}' | tr -d ')''(' ) 
+            XSERVER=$(who am i | awk '{print $NF}' | tr -d ')''(' )
             # Ane-Pieter Wieringa suggests the following alternative:
             # I_AM=$(who am i)
             # SERVER=${I_AM#*(}
@@ -94,7 +94,7 @@ function get_xserver ()
         aterm | rxvt)
         # find some code that works here.....
             ;;
-    esac  
+    esac
 }
 
 if [ -z ${DISPLAY:=""} ]; then
@@ -102,7 +102,7 @@ if [ -z ${DISPLAY:=""} ]; then
     if [[ -z ${XSERVER}  || ${XSERVER} == $(hostname) ||
           ${XSERVER} == "unix" ]]; then
         DISPLAY=":0.0"          # Display on local host
-    else                
+    else
         DISPLAY=${XSERVER}:0.0  # Display on remote host
     fi
 fi
@@ -290,7 +290,7 @@ function prompt_command
     #  soient evaluees au moment de l'affichage du prompt
     local pwd cyan violet jaune rouge vert bleu ERR DATE PROMPT DIR POST_DIR
     (( SAVE_COLUMNS == COLUMNS )) || gen_minus_line
-    
+
     cyan='\[\e[1;36m\]'
     violet='\[\e[1;35m\]'
     jaune='\[\e[1;33m\]'
@@ -298,7 +298,7 @@ function prompt_command
     vert='\[\e[1;32m\]'
     bleu='\[\e[1;34m\]'
     nocolor='\[\e[0m\]'
-    
+
     pwd=${PWD/#"$HOME"/'$HOME'}
     if (( ${#pwd} + ${VCS_size} + 27 > COLUMNS )); then
  	    if (( COLUMNS >= 33 )); then
@@ -334,7 +334,7 @@ fi
 # +-------------------+
 
 if [[ $(uname) == Linux && ( $(locale charmap) == UTF-8) ]]; then
-    # && $TERM != screen 
+    # && $TERM != screen
     MINUS_CHAR=─
     gen_minus_line
     datecolored="${reset} Bienvenue, ${blue}${USER}${white}@${cyan}${HOSTNAME}${reset}. Date: ${magenta}`/bin/date +\"%R, %A %d %B %Y\"`${reset}. Console: ${blue}${COLUMNS}${reset}x${green}${LINES}${reset}."
@@ -372,9 +372,9 @@ fi
 #        else
 #         echo -e "${green}.:/ $USER @ $HOSTNAME \\:.${white}"
 #        fi
-#    elif [ $(locale charmap) != UTF-8 ]; then	
+#    elif [ $(locale charmap) != UTF-8 ]; then
 #    	echo -e " Bienvenue, ${blue}${USER}${white}@${cyan}${HOSTNAME}${white}. Console: ${blue}${COLUMNS}${white}x${green}${LINES}${white}."
-#    else 
+#    else
 #        echo -e "nothing to say yet TODO FIXME :(" >> /tmp/bashrc.log
 #    fi
 #    ;;
@@ -442,7 +442,7 @@ function _exit()        # function to run upon exit of shell
   echo -e "${USER}@${HOSTNAME} : logout" "Last command : `history | tail -n 1`." >> "$HOME"/.tty123456.log
   echo -e "Automatically sent by the machine $HOSTNAME.crans.org when log-out.\n\nLast:`last`\n\nWho:`/usr/bin/w`\n\nDate:`date`\n" "[LOG] `who|tail -n1` : logout." >> "$HOME"/.tty123456.log
   ;;
- esac 
+ esac
 }
 # Register the function.
 trap _exit EXIT
