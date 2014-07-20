@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html><head>
-    <meta charset="UTF-8"> 
+    <meta charset="UTF-8">
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jPlayer pour « CURRENTDIR »</title>
 
 <!-- (C) Lilian Besson, 2014, for http://besson.qc.to/generatejplayer.sh/  -->
-    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/jplayer/jplayer-app.css">
-    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/jplayer/jplayer.blue.monday.css">
-    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/buttons.css">
-    <link rel="stylesheet" type="text/css" href="http://perso.crans.org/besson/_static/nprogress.css">
+    <link rel="stylesheet" type="text/css" href="http://0.0.0.0/_static/jplayer/jplayer-app.css">
+    <link rel="stylesheet" type="text/css" href="http://0.0.0.0/_static/jplayer/jplayer.blue.monday.css">
+    <link rel="stylesheet" type="text/css" href="http://0.0.0.0/_static/buttons.css">
+    <link rel="stylesheet" type="text/css" href="http://0.0.0.0/_static/nprogress.css">
 
-    <link rel="shortcut icon" type="image/gif" href="http://perso.crans.org/besson/favicon.ico">
+    <link rel="shortcut icon" type="image/gif" href="http://0.0.0.0/favicon.ico">
 
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.js"></script>
+    <script type="text/javascript" src="http://0.0.0.0/_static/jquery.js"></script>
     <!-- jQuery.Noty.js (Source: http://ned.im/noty/) -->
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/noty/jquery.noty.packaged.min.js"></script>
+    <script type="text/javascript" src="http://0.0.0.0/_static/noty/jquery.noty.packaged.min.js"></script>
     <!-- MouseTrap.js (http://craig.is/killing/mice) -->
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/mousetrap.min.js"></script>
+    <script type="text/javascript" src="http://0.0.0.0/_static/mousetrap.min.js"></script>
     <!-- NProgress.js (https://github.com/rstacruz/nprogress)-->
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/nprogress.js"></script>
+    <script type="text/javascript" src="http://0.0.0.0/_static/nprogress.js"></script>
 
     <script type="text/javascript">
      console.log("[INFO] Loading jQuery, jQuery.noty, Moustrap, NProgress !");
@@ -61,8 +61,8 @@
         }; };
     </script>
     <!-- jPlayer.js (http://jplayer.org) -->
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jplayer/jquery.jplayer.min.js"></script>
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jplayer/jplayer.playlist.min.js"></script>
+    <script type="text/javascript" src="http://0.0.0.0/_static/jplayer/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="http://0.0.0.0/_static/jplayer/jplayer.playlist.min.js"></script>
 
     <script type="text/javascript">
         var cssSelector = { jPlayer: "#jquery_jplayer_1", cssSelectorAncestor: "#jp_container_1" };
@@ -78,7 +78,7 @@
             };
         var options = {
             playlistOptions: valplaylistOptions,
-            swfPath: "http://perso.crans.org/besson/_static/jplayer/",
+            swfPath: "http://0.0.0.0/_static/jplayer/",
             supplied: "mp3, wma, wav", // FIXME
             wmode: "window",
             smoothPlayBar: true,
@@ -90,7 +90,7 @@
 <body>
 	<div class="tabbar">
 	<p>
-        Cette page a pour but d'<i>afficher</i> et de <i>lire</i> des morceaux de musique 
+        Cette page a pour but d'<i>afficher</i> et de <i>lire</i> des morceaux de musique
 		<a href="https://bitbucket.org/lbesson/bin/issues/new">(n'hésitez pas à signaler un <b>bug</b> !).</a> <a href="https://bitbucket.org/lbesson/bin/">Sur BitBucket ?</a><br>
         Générée le DATE par <a title="Version VERSION !" href="https://bitbucket.org/lbesson/bin/src/master/generatejplayer.sh">generatejplayer.sh</a>
         (basé sur <a href="http://jplayer.org/">jplayer.js</a>).

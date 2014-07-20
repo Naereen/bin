@@ -27,11 +27,11 @@
 		      noty({text: "<strong>Normal, je code <i>bien</i> ;) !</strong>"
 		       + "\n</br>N'hésitez pas à consulter d'<a href=\"http://besson.qc.to/\">autres pages</a> !", type: 'success', timeout: false});
 		    }
-		  }, 
+		  },
 		  {addClass: 'btn btn-danger', text: 'Non ?!', onClick: function($noty) {
 		      $noty.close();
 		      noty({text: "<span style=\"font-size: large;\"><b>Ooouups !</b>\n</br>Peut-être pouvez vous prendre quelques instants pour signaler un bug ? " +
-		       "\n</br>Via <a title=\"bitbucket.org\" href=\"https://bitbucket.org/lbesson/bin/issues/new\">bitbucket.org/lbesson/bin/issues/new</a>, <i>c'est facile !</i></span>", 
+		       "\n</br>Via <a title=\"bitbucket.org\" href=\"https://bitbucket.org/lbesson/bin/issues/new\">bitbucket.org/lbesson/bin/issues/new</a>, <i>c'est facile !</i></span>",
 		       type: 'error', layout: 'center', timeout: false, onClick: function($noty){
 		         $noty.close();
 		         console.log("[INFO] Opening a new window with https://bitbucket.org/lbesson/bin/issues/new.");
@@ -54,7 +54,7 @@
 		setTimeout(function(){ NProgress.done(); }, 1000);
     });
     </script>
-<!-- <script async type="text/javascript" src="http://perso.crans.org/besson/_static/ga.js"></script> -->
+<!-- <script async type="text/javascript" src="http://0.0.0.0/_static/ga.js"></script> -->
 <img style="visibility: hidden; display: none;" src="https://ga-beacon.appspot.com/UA-38514290-1/music/PATHTOBECHANGED?pixel"/>
 <!-- (C) Lilian Besson, 2014, for http://besson.qc.to/generatejplayer.sh/ -->
 </body></html>
