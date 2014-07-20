@@ -12,7 +12,7 @@
 # Last version is here : http://besson.qc.to/bin/generatejplayer.sh
 # with stylesheets and templates is here : http://besson.qc.to/bin/generatejplayer/
 #
-version='1.5'
+version='1.6'
 
 GeneratejPlayer() {
 	# Go to the directory.
@@ -33,6 +33,8 @@ GeneratejPlayer() {
 
 	# Listing of music (and playlist) (with jquery.jplayer.js)
 	targets=`find . -maxdepth 1 -type f -iname '*'.mp3 -o -iname '*'.ogg -o -iname '*'.wav -o -iname '*'.wma 2>/dev/null`
+	taille="$(du -c -h *.mp3 | tail -n 1 | grep -o -m 1 "^[0-9][0-9]*[kMG]\?")"
+	echo -e "Taille *.mp3 = $taille."
 
 	if [ "X${targets//'%20'/}" != "X" ]; then
 		 # Jplayer Header
@@ -93,9 +95,9 @@ GeneratejPlayer() {
 		 # Print the list of files.
 		 echo -e "<h2>(Javascript est désactivé!)</h2>" >> index.html
 		 if (( nombre > 1 )); then
-			 echo -e "<br><hr><h2>Liste des morceaux (au nombre de $nombre) :</h2>" >> index.html
+			 echo -e "<br><hr><h2>Liste des morceaux (au nombre de $nombre) : ($taille) </h2>" >> index.html
 		 elif (( nombre == 1 )); then
-			 echo -e "<br><hr><h2>Liste du morceau :</h2>" >> index.html
+			 echo -e "<br><hr><h2>Liste du morceau : ($taille) </h2>" >> index.html
 		 fi
 		 echo -e "<ul class=\"gallery\">" >> index.html
 
@@ -123,11 +125,13 @@ GeneratejPlayer() {
 	if [ "X$targets" != "X" ]; then
 
 		nombre=`echo $targets | grep -o ./ | wc -l`
+		taille="$(du -c -h ./ | tail -n 1 | grep -o -m 1 "^[0-9][0-9]*[kMG]\?")"
+		echo -e "Taille du répertoire ./ = $taille."
 
 		if (( nombre > 0 )); then
-			echo -e "<br><hr><br><div class=\"subdirs\" style=\"color: white\"><h2>Liste des sous-dossiers (au nombre de $nombre) :</h2>" >> index.html
+			echo -e "<br><hr><br><div class=\"subdirs\" style=\"color: white\"><h2>Liste des sous-dossiers (au nombre de $nombre, $taille) :</h2>" >> index.html
 		else
-			echo -e "<br><hr><br><div class=\"subdirs\" style=\"color: white\"><h2>Un sous-dossier :</h2>" >> index.html
+			echo -e "<br><hr><br><div class=\"subdirs\" style=\"color: white\"><h2>Un sous-dossier ($taille) :</h2>" >> index.html
 		fi
 
 		echo -e "<span style=\"font-size: 130%\"><ul>" >> index.html
@@ -137,6 +141,9 @@ GeneratejPlayer() {
 		for d in $targets; do
 		 	dossier="${d//'%20'/ }"
 			dossier=${dossier//'&amp;'/&}
+
+			taille="$(du -c -h "${dossier}/" | tail -n 1 | grep -o -m 1 "^[0-9][0-9]*[kMG]\?")"
+			echo -e "Taille du sous-dossier "${dossier}/" = $taille."
 
 		 	subphotos=`find "${dossier}" -maxdepth 1 -type f -iname '*'.mp3 -o -iname '*'.ogg -o -iname '*'.wav -o -iname '*'.wma 2>/dev/null`
 		 	nombrephotos=`echo $subphotos | tr A-Z a-z | grep -o "\(mp3\|ogg\|wav\|wma\)" | wc -l`
@@ -153,29 +160,29 @@ GeneratejPlayer() {
 		 	# Adapt what to print according to the number of subdirs and photos
 			if (( nombrephotos > 1 )); then
 				if (( nombredirs > 1 )); then
-		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (${nombrephotos} chansons, ${nombredirs} sous-dossiers)</li>" >> index.html
+		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (${nombrephotos} chansons, ${nombredirs} sous-dossiers, $taille)</li>" >> index.html
 		 		elif (( nombredirs == 1 )); then
-		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (${nombrephotos} chansons, 1 sous-dossier)</li>" >> index.html
+		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (${nombrephotos} chansons, 1 sous-dossier, $taille)</li>" >> index.html
 		 		else
-		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (${nombrephotos} chansons)</li>" >> index.html
+		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (${nombrephotos} chansons, $taille)</li>" >> index.html
 		 		fi
 		 	elif (( nombrephotos == 1 )); then
 				if (( nombredirs > 1 )); then
-		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (1 chanson, ${nombredirs} sous-dossiers)</li>" >> index.html
+		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (1 chanson, ${nombredirs} sous-dossiers, $taille)</li>" >> index.html
 		 		elif (( nombredirs == 1 )); then
-		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (1 chanson, 1 sous-dossier)</li>" >> index.html
+		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (1 chanson, 1 sous-dossier, $taille)</li>" >> index.html
 		 		else
-		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (1 chanson)</li>" >> index.html
+		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (1 chanson, $taille)</li>" >> index.html
 		 		fi
 		 	else
 				if (( nombredirs > 1 )); then
-		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (${nombredirs} sous-dossiers)</li>" >> index.html
+		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (${nombredirs} sous-dossiers, $taille)</li>" >> index.html
 		 		elif (( nombredirs == 1 )); then
-		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (1 sous-dossier)</li>" >> index.html
+		 			echo -e "<li><a href=\"${d}\">${dossier}</a> (1 sous-dossier, $taille)</li>" >> index.html
 		 		fi
 		 	fi
 
-		 	echo -e "For ${u}${dossier}${U}: ${yellow}${nombrephotos}${white} photos, ${magenta}${nombredirs}${white} subdirs."
+		 	echo -e "For ${u}${dossier}${U}: ${yellow}${nombrephotos}${white} chansons, ${magenta}${nombredirs}${white} subdirs."
 
 		 	#echo -e "<li><a href=\"${d}/\" title=\"Descendre dans ce dossier !\">${title}/index.html</a></li>" >> index.html
 			# FIXME here we force the destination to be ${d}/index.html
@@ -184,7 +191,7 @@ GeneratejPlayer() {
 	fi
 
 	# To include pictures like AlbumArtSmall.jpg, AlbumCover.jpg, Folder.jpg (FIXME still experimental)
-	pictures=`find ./ -maxdepth 1 -type f  -iname Folder.jpg -o -iname Album'*'.jpg 2>/dev/null`
+	pictures=`find ./ -maxdepth 1 -type f  -iname Folder'*'.jpg -o -iname Album'*'.jpg 2>/dev/null`
 	echo -e "${cyan}Potential AlbumArt: ${yellow}${u}${pictures}${U}${white}..."
 	# Find the images
 	for image in $pictures; do
