@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html><head>
     <meta charset="UTF-8">
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8;">
+    <meta name="viewport" content="width=device-width; initial-scale=1.0;">
     <title>jPlayer pour « CURRENTDIR »</title>
 
 <!-- (C) Lilian Besson, 2014, for http://besson.qc.to/generatejplayer.sh/  -->
@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="http://0.0.0.0/_static/buttons.css">
     <link rel="stylesheet" type="text/css" href="http://0.0.0.0/_static/nprogress.css">
 
-    <link rel="shortcut icon" type="image/gif" href="http://0.0.0.0/favicon.ico">
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="http://0.0.0.0/favicon.ico">
 
     <script type="text/javascript" src="http://0.0.0.0/_static/jquery.js"></script>
     <!-- jQuery.Noty.js (Source: http://ned.im/noty/) -->
@@ -20,6 +20,9 @@
     <script type="text/javascript" src="http://0.0.0.0/_static/mousetrap.min.js"></script>
     <!-- NProgress.js (https://github.com/rstacruz/nprogress)-->
     <script type="text/javascript" src="http://0.0.0.0/_static/nprogress.js"></script>
+    <!-- jPlayer.js (http://jplayer.org) -->
+    <script type="text/javascript" src="http://0.0.0.0/_static/jplayer/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="http://0.0.0.0/_static/jplayer/jplayer.playlist.min.js"></script>
 
     <script type="text/javascript">
      console.log("[INFO] Loading jQuery, jQuery.noty, Moustrap, NProgress !");
@@ -59,42 +62,50 @@
         else {
           window.alert(texttoprint);
         }; };
-    </script>
-    <!-- jPlayer.js (http://jplayer.org) -->
-    <script type="text/javascript" src="http://0.0.0.0/_static/jplayer/jquery.jplayer.min.js"></script>
-    <script type="text/javascript" src="http://0.0.0.0/_static/jplayer/jplayer.playlist.min.js"></script>
-
-    <script type="text/javascript">
-        var cssSelector = { jPlayer: "#jquery_jplayer_1", cssSelectorAncestor: "#jp_container_1" };
-        var valplaylistOptions = { // Default playlist options:
-                autoPlay: true,
-                // loopOnPrevious: true,
-                shuffleOnLoop: true,
-                enableRemoveControls: true,
-                displayTime: 'slow',
-                addTime: 'fast',
-                removeTime: 'fast',
-                shuffleTime: 'slow'
-            };
-        var options = {
-            playlistOptions: valplaylistOptions,
-            swfPath: "http://0.0.0.0/_static/jplayer/",
-            supplied: "mp3, wma, wav", // FIXME
-            wmode: "window",
-            smoothPlayBar: true,
-            keyEnabled: true,
-            audioFullScreen: true // Allows the audio poster to go full screen via keyboard
-         };
+      // Options for jPlayer
+      var cssSelector = { jPlayer: "#jquery_jplayer_1", cssSelectorAncestor: "#jp_container_1" };
+      var valplaylistOptions = { // Default playlist options:
+              autoPlay: true,
+              // loopOnPrevious: true,
+              shuffleOnLoop: true,
+              enableRemoveControls: true,
+              displayTime: 'slow',
+              addTime: 'fast',
+              removeTime: 'fast',
+              shuffleTime: 'slow'
+          };
+      var options = {
+          playlistOptions: valplaylistOptions,
+          swfPath: "http://0.0.0.0/_static/jplayer/",
+          supplied: "mp3, wma, wav", // FIXME
+          wmode: "window",
+          smoothPlayBar: true,
+          keyEnabled: true,
+          audioFullScreen: true // Allows the audio poster to go full screen via keyboard
+       };
+    // First ShortCut
+        Mousetrap.bind(["h", "?"], function() {
+          alert("Les raccourcis claviers suivants sont activés : </br>\n"
+            +" - h : affiche ce message d'aide, </br>\n"
+            +" - Droite (→ ou n) : <a href=\"#\" title=\"Joue le morceau suivant\" onClick=\"next();\">morceau suivant</a>,</br>\n"
+            +" - Gauche (← ou p) : <a href=\"#\" title=\"Joue le morceau précédent\" onClick=\"previous();\">morceau précédent</a>,</br>\n"
+            +" - Pause (b) : <a href=\"#\" title=\"Pause\" onClick=\"pause();\">pause</a>,</br>\n"
+            +" - Joue (l) : <a href=\"#\" title=\"Reprend la lecture\" onClick=\"play();\">joue</a>,</br>\n"
+            +" - Aléatoire (r) : <a href=\"#\" title=\"Mélange\" onClick=\"shuffle(true, true);\">active ou désactive la lecture aléatoire</a>,</br>\n"
+            +" - Up (u ou ↑) : <a href=\"../index.html\" title=\"..\">dossier parent</a>,</br>\n</br>\n"
+            +"Ces pages sont générées par et pour <a href=\"http://besson.qc.to/\">Lilian Besson</a>, © 2014, Licence: <a href=\"http://besson.qc.to/LICENSE.html\">GPL v3</a>.",
+            {layout:'bottomCenter', type:'information', timeout: 20000});
+        });
     </script>
 </head>
 <body>
 	<div class="tabbar">
 	<p>
         Cette page a pour but d'<i>afficher</i> et de <i>lire</i> des morceaux de musique
-		<a href="https://bitbucket.org/lbesson/bin/issues/new">(n'hésitez pas à signaler un <b>bug</b> !).</a> <a href="https://bitbucket.org/lbesson/bin/">Sur BitBucket ?</a><br>
+		<a href="https://bitbucket.org/lbesson/bin/issues/new">(n'hésitez pas à signaler un <b>bug</b> !).</a> Voir le projet <a href="https://bitbucket.org/lbesson/bin/">Sur BitBucket ?</a><br>
         Générée le DATE par <a title="Version VERSION !" href="https://bitbucket.org/lbesson/bin/src/master/generatejplayer.sh">generatejplayer.sh</a>
-        (basé sur <a href="http://jplayer.org/">jplayer.js</a>).
-		(C) 2014 <a href="http://besson.qc.to">Lilian BESSON</a>. <br>
+        (basé sur <a href="http://jplayer.org/">jPlayer</a>).
+		Projet expérimental par <a href="http://besson.qc.to">Lilian BESSON</a> (C) 2013-2014.<br>
 		<span id="printherethetitle">
 			Aucun morceau sélectionné.
 		</span>

@@ -123,24 +123,12 @@
 		};
 
 		// MouseTrap (http://craig.is/killing/mice)
-		Mousetrap.bind(["right", "n"], function() { next();});
-		Mousetrap.bind(["left", "p"], function() { previous();});
-		Mousetrap.bind(["b"], function() { pause();});
-		Mousetrap.bind(["l"], function() { play();});
-		Mousetrap.bind(["r"], function() { shuffle(true, true);});
-		Mousetrap.bind(["R"], function() { shuffle(false, false);});
-		Mousetrap.bind(["h", "w", "?"], function() {
-		  alert("Les raccourcis claviers suivants sont activés : </br>\n"
-			+" - h : affiche ce message d'aide, </br>\n"
-			+" - Droite (→ ou n) : <a href=\"#\" title=\"Joue le morceau suivant\" onClick=\"next();\">morceau suivant</a>,</br>\n"
-			+" - Gauche (← ou p) : <a href=\"#\" title=\"Joue le morceau précédent\" onClick=\"previous();\">morceau précédent</a>,</br>\n"
-			+" - Pause (b) : <a href=\"#\" title=\"Pause\" onClick=\"pause();\">pause</a>,</br>\n"
-			+" - Joue (l) : <a href=\"#\" title=\"Reprend la lecture\" onClick=\"play();\">joue</a>,</br>\n"
-			+" - Aléatoire (r) : <a href=\"#\" title=\"Mélange\" onClick=\"shuffle(true, true);\">active ou désactive la lecture aléatoire</a>,</br>\n"
-			+" - Up (u ou ↑) : <a href=\"#\" title=\"..\" onClick=\"location.href='../index.html';\">dossier parent</a>,</br>\n"
-			+"Ces pages sont générées par et pour <a href=\"http://besson.qc.to/\">Lilian Besson</a>, © 2014, Licence: <a href=\"http://besson.qc.to/LICENSE.html\">GPL v3</a>.",
-			{layout:'bottom', type:'information', timeout: false});
-		});
+		Mousetrap.bind(["n"], function() { next(); });
+		Mousetrap.bind(["p"], function() { previous(); });
+		Mousetrap.bind(["b"], function() { pause(); });
+		Mousetrap.bind(["l"], function() { play(); });
+		Mousetrap.bind(["r"], function() { shuffle(true, true); });
+		Mousetrap.bind(["R"], function() { shuffle(false, false); });
 
         var printHereTheVolume = document.querySelector( '#printherethevolume' );
         var printHereTheDuration = document.querySelector( '#printheretheduration' );
