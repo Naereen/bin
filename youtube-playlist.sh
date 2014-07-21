@@ -45,7 +45,7 @@ echo -e "Apparently, the playlist's title is : '${yellow}${title}${white}'. Are 
 read || exit
 
 newdir="$(smoothnameone.sh "$title")"
-echo -e "There I will try to make and use the (new) directory : '${blue}${newdir}${white}*. Are you OK with it ? (${magenta}[Enter]${white} if OK)."
+echo -e "There I will try to make and use the (new) directory : '${blue}${newdir}${white}'. Are you OK with it ? (${magenta}[Enter]${white} if OK)."
 read || exit
 mkdir "${newdir}"
 
@@ -54,7 +54,7 @@ cd "${newdir}" || exit
 echo -e "Now, I am in the directory ${blue}`pwd`${white}, and this is good."
 
 # Start downloading !
-echo -e "OK, so I can start to downloading command I will execute : (${magenta}[Enter]${white} to see)"
+echo -e "OK, so I can start the downloading command I showed you : (${magenta}[Enter]${white} to see)"
 for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" /tmp/l.html  | sed s/'watch?v='// | uniq); do
     youtube-dl -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w "$j"
 done
