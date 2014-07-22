@@ -1006,7 +1006,7 @@ Munin_Start() {
 
 Munin_UpdateMunstrap(){
   cd ~/.local/etc/munin/munstrap/
-  git pull
+  # git pull
   cdBack
 }
 
@@ -1103,6 +1103,8 @@ Appeler() {
 	read
 	linphone -c "$1"@crans.org
 }
+
+alias restartSocksProxy='rm -vf /tmp/startSocksProxy.list'
 
 ##############################################################################
 #	(c) 2011-2014 Lilian BESSON
