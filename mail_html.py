@@ -9,6 +9,7 @@ import sys
 import smtplib
 # Import the email modules we'll need
 from email.mime.text import MIMEText
+from base64 import b64decode
 # Import date module
 from datetime import date
 datetoday=date.today().isoformat()
@@ -39,10 +40,11 @@ def send_me_an_email(message, subj="[LOG] no object", me=defaultaddress,
 	msg['To'] = you
 	msg['Subject'] = subj
 	
-	# Send the message via our own SMTP server, but don't include the
-	# envelope header.
-	s = smtplib.SMTP('smtp.crans.org')
-	# s = smtplib.SMTP('localhost')
+	# Send the message via our own SMTP server, but don't include the envelope header.
+    # s = smtplib.SMTP('localhost')
+    # s = smtplib.SMTP('smtp.crans.org', port=465) # Try 587 for starttls ?
+    s = smtplib.SMTP_SSL('smtp.crans.org', port=465) # Try 587 for starttls ?
+    # See https://docs.python.org/2/library/smtplib.html#smtplib.SMTP.login
 	s.sendmail(me, [you], msg.as_string() )
 	s.quit()
 	print "A HTML email has been sent to <%s>, from %s <%s>." % (you, my_identity, me)
