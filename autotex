@@ -24,6 +24,7 @@
 # (http://besson.qc.to/publis/latex/template.tex)
 #
 version='2.0'
+pwd
 
 # Add here options to use with PDFLaTeX
 # Automatically, my color wrapper [pdflatex](http://besson.qc.to/bin/pdflatex) uses "-synctex=1 -file-line-error"
@@ -34,6 +35,10 @@ case "$1" in
 		pdflatex="${pdflatex} -interaction=${1}"
 		shift
 		;;
+    -noansi )
+        pdflatex="/usr/bin/pdflatex -synctex=1 -file-line-error -interaction=errorstopmode"
+        shift
+        ;;
 esac
 
 f="`basename $1`"
