@@ -1104,7 +1104,19 @@ Appeler() {
 	linphone -c "$1"@crans.org
 }
 
-alias restartSocksProxy='rm -vf /tmp/startSocksProxy.list'
+function PROXY () {
+  case $1 in
+    off)
+      rm -vf /tmp/startSocksProxy.list && echo -e "${green}PROXY is off.${white}"
+      ;;
+    on)
+      startSocksProxy.sh && echo -e "${green}PROXY is on.${white}"
+      ;;
+    help|*)
+      echo -e "PROXY on to activate the proxy, PROXY off to turn it off, PROXY help to print this help message."
+      ;;
+  esac
+}
 
 ##############################################################################
 #	(c) 2011-2014 Lilian BESSON
