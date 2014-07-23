@@ -4,13 +4,15 @@
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Web version: http://besson.qc.to/bin/dump_dD.py
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/dump_dD.py
-# Date: 02-07-2013
+# Date: 23-07-2013
 #
 # A small script to dump all Maths Exercice LaTeX sources from some website.
 #
 
 # Doc: http://www.crummy.com/software/BeautifulSoup/bs3/documentation.html#Printing%20a%20Document
-# And an exemple: http://mp.cpgedupuydelome.fr/mesexos.php?idTeX=1485
+# And an example: http://mp.cpgedupuydelome.fr/mesexos.php?idTeX=1485
+
+import sys
 
 try:
     from ANSIColors import printc
@@ -28,7 +30,9 @@ printc("<reset>Choix aléatoire parmi <neg>%i<Neg> exercices de maths (niveau MP
 from random import randint
 
 # numexo  = randint(1, nbExos)  # FIXME !
-numexo  = 1485
+numexo  = int(sys.argv[1]) if len(sys.argv)>1 else 1485
+
+chapter = str(sys.argv[2]) if len(sys.argv)>2 else ""
 
 urlToGo = "http://mp.cpgedupuydelome.fr/mesexos.php?idTeX=%i" % numexo
 
@@ -43,7 +47,9 @@ html = response.read()
 from BeautifulSoup import BeautifulSoup
 
 # On l'analyse
-parsed_html = BeautifulSoup(html)
+parsed_html = BeautifulSoup(html, fromEncoding='utf-8')
+
+printc("<black>Encodage original : %s<white>\n\n" % parsed_html.originalEncoding)
 
 # On cherche la section <section id="contenu">..</section>
 contenu = parsed_html.body.find('section', attrs={'id':'contenu'})
@@ -56,12 +62,20 @@ codeTeX = contenu.findAll('textarea', limit=1)[0].renderContents()
 printc("<blue><u>Code LaTeX de cet exercice:<U><white>\n\n%s" % codeTeX)
 
 # On créé un fichier TeX
-name = "exos_%i.fr.tex" % numexo
+name = "ex_%i.fr.tex" % numexo
 out = open(name, mode="w")
+
 # On va écrire le code de l'exercice dedans
 printc("<green>On écrit dans %s !<white>" % out)
 
-out.write("%%%% LaTeX code, for exos #%i, from %s, in French (file %s).\n%%%%\n" % (numexo, urlToGo, name))
+if chapter:
+    chapter = chapter[2:].replace("_", " ").replace("/", "")
+    printc("<magenta>Pour le chapitre '%s' :<white>" % chapter)
+    out.write(u"%%%% -*- mode: latex; coding: utf-8 -*-\n%%%% Chapter : %s.\n%%%% Start of LaTeX code, for exercise #%i (from '%s'), in French (file '%s').\n\n" % (chapter, numexo, urlToGo, name))
+else:
+    out.write(u"%%%% -*- mode: latex; coding: utf-8 -*-\n%%%% Start of LaTeX code, for exercise #%i (from '%s'), in French (file '%s').\n\n" % (numexo, urlToGo, name))
+
 out.write(codeTeX)
+out.write(u"\n%%%% End of LaTeX code, for exercise #%i (from '%s'), in French (file '%s').\n" % (numexo, urlToGo, name))
 
 printc("<green>Succès :)")
