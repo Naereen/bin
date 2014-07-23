@@ -33,7 +33,7 @@ GeneratejPlayer() {
 
 	# Listing of music (and playlist) (with jquery.jplayer.js)
 	targets=`find . -maxdepth 1 -type f -iname '*'.mp3 -o -iname '*'.ogg -o -iname '*'.wav -o -iname '*'.wma 2>/dev/null`
-	taille="$(du -c -h *.mp3 | tail -n 1 | grep -o -m 1 "^[0-9][,0-9]*[kMG]\?")"
+	taille="$(du -c -h *.mp3 2>/dev/null| tail -n 1 | grep -o -m 1 "^[0-9][,0-9]*[kMG]\?")"
 	echo -e "Total size for all musics (*.mp3) = $taille."
 
 	if [ "X${targets//'%20'/}" != "X" ]; then
