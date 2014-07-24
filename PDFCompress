@@ -23,7 +23,7 @@
 # Good advice: in a git repository, compress before storing => a real improvement !
 ##############################################################################
 
-version="1.3a"
+version="1.4"
 ##LANG="en"
 
 GREP="grep --color=always --line-buffered"
@@ -67,6 +67,7 @@ zenity="true"
 icon=""
 NOTIFY=""
 ZENITY=""
+PKILL="pkill"
 
 ############################# Argument handling ################################
 for i in "$@"
@@ -151,6 +152,7 @@ do
    $ECHO "${cyan} option no-zenity found.${white}"
    shift
    zenity="false"
+   PKILL="echo"
   ;;
  -v|--verbose)
    $ECHO "${cyan} option verbose found.${white}"
@@ -199,7 +201,7 @@ $ECHO "This program comes with ABSOLUTELY NO WARRANTY; for details see http://pe
 # else
 
 icon="-i $(ls -H /usr/share/icons/*/*/*/*pdf*svg | uniq | shuf | head -n1) "
-NOTIFY="notify-send -t 500 $icon \"$BIN\""
+NOTIFY="notify-send -t 500 $icon $BIN"
 
 # fi
 
@@ -339,9 +341,9 @@ PDFCompress ()
             ( $ECHO "0"; $GS -sOutputFile="$i"~ "$i"; $ECHO "100"; ) | \
             ( zenity --progress --pulsate --auto-close \
                     --title="$BIN  v$version   (program by Lilian Besson)" \
-                    --text="Compressing the PDF <b>'$i'</b>... \nWorking in the directory <u>$(pwd)</u>,\n Metadata stored to <i>'$meta'</i>\n\nPress '<b>Cancel</b>' to try to cancel the operation (still experimental)." || ( $ECHO "${red}Error:${white} Canceled by you ? Well anyway, I failed, so I will try to restore the backup PDF from /tmp/ ..."; pkill gs; cp -fv ./"$i" ./"$i"~ ; return 8; ) ; \
-                $ECHO "Done"; pkill gs; )
-            # || (pkill gs; export ANS="8"; $ECHO "Fail, would you like to restore the backup ?"; cp -vi /tmp/"$i" ./"$i"  exit 8);
+                    --text="Compressing the PDF <b>'$i'</b>... \nWorking in the directory <u>$(pwd)</u>,\n Metadata stored to <i>'$meta'</i>\n\nPress '<b>Cancel</b>' to try to cancel the operation (still experimental)." || ( $ECHO "${red}Error:${white} Canceled by you ? Well anyway, I failed, so I will try to restore the backup PDF from /tmp/ ..."; $PKILL gs; cp -fv ./"$i" ./"$i"~ ; return 8; ) ; \
+                $ECHO "Done"; $PKILL gs; )
+            # || ($PKILL gs; export ANS="8"; $ECHO "Fail, would you like to restore the backup ?"; cp -vi /tmp/"$i" ./"$i"  exit 8);
           else
 		$ECHO "0%" ; $GS -sOutputFile="$i"~ "$i"; $ECHO "100%"
           fi
@@ -364,7 +366,7 @@ PDFCompress ()
 
           if [ "$notify" = "true" ]; then
            $ECHO "$green - notify-send: notifying..."
-           $NOTIFY "Old | New $(ls --color=never -larth \"/tmp/$i\" \"$i\" 2>/dev/null)"
+           $NOTIFY "The file $i have been compressed.\nSize before : $(du "/tmp/$i" 2>/dev/null | grep -o -m 1 "^[0-9][,0-9]*[KMG]\?")\nSize After : $(du "$i" 2>/dev/null | grep -o -m 1 "^[0-9][,0-9]*[KMG]\?")"
           fi
 
           if [ "$sign" = "true" ]; then
