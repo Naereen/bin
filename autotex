@@ -11,11 +11,11 @@
 #
 # Simply edit ~/template.tex, and put ONE '\input{NAME}' on it,
 # between \begin{document} and \end{document}.
-# 
+#
 # New: now autotex supports auto changing the title of the produced PDF file
 # Simply add ONE line in you .tex file :
 # '%autotex% Titre: My awesome title'
-# 
+#
 # New: now autotex supports auto changing the scale parameters for geometry package
 # Simply add ONE line in you .tex file :
 # '%autotex% Scale: 0.82' to import geometry with \usepackage[scale=0.82]{geometry}
@@ -24,6 +24,7 @@
 # (http://besson.qc.to/publis/latex/template.tex)
 #
 version='2.0'
+NOANSI='false'
 pwd
 
 # Add here options to use with PDFLaTeX
@@ -36,6 +37,7 @@ case "$1" in
 		shift
 		;;
     -noansi )
+        NOANSI='true'
         pdflatex="/usr/bin/pdflatex -synctex=1 -file-line-error -interaction=errorstopmode"
         shift
         ;;
@@ -64,12 +66,27 @@ cat $HOME/template.tex \
 
 ln -s -f -v $HOME/naereen.sty /tmp/naereen.sty
 ln -s -f -v "$p"/"$f" /tmp/"$f"
-cd /tmp/
 
-echo -e "${cyan}Using $pdflatex as the pdflatex command." | tee -a /tmp/autotex.log
+# If this is too slow, remove it. Try to do the same for pictures ?
+# Try to create symlinks to every included TeX files ?
+includedfiles=$(cat "$p"/"$f" | grep -o "input{[^}]*" | sed s/"input{"//)
+nbifi=$(ls -larth $includedfiles | wc -l)
+echo -e "${magenta}I found $nbifi files being included in $f (with the \\\\input{...} command).${white}"
+if (( nbifi < 400 )); then
+    for ifi in $includedfiles; do
+        ln -s -f -v "$p"/"$ifi" /tmp/"$ifi"
+    done
+fi
 # read
 
-$pdflatex template.tex && $pdflatex template.tex && \
- mv template.pdf "$p"/${f%.tex}.pdf
+cd /tmp/
+rm -v -f /tmp/template.pdf
 
-[ -f "$p"/${f%.tex}.pdf ] && evince "$p"/${f%.tex}.pdf &>/dev/null&
+echo -e "${cyan}Using $pdflatex as the pdflatex command.${white}" | tee -a /tmp/autotex.log
+# read
+
+# This part is tricky, maybe keep the && or maybe not. Still not sure.
+$pdflatex template.tex && $pdflatex template.tex && \
+    mv -f -v template.pdf "$p"/${f%.tex}.pdf
+
+[ -f "$p"/${f%.tex}.pdf ] && ( notify-send "autoTeX" "<b>Success :)</b>\n autoTeX have been able to compile the file ${f%.tex}.pdf from ${f%.tex}.pdf\n(In the directory <i>$p</i>.)" ; evince "$p"/${f%.tex}.pdf &>/dev/null& )
