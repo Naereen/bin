@@ -4,9 +4,10 @@
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Web version: http://besson.qc.to/bin/dump_dD.py
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/dump_dD.py
-# Date: 23-07-2013
+# Date: 24-07-2013
 #
 # A small script to dump all Maths Exercice LaTeX sources from some website.
+# Eavily dependant on the website being used.
 #
 
 # Doc: http://www.crummy.com/software/BeautifulSoup/bs3/documentation.html#Printing%20a%20Document
@@ -24,12 +25,12 @@ printc("<cyan>Maths exercice LaTeX sources dumper, v0.1<reset>")
 
 # Quicker if you keep this value up-to-date here
 # nbExos=$(wget -O - --quiet "http://mp.cpgedupuydelome.fr/index.php" | html2text | grep Exercice | grep -o [0-9]*)
-nbExos  = 3994
-printc("<reset>Choix aléatoire parmi <neg>%i<Neg> exercices de maths (niveau MPSI et MP)..." % nbExos)
+# nbExos  = 3994
 
-from random import randint
-
+# printc("<reset>Choix aléatoire parmi <neg>%i<Neg> exercices de maths (niveau MPSI et MP)..." % nbExos)
+# from random import randint
 # numexo  = randint(1, nbExos)  # FIXME !
+
 numexo  = int(sys.argv[1]) if len(sys.argv)>1 else 1485
 
 chapter = str(sys.argv[2]) if len(sys.argv)>2 else ""
@@ -38,12 +39,12 @@ urlToGo = "http://mp.cpgedupuydelome.fr/mesexos.php?idTeX=%i" % numexo
 
 printc("Numéro <magenta>%i<reset>. On va vers <u>\"%s\"<U><white>" % (numexo, urlToGo))
 
-# On récupère la page
+# On récupère la page (la partie la plus lente du coup)
 import urllib2
 response = urllib2.urlopen(urlToGo)
 html = response.read()
 
-# BeautifulSoup v3
+# BeautifulSoup v3 (et pas v4, attention !)
 from BeautifulSoup import BeautifulSoup
 
 # On l'analyse
@@ -57,6 +58,15 @@ contenu = parsed_html.body.find('section', attrs={'id':'contenu'})
 # Et on prend le contenu de la première <textarea> !
 codeTeX = contenu.findAll('textarea', limit=1)[0].renderContents()
 
+# Quelques corrections, parce que BeautifulSoup échappe certains trucs
+codeTeX = codeTeX.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">").replace("&le;", "<=").replace("&ge;", ">=")
+
+# Et d'autres erreurs fréquentes.
+codeTeX = codeTeX.replace("^ - ", "^{-}")
+
+# Ici on pourrait utiliser un outil de traduction bien conçu pour produire codeTeX_en en anglais
+# FIXME !
+
 # Là on galère pour afficher en UTF-8. Zut !
 # print( unicode( codeTeX ) )
 printc("<blue><u>Code LaTeX de cet exercice:<U><white>\n\n%s" % codeTeX)
@@ -68,14 +78,16 @@ out = open(name, mode="w")
 # On va écrire le code de l'exercice dedans
 printc("<green>On écrit dans %s !<white>" % out)
 
+# Ajout de la possibilité de préciser le chapitre courant en train d'être construit.
 if chapter:
-    chapter = chapter[2:].replace("_", " ").replace("/", "")
+    chapter = chapter.replace("_", " ").replace("/", "")
     printc("<magenta>Pour le chapitre '%s' :<white>" % chapter)
-    out.write(u"%%%% -*- mode: latex; coding: utf-8 -*-\n%%%% Chapter : %s.\n%%%% Start of LaTeX code, for exercise #%i (from '%s'), in French (file '%s').\n\n" % (chapter, numexo, urlToGo, name))
+    out.write("%%%% -*- mode: latex; coding: utf-8 -*-\n%%%% Chapter : %s.\n%%%% Start of LaTeX code, for exercise #%i (from '%s'), in French (file '%s').\n\n" % (chapter, numexo, urlToGo, name))
 else:
-    out.write(u"%%%% -*- mode: latex; coding: utf-8 -*-\n%%%% Start of LaTeX code, for exercise #%i (from '%s'), in French (file '%s').\n\n" % (numexo, urlToGo, name))
+    out.write("%%%% -*- mode: latex; coding: utf-8 -*-\n%%%% Start of LaTeX code, for exercise #%i (from '%s'), in French (file '%s').\n\n" % (numexo, urlToGo, name))
 
 out.write(codeTeX)
-out.write(u"\n%%%% End of LaTeX code, for exercise #%i (from '%s'), in French (file '%s').\n" % (numexo, urlToGo, name))
+out.write("\n%%%% End of LaTeX code, for exercise #%i (from '%s'), in French (file '%s').\n" % (numexo, urlToGo, name))
 
 printc("<green>Succès :)")
+# DONE !
