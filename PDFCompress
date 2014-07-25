@@ -67,7 +67,7 @@ zenity="true"
 icon=""
 NOTIFY=""
 ZENITY=""
-PKILL="pkill"
+PKILL="echo"
 
 ############################# Argument handling ################################
 for i in "$@"
@@ -238,10 +238,10 @@ $ECHO "${cyan} Using quality=$white$quality$cyan. See $BIN --help to get a list 
 $ECHO "${cyan} Using $reset'$white$creator'$cyan as the new Hyperref value for the 'Creator' item.${white}"
 
 if [ "$quiet" != "" ]; then
- GS="/usr/bin/gs $quiet -dNOPAUSE -dBATCH -dSAFER -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dEmbedAllFonts=true -dSubsetFonts=true -dColorImageDownsampleType=/Bicubic -dColorImageResolution=72 -dGrayImageDownsampleType=/Bicubic -dGrayImageResolution=72 -dMonoImageDownsampleType=/Bicubic -dMonoImageResolution=72 -dPDFSETTINGS=/"$quality""
+ GS="/usr/bin/gs $quiet -dNOPAUSE -dBATCH -dSAFER -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dEmbedAllFonts=true -dSubsetFonts=true -dColorImageDownsampleType=/Bicubic -dColorImageResolution=300 -dGrayImageDownsampleType=/Bicubic -dGrayImageResolution=300 -dMonoImageDownsampleType=/Bicubic -dMonoImageResolution=300 -dPDFSETTINGS=/"$quality""
  $ECHO "${cyan} Being quiet...${white}"
 else
- GS="/usr/bin/gs -dNOPAUSE -dBATCH -dSAFER -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dEmbedAllFonts=true -dSubsetFonts=true -dColorImageDownsampleType=/Bicubic -dColorImageResolution=72 -dGrayImageDownsampleType=/Bicubic -dGrayImageResolution=72 -dMonoImageDownsampleType=/Bicubic -dMonoImageResolution=72 -dPDFSETTINGS=/"$quality""
+ GS="/usr/bin/gs -dNOPAUSE -dBATCH -dSAFER -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dEmbedAllFonts=true -dSubsetFonts=true -dColorImageDownsampleType=/Bicubic -dColorImageResolution=300 -dGrayImageDownsampleType=/Bicubic -dGrayImageResolution=300 -dMonoImageDownsampleType=/Bicubic -dMonoImageResolution=300 -dPDFSETTINGS=/"$quality""
  $ECHO "${cyan} Being verbose...${white}"
 fi
 
