@@ -12,7 +12,7 @@
 # Hack: this markdown page is using http://lbo.k.vu/md/ (StrapDown.js) to be a good-looking HTML page !
 #
 # FIXME: zamok proxying not yet available
-# 
+#
 BIN=GenerateStatsMarkdown
 version=1.2
 
@@ -49,7 +49,7 @@ fi
 
 # Header
 echo -e "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/><title>Stats pour jarvis.crans.org</title></head><body><xmp theme=\"${theme}\">" > "$dest"
-echo -e "# Informations systèmes pour [jarvis.crans.org](http://jarvis.crans.org)" >> "$dest"
+echo -e "# Informations systèmes pour *jarvis* ([jarvis.crans.org](http://jarvis.crans.org))" >> "$dest"
 echo -e "> #### Signaler *tout problème* à [jarvisATcransDOTorg](mailto:jarvisATcransDOTorg) ou via [bitbucket](https://bitbucket.org/lbesson/bin/issues/new).\n#### Données mises à jour le **$(date "+%c")**." >> "$dest"
 echo -e "> #### Consulter [*les rapports munin*](http://jarvis/lns_munin/localdomain/localhost.localdomain/index.html) (plus complets) ?\n\n***\n" >> "$dest"
 
