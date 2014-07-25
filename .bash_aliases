@@ -409,7 +409,7 @@ TEX2PDF() {
  ( pdflatex "$@" && pdflatex "$@" | tee /tmp/tex2pdf.log) \
  || (clear ; chktex "$@" ; alert )
  out="$(grep -m1 -o "Output written on .*.pdf" /tmp/tex2pdf.log | grep -o "[^ ]*.pdf")" ;
- [ "$(PDFCompress --help)" != "" ] && PDFCompress --sign "$out"
+ [ "$(PDFCompress --help)" != "" ] && PDFCompress "$out"
 }
 
 # N'afficher que les processus lances par l'utilisateur courant dans htop.
@@ -1058,7 +1058,8 @@ evince() { ( /usr/bin/evince "$@" || /usr/bin/firefox "$@" ) &> /dev/null & }
 eog() { ( /usr/bin/eog "$@" || /usr/bin/ristretto "$@" ) &> /dev/null & }
 firefox() { ( /usr/bin/firefox "$@" || /usr/bin/elinks "$@" ) &> /dev/null & }
 vlc() { /usr/bin/vlc --random "$@" &> /dev/null & }
-linphone() { /usr/bin/linphone "$@" &> /dev/null & } 
+linphone() { /usr/bin/linphone "$@" &> /dev/null & }
+libreoffice() { ( /usr/bin/libreoffice "$@" || /usr/bin/abiword "$@" ) &> /dev/null & }
 
 # Better .rst → .html and .md → .html (simpler)
 alias rst2html='rst2html -v -t --no-generator -l fr --cloak-email-addresses '
