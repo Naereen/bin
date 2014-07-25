@@ -81,7 +81,7 @@ fi
 # read
 
 #  Try to do the same for pictures ?
-includedfiles=$(cat "$p"/"$f" | grep -o "includegraphics{[^}]*" | sed s/"includegraphics{"//)
+includedfiles=$(cat "$p"/"$f" | grep -o "includegraphics\[.*\]*{[^}]*" | sed s/"includegraphics\[.*\]*{"//)
 nbifi=$(for i in ${includedfiles}; do ls $i.pdf $i.png $i.jpg $i.svg 2>/dev/null; done | wc -l)
 echo -e "${magenta}I found $nbifi files being included in $f (with the \\\\includegraphics{...} command).${white}"
 if (( nbifi < 10 )); then
