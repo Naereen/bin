@@ -44,6 +44,7 @@ case "$1" in
 esac
 
 f="`basename $1`"
+f="${f%.tex}.tex"
 p="`pwd`"
 echo -e "Working with $u$f$U on $blue$p$white." | tee -a /tmp/autotex.log
 
@@ -67,7 +68,7 @@ cat $HOME/template.tex \
 ln -s -f -v $HOME/naereen.sty /tmp/naereen.sty
 ln -s -f -v "$p"/"$f" /tmp/"$f"
 
-# If this is too slow, remove it. Try to do the same for pictures ?
+# If this is too slow, remove it.
 # Try to create symlinks to every included TeX files ?
 includedfiles=$(cat "$p"/"$f" | grep -o "input{[^}]*" | sed s/"input{"//)
 nbifi=$(ls -larth $includedfiles | wc -l)
@@ -75,6 +76,20 @@ echo -e "${magenta}I found $nbifi files being included in $f (with the \\\\input
 if (( nbifi < 400 )); then
     for ifi in $includedfiles; do
         ln -s -f -v "$p"/"$ifi" /tmp/"$ifi"
+    done
+fi
+# read
+
+#  Try to do the same for pictures ?
+includedfiles=$(cat "$p"/"$f" | grep -o "includegraphics{[^}]*" | sed s/"includegraphics{"//)
+nbifi=$(for i in ${includedfiles}; do ls $i.pdf $i.png $i.jpg $i.svg 2>/dev/null; done | wc -l)
+echo -e "${magenta}I found $nbifi files being included in $f (with the \\\\includegraphics{...} command).${white}"
+if (( nbifi < 10 )); then
+    for ifi in $includedfiles; do
+        [ -f "$p"/"$ifi".pdf ] && ln -s -f -v "$p"/"$ifi".pdf /tmp/"$ifi".pdf
+        [ -f "$p"/"$ifi".png ] && ln -s -f -v "$p"/"$ifi".png /tmp/"$ifi".png
+        [ -f "$p"/"$ifi".jpg ] && ln -s -f -v "$p"/"$ifi".jpg /tmp/"$ifi".jpg
+        [ -f "$p"/"$ifi".svg ] && ln -s -f -v "$p"/"$ifi".svg /tmp/"$ifi".svg
     done
 fi
 # read
