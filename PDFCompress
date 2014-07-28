@@ -48,6 +48,8 @@ fi
 
 # Default quality. FIXME: in fact, does not change very much the result....
 quality="ebook"
+# Image resolution (the smaller this is, the smaller the new PDF will be, but the quality will decrease)
+ImageResolution="130"
 # False to simply change the meta data (and sign ?)
 compress="true"
 # True to force compression (even if pdfinfo said that Ghostscript or PDFCompress
@@ -238,10 +240,10 @@ $ECHO "${cyan} Using quality=$white$quality$cyan. See $BIN --help to get a list 
 $ECHO "${cyan} Using $reset'$white$creator'$cyan as the new Hyperref value for the 'Creator' item.${white}"
 
 if [ "$quiet" != "" ]; then
- GS="/usr/bin/gs $quiet -dNOPAUSE -dBATCH -dSAFER -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dEmbedAllFonts=true -dSubsetFonts=true -dColorImageDownsampleType=/Bicubic -dColorImageResolution=300 -dGrayImageDownsampleType=/Bicubic -dGrayImageResolution=300 -dMonoImageDownsampleType=/Bicubic -dMonoImageResolution=300 -dPDFSETTINGS=/"$quality""
+ GS="/usr/bin/gs $quiet -dNOPAUSE -dBATCH -dSAFER -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dEmbedAllFonts=true -dSubsetFonts=true -dColorImageDownsampleType=/Bicubic -dColorImageResolution=${ImageResolution} -dGrayImageDownsampleType=/Bicubic -dGrayImageResolution=${ImageResolution} -dMonoImageDownsampleType=/Bicubic -dMonoImageResolution=${ImageResolution} -dPDFSETTINGS=/"$quality""
  $ECHO "${cyan} Being quiet...${white}"
 else
- GS="/usr/bin/gs -dNOPAUSE -dBATCH -dSAFER -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dEmbedAllFonts=true -dSubsetFonts=true -dColorImageDownsampleType=/Bicubic -dColorImageResolution=300 -dGrayImageDownsampleType=/Bicubic -dGrayImageResolution=300 -dMonoImageDownsampleType=/Bicubic -dMonoImageResolution=300 -dPDFSETTINGS=/"$quality""
+ GS="/usr/bin/gs -dNOPAUSE -dBATCH -dSAFER -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dEmbedAllFonts=true -dSubsetFonts=true -dColorImageDownsampleType=/Bicubic -dColorImageResolution=${ImageResolution} -dGrayImageDownsampleType=/Bicubic -dGrayImageResolution=${ImageResolution} -dMonoImageDownsampleType=/Bicubic -dMonoImageResolution=${ImageResolution} -dPDFSETTINGS=/"$quality""
  $ECHO "${cyan} Being verbose...${white}"
 fi
 
