@@ -20,20 +20,23 @@
 # Simply add ONE line in you .tex file :
 # '%autotex% Scale: 0.82' to import geometry with \usepackage[scale=0.82]{geometry}
 #
-# An example of a LaTeX2e template to use with autotex :
-# (http://besson.qc.to/publis/latex/template.tex)
+# New: One can use two templates : ~/template.fr.tex to be used with French TeX files (*.fr.tex)
+# and ~/template.en.tex to be used with English TeX files (*.en.tex), which is the default.
 #
-version='2.0'
+# Example of a LaTeX2e template to use with autotex :
+# (http://besson.qc.to/publis/latex/template.tex) (and .fr.tex and .en.tex)
+#
+version='2.1'
 NOANSI='false'
-pwd
+# pwd
 
-# Add here options to use with PDFLaTeX
-# Automatically, my color wrapper [pdflatex](http://besson.qc.to/bin/pdflatex) uses "-synctex=1 -file-line-error"
 pdflatex="pdflatex"
+# Add here options to use with PDFLaTeX
 case "$1" in
-	batchmode|nonstopmode|scrollmode|errorstopmode )
-		echo -e "${magenta}Using \$1 as an option to pass to pdflatex : -interaction=${1}." | tee -a /tmp/autotex.log
-		pdflatex="${pdflatex} -interaction=${1}"
+    batchmode|nonstopmode|scrollmode|errorstopmode )
+        echo -e "${magenta}Using \$1 as an option to pass to pdflatex : -interaction=${1}." | tee -a /tmp/autotex.log
+        # Automatically, my color wrapper [pdflatex](http://besson.qc.to/bin/pdflatex) uses "-synctex=1 -file-line-error"
+        pdflatex="${pdflatex} -interaction=${1}"
 		shift
 		;;
     -noansi )
@@ -45,8 +48,9 @@ esac
 
 f="`basename $1`"
 f="${f%.tex}.tex"
+
 p="`pwd`"
-echo -e "Working with $u$f$U on $blue$p$white." | tee -a /tmp/autotex.log
+echo -e "Working with $u'$f'$U on $blue'$p'$white." | tee -a /tmp/autotex.log
 
 title="$(grep '%autotex% Titre: ' "${f}")"
 title="${title#%autotex% Titre: }"
@@ -58,12 +62,27 @@ scale="${scale:-0.75}"
 echo -e "Scale: $green${scale}$white" | tee -a /tmp/autotex.log
 # read
 
-# There you can perform any automatic transfrom to ~/template.tex !
-cat $HOME/template.tex \
+# Try to change the template regarding the language
+echo -e "Try to change the template regarding the language..." | tee -a /tmp/autotex.log
+echo -e "We have f='${f}', and {f%.fr.tex}.fr.tex='${f%.fr.tex}.fr.tex', and {f%.en.tex}.en.tex='${f%.en.tex}.fr'..." | tee -a /tmp/autotex.log
+langf="en"
+template="template.en.tex"
+if [ "${f%.fr.tex}.fr.tex" = "$f" ]; then
+    langf="fr"
+    template="template.fr.tex"
+    echo -e "Switching language from default (en) to ${green}fr (French)${white}..." | tee -a /tmp/autotex.log
+elif [ "${f%.en.tex}.en.tex" = "$f" ]; then
+    langf="en"
+    template="template.en.tex"
+    echo -e "Switching language from default (en) to ${green}en (English)${white}..." | tee -a /tmp/autotex.log
+fi
+
+# There you can perform any automatic transfrom to ~/$template !
+cat $HOME/$template \
 	| sed s/"scale=[0-9\.]*"/"scale=${scale}"/ \
 	| sed s#MonTitreAChangerViaAutoTeX#"${title}"# \
 	| sed s/MyFileNameToChangeWithAutoTex/"${f%.tex}"/ \
-	> /tmp/template.tex
+	> /tmp/$template
 
 ln -s -f -v $HOME/naereen.sty /tmp/naereen.sty
 ln -s -f -v "$p"/"$f" /tmp/"$f"
@@ -71,11 +90,15 @@ ln -s -f -v "$p"/"$f" /tmp/"$f"
 # If this is too slow, remove it.
 # Try to create symlinks to every included TeX files ?
 includedfiles=$(cat "$p"/"$f" | grep -o "input{[^}]*" | sed s/"input{"//)
-nbifi=$(ls -larth $includedfiles | wc -l)
-echo -e "${magenta}I found $nbifi files being included in $f (with the \\\\input{...} command).${white}"
+nbifi=$(for i in ${includedfiles}; do ls $i $i.tex 2>/dev/null; done | wc -l)
+if [ "X${includedfiles}" = "X" ]; then
+    nbifi=0
+fi
+echo -e "${magenta}I found ${nbifi} file(s) being included in $f (with the \\\\input{...} command).${white}"
 if (( nbifi < 400 )); then
     for ifi in $includedfiles; do
-        ln -s -f -v "$p"/"$ifi" /tmp/"$ifi"
+        [ -f "$p"/"$ifi" ] && ln -s -f -v "$p"/"$ifi" /tmp/"$ifi"
+        [ -f "$p"/"$ifi".tex ] && ln -s -f -v "$p"/"$ifi".tex /tmp/"$ifi".tex
     done
 fi
 # read
@@ -83,7 +106,10 @@ fi
 #  Try to do the same for pictures ?
 includedfiles=$(cat "$p"/"$f" | grep -o "includegraphics\[.*\]*{[^}]*" | sed s/"includegraphics\[.*\]*{"//)
 nbifi=$(for i in ${includedfiles}; do ls $i.pdf $i.png $i.jpg $i.svg 2>/dev/null; done | wc -l)
-echo -e "${magenta}I found $nbifi files being included in $f (with the \\\\includegraphics{...} command).${white}"
+if [ "X${includedfiles}" = "X" ]; then
+    nbifi=0
+fi
+echo -e "${magenta}I found ${nbifi} file(s) being included in $f (with the \\\\includegraphics{...} command).${white}"
 if (( nbifi < 10 )); then
     for ifi in $includedfiles; do
         [ -f "$p"/"$ifi".pdf ] && ln -s -f -v "$p"/"$ifi".pdf /tmp/"$ifi".pdf
@@ -95,13 +121,16 @@ fi
 # read
 
 cd /tmp/
-rm -v -f /tmp/template.pdf
+rm -v -f /tmp/${template%.tex}.pdf
 
 echo -e "${cyan}Using $pdflatex as the pdflatex command.${white}" | tee -a /tmp/autotex.log
+
+echo -e "${cyan}Using ~/$template as the template file.${white}" | tee -a /tmp/autotex.log
 # read
 
+echo -e "\n\n\n==============================================\n\n\n"
 # This part is tricky, maybe keep the && or maybe not. Still not sure.
-$pdflatex template.tex && $pdflatex template.tex && \
-    mv -f -v template.pdf "$p"/${f%.tex}.pdf
+$pdflatex $template && $pdflatex $template && \
+    mv -f -v ${template%.tex}.pdf "$p"/${f%.tex}.pdf
 
 [ -f "$p"/${f%.tex}.pdf ] && ( notify-send "autoTeX" "<b>Success :)</b>\n autoTeX have been able to compile the file ${f%.tex}.pdf from ${f%.tex}.pdf\n(In the directory <i>$p</i>.)" ; evince "$p"/${f%.tex}.pdf &>/dev/null& )
