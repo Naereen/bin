@@ -33,7 +33,7 @@ GeneratejPlayer() {
 
 	# Listing of music (and playlist) (with jquery.jplayer.js)
 	targets=`find . -maxdepth 1 -type f -iname '*'.mp3 -o -iname '*'.ogg -o -iname '*'.wav -o -iname '*'.wma 2>/dev/null`
-	taille="$(du -c -h *.mp3 2>/dev/null| tail -n 1 | grep -o -m 1 "^[0-9][,0-9]*[KMG]\?")"
+	taille="$(du -kc -h *.mp3 2>/dev/null| tail -n 1 | grep -o -m 1 "^[0-9][,0-9]*[KMG]\?")"
 	echo -e "Total size for all musics (*.mp3) = $taille."
 
 	if [ "X${targets//'%20'/}" != "X" ]; then
@@ -125,7 +125,7 @@ GeneratejPlayer() {
 	if [ "X$targets" != "X" ]; then
 
 		nombre=`echo $targets | grep -o ./ | wc -l`
-		taille="$(du -c -h ./ | tail -n 1 | grep -o -m 1 "^[0-9][,0-9]*[KMG]\?")"
+		taille="$(du -c -kh ./ | tail -n 1 | grep -o -m 1 "^[0-9][,0-9]*[KMG]\?")"
 		echo -e "Total size for the directory ./ = $taille."
 
 		if (( nombre > 0 )); then
@@ -142,7 +142,7 @@ GeneratejPlayer() {
 		 	dossier="${d//'%20'/ }"
 			dossier=${dossier//'&amp;'/&}
 
-			taille="$(du -c -h "${dossier}/" | tail -n 1 | grep -o -m 1 "^[0-9][,0-9]*[KMG]\?")"
+			taille="$(du -c -kh "${dossier}/" | tail -n 1 | grep -o -m 1 "^[0-9][,0-9]*[KMG]\?")"
 			echo -e "Total size for the sub-directory "${dossier}/" = $taille."
 
 		 	subphotos=`find "${dossier}" -maxdepth 1 -type f -iname '*'.mp3 -o -iname '*'.ogg -o -iname '*'.wav -o -iname '*'.wma 2>/dev/null`

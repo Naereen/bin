@@ -23,7 +23,7 @@
 # Good advice: in a git repository, compress before storing => a real improvement !
 ##############################################################################
 
-version="1.4"
+version="1.5"
 ##LANG="en"
 
 GREP="grep --color=always --line-buffered"
@@ -70,6 +70,12 @@ icon=""
 NOTIFY=""
 ZENITY=""
 PKILL="echo"
+
+
+########################## Copyrights and options ##############################
+$ECHO "${green}$BIN v$version : Copyright (C) 2013-2014 Lilian BESSON"
+$ECHO "This is free software, and you are welcome to redistribute it under certain conditions."
+$ECHO "This program comes with ABSOLUTELY NO WARRANTY; for details see http://perso.crans.org/besson/LICENSE ${white}"
 
 ############################# Argument handling ################################
 for i in "$@"
@@ -169,12 +175,6 @@ do
 done
 
 
-########################## Copyrights and options ##############################
-$ECHO "${green}$BIN v$version : Copyright (C) 2013-2014 Lilian BESSON"
-$ECHO "This is free software, and you are welcome to redistribute it under certain conditions."
-$ECHO "This program comes with ABSOLUTELY NO WARRANTY; for details see http://perso.crans.org/besson/LICENSE ${white}"
-
-
 ##################### Auto detection of needed softwares #######################
 # $ECHO " Auto detection of needed softwares...."
 # # Detection of gs
@@ -203,7 +203,7 @@ $ECHO "This program comes with ABSOLUTELY NO WARRANTY; for details see http://pe
 # else
 
 icon="-i $(ls -H /usr/share/icons/*/*/*/*pdf*svg | uniq | shuf | head -n1) "
-NOTIFY="notify-send -t 500 $icon $BIN"
+NOTIFY="notify-send -t 10000 $icon $BIN"
 
 # fi
 
@@ -366,11 +366,6 @@ PDFCompress ()
 	 $ECHO "$red Error:$white meta data for $i not re-written from /tmp/$i.meta :(" > /dev/stderr
           fi
 
-          if [ "$notify" = "true" ]; then
-           $ECHO "$green - notify-send: notifying..."
-           $NOTIFY "The file $i have been compressed.\nSize before : $(du "/tmp/$i" 2>/dev/null | grep -o -m 1 "^[0-9][,0-9]*[KMG]\?")\nSize After : $(du "$i" 2>/dev/null | grep -o -m 1 "^[0-9][,0-9]*[KMG]\?")"
-          fi
-
           if [ "$sign" = "true" ]; then
            gpg --quiet --armor --detach-sign --yes --no-batch --use-agent "$i"
           fi;
@@ -382,13 +377,18 @@ PDFCompress ()
         fi;
 
         # Check that the file's size have been really reduced.
-        size_old=$( du -b /tmp/"$i" | grep -v "^[0-9][0-9]*" )
-        size_new=$( du -b "$i" | grep -v "^[0-9][0-9]*" )
+        sizeold=$(/usr/bin/du -b "/tmp/$i" 2>/dev/null | grep -o -m 1 "^[0-9][,0-9]*")
+        sizenew=$(/usr/bin/du -b "$i" 2>/dev/null | grep -o -m 1 "^[0-9][,0-9]*")
 
-        if (( size_old > size_new )); then
-            $ECHO "\n${red} Maybe the compression failed, because \n - the new file (${i} of size ${size_new}) seems larger than \n - the old one (/tmp/${i} of size ${size_old}). ${white}"
+        if (( sizeold < sizenew )); then
+            $ECHO "\n${red} ${neg}Maybe${Neg} the compression failed, because \n - the new file (${i} of size ${sizenew} bytes) seems larger than \n - the old one (/tmp/${i} of size ${sizeold} bytes). ${white}" > /dev/stderr
         else
-            $ECHO "\n${green} Maybe the compression worked, because \n - the new file (${i} of size ${size_new}) seems smaller than \n - the old one (/tmp/${i} of size ${siz_old}). ${white}"
+            $ECHO "\n${green} The compression (${neg}probably${Neg}) worked, because \n - the new file (${i} of size ${sizenew} bytes) seems smaller than \n - the old one (/tmp/${i} of size ${sizeold} bytes). ${white}"
+            # Notify the user if the compression worked
+            if [ "$notify" = "true" ]; then
+             $ECHO "$green - notify-send: notifying..."
+             $NOTIFY "<b>Success :)</b>\n The file $i have been compressed.\n Sizes: <i>before</i> : $(/usr/bin/du -kh "/tmp/$i" 2>/dev/null | grep -o -m 1 "^[0-9][,0-9]*[KMG]*") ---> and <i>after</i> : $(/usr/bin/du -kh "$i" 2>/dev/null | grep -o -m 1 "^[0-9][,0-9]*[KMG]*")"
+            fi
         fi
 
     done;
