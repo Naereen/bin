@@ -51,9 +51,21 @@ case "$1" in
 esac
 
 autotexf() {
+    # Back up the original directory, because we have to go back to it after
+    oridir="$(pwd)"
+
     f="`basename $1`"
+    dossier="`dirname $1`"
+    # If PDF, find the appropriate TeX source
+    f="${f//.pdf/.tex}"
+    # If .tex was not there, add it
     f="${f%.tex}.tex"
-    p="`pwd`"
+    # Special hack. DURTY : FIXME !
+    if [ "${dossier:0:6}" = "/home/" ]; then
+        p="$(pwd)/"
+    else
+        p="$(pwd)/${dossier}"
+    fi
 
     if [ ! -f "$p"/"$f" ]; then
         echo -e "${red}The file ${cyan}${u}'$p/$f'${U}${red} is NOT HERE : I skip it...${white}"
@@ -62,14 +74,23 @@ autotexf() {
 
     echo -e "Working with $u'$f'$U on $blue'$p'$white." | tee -a /tmp/autotex.log
 
-    title="$(grep "%autotex% Tit[rl]e: " "${f}")"
-    title="${title#%autotex% Tit[rl]e: }"
+    title="$(grep "%autotex% Titre: " "${p}/${f}")"
+    title="${title#%autotex% Titre: }"
+    if [ "X$title" = "X" ]; then
+        title="$(grep "%autotex% Title: " "${p}/${f}")"
+        title="${title#%autotex% Title: }"
+    fi
     echo -e "Title: $green${title}$white" | tee -a /tmp/autotex.log
 
-    scale="$(grep "%autotex% Scale: " "${f}")"
+    scale="$(grep "%autotex% Scale: " "${p}/${f}")"
     scale="${scale#%autotex% Scale: }"
     scale="${scale:-0.70}"
     echo -e "Scale: $green${scale}$white" | tee -a /tmp/autotex.log
+
+    policesize="$(grep "%autotex% PoliceSize: " "${p}/${f}")"
+    policesize="${policesize#%autotex% PoliceSize: }"
+    policesize="${policesize:-11pt}"
+    echo -e "PoliceSize: $green${policesize}$white" | tee -a /tmp/autotex.log
 
     # Try to change the template regarding the language
     echo -e "Try to change the template regarding the language..." | tee -a /tmp/autotex.log
@@ -89,6 +110,7 @@ autotexf() {
     # There you can perform any automatic transformation to ~/$template !
     cat $HOME/$template \
     	| sed s/"scale=[0-9\.]*"/"scale=${scale}"/ \
+        | sed s/"11pt"/"${policesize}"/ \
     	| sed s#MonTitreAChangerViaAutoTeX#"${title}"# \
     	| sed s/MyFileNameToChangeWithAutoTex/"${f%.tex}"/ \
     	> /tmp/$template
@@ -152,7 +174,7 @@ autotexf() {
     fi
 
     # We have to go back !
-    cd "${p}"
+    cd "${oridir}"
 }
 
 #######
