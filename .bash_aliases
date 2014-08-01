@@ -1119,6 +1119,8 @@ function PROXY () {
   esac
 }
 
+alias Success='zenity --info --title="Succés" --window-icon=success --timeout=120 --text="Opération réussie !\n La commande était : <i>$(history | tail -n1 | sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')</i>."'
+
 ##############################################################################
 #	(c) 2011-2014 Lilian BESSON
 #		ENS de Cachan & Cr@ns

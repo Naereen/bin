@@ -267,7 +267,15 @@ PDFCompress ()
     argt=""
 
     for i in "$@"; do
+     # Make it work with file containing dirnames
+     fichier="`basename $i`"
+     dossier="`dirname $i`"
+     fichier="${fichier%.pdf}.pdf"
+     pdosser="`pwd`/${dossier}"
+
      $ECHO "${reset}${white}${u}$i${U}"
+     $ECHO "${reset}${white}The dirname part is ${u}$dossier${U} and the basename part is ${u}$fichier${U}."
+
 
       if [ -f "$i" ] || [ -f "${i%.pdf}.pdf" ]; then
        $ECHO "${white}${Black}For $u$i$U${reset}:\
@@ -302,7 +310,13 @@ PDFCompress ()
     for i in $arg; do
         $ECHO "${blue}For the file ${green}$i${white}...";
 
-        meta="/tmp/${i}.meta"
+        # Make it work with file containing dirnames
+        fichier="`basename $i`"
+        dossier="`dirname $i`"
+        fichier="${fichier%.pdf}.pdf"
+        pdosser="`pwd`/${dossier}"
+
+        meta="/tmp/${fichier}.meta"
 
         if [ "$keep" = "true" ]; then
          [ -f "$meta" ] && rm -fv "$meta"
@@ -360,10 +374,10 @@ PDFCompress ()
           /bin/cp -f -v "$i"~ "$i";
 
           if [ "$keep" = "true" ]; then
-         ( pdftk "$i"~ update_info /tmp/"$i".meta output "$i" \
-           && $ECHO "$green meta data for $i well re-written from /tmp/$i.meta :)$reset$white"
+         ( pdftk "$i"~ update_info "$meta" output "$i" \
+           && $ECHO "$green meta data for $i well re-written from ${meta} :)$reset$white"
          ) || \
-	 $ECHO "$red Error:$white meta data for $i not re-written from /tmp/$i.meta :(" > /dev/stderr
+	 $ECHO "$red Error:$white meta data for $i not re-written from ${meta} :(" > /dev/stderr
           fi
 
           if [ "$sign" = "true" ]; then

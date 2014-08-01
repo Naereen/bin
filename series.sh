@@ -98,15 +98,15 @@ currents=`find . -type f -iname current_'*'`
 for cu in ${currents:-$dflt}; do
 
  echo -e "${blue}I found '$magenta$cu$white' as possible ${black}current_$white file."
- 
+
  cu2=`echo $cu | tr A-Z a-z`
  cu2=${cu2#./current_}
  # dont care, lowercase every letters
  echo -e "sSSeEE	---> $u$cu2$U"
- 
+
  d=${cu2#s}; d=${d%e[0-9]*}
  echo -e "Season :	$d"
- 
+
  e=${cu2#s[0-9]*e}
  #echo "e=$e"
  e=${e#0*}
@@ -158,12 +158,17 @@ for cu in ${currents:-$dflt}; do
 
  [ "0$possibles" = "0" ] && \
   ( echo -e "${red} Error: $"possibles" is empty: no next files for this $black$current_$white file." ; exit 3 )
- 
+
  echo -e "---> ${blue}I found '${magenta}$possibles$white' as possible next episode(s)."
 
  # meta=`cat $cu`
  # [ 0"$meta" = "0" ] && echo -e "${reset}No time start data in $magenta$cu$reset... Starting from the beginning.$reset$white"
- 
+
+ # PROPOSAL: on pourrait sauvegarder la position de la lecture, afin de pouvoir reprendre exactement là où on en était.
+ # À utiliser: format dernierFichierLu.1h02m23s.position
+ # ==> 1*3600 + 02*60 + 23 = 3743s
+ # ==> vlc --start-time 3743 dernierFichierLu.avi
+
  echo "Playing..."
  vlc --fullscreen --no-random --play-and-exit --quiet "$possibles" 2>/tmp/series.sh.log
  echo "Played."
