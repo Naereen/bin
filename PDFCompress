@@ -63,8 +63,8 @@ sign="false"
 quiet="-q"
 # To control the use of notify-send. By default, use it.
 notify="true"
-# To control the use of zenity. By default, use it.
-zenity="true"
+# To control the use of zenity. By default, do not use it.
+zenity="false"
 
 icon=""
 NOTIFY=""

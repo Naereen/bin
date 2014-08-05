@@ -1121,6 +1121,12 @@ function PROXY () {
 
 alias Success='zenity --info --title="Succés" --window-icon=success --timeout=120 --text="Opération réussie !\n La commande était : <i>$(history | tail -n1 | sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')</i>."'
 
+# Experimental Shortcuts
+alias a='autotex'
+alias p='PDFCompress'
+alias f='firefox'
+alias e='evince'
+
 ##############################################################################
 #	(c) 2011-2014 Lilian BESSON
 #		ENS de Cachan & Cr@ns
