@@ -54,8 +54,8 @@ makenew_zenity() {
 	echo -e "${green}${old}${white}"
 
 	# pick the new one (with Zenity)
-	new=`zenity --entry --title="${USER}@${HOSTNAME} : nouveau message du jour ?" --window-icon=question --text="Renseignez un nouveau message du jour.\n\
- L'ancien est <b>${old}</b>." --entry-text="$old $1"`
+	new=`zenity --info --title="${USER}@${HOSTNAME} : nouveau message du jour ?" --window-icon=question --text="Renseignez un nouveau message du jour.\n\
+ L'ancien est : <i>${old}</i>." --entry-text="$old $1"`
 	# Erase the old one
 	echo -e "$new" > $HOME/motd
 
