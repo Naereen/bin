@@ -61,7 +61,7 @@ lnc() {
 alias lD='find . -maxdepth 1 -type d'
 
 alias ll='/bin/ls --color=auto -larth'
-alias lt='/bin/ls --color=auto -lSrh'
+alias lt='/bin/ls --color=auto -lSrha'
 alias ltime='/bin/ls --color=auto -time-style=+%D | grep `date +%D`'
 alias lx='/bin/ls --color=auto -lXB' # sort by extension
 alias lk='/bin/ls --color=auto -lSr' # sort by size
