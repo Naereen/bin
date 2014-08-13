@@ -28,7 +28,7 @@ for i in ${all}; do
 done
 
 # Change content
-all=`find . -type f -iname '*'.mp3 -o -iname '*'.avi -o -iname '*'.mkv -o -iname '*'.wma -o -iname '*'.srt -o -iname '*'.png -o -iname '*'.jpg -o -iname '*'.jpeg -o -iname '*'.txt`
+all=`find . -type f -iname '*'.mp3 -o -iname '*'.avi -o -iname '*'.mkv -o -iname '*'.wma -o -iname '*'.srt -o -iname '*'.png -o -iname '*'.jpg -o -iname '*'.jpeg -o -iname '*'.txt -o -iname '*'.mp4`
 all="${all//' '/%20}"
 
 for i in ${all}; do
