@@ -720,7 +720,7 @@ alias Pull='clear; git gc && git pull && git gc'
 # alias Status='clear; git status'
 alias Commit='clear; git commit -m'
 alias Add='git add'
-alias Aggressive='gic gc --aggressive'
+alias Aggressive='git gc --aggressive'
 
 # For vrun:
 alias GetUri="vrun status | grep file | sed s/'( new input: '/''/ | sed s/' )'/''/"
