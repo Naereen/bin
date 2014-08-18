@@ -27,7 +27,7 @@
 #     only for MathJax flavored maths formulas, which are all copied in the .tex with escaped $ and { : \{ and \$ every where :(
 #
 #
-version='0.4'
+version='0.5'
 
 StrapDown2HTML() {
 	input="$(basename "$1")"
