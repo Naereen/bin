@@ -1,3 +1,4 @@
 #!/usr/bin/env /bin/bash
 echo "$USER launching Conky." &>> /tmp/Conky.tmp
+if [ $1 = "start" ]; then sleep 120s; fi
 conky -c ~/.ConkyWizardTheme/ConkyWizardTheme &>> /tmp/Conky.tmp
