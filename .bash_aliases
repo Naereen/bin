@@ -1,10 +1,9 @@
 #!/bin/bash
 # .bash_aliases for GNU Bash v4+
 # (c) 2011-2014 Lilian BESSON
-#   ENS de Cachan & Cr@ns
-# http://www.dptinfo.ens-cachan.fr/~lbesson
 # http://perso.crans.org/besson
-#   On Bitbucket: http://bitbucket.org/lbesson/bin/src/master/.bash_aliases
+# On Bitbucket: http://bitbucket.org/lbesson/bin/src/master/.bash_aliases
+# http://www.dptinfo.ens-cachan.fr/~lbesson
 
 # A try with erase line.
 LS_ECHO()
@@ -126,22 +125,22 @@ alias rm='/bin/rm -vi'
 
 alias _cd_old='cd'
 CD() {
-p="`pwd`"
-p2="`pwd -P`"
-if [ "X$*" = "X" ]
-then
-    args="$HOME"
-else
-    args="$*"
-fi
-if [ "X$p" = "X$p2" ]
-then
-    echo -e "Vous ${yellow}quittez${white} le dossier ${blue}'$p'${white}.\n\tDirection ==> ${green}$args${white}"
-    _cd_old "$args"
-else
-    echo -e "Vous ${red}quittez${white} le dossier ${yellow}'$p'${white}.\n\t/!\\ Chemin ${red}relatif${white}, car le vrai est ${blue}'$p2'${white}.\n\tDirection ==> ${green}$args${white}"
-    _cd_old "$args"
-fi
+    p="`pwd`"
+    p2="`pwd -P`"
+    if [ "X$*" = "X" ]
+    then
+        args="$HOME"
+    else
+        args="$*"
+    fi
+    if [ "X$p" = "X$p2" ]
+    then
+        echo -e "Vous ${yellow}quittez${white} le dossier ${blue}'$p'${white}.\n\tDirection ==> ${green}$args${white}"
+        _cd_old "$args"
+    else
+        echo -e "Vous ${red}quittez${white} le dossier ${yellow}'$p'${white}.\n\t/!\\ Chemin ${red}relatif${white}, car le vrai est ${blue}'$p2'${white}.\n\tDirection ==> ${green}$args${white}"
+        _cd_old "$args"
+    fi
 }
 
 # Magie noire
@@ -158,9 +157,6 @@ mkdir() {
  echo -e "Le système va essayer de créer le dossier $@..."
  /bin/mkdir -p "$@"
 }
-
-# Use CP instead (http://besson.qc.to/bin/CP)
-alias scp='echo -e "La copie (par SSH) du/des fichier(s) demande(s) vers la cible demandee ${u}|ou|${U} depuis le serveur demande va debuter..." && scp'
 
 # Une commande /*geek*/ pour afficher une video en ASCII ... en console !
 alias VideoAscii='mplayer -vo caca'
@@ -225,14 +221,13 @@ export RLWRAP_HOME='/home/lilian/'
 export RLWRAP_EDITOR='nano --autoindent --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve'
 
 voirImage() {
- for image in "$@"; do
-    echo -e "L'image '${image}' va etre affichee en ASCII."
-    if [ -f "${image}" ]; then
-     convert "${image}" jpg:- | jp2a -b -f --colors -
-    fi;
- done
+    for image in "$@"; do
+        echo -e "L'image '${image}' va etre affichee en ASCII."
+        if [ -f "${image}" ]; then
+            convert "${image}" jpg:- | jp2a -b -f --colors -
+        fi;
+    done
 }
-
 # Ajout d'une bash complétion comme ça, en une ligne ! TODO: à étendre !
 complete -f -X '!*.@(gif|GIF|jp?(e)g|pn[gm]|PN[GM]|ico|ICO)' voirImage
 
@@ -462,8 +457,7 @@ GrepBalises() {
 # Super ack-grep
 alias agrep='ack-grep -ri -H --sort-files'
 
-# Other aliases
-# from http://abs.traduc.org/abs-5.3-fr/apk.html
+# Other aliases, from http://abs.traduc.org/abs-5.3-fr/apk.html
 
 # tailoring 'less'
 export PAGER=less
@@ -480,13 +474,6 @@ alias ocaml='xtitle "OCaml 4.01.0 on `pwd -P`. `date`" ; ocaml'
 alias python='xtitle "Python 2.7.6 on `pwd -P`. `date`" ; python'
 alias bpython='xtitle "BPython 2.7.6 on `pwd -P`. `date`" ; bpython'
 alias octave='xtitle ".: Octave (-q -V --traditional --persist) 3.2.4 on `pwd -P`. `date` -- $USER@$HOSTNAME :." ; octave --silent --verbose --traditional --persist'
-
-manTitle(){
-        for i ; do
-                xtitle The $(basename $1|tr -d .[:digit:]) manual
-                command man "$i"
-        done
-}
 
 #-----------------------------------
 # File & strings related functions:
@@ -608,9 +595,9 @@ function ii()   # get current host related info
 ###############################################################################
 # FOR Python
 export PYTHONSTARTUP="$HOME/.pythonrc"
+export PYTHONWARNINGS="ignore"
 #export PYTHONOPTIMIZE= # no optimization.
 #export PYTHONVERBOSE=  # no verbose adds.
-export PYTHONWARNINGS="ignore"
 
 # Many differents mutt :
 
@@ -639,8 +626,7 @@ alias CleanJPEG='exiftool -all= *.jpg *.png *.gif *.JPG .*.jpg .*.png .*.gif .*.
 
 ## A less for PDF files
 lessPDF() {
-for f in "$@"
-do
+for f in "$@"; do
     pdftotext -r 200 -layout -eol unix -enc UTF-8 -raw "$f" && less -f -J "${f%.pdf}.txt"
 done
 }
@@ -678,10 +664,10 @@ extract() {
     fi
 }
 
-# Experimental (marche désormais moins bien)
+# Experimental
 LatexFormula() {
  # tente d'afficher les arguments interpretes comme une formule LaTeX
- wget --quiet http://numberempire.com/equation.render?"$@" -O /tmp/LatexFormula_$$.jpg
+ wget --quiet http://numberempire.com/equation.render?"${@// /%20}" -O /tmp/LatexFormula_$$.jpg
  display -title "$@" /tmp/LatexFormula_$$.jpg
 }
 
@@ -697,18 +683,16 @@ alias GenP="base64 < /dev/urandom | tr -d +/ | head -c 18; echo"
 alias MoinsOwner='chmod -vR o-w ./ | tee /tmp/.script_droit_owner.log'
 alias MoinsGroup='chmod -vR g-w ./ | tee /tmp/.script_droit_group.log'
 alias MOINS='( MoinsOwner ; MoinsGroup) | grep -v symbolique | grep modif'
-alias M=MOINS
-
+alias M='MOINS'
 alias CheckPerms='find ./ -type d -perm /022'
-
 alias PlusROwner='chmod -vR o+r ./ | tee /tmp/.script_droit_Rowner.log'
 alias PlusRGroup='chmod -vR g+r ./ | tee /tmp/.script_droit_Rgroup.log'
 alias PLUS='( PlusROwner ; PlusRGroup) | grep -v symbolique | grep modif'
 
 ViewHTML() {
 for i in "$@"; do
- echo -e "Trying to see the file $i"
- curl --insecure "$i" 2> /tmp/ViewHTML.$$.log | html2text | pygmentize -f terminal -l rst
+    echo -e "Trying to see the file $i"
+    curl --insecure "$i" 2> /tmp/ViewHTML.$$.log | html2text | pygmentize -f terminal -l rst
 done
 }
 
@@ -745,19 +729,12 @@ GpgDecrypt(){ gpg --decrypt --yes --no-batch --use-agent "$@";}
 alias ssh-add='ssh-add -t 1800'
 
 # Pour que youtube-dl récupère seulement l'audio (en MP3)
-alias youtube-mp3='youtube-dl -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w'
 alias youtube='youtube-dl -o "%(title)s.%(ext)s" --extract-audio --console-title -k --audio-format=mp3 -w'
+alias youtube-mp3='youtube-dl -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w'
 alias youtube-video='youtube-dl -o "%(title)s.%(ext)s" --console-title -w'
-
-alias mp3to4=''
 
 # Pour recuperer les droits d'un fichier en octal
 alias getmod='/usr/bin/stat -c "%a"'
-
-# Pour trouver les pages des pdfs du dossier courrant
-alias pdfpages="find . -name '*.pdf' -exec pdfinfo {} \; | egrep '^Pages'"
-# et pour les sommer
-alias pdfpagessum='pdfpages | awk "{print \$2}" | paste -sd+ | bc'
 
 alias watch='watch -b -d -e'
 
@@ -769,41 +746,20 @@ DoForATime(){
  shift
  echo -e "${reset}Launching $@, in $PWD, for $TIMEOUT seconds only." | tee "$log"
  echo -e "$white"
- "$@"  & { sleep ${TIMEOUT}; eval 'kill -9 $!' &>> "$log"; }
+ "$@" & { sleep ${TIMEOUT}; eval 'kill -9 $!' &>> "$log"; }
 }
 
-# Remove all .git/ directories in subdir of the current dir.
-# Use carefully!
-rmGit() {
- for f in `find . -type d -name ".git"`; do
-    echo -e "$blue$u$f$U$white: delete ?"
-    read
-    rm -rvI "$f"
- done
- ret="`find . -type d -name \".git\" -print0`"
- if [ "0$ret" = "0" ]; then
-    echo -e "${green}DONE$white : all .git/ directory(ies) have been deleted!"
- else
-    echo -e "${red}ERROR$white : some .git/ directory(ies) are still there : $ret"
- fi
-}
-
-# A test to improve reactivity of Bash when used into a nautilus terminal ?
-pstree() {
- /usr/bin/pstree -a -h -s -c -U "$@"
-}
-PStree() {
- /usr/bin/pstree -a -h -s -c -U "$@" | less -r
-}
+pstree() { /usr/bin/pstree -a -h -s -c -U "$@"; }
+PStree() { /usr/bin/pstree -a -h -s -c -U "$@" | less -r; }
 
 sshtmux() {
-if [ "Z$TMUX" = "Z" ]; then
- echo -e "${blue}Using tmux on remote server.$white"
- ( /usr/bin/ssh -X -C -t "$@" "tmux -2 -q -u attach-session || tmux -2 -q -u" ) || ( alert ; echo -e "${red}Error, connection to $@ closed." )
-else
- echo -e "${red}Not using tmux on remote server. Unset \$TMUX to force this.$white"
- /usr/bin/ssh -X -C -t "$@" || ( alert ; echo -e "${red}Error, connection to $@ closed." )
-fi
+    if [ "Z$TMUX" = "Z" ]; then
+        echo -e "${blue}Using tmux on remote server.$white"
+        ( /usr/bin/ssh -X -C -t "$@" "tmux -2 -q -u attach-session || tmux -2 -q -u" ) || ( alert ; echo -e "${red}Error, connection to $@ closed." )
+    else
+        echo -e "${red}Not using tmux on remote server. Unset \$TMUX to force this.$white"
+        /usr/bin/ssh -X -C -t "$@" || ( alert ; echo -e "${red}Error, connection to $@ closed." )
+    fi
 }
 
 # Raccourcis avec ssh
@@ -819,38 +775,36 @@ alias elinks='elinks -verbose 0'
 
 # Short alias
 Lock(){
-echo -e "New use of Lock from `w`.\n\n Last: `last`.\n Date: `date`.\n\n" >> ~/.Lock.log
-if [ "X`pidof gnome-screensaver`" != "X0" ]; then
- gnome-screensaver-command --lock
- xset dpms force standby
-else
- cmatrix -b -f -s -u 9
- clear
- vlock --current
- xset dpms force standby
-fi
+    echo -e "New use of Lock from `w`.\n\n Last: `last`.\n Date: `date`.\n\n" >> ~/.Lock.log
+    if [ "X`pidof gnome-screensaver`" != "X0" ]; then
+        gnome-screensaver-command --lock
+        xset dpms force standby
+    else
+        cmatrix -b -f -s -u 9
+        clear
+        vlock --current
+        xset dpms force standby
+    fi
 }
 
 ################
 # Make shortcuts
 send_dpt(){
-( make send_dpt 2>&1 | tee /tmp/make.log ) ; ( grep "Pas de règle" /tmp/make.log >/dev/null && echo -e "${red}Error: send_dpt not found.${white}" ; alert ) || echo -e "${green}Success :)${white}"
+( make send_dpt 2>&1 | tee /tmp/make.log ) ; ( grep "Pas de règle" /tmp/make.log >/dev/null && echo -e "${red}Error: send_dpt not found.${white}" ; alert ) || echo -e "${green}Success in sending to zamok.crans.org :)${white}"
 }
 
 send_zamok(){
-( make send_zamok 2>&1 | tee /tmp/make.log ) ; ( grep "Pas de règle" /tmp/make.log >/dev/null && echo -e "${red}Error: send_zamok not found.${white}" ; alert ) || echo -e "${green}Success :)${white}"
+( make send_zamok 2>&1 | tee /tmp/make.log ) ; ( grep "Pas de règle" /tmp/make.log >/dev/null && echo -e "${red}Error: send_zamok not found.${white}" ; alert ) || echo -e "${green}Success in sending to ssh.dptinfo.ens-cachan.fr :)${white}"
 }
 
 randquote(){
- if [ -f "$quotes" ]
- then
-    shuf "$quotes" | head -n 1
- elif [ -f "$HOME/motd" ]
- then
-    cat ~/motd
- else
-    echo -e "No citation, ~/motd is not there, and \$quotes is not set."
- fi
+    if [ -f "$quotes" ];  then
+        shuf "$quotes" | head -n 1
+    elif [ -f "$HOME/motd" ];  then
+        cat ~/motd
+    else
+        echo -e "No citation, ~/motd is not there, and \$quotes is not set."
+    fi
 }
 
 ## RandQuote(){ zenity --title="Rand Quote" --timeout=30 --window-icon="~/.link.ico" --info --text="<big><b>`randquote | sed s_'--'_'</b>--\n<i>'_`</i></big>" }
@@ -862,49 +816,49 @@ alias CalendarRandQuote='google calendar add "`randquote`"'
 Nginx_Access() { watch tail -n 10 /var/log/nginx/access.log || alert; }
 Nginx_Error() { watch tail -n 10 /var/log/nginx/error.log || alert; }
 Nginx_Start() {
- echo -e "${blue} Last changes on ~/nginx.conf on local git repository :${reset}"
- git diff ~/nginx.conf
- echo -e "${blue} Last changes on ~/nginx.conf compared with /etc/nginx/nginx.conf :${reset}"
- diff ~/nginx.conf /etc/nginx/
- echo -e "${red} Copying ~/nginx.conf to /etc/nginx ...${reset}"
- sudo cp -i ~/nginx.conf /etc/nginx/
- p="$(pidof nginx)"
- if [ "X$p" = "X" ]; then
-    echo -e "${red} Starting nginx...${reset}"
-    sudo nginx
- else
-    echo -e "${red} Restarting nginx...${reset}"
-    sudo nginx -s reload
- fi
+    echo -e "${blue} Last changes on ~/nginx.conf on local git repository :${reset}"
+    git diff ~/nginx.conf
+    echo -e "${blue} Last changes on ~/nginx.conf compared with /etc/nginx/nginx.conf :${reset}"
+    diff ~/nginx.conf /etc/nginx/
+    echo -e "${red} Copying ~/nginx.conf to /etc/nginx ...${reset}"
+    sudo cp -i ~/nginx.conf /etc/nginx/
+    p="$(pidof nginx)"
+    if [ "X$p" = "X" ]; then
+        echo -e "${red} Starting nginx...${reset}"
+        sudo nginx
+    else
+        echo -e "${red} Restarting nginx...${reset}"
+        sudo nginx -s reload
+    fi
     echo -e "${red} PIDs or command line of ${cyan}${u}nginx${U}${reset} :"
     echo "$(pidof nginx)"
 }
 
 # With Munin
 Munin_Start() {
- echo -e "${blue} Last changes on ~/munin.conf on local git repository :${reset}"
- git diff ~/munin.conf
- echo -e "${blue} Last changes on ~/munin.conf compared with /etc/munin/munin.conf :${reset}"
- diff ~/munin.conf /etc/munin/
- echo -e "${red} Copying ~/munin.conf to /etc/munin ...${reset}"
- sudo cp -i ~/munin.conf /etc/munin/
- p="$(ps aux |grep "[a-z/]*perl.*munin[a-z-]*$")"
- if [ "X$p" = "X" ]; then
-    echo -e "${red} Starting munin...${reset}"
-    sudo service munin start
-    sudo service munin-node start
- else
-    echo -e "${red} Restarting munin...${reset}"
-    sudo service munin restart
-    sudo service munin-node restart
- fi
+    echo -e "${blue} Last changes on ~/munin.conf on local git repository :${reset}"
+    git diff ~/munin.conf
+    echo -e "${blue} Last changes on ~/munin.conf compared with /etc/munin/munin.conf :${reset}"
+    diff ~/munin.conf /etc/munin/
+    echo -e "${red} Copying ~/munin.conf to /etc/munin ...${reset}"
+    sudo cp -i ~/munin.conf /etc/munin/
+    p="$(ps aux |grep "[a-z/]*perl.*munin[a-z-]*$")"
+    if [ "X$p" = "X" ]; then
+        echo -e "${red} Starting munin...${reset}"
+        sudo service munin start
+        sudo service munin-node start
+    else
+        echo -e "${red} Restarting munin...${reset}"
+        sudo service munin restart
+        sudo service munin-node restart
+    fi
     echo -e "${red} PIDs or command line of ${cyan}${u}munin${U}${reset} :"
     echo "$(ps aux |grep "[a-z/]*perl.*munin[a-z-]*$")"
 }
 
 Munin_UpdateMunstrap(){
     cd ~/.local/etc/munin/munstrap/
-    # git pull
+    # git pull # disallow updating like this, because I did some changes in the theme.
     cdBack
 }
 
@@ -1000,13 +954,12 @@ alias a='autotex'
 alias p='PDFCompress'
 alias f='firefox'
 alias e='evince'
+alias s='clear ; git status | less -r'
 
 ##############################################################################
 # (c) 2011-2014 Lilian BESSON
-#   ENS de Cachan & Cr@ns
-# http://www.dptinfo.ens-cachan.fr/~lbesson
 # http://perso.crans.org/besson
-#   On Bitbucket:
-# http://bitbucket.org/lbesson/home/
+# On Bitbucket: https://bitbucket.org/lbesson/bin/src/master/.bash_aliases
+# http://www.dptinfo.ens-cachan.fr/~lbesson
 #
 # Put a blank line after to autorize echo "alias newalias='newentry'" >> ~/.bash_aliases
