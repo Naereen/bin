@@ -3,7 +3,7 @@
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Web version: http://besson.qc.to/bin/GenerateStatsMarkdown.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/GenerateStatsMarkdown.sh
-# Date: 18-08-2013
+# Date: 28-08-2013
 #
 # A small script to create a minimalistic Markdown status page for my machine,
 # available ocally at http://0.0.0.0/stats.html
@@ -11,7 +11,7 @@
 # Hack: this markdown page is using http://lbo.k.vu/md/ (StrapDown.js) to be a good-looking HTML page !
 #
 BIN=GenerateStatsMarkdown
-version=1.3
+version=1.4
 
 # StrapDownJS nice themes : cyborg united
 theme="${2:-united}"
@@ -59,22 +59,22 @@ uname -a | sed s/"x86_64 x86_64 x86_64"/x86_64/ >> "$dest"
 echo -e "</pre>\n\n## Informations générales (\`landscape-sysinfo | head --lines=-2 | grep -v \"^$\"\`)\n> <pre>" >> "$dest"
 landscape-sysinfo | head --lines=-3 | grep -v "^$" >> "$dest"
 
-echo -e "</pre>\n\n***\n\n## Utilisateurs connectés (\`w -h\`) *Normalement*, juste *lilian* !\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n***\n\n## [Utilisateurs connectés](lns_munin/localdomain/localhost.localdomain/users.html) (\`w -h\`) *Normalement*, juste *lilian* !\n> <pre>" >> "$dest"
 w -h >> "$dest"
 
 echo -e "</pre>\n\n## Adresse(s) IP\n> <pre>" >> "$dest"
 echo ${MY_IP:-"Not connected"} >> "$dest"
 
-echo -e "</pre>\n\n## Statut NGinx (\`nginx_status.sh\`)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## [Statut NGinx](lns_munin/localdomain/localhost.localdomain/index.html#nginx) (\`nginx_status.sh\`)\n> <pre>" >> "$dest"
 /home/lilian/bin/nginx_status.sh >> "$dest"
 
-echo -e "</pre>\n\n## Durée d'activité (\`uptime\`)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## [Durée d'activité](lns_munin/localdomain/localhost.localdomain/uptime.html) (\`uptime\`)\n> <pre>" >> "$dest"
 uptime >> "$dest"
 
-echo -e "\n\n***\n\n## Disques (\`df -h -T -l -t ext3 -t ext4 -t fuseblk\`)\n> <pre>" >> "$dest"
+echo -e "\n\n***\n\n## [Disques](lns_munin/localdomain/localhost.localdomain/df.html) (\`df -h -T -l -t ext3 -t ext4 -t fuseblk\`)\n> <pre>" >> "$dest"
 df -h -T -l -t ext3 -t ext4 -t fuseblk >> "$dest"
 
-echo -e "</pre>\n\n## Mémoire RAM et swap (\`free\`)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## [Mémoire RAM et swap](lns_munin/localdomain/localhost.localdomain/memory.html) (\`free\`)\n> <pre>" >> "$dest"
 free >> "$dest"
 
 echo -e "</pre>\n\n## Message du jour (\`cat \"${HOME}\"/motd | tail -n +2\`)\n> <pre>" >> "$dest"
