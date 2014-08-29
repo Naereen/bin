@@ -1,6 +1,6 @@
 # bitbucket.org/lbesson/bin
 
-## En français 
+## En français
 Ce dépôt contient plein de petits scripts, la plupart en Bash (*GNU Bash v4.2+*), certains en Python.
 
 #### Plus d'informations
@@ -15,7 +15,7 @@ Comme le reste de mes dépôts, tout est distribué sous les termes de la [Licen
 #### Copyleft ?
 Sauf contre-indications, tous les documents stockés dans ce dépôts sont (C) Lilian BESSON, 2011-2014.
 
----  
+---
 
 ## In English
 This repository is full of small programs and scripts, mostly written in Bash (*GNU Bash, v4.2+*), some in Python.
@@ -24,7 +24,7 @@ This repository is full of small programs and scripts, mostly written in Bash (*
 The page [bin.html](http://besson.qc.to/bin.html) presents a rapid overview of some of these scripts.
 I try to keep it up-to-date, and an English translation will *soon* be available !
 
-I aslo try to embed a small description of its purpose in every program, 
+I aslo try to embed a small description of its purpose in every program,
 and sometimes there is even details on which option you can give to the script !
 
 #### Licence ?
