@@ -215,7 +215,6 @@ GeneratejPlayer() {
 	cat ~/bin/generatejplayer/footer.html \
 	 | sed s{PATHTOBECHANGED{"$pathtobechanged"{ \
 	 >> index.html
-	# PATHTOBECHANGED
 
 	pathtobechanged="$(pwd)"
 	pathtobechanged="${pathtobechanged// /%20}"
@@ -257,7 +256,7 @@ for i in $targets; do
 	# Coloring the log.
 	cat "${direction}/generatejplayer.log" \
 		| sed s_"./"_"http://./"_ \
-		| sed s_"/home/lilian/Music/"_"http://127.0.0.1/music/"_ \
+		| sed s_"/home/lilian/Music/"_"http://0.0.0.0/music/"_ \
 		| ansi2html -a \
 		| sed s_"http://./"_"./"_ \
 		| sed s_"http://./"_"./"_ \

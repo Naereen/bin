@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 #
-# __author__ = 'Lilian BESSON'
-# __email__ = 'Lilian.BESSON[AT]ens-cachan[DOT]fr'
-# __date__ = '06-12-2013'
+# Author: Lilian BESSON
+# Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
+# Date: 31-04-2013
+# Web version: http://besson.qc.to/bin/generateglisse.sh
+# Web version (2): https://bitbucket.org/lbesson/bin/src/master/generateglisse.sh
 #
-# Auto generate an index.html to show photos with glisse.js
+# Auto generate an 'index.html' page to show photos with glisse.js
 # FUTUR: use http://dimsemenov.com/plugins/magnific-popup/documentation.html#gallery instead, seems better.
 #
 # A demo is here : http://besson.qc.to/generateglisse.sh
 # Last version is here : http://besson.qc.to/bin/generateglisse.sh
+# with stylesheets and templates is here : http://besson.qc.to/bin/generateglisse/
 #
-version='0.7'
+version='1.0'
 
 GenerateGlisse() {
 	# Go to the directory.
@@ -28,6 +31,7 @@ GenerateGlisse() {
 	cat ~/bin/generateglisse/header.html \
 	 | sed s{VERSION{"$version"{ \
 	 | sed s{CURRENTDIR{"$currentdir"{ \
+	 | sed s{VERSION{"$version"{ \
 	 | sed s_DATE_"`date +\" %d %b %Y, à %Hh:%Mm:%Ss\"`"_ > index.html
 
 	# Listing of sub directories (without .. ou .)
@@ -56,7 +60,7 @@ GenerateGlisse() {
 		 	nombrephotos=`echo $subphotos | grep -o "\(jpg\|JPG\|png\|PNG\|gif\|GIF\|jpeg\|JPEG\)" | wc -l`
 		 	subdirs=`find "${dossier}" -maxdepth 1 -type d -iname '*'[A-Za-z]'*' 2>/dev/null`
 		 	nombredirs=`echo $subdirs | grep -o ./ |wc -l`
-		 	nombredirs=$(( nombredirs - 1 )) # does not count itself ? FIXME
+		 	nombredirs=$(( nombredirs / 2 )) # does not count itself ? FIXME
 
 		 	# Adapt what to print according to the number of subdirs and photos
 			if (( nombrephotos > 1 )); then
@@ -91,7 +95,7 @@ GenerateGlisse() {
 
 	# Listing of photos (and gallery) (with glisse.js)
 	targets=`find . -maxdepth 1 -type f -iname '*'.jpg -o -iname '*'.png -o -iname '*'.gif -o -iname '*'.jpeg 2>/dev/null`
-	
+
 	if [ "X${targets//'%20'/}" != "X" ]; then
 		targets="${targets//' '/%20}"
 		targets="${targets//'&'/&amp;}"
@@ -135,11 +139,11 @@ GenerateGlisse() {
 
 			# Try to find the date of the photo. title=2013-11-19_14-06-41_657
 			# Could use exiftool, but it is REALLY too slow !
-			
+
 			# jour=`echo -e "${title}" | grep -o "20[0-9][0-9]-[0-9][0-9]-[0-9][0-9]"`
 			jour=${title:0:10}
 			#jour=${jour:-2013-11-30}
-			
+
 			# heure=`echo -e "${title}" | grep -o "_[0-9][0-9]-[0-9][0-9]-[0-9][0-9]_" | tr - : `
 			heure=${title:10:9}
 			heure=${heure//-/:}
@@ -155,13 +159,16 @@ GenerateGlisse() {
 			else
 				echo -e "<li><img width=\"192\" height=\"144\" class=\"glisse-lazy rotation\" angle=\"0\" title=\"« ${title} »   (${i}, ${size} px, ${filesize})\" data-original=\"${i}\">« ${title} »</li>" >> index.html
 				echo -e "  Adding ${u}${i}${U}, title: ${blue}${title}${white}, size: ${magenta}${size}${white}, filesize: ${cyan}${filesize}${white}"
-			fi		
+			fi
 		done
 		echo -e "</ul><br><hr>" >> index.html
 	fi
-
-	# Footer
-	cat ~/bin/generateglisse/footer.html >> index.html
+	# Footer starts with a JS line and then a closed </script> balise
+	pathtobechanged="$(pwd)"
+	pathtobechanged="${pathtobechanged#/home/lilian/Music/}"
+	cat ~/bin/generateglisse/footer.html \
+	 | sed s{PATHTOBECHANGED{"$pathtobechanged"{ \
+	 >> index.html
 
 	echo -e "index.html have been generated in ${magenta}`pwd`${white}."
 
@@ -175,8 +182,25 @@ echo -e "${blue}${targets}${white}" | less -r
 
 # TO find every concerned directory
 for i in $targets; do
-	 echo -e "${blue}${i//'%20'/ }${white}"
-	 GenerateGlisse "${i//'%20'/ }"
+	direction=${i//'%20'/ }
+	echo -e "For the directory ${blue}'${direction}'${white}........."
+
+	( time GenerateGlisse "${direction}" ) 2>&1 | tee "${direction}/generateglisse.log"
+	grep -a "^real[0-9a-z \t\.]*" "${direction}/generateglisse.log" > "${direction}/generateglisse.time"
+	# Coloring the log.
+	cat "${direction}/generateglisse.log" \
+		| sed s_"./"_"http://./"_ \
+		| sed s}"/home/lilian/photos/"}"http://0.0.0.0/lns_photos/"} \
+		| ansi2html -a \
+		| sed s_"http://./"_"./"_ \
+		| sed s_"http://./"_"./"_ \
+		| sed s_"http://.http://"_"http://"_ \
+		| sed s_"http://.http://"_"http://"_ \
+		> "${direction}/generateglisse.html"
+	cp "${direction}/index.html" "${direction}/index.html~"
+	cat "${direction}/index.html~" \
+		| sed s_TIMESPENT_"`cat \"${direction}/generateglisse.time\"`"_ \
+		> "${direction}/index.html"
 done
 
 # END
