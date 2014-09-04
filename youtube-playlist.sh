@@ -24,7 +24,7 @@ echo -e "${white}Trying to download the playlist : '${blue}${1}${white}'..."
 wget "${1}" -O "${out}" || wget "https://www.youtube.com/playlist?list=${1}" -O "${out}"
 
 # Then parsing it and downloading every songs
-number=$(for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" /tmp/l.html  | sed s/'watch?v='// | uniq); do echo "$j"; done | wc -l)
+number=$(for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" "${out}"  | sed s/'watch?v='// | uniq); do echo "$j"; done | wc -l)
 echo -e "I found ${green}${number}${white} different songs in this playlist, is it correct ?"
 echo -e "(${magenta}[Enter]${white} to continue, ${magenta}[Ctrl+C]${white} to cancel)."
 read || exit
@@ -32,7 +32,7 @@ read || exit
 # Ask for confirmation
 echo -e "Just to be sure, I am showing you the downloading commands I will execute : (${magenta}[Enter]${white} to see)."
 read || exit
-for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" /tmp/l.html  | sed s/'watch?v='// | uniq); do
+for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" "${out}"  | sed s/'watch?v='// | uniq); do
     echo -e youtube-dl -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w "$j"
 done
 
@@ -40,7 +40,7 @@ echo -e "Are you OK with these downloading commands ? (${magenta}[Enter]${white}
 read || exit
 
 # Create the directory
-title=$(grep "<title>" /tmp/l.html | head | sed s/"<title>"// | sed s/"^[ ]*"//)
+title=$(grep "<title>" "${out}" | head | sed s/"<title>"// | sed s/"^[ ]*"//)
 echo -e "Apparently, the playlist's title is : '${yellow}${title}${white}'. Are you OK with it ? (${magenta}[Enter]${white} if OK)."
 read || exit
 
@@ -55,7 +55,7 @@ echo -e "Now, I am in the directory ${blue}`pwd`${white}, and this is good."
 
 # Start downloading !
 echo -e "OK, so I can start the downloading command I showed you : (${magenta}[Enter]${white} to see)"
-for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" /tmp/l.html  | sed s/'watch?v='// | uniq); do
+for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" "${out}"  | sed s/'watch?v='// | uniq); do
     youtube-dl -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w "$j"
 done
 
