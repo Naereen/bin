@@ -192,6 +192,8 @@ iocaml() {
     /usr/bin/ocaml graphics.cma < "$i" 2>&1 | tee -a /tmp/iocaml.log | sed s{//toplevel//{"$i"{ | pygmentize -l ocaml -P encoding=`file -b --mime-encoding "$i"`
  done
 }
+# Reference for this is https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
+complete -o plusdirs -f -X '!*.ml' iocaml leditocaml leocaml rlocaml mocaml mocaml_noANSI
 
 ########################################################################
 # Outil pygmentize : permet une coloration syntaxique dans la console
@@ -229,7 +231,7 @@ voirImage() {
     done
 }
 # Ajout d'une bash complétion comme ça, en une ligne ! TODO: à étendre !
-complete -f -X '!*.@(gif|GIF|jp?(e)g|pn[gm]|PN[GM]|ico|ICO)' voirImage
+complete -o plusdirs -f -X '!*.@(gif|GIF|jp?(e)g|pn[gm]|PN[GM]|ico|ICO)' voirImage
 
 xtitle() {
  echo -e "${reset}Setting title to $@..." >> /tmp/xtitle.log
@@ -263,6 +265,7 @@ alias Byobu='byobu -A -D -RR -fa -h 150000 -l -O -U'
 alias Byobu-tmux='byobu-tmux -2 -q -u'
 
 alias py2html='pyhtmlizer --stylesheet=http://perso.crans.org/besson/pyhtmlizer.css'
+complete -o plusdirs -f -X '!*.py' py2html
 
 # Ecrans de veilles
 alias MatrixVeille='cmatrix -b -f -s -u 9'
@@ -355,6 +358,7 @@ TEX2PDF() {
  out="$(grep -m1 -o "Output written on .*.pdf" /tmp/tex2pdf.log | grep -o "[^ ]*.pdf")" ;
  [ "$(PDFCompress --help)" != "" ] && PDFCompress "$out"
 }
+complete -o plusdirs -f -X '!*.@(tex|pdf)' tex2pdf TEX2PDF
 
 # N'afficher que les processus lances par l'utilisateur courant dans htop.
 alias Htop='htop -u $USER'
@@ -469,11 +473,11 @@ export LESSOPEN='|/usr/bin/lesspipe.sh %s 2>&-'
 export LESS=' -r -F -B -i -J -w -W -~ -K -d -w -W -m -X -u -r'
 ###-P"%t?%f%f :stdin .?pb%pb\%:?lbLine %lb:?bbByte %bb:-..." -e'
 
-# Wrapper around current interpreters;
-alias ocaml='xtitle "OCaml 4.01.0 on `pwd -P`. `date`" ; ocaml'
-alias python='xtitle "Python 2.7.6 on `pwd -P`. `date`" ; python'
-alias bpython='xtitle "BPython 2.7.6 on `pwd -P`. `date`" ; bpython'
-alias octave='xtitle ".: Octave (-q -V --traditional --persist) 3.2.4 on `pwd -P`. `date` -- $USER@$HOSTNAME :." ; octave --silent --verbose --traditional --persist'
+# # Wrapper around current interpreters;
+# alias ocaml='xtitle "OCaml 4.01.0 on `pwd -P`. `date`" ; ocaml'
+# alias python='xtitle "Python 2.7.6 on `pwd -P`. `date`" ; python'
+# alias bpython='xtitle "BPython 2.7.6 on `pwd -P`. `date`" ; bpython'
+# alias octave='xtitle ".: Octave (-q -V --traditional --persist) 3.2.4 on `pwd -P`. `date` -- $USER@$HOSTNAME :." ; octave --silent --verbose --traditional --persist'
 
 #-----------------------------------
 # File & strings related functions:
@@ -567,8 +571,7 @@ function swap()         # swap 2 filenames around
         mv $TMPFILE "$2"
 }
 
-function my_ps()
-{ ps $@ -u $USER -o pid,%cpu,%mem,bsdtime,command ; }
+function my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,bsdtime,command ; }
 
 function pp()
 { my_ps f | awk '!/awk/ && $0~var' var=${1:-".*"} ; }
@@ -631,7 +634,7 @@ for f in "$@"; do
 done
 }
 
-# FIXME
+# FIXME ?
 eval "$(/bin/lesspipe)"
 
 # Man visual
@@ -691,7 +694,7 @@ alias PLUS='( PlusROwner ; PlusRGroup) | grep -v symbolique | grep modif'
 
 ViewHTML() {
 for i in "$@"; do
-    echo -e "Trying to see the file $i"
+    echo -e "Trying to see the file at the address ${yellow}'${i}'${white}"
     curl --insecure "$i" 2> /tmp/ViewHTML.$$.log | html2text | pygmentize -f terminal -l rst
 done
 }
@@ -750,7 +753,6 @@ DoForATime(){
 }
 
 pstree() { /usr/bin/pstree -a -h -s -c -U "$@"; }
-PStree() { /usr/bin/pstree -a -h -s -c -U "$@" | less -r; }
 
 sshtmux() {
     if [ "Z$TMUX" = "Z" ]; then
@@ -868,7 +870,7 @@ export null="/dev/null"
 # Use it like 'send_.. ${Szam}bin/' or 'send_.. ~/Dropbox/'
 alias send_bashrc_bashalias='CP ~/.bashrc ~/.bash_aliases ~/.bashrc.asc ~/.bash_aliases.asc'
 
-# Shortcut. FIXME available ONLY if 'n' is not a command.
+# Shortcut. FIXME ? available ONLY if 'n' is not a command.
 function n() { nano "$@" || alert; }
 function t() { htop || alert; }
 
@@ -907,7 +909,9 @@ libreoffice() { ( /usr/bin/libreoffice "$@" || /usr/bin/abiword "$@" ) &> /dev/n
 
 # Better .rst → .html and .md → .html (simpler)
 alias rst2html='rst2html -v -t --no-generator -l fr --cloak-email-addresses '
+complete -o plusdirs -f -X '!*.rst' rst2html
 alias markdown='python -m markdown -e utf8 -v '
+complete -o plusdirs -f -X '!*.@(md|mdown|markdown|mkdown|txt)' markdown
 
 alias bd='. bd -s'
 
@@ -925,6 +929,7 @@ alias dropbox='( dropbox start ; alert ) &>/dev/null&'
 alias veille='date >> /tmp/veille.log ; ( gnome-session-quit --power-off || xfce4-session-logout || (Lock ; gksudo pm-suspend) )'
 alias veille2='date >> /tmp/veille.log ; Lock ; dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend'
 
+# With Linphone
 alias ETTelephoneMaison='linphone -c 0492202627@crans.org'
 Appeler() {
     echo -e linphone -c "$1"@crans.org
@@ -949,11 +954,15 @@ function PROXY () {
 
 alias Success='zenity --info --title="Succés" --window-icon=success --timeout=120 --text="Opération réussie !\n La commande était : <i>$(history | tail -n1 | sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')</i>."'
 
-# Experimental Shortcuts
+# Experimental Shortcuts with hand-written Bash completion
 alias a='autotex'
+complete -o plusdirs -f -X '!*.@(tex|pdf)' a
 alias p='PDFCompress'
+complete -o plusdirs -f -X '!*.@(tex|pdf)' p
+
 alias f='firefox'
 alias e='evince'
+complete -o plusdirs -f -X '!*.@(pdf|djvu|PDF)' e
 alias s='clear ; git status | less -r'
 
 ##############################################################################
