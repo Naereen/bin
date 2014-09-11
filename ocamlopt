@@ -14,7 +14,7 @@ GREP="grep --color=always --line-buffered"
 
 echo -e "${reset}ocamlopt on $u$black$*$reset"
 
-(/usr/bin/ocamlopt.opt -annot -g -principal -w "+a" $* 2>&1) \
+(/usr/bin/ocamlopt.opt -annot $@ 2>&1) \
  | $GREP -vP "^\s*((\[|\]|\(|\))\s*)+$" \
  | GREP_COLOR="01;35" $GREP -P "^File|$" \
  | GREP_COLOR="02;34" $GREP -P "\"[^\"]+\.ml\"|$" \
