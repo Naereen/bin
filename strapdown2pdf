@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # By: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 15-09-2014
+# Date: 16-09-2014
 # Web: http://besson.qc.to/bin/strapdown2pdf
 # Web2: http://lbesson.bitbucket.org/strapdown2pdf.html
 #
@@ -22,15 +22,16 @@
 # Licence: [GPLv3](http://besson.qc.to/LICENCE.html)
 #
 # Bugs / FIXMES:
-#  1. Hack something to preserve LaTeX code verbatim between $ $ in the HTML initial document
+#  1. I think it is way better now. Hack something to preserve LaTeX code verbatim between $ $ in the HTML initial document
 #     Example: http://javis/a/maths.html -> http://javis/a/maths.pdf works very well,
 #     only for MathJax flavored maths formulas, which are all copied in the .tex with escaped $ and { : \{ and \$ every where :(
 #
 #
 version='0.6'
+AUTOTEX="autotex batchmode"
 
 # $OPTARG can contain the argument of the option k (if specified with hvk: or hk:v for example)
-while getopts hv option
+while getopts hvi option
 do
 	 case $option in
 	 	v|version|-version)
@@ -46,12 +47,18 @@ do
 			echo -e "    ${yellow}-v${white}           to print just the version of strapdown2pdf (and quit)."
 			echo -e ""
 			echo -e "Options:"
+			echo -e "    ${yellow}-i|-interactive${white}	run PDFLaTeX with the interactive (errorstopmode) mode (default is batchmode)."
 			echo -e "    ${yellow}None yet !${white}"
 			echo -e ""
 			echo -e "strapdown2pdf v$version : Copyrights: (c) Lilian Besson 2011-2014."
 			echo -e "Released under the term of the GPL v3 Licence (more details on http://besson.qc.to/LICENSE.html)."
 			echo -e "In particular, strapdown2pdf is provided WITHOUT ANY WARANTY."
 			exit 0
+			;;
+		i|interactive|-interactive)
+			echo -e "${magenta}Using PDFLaTeX with '-interaction=errorstopmode' option (the compilation will pause if a problem occur).${white}"
+			AUTOTEX="autotex errorstopmode"
+			shift
 			;;
 	 esac
 done
@@ -84,55 +91,58 @@ StrapDown2HTML() {
 	grep -n "^<" "$input"
 
 	# Remove HTML only lines (typically, the first one and the 4 last ones),
-	grep -v "^<" "$input" > /tmp/"${name}".md
+	grep -v "^<" "$input" \
+		| sed s/'\\\\'/'\\\\\\\\'/g \
+		| sed s/'\\_'/'\\\\\\_'/g \
+		> /tmp/"${name}".md
 	# Now we have a pure Markdown file (at least we hope)
 
-	# # And a final line to say "Compiled from HTML/MarkDown with StrapDown.js to PDF with ..."
-	# # echo -e "\n\n\n----\n\n\hfill{}\n\n> > Compiled to *PDF* from a *HTML/Markdown* file (powered by [StrapDown.js](http://lbesson.bitbucket.org/md/)) with **[strapdown2pdf](http://lbesson.bitbucket.org/md/strapdown2pdf.html)** version ${version}.\n" >> /tmp/"${name}".md
-
 	# Convert md -> tex with lunamark (in /tmp/, as always)
-	# FIXME: here we should improve the LaTeX math code preservation
+	# FIXME: here we should also try to improve the LaTeX math code preservation
 	lunamark -Xhash_enumerators -t latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
 
 	# Because we are proud of this script
-	echo "%% LaTeX file automatically generated with [strapdown2pdf](http://besson.qc.to/bin/strapdown2pdf)" > "${name}".tex
+	echo "%% -*- coding:utf8; mode:latex -*-\n%% LaTeX file automatically generated with [strapdown2pdf](http://besson.qc.to/bin/strapdown2pdf)" > "${name}".tex
 	echo "%% from ${p}/${input}, the $(date)." >> "${name}".tex
 
 	# Adding two autotex specials comments,
 	# One for the title
-	# echo "%autotex% Titre: Leçons de "${name}" 2014" > "${name}".tex
 	title="$(grep -o -m 1 "<title>[^<]*</title>" "${input}" | grep -o ">.*<" | sed s/">"/""/ | sed s/"<"/""/)"
 	echo -e "${cyan}I found this as a possible title${white} : $u${title}$U." | tee -a /tmp/strapdown2pdf.log
 	# read
-
 	echo "%autotex% Titre: ${title}" >> "${name}".tex
 
 	# And one for the scale
 	echo "%autotex% Scale: 0.85" >> "${name}".tex
 
 	# We add the .tex file (it does NOT have any LaTeX headers)
-	# FIXME: you have to find a *simple* 'sed' command to remove espaced math LaTeX code in ${name}.tex ...
+	# Apparently, I have been able to remove all weird espaced math LaTeX code in the impute file ...
+
 	cat "${name}".tex~ \
 		| sed s/'\\\$'/$/g \
-		| sed s/'\\char92{}'/'\\'/g \
 		| sed s/'\\^'/'^'/g \
+		| sed s/'\\char92{}'/'\\'/g \
 		| sed s/'\\char62{}'/'>'/g \
 		| sed s/'\\char60{}'/'<'/g \
-		| sed s/'\($[^$]*\)\\{'/'\1{'/g \
-		| sed s/'\($[^$]*\)\\}'/'\1}'/g \
-		| sed s/'\($[^$]*\)\\{'/'\1{'/g \
-		| sed s/'\($[^$]*\)\\}'/'\1}'/g \
-		| sed s/'\($[^$]*\)\\_'/'\1_'/g \
-		| sed s/'\($[^$]*\)\\_'/'\1_'/g \
-		| sed s/'\($[^$]*\){}'/'\1'/g \
+		| sed s/'\\char126{}'/'\~'/g \
+		| sed s/'\\{'/'{'/g \
+		| sed s/'\\}'/'}'/g \
+		| sed s/'\\_'/'_'/g \
+		| sed s/'\\_{'/'_{'/g \
+		| sed s/'\\_'/'_'/g \
+		| sed s/'\\emph'/''/g \
+		| sed 's/\\&/\&/g' \
+		| sed s/'\^{}'/'^'/g \
 		| sed s/'\"\([^"]*\)\"'/'« \1 »'/g \
-		>> "${name}".tex
+		>> "${name}".tex || exit 16
+
+	# read
 
 	# And a final line to say "Compiled from HTML/MarkDown with StrapDown.js to PDF with ..."
 	echo -e "\n\n\n\n%% Added with strapdown2pdf\n\\\\hspace{\\\\fill}\n\\\\vfill{}\n\n\\\\hspace{\\\\fill}\\\\rule{.6\\\\linewidth}{0.4pt}\\\\hspace{\\\\fill}\n\n\\\\begin{quote}\n\\\\begin{footnotesize}\n (Proudly compiled to \\\\textbf{PDF} from a \\\\texttt{HTML/Markdown} file (powered by \\\\href{http://lbesson.bitbucket.org/md/}{\\\\texttt{StrapDown.js}}) with \\\\textbf{\\\\href{http://lbesson.bitbucket.org/md/strapdown2pdf.html}{strapdown2pdf}}, \\\\texttt{v${version}}.)\n\\\\end{footnotesize}\n\\\\end{quote}\n"  >> "${name}".tex
 
 	# Compile in batchmode it with autotex, to automatically add headers and packages stuff
-	autotex batchmode "${name}".tex
+	${AUTOTEX} "${name}".tex
 	# read
 
 	# Compress it (and even gpg sign it !)
@@ -152,7 +162,7 @@ StrapDown2HTML "${1}"
 shift
 for finput in "$@"; do
 	echo -e "\n\n************************************************************\n"
-	echo -e "${red}Generating to the next file..."
+	echo -e "${red}Generating the next file..."
 	StrapDown2HTML "${finput}"
 done
 
