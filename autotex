@@ -93,8 +93,8 @@ autotexf() {
     echo -e "PoliceSize: $green${policesize}$white" | tee -a /tmp/autotex.log
 
     # Try to change the template regarding the language
-    echo -e "Try to change the template regarding the language..." | tee -a /tmp/autotex.log
-    echo -e "We have f='${f}', and {f%.fr.tex}.fr.tex='${f%.fr.tex}.fr.tex', and {f%.en.tex}.en.tex='${f%.en.tex}.fr'..." | tee -a /tmp/autotex.log
+    echo -e "Try to change the template regarding the language (default template is '~/template.tex')..." | tee -a /tmp/autotex.log
+    echo -e "We have f='${f}', and {f%.fr.tex}.fr.tex='${f%.fr.tex}.fr.tex', and {f%.en.tex}.en.tex='${f%.en.tex}.en.tex'..." | tee -a /tmp/autotex.log
     langf="en"
     # template="template.en.tex"
     template="template.tex"

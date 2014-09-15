@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # By: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 01-05-2014
+# Date: 15-09-2014
 # Web: http://besson.qc.to/bin/strapdown2pdf
 # Web2: http://lbesson.bitbucket.org/strapdown2pdf.html
 #
@@ -27,38 +27,72 @@
 #     only for MathJax flavored maths formulas, which are all copied in the .tex with escaped $ and { : \{ and \$ every where :(
 #
 #
-version='0.5'
+version='0.6'
+
+# $OPTARG can contain the argument of the option k (if specified with hvk: or hk:v for example)
+while getopts hv option
+do
+	 case $option in
+	 	v|version|-version)
+			echo -e "strapdown2pdf $version"
+			exit 0
+			;;
+		h|help|-help)
+			echo -e "${green}strapdown2pdf${white} -help | [options]"
+			echo -e ""
+			echo -e "Print a StrapDown-powered web-page to a PDF document, using lunamark and autotex."
+			echo -e "Help:"
+			echo -e "    ${yellow}-h${white}           to print this help message (and quit)."
+			echo -e "    ${yellow}-v${white}           to print just the version of strapdown2pdf (and quit)."
+			echo -e ""
+			echo -e "Options:"
+			echo -e "    ${yellow}None yet !${white}"
+			echo -e ""
+			echo -e "strapdown2pdf v$version : Copyrights: (c) Lilian Besson 2011-2014."
+			echo -e "Released under the term of the GPL v3 Licence (more details on http://besson.qc.to/LICENSE.html)."
+			echo -e "In particular, strapdown2pdf is provided WITHOUT ANY WARANTY."
+			exit 0
+			;;
+	 esac
+done
 
 StrapDown2HTML() {
 	input="$(basename "$1")"
 	name="${input%.html}"
 
-	# Be sure we have a nice HTML file and not something else :)
+	# Be sure we have a nice HTML or Markdown file and not something else :)
 	if [ "${name}.html" != "${input}" ]; then
 		echo -e "${red}WARNING${white} The input file ${input} seems to not be a valid HTML file."
-		echo -e "${red}I prefer to quit NOW.${white}"
-		exit 5
+		if [ "${input%.md}.md" != "${input}" ]; then
+			echo -e "${red}WARNING${white} The input file ${input} seems to not be a Markdown either."
+			echo -e "${red}I prefer to quit NOW.${white}"
+			exit 5
+		else
+			echo -e "${green}COOL${white} The input file ${input} seems to be a valid MarkDown file : ${blue}good :)${white}."
+			name="${input%.md}"
+		fi
+	else
+		echo -e "${green}COOL${white} The input file ${input} seems to be a valid MarkDown file or StrapDown-powered HTML file : ${blue}good :)${white}."
 	fi
 	# To be even more paranoid, I could search the HTML file and be sure that StrapDown.js is indeed used, but pfiou I'm lazy.
 
 	p="$(pwd)"
 
-	echo -e "Working with $u$input$U on $blue$p$white." | tee -a /tmp/strapdown2pdf.log
+	echo -e "Working with $u$input$U on $blue$p${white}." | tee -a /tmp/strapdown2pdf.log
 
 	echo -e "${magenta}The following lines will be removed :${white}"
 	grep -n "^<" "$input"
-	# read
 
 	# Remove HTML only lines (typically, the first one and the 4 last ones),
 	grep -v "^<" "$input" > /tmp/"${name}".md
-	# cat "$input" | head -n -4 | tail -n +2 > /tmp/$*.md
 	# Now we have a pure Markdown file (at least we hope)
 
 	# # And a final line to say "Compiled from HTML/MarkDown with StrapDown.js to PDF with ..."
 	# # echo -e "\n\n\n----\n\n\hfill{}\n\n> > Compiled to *PDF* from a *HTML/Markdown* file (powered by [StrapDown.js](http://lbesson.bitbucket.org/md/)) with **[strapdown2pdf](http://lbesson.bitbucket.org/md/strapdown2pdf.html)** version ${version}.\n" >> /tmp/"${name}".md
 
 	# Convert md -> tex with lunamark (in /tmp/, as always)
-	lunamark -t latex -o "${name}".tex~ /tmp/"${name}".md
+	# FIXME: here we should improve the LaTeX math code preservation
+	lunamark -Xhash_enumerators -t latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
 
 	# Because we are proud of this script
 	echo "%% LaTeX file automatically generated with [strapdown2pdf](http://besson.qc.to/bin/strapdown2pdf)" > "${name}".tex
