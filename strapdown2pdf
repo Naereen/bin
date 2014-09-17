@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # By: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 16-09-2014
+# Date: 17-09-2014
 # Web: http://besson.qc.to/bin/strapdown2pdf
 # Web2: http://lbesson.bitbucket.org/strapdown2pdf.html
 #
@@ -27,11 +27,14 @@
 #     only for MathJax flavored maths formulas, which are all copied in the .tex with escaped $ and { : \{ and \$ every where :(
 #
 #
-version='0.6'
+version='0.6.2'
 AUTOTEX="autotex batchmode"
+quiet="false"
+sign="false"
+discrete="false"
 
 # $OPTARG can contain the argument of the option k (if specified with hvk: or hk:v for example)
-while getopts hvi option
+while getopts vhqdsi option
 do
 	 case $option in
 	 	v|version|-version)
@@ -48,12 +51,27 @@ do
 			echo -e ""
 			echo -e "Options:"
 			echo -e "    ${yellow}-i|-interactive${white}	run PDFLaTeX with the interactive (errorstopmode) mode (default is batchmode)."
-			echo -e "    ${yellow}None yet !${white}"
+			echo -e "    ${yellow}-q|-quiet${white}		run strapdown2pdf in quiet mode (no output at all, everything is redirected to ${magenta}/tmp/strapdown2pdf.log${white})."
+			echo -e "    ${yellow}-d|-discrete${white}		run strapdown2pdf is discrete mode, without adding any creditentials in the produced document."
+			echo -e "    ${yellow}-s|-sign${white}		sign the produce PDF document with GnuPG (thanks to PDFCompress)."
 			echo -e ""
 			echo -e "strapdown2pdf v$version : Copyrights: (c) Lilian Besson 2011-2014."
 			echo -e "Released under the term of the GPL v3 Licence (more details on http://besson.qc.to/LICENSE.html)."
 			echo -e "In particular, strapdown2pdf is provided WITHOUT ANY WARANTY."
 			exit 0
+			;;
+		q|quiet|-quiet)
+			quiet="true"
+			shift
+			;;
+		d|discrete|-discrete)
+			echo -e "${magenta}Using raw document without adding ${u}strapdown2pdf${U} and ${u}StrapDown${U}.js creditentials.${white}"
+			discrete="true"
+			shift
+			;;
+		s|sign|-sign)
+			sign="true"
+			shift
 			;;
 		i|interactive|-interactive)
 			echo -e "${magenta}Using PDFLaTeX with '-interaction=errorstopmode' option (the compilation will pause if a problem occur).${white}"
@@ -94,6 +112,13 @@ StrapDown2HTML() {
 	grep -v "^<" "$input" \
 		| sed s/'\\\\'/'\\\\\\\\'/g \
 		| sed s/'\\_'/'\\\\\\_'/g \
+		| sed s/'`_`'/'`\\\\_`'/g \
+		| sed s/'`\\`'/'`\\\\`'/g \
+		| sed s/'`\\\\`'/'`\\\\\\\\`'/g \
+		| sed s/'`\$`'/'`\\\\$`'/g \
+		| sed s/'`\$\$`'/'`\\\\$$`'/g \
+		| sed s/'`\*`'/'`\\*`'/g \
+		| sed s/'`\*\*`'/'`\\*\\*`'/g \
 		> /tmp/"${name}".md
 	# Now we have a pure Markdown file (at least we hope)
 
@@ -139,15 +164,19 @@ StrapDown2HTML() {
 	# read
 
 	# And a final line to say "Compiled from HTML/MarkDown with StrapDown.js to PDF with ..."
-	echo -e "\n\n\n\n%% Added with strapdown2pdf\n\\\\hspace{\\\\fill}\n\\\\vfill{}\n\n\\\\hspace{\\\\fill}\\\\rule{.6\\\\linewidth}{0.4pt}\\\\hspace{\\\\fill}\n\n\\\\begin{quote}\n\\\\begin{footnotesize}\n (Proudly compiled to \\\\textbf{PDF} from a \\\\texttt{HTML/Markdown} file (powered by \\\\href{http://lbesson.bitbucket.org/md/}{\\\\texttt{StrapDown.js}}) with \\\\textbf{\\\\href{http://lbesson.bitbucket.org/md/strapdown2pdf.html}{strapdown2pdf}}, \\\\texttt{v${version}}.)\n\\\\end{footnotesize}\n\\\\end{quote}\n"  >> "${name}".tex
+	if [ "$discrete" != "true" ]; then
+		echo -e "\n\n\n\n%% Added with strapdown2pdf\n\\\\hspace{\\\\fill}\n\\\\vfill{}\n\n\\\\hspace{\\\\fill}\\\\rule{.6\\\\linewidth}{0.4pt}\\\\hspace{\\\\fill}\n\n\\\\begin{quote}\n\\\\begin{footnotesize}\n (Proudly compiled to \\\\textbf{PDF} from a \\\\texttt{HTML/Markdown} file (powered by \\\\href{http://lbesson.bitbucket.org/md/}{\\\\texttt{StrapDown.js}}) with \\\\textbf{\\\\href{http://lbesson.bitbucket.org/md/strapdown2pdf.html}{strapdown2pdf}}, \\\\texttt{v${version}}.)\n\\\\end{footnotesize}\n\\\\end{quote}\n"  >> "${name}".tex
+	fi
 
 	# Compile in batchmode it with autotex, to automatically add headers and packages stuff
 	${AUTOTEX} "${name}".tex
-	# read
 
 	# Compress it (and even gpg sign it !)
-	# PDFCompress --sign "${name}".pdf
-	PDFCompress "${name}".pdf
+	if [ "$sign" = "true" ]; then
+		PDFCompress --sign "${name}".pdf
+	else
+		PDFCompress "${name}".pdf
+	fi
 
 	# Clean up local repertory
 	mv -vf "${name}".tex* /tmp/
@@ -157,13 +186,26 @@ StrapDown2HTML() {
 	# read
 }
 
+log="/tmp/strapdown2pdf.log"
 # And finally treat every arguments.
-StrapDown2HTML "${1}"
-shift
-for finput in "$@"; do
-	echo -e "\n\n************************************************************\n"
-	echo -e "${red}Generating the next file..."
-	StrapDown2HTML "${finput}"
-done
+if [ "$quiet" = "true" ]; then
+	echo -e "On "$(date)", strapdown2pdf is running on quiet mode." > "${log}"
+	echo -e "On quiet mode, arguments were '$@'." >> 2&>> "${log}"
+	StrapDown2HTML "${1}" >> 2&>> "${log}"
+	shift
+	for finput in "$@"; do
+		echo -e "\n\n---------------------------" >> 2&>> "${log}"
+		echo -e "Generating the next file..." >> 2&>> "${log}"
+		StrapDown2HTML "${finput}" >> 2&>> "${log}"
+	done
+else
+	StrapDown2HTML "${1}"
+	shift
+	for finput in "$@"; do
+		echo -e "\n\n---------------------------"
+		echo -e "${blue}Generating the next file..."
+		StrapDown2HTML "${finput}"
+	done
+fi
 
 ## END
