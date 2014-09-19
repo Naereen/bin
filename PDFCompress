@@ -90,29 +90,29 @@ do
    $ECHO ""
    $ECHO "Compress every PDF files in the current directory, using gs (part of the Ghostscript software)."
    $ECHO "Help:"
-   $ECHO "    ${yellow}--help$white           to print this help message (and quit)."
-   $ECHO "    ${yellow}--version$white           to print just the version of $BIN (and quit)."
+   $ECHO "    ${yellow}-h|--help$white           to print this help message (and quit)."
+   $ECHO "    ${yellow}-v|--version$white           to print just the version of $BIN (and quit)."
    $ECHO ""
    $ECHO "Options:"
-   $ECHO "    ${yellow}--quality QUALITY$white	setting the compression quality to QUALITY."
+   $ECHO "    ${yellow}-q|--quality QUALITY$white	setting the compression quality to QUALITY."
    $ECHO "              ${yellow}screen${white}	High compression, low quality. Choose this to get the best compression."
    $ECHO "              ${yellow}ebook${white}	High compression, mean quality. Maybe the best option :) (Default behavior)"
    $ECHO "              ${yellow}printer${white}	Mean compression, mean quality."
    $ECHO "              ${yellow}prepress${white}	Low compression, high quality."
    $ECHO ""
-   $ECHO "    ${yellow}--no-keep$white	 erase the meta data of all PDF files. By default $BIN keeps the meta data (requires pdftk)."
+   $ECHO "    ${yellow}-nk|--no-keep$white	 erase the meta data of all PDF files. By default $BIN keeps the meta data (requires pdftk)."
    $ECHO ""
-   $ECHO "    ${yellow}--sign$white	 sign all the new version of the PDF files, with GnuPG ($sign by default)."
+   $ECHO "    ${yellow}-s|--sign$white	 sign all the new version of the PDF files, with GnuPG ($sign by default)."
    $ECHO ""
-   $ECHO "    ${yellow}--no-compress$white	 do not compress the PDF files (default is to compress it)."
+   $ECHO "    ${yellow}-nc|--no-compress$white	 do not compress the PDF files (default is to compress it)."
    $ECHO ""
-   $ECHO "    ${yellow}--force$white	 force the compression process. Default is to compress only if it has not already been compressed (still a little experimental)."
+   $ECHO "    ${yellow}-f|--force$white	 force the compression process. Default is to compress only if it has not already been compressed (still a little experimental)."
    $ECHO ""
-   $ECHO "    ${yellow}--no-notify$white	 disable notification sent by notify-send (enabled by default)."
+   $ECHO "    ${yellow}-nn|--no-notify$white	 disable notification sent by notify-send (enabled by default)."
    $ECHO ""
-   $ECHO "    ${yellow}--no-zenity$white	 disable graphical progress window (with zenity) during the compression (enabled by default)."
+   $ECHO "    ${yellow}-nz|--no-zenity$white	 disable graphical progress window (with zenity) during the compression (enabled by default)."
    $ECHO ""
-   $ECHO "    ${yellow}--verbose$white	 increase verbosity of gs (quiet by default, option '-q')."
+   $ECHO "    ${yellow}-v|--verbose$white	 increase verbosity of gs (quiet by default, option '-q')."
    $ECHO ""
    $ECHO "$BIN v$version : Copyrights: (c) Lilian Besson 2011-2014."
    $ECHO "Released under the term of the GPL v3 Licence (more details on http://besson.qc.to/LICENSE.html)."
@@ -131,32 +131,32 @@ do
    shift
    keep="false"
   ;;
- --keep)
+ -k|--keep)
    $ECHO "${cyan} option keep found.${white}"
    shift
    keep="true"
   ;;
- --sign)
+ -s|--sign)
    $ECHO "${cyan} option sign found.${white}"
    shift
    sign="true"
   ;;
- --force)
+ -f|--force)
    $ECHO "${cyan} option force found.${white}"
    shift
    force="true"
   ;;
- --no-compress)
+ -nc|--no-compress)
    $ECHO "${cyan} option no-compress found.${white}"
    shift
    compress="false"
   ;;
- --no-notify)
+ -nn|--no-notify)
    $ECHO "${cyan} option no-notify found.${white}"
    shift
    notify="false"
   ;;
- --no-zenity)
+ -nz|--no-zenity)
    $ECHO "${cyan} option no-zenity found.${white}"
    shift
    zenity="false"
