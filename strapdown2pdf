@@ -127,18 +127,18 @@ StrapDown2HTML() {
 	lunamark -Xhash_enumerators -t latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
 
 	# Because we are proud of this script
-	echo "%% -*- coding:utf8; mode:latex -*-\n%% LaTeX file automatically generated with [strapdown2pdf](http://besson.qc.to/bin/strapdown2pdf)" > "${name}".tex
-	echo "%% from ${p}/${input}, the $(date)." >> "${name}".tex
+	echo -e "%% -*- coding:utf8; mode:latex -*-\n%% LaTeX file automatically generated with [strapdown2pdf](http://besson.qc.to/bin/strapdown2pdf)" > "${name}".tex
+	echo -e "%% from ${p}/${input}, the $(date)." >> "${name}".tex
 
 	# Adding two autotex specials comments,
 	# One for the title
 	title="$(grep -o -m 1 "<title>[^<]*</title>" "${input}" | grep -o ">.*<" | sed s/">"/""/ | sed s/"<"/""/)"
 	echo -e "${cyan}I found this as a possible title${white} : $u${title}$U." | tee -a /tmp/strapdown2pdf.log
 	# read
-	echo "%autotex% Titre: ${title}" >> "${name}".tex
+	echo -e "%autotex% Titre: ${title}" >> "${name}".tex
 
 	# And one for the scale
-	echo "%autotex% Scale: 0.85" >> "${name}".tex
+	echo -e "%autotex% Scale: 0.85" >> "${name}".tex
 
 	# We add the .tex file (it does NOT have any LaTeX headers)
 	# Apparently, I have been able to remove all weird espaced math LaTeX code in the impute file ...
