@@ -49,7 +49,7 @@
 	<div style="color: white; font-size: small; text-align: center">
         <span id="wn-unsupported" style="visibility: hidden; display: none;">
             <br><hr><br>
-            <h2 style="color: red;">Warning : no notification</h2>
+            <h2 style="color: red;">Warning: no notification</h2>
         	Web Notifications API seems to be <strong>not supported</strong> on your browser. Maybe you should consider using <a href="http://www.mozilla.org/fr/firefox/new/" target="_blank">Firefox</a> instead! <br>
             <h2 style="color: red;">Attention : pas de notification</h2>
         	L'API de notifications Web semble ne <strong>pas être disponible</strong> pour votre navigateur. Peut-être devriez-vous envisager d'utiliser <a href="http://www.mozilla.org/fr/firefox/new/" target="_blank">Firefox</a> à la place !
@@ -86,6 +86,7 @@
                Notification.requestPermission(function() {
                   var notification = new Notification(argtitle, options);
 
+                  // Logging every notificationEvents. Useless except for debug
                   // notificationEvents.forEach(function(eventName) {
                   //    notification[eventName] = function(event) {
                   //       console.log( '[INFO] [Web Notification API] Event "' + event.type + '" triggered for notification "' + notification.tag + '".' );
@@ -98,27 +99,27 @@
         // Shortcuts, adding two notification (with noty and Web Notification API)
         var next = function() {
         	notifyUser("Musique avec jPlayer", "Chanson suivante !", "next_512.png?src=next");
-        	alert("Playing next.");
+        	alert("Chanson suivante !");
         	myPlaylist.next();
         };
 		var previous = function() {
 			notifyUser("Musique avec jPlayer", "Chanson précédente !", "prev_512.png?src=prev");
-			alert("Playing previous.");
+			alert("Chanson précédente !");
 			myPlaylist.previous();
 		};
 		var pause = function() {
 			notifyUser("Musique avec jPlayer", "Pause !", "pause_512.png?src=pause");
-			alert("Pausing.");
+			alert("Pause !");
 			myPlaylist.pause();
 		};
 		var play = function() {
 			notifyUser("Musique avec jPlayer", "Lecture de la chanson courante !", "play_512.png?src=play");
-			alert("Playing.");
+			alert("Lecture de la chanson courante !");
 			myPlaylist.play();
 		};
 		var shuffle = function(a,b) {
 			notifyUser("Musique avec jPlayer", ("Mélange (" + a + ", " + b + ") !"), "shuffle_512.png?src=shuffle");
-			alert("Shuffling with a=" + a + " and b=" + b + " !");
+			alert("Mélange, a=" + a + " et b=" + b + " !");
 			myPlaylist.shuffle(a,b);
 		};
 
@@ -133,38 +134,44 @@
         var printHereTheVolume = document.querySelector( '#printherethevolume' );
         var printHereTheDuration = document.querySelector( '#printheretheduration' );
         var printHereTheTitle = document.querySelector( '#printherethetitle' );
+        // Temp variables for the following event handlers
 		var volume = 1.0, currentTime = 0.0, duration = 1.0, currentPercentAbsolute = 0.0;
 
+        var jquery_jplayer_1 = $("#jquery_jplayer_1");
 		// Event handlers
-		$("#jquery_jplayer_1").unbind($.jPlayer.event.volumechange + ".jPlayer");
-		$("#jquery_jplayer_1").bind($.jPlayer.event.volumechange + ".jPlayer", function(e) {
+        // Volume Change
+		jquery_jplayer_1.unbind($.jPlayer.event.volumechange + ".jPlayer");
+		jquery_jplayer_1.bind($.jPlayer.event.volumechange + ".jPlayer", function(e) {
 			volume = Math.floor(100.0 * e.jPlayer.options.volume);
 			printHereTheVolume.innerHTML = ' ' + 'Volume ' + volume + '%.';
 			notifyUser("Volume changé", ("Le volume est désormais à " + volume + "%."), "volume_512.png?src=event_volumechange");
 		});
 
-		$("#jquery_jplayer_1").unbind($.jPlayer.event.timeupdate + ".jPlayer");
-		$("#jquery_jplayer_1").bind($.jPlayer.event.timeupdate + ".jPlayer", function(e) {
+        // Time Update
+		jquery_jplayer_1.unbind($.jPlayer.event.timeupdate + ".jPlayer");
+		jquery_jplayer_1.bind($.jPlayer.event.timeupdate + ".jPlayer", function(e) {
 			currentTime = e.jPlayer.status.currentTime;
 			duration = e.jPlayer.status.duration;
 			currentPercentAbsolute = Math.floor(e.jPlayer.status.currentPercentAbsolute);
 			printHereTheDuration.innerHTML = ' Position : ' + $.jPlayer.convertTime(currentTime) + '/' + $.jPlayer.convertTime(duration) + ' (' + currentPercentAbsolute +'%).';
+            // Changing the title was too greedy for the CPU
 			// window.document.title = $.jPlayer.convertTime(currentTime) + '/' + $.jPlayer.convertTime(duration) + '  ' + mytitle;
 		});
 
-		$("#jquery_jplayer_1").unbind($.jPlayer.event.play + ".jPlayer");
-		$("#jquery_jplayer_1").bind($.jPlayer.event.play + ".jPlayer", function(e) {
-			alert("[jPlayer] play handler called : now jPlayer should be playing.");
+        // Starting to play
+		jquery_jplayer_1.unbind($.jPlayer.event.play + ".jPlayer");
+		jquery_jplayer_1.bind($.jPlayer.event.play + ".jPlayer", function(e) {
+			alert("Lecture commencée !");
 			var artist = (e.jPlayer.status.media.artist !== undefined) ? ' (by ' + e.jPlayer.status.media.artist : '';
 			printHereTheTitle.innerHTML = 'Élément courant : <a href="' + e.jPlayer.status.src + '">' + e.jPlayer.status.media.title + artist + '</a> (jouant).';
 			notifyUser("Musique avec jPlayer", ("Lecture de " + e.jPlayer.status.media.title + artist + " !"), "play_512.png?src=event_play");
-			alert("Playing.");
 		});
 
-		$("#jquery_jplayer_1").unbind($.jPlayer.event.pause + ".jPlayer");
-		$("#jquery_jplayer_1").bind($.jPlayer.event.pause + ".jPlayer", function(e) {
+        // Pausing
+		jquery_jplayer_1.unbind($.jPlayer.event.pause + ".jPlayer");
+		jquery_jplayer_1.bind($.jPlayer.event.pause + ".jPlayer", function(e) {
       		NProgress.start();
-			alert("[jPlayer] pause handler called : now jPlayer should be paused.");
+			alert("Lecteur en pause.");
 			mytitle = "\"" + e.jPlayer.status.media.title + '\" (Pause)';
 			window.document.title = mytitle;
 			var artist = (e.jPlayer.status.media.artist !== undefined) ? ' (by ' + e.jPlayer.status.media.artist : '';
@@ -173,16 +180,18 @@
 			notifyUser("Musique avec jPlayer", ("Pause (chanson courante : " + e.jPlayer.status.media.title + artist + ")."), "pause_512.png?src=event_pause");
 		});
 
-		$("#jquery_jplayer_1").unbind($.jPlayer.event.playing + ".jPlayer");
-		$("#jquery_jplayer_1").bind($.jPlayer.event.playing + ".jPlayer", function(e) {
-			alert("[jPlayer] playing handler called : now jPlayer is playing.");
+        // Playing
+		jquery_jplayer_1.unbind($.jPlayer.event.playing + ".jPlayer");
+		jquery_jplayer_1.bind($.jPlayer.event.playing + ".jPlayer", function(e) {
+            alert("Lecture en cours.");
 			mytitle = "\"" + e.jPlayer.status.media.title + '\" (Jouant)';
 			window.document.title = mytitle;
-			var artist = (e.jPlayer.status.media.artist !== undefined) ? ' (by ' + e.jPlayer.status.media.artist : '';
+			var artist = (e.jPlayer.status.media.artist !== undefined) ? (' (by ' + e.jPlayer.status.media.artist + ')') : '';
 			printHereTheTitle.innerHTML = 'Élément courant : <a href="' + e.jPlayer.status.src + '">' + e.jPlayer.status.media.title + artist + '</a> (jouant).';
 		});
 
 		// Start to play.
-		setTimeout(function(){ myPlaylist.shuffle(true, true); }, 50);
+        myPlaylist.shuffle(true, true);
+		// setTimeout(function(){ myPlaylist.shuffle(true, true); }, 10);
 
-    // This is where generatejplayer.sh add the items to the playlist.
+    // This is where generatejplayer.sh adds the items to the playlist.
