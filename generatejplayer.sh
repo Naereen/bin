@@ -44,8 +44,8 @@ GeneratejPlayer() {
 		 nombre=`echo $targets | tr A-Z a-z | grep -o "\(mp3\|ogg\|wav\|wma\)" | wc -l`
 
 		 # header.html ends with an open <script> balise
-		 echo -e "console.log(\"[INFO] content add by generatejplayer.js starts now.\");" >> index.html
-		 # # echo -e "\$(document).ready(function() {" >> index.html
+		 echo -e "\tconsole.log(\"[INFO] content added by generatejplayer.sh starts now.\");" >> index.html
+		 # echo -e "\$(document).ready(function() {" >> index.html
 
 		 # Generate the playlist.
 		 for i in $targets; do
@@ -206,8 +206,8 @@ GeneratejPlayer() {
 		\n\t<img src=\"./${image}\" height=\"225\" width=\"255\" alt=\"Folder Image default value\"/></div>" >> index.html
 
 	# Conclude
-	echo -e "<script type=\"text/javascript\">" >> index.html
-	echo -e "console.log(\"[INFO] content add by generatejplayer.js stops now.\");" >> index.html
+	echo -e "\t <script type=\"text/javascript\">" >> index.html
+	echo -e "\t  console.log(\"[INFO] content added by generatejplayer.sh stops now.\");" >> index.html
 
 	# Footer starts with a JS line and then a closed </script> balise
 	pathtobechanged="$(pwd)"

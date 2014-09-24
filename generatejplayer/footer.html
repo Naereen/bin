@@ -1,6 +1,6 @@
-<!-- (C) Lilian Besson, 2014, for http://besson.qc.to/generatejplayer.sh/ -->
-      console.log("[INFO] footer.html starts now.");
-      NProgress.start();
+       // (C) Lilian Besson, 2014, for http://besson.qc.to/generatejplayer.sh/
+       console.log("[INFO] footer.html starts now.");
+       NProgress.start();
       </script>
     </div>
 
@@ -14,8 +14,8 @@
     <script type="text/javascript">
     $(document).ready(function() {
 		NProgress.inc();
-		Mousetrap.bind(["up", "u"], function() { alert("Parent directory."); location.href="../index.html";});
-		Mousetrap.bind(["i"], function() { alert("Home directory."); location.href= (window.location.protocol + "//" + window.location.host + "/music/") ;}); // "http://besson.qc.to/music/"
+		Mousetrap.bind(["up", "u"], function() { alert("Dossier parent."); location.href="../index.html";});
+		Mousetrap.bind(["i"], function() { alert("Dossier principal."); location.href= (window.location.protocol + "//" + window.location.host + "/music/") ;}); // "http://besson.qc.to/music/"
 	});
     $(window).load(function(){
 		// Noty message.
@@ -24,7 +24,7 @@
 		buttons: [ // this = button element, $noty = $noty element
 		  {addClass: 'btn btn-primary', text: 'Oui !', onClick: function($noty) {
 		      $noty.close();
-		      noty({text: "<strong>Normal, je code <i>bien</i> ;) !</strong>"
+		      noty({text: "<strong>Normal, je code <i>très bien</i> ;) !</strong>"
 		       + "\n</br>N'hésitez pas à consulter d'<a href=\"http://besson.qc.to/\">autres pages</a> !", type: 'success', timeout: false});
 		    }
 		  },
@@ -55,6 +55,6 @@
     });
     </script>
 <!-- <script async type="text/javascript" src="http://0.0.0.0/_static/ga.js"></script> -->
-<img style="visibility: hidden; display: none;" src="https://ga-beacon.appspot.com/UA-38514290-1/music/PATHTOBECHANGED?pixel"/>
+<img style="visibility: hidden; display: none;" src="http://perso.crans.org/besson/beacon/music/PATHTOBECHANGED?pixel"/>
 <!-- (C) Lilian Besson, 2014, for http://besson.qc.to/generatejplayer.sh/ -->
 </body></html>
