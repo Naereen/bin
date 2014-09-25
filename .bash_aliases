@@ -770,7 +770,10 @@ alias sz='sshzamok'
 alias sshvo='sshtmux besson@vo.crans.org'
 alias sshdpt='sshtmux lbesson@ssh.dptinfo.ens-cachan.fr'
 alias sd='sshdpt'
-alias s22='sshtmux dptinfo22'
+alias s22='sshtmux 03.dptinfo.ens-cachan.fr'
+alias s04='sshtmux 04.dptinfo.ens-cachan.fr'
+alias s05='sshtmux 05.dptinfo.ens-cachan.fr'
+alias s06='sshtmux 06.dptinfo.ens-cachan.fr'
 
 # Navigateur en console
 alias elinks='elinks -verbose 0'
