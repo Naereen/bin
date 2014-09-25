@@ -165,7 +165,7 @@ StrapDown2HTML() {
 
 	# And a final line to say "Compiled from HTML/MarkDown with StrapDown.js to PDF with ..."
 	if [ "$discrete" != "true" ]; then
-		echo -e "\n\n\n\n%% Added with strapdown2pdf\n\\\\hspace{\\\\fill}\n\\\\vfill{}\n\n\\\\hspace{\\\\fill}\\\\rule{.6\\\\linewidth}{0.4pt}\\\\hspace{\\\\fill}\n\n\\\\begin{quote}\n\\\\begin{footnotesize}\n (Proudly compiled to \\\\textbf{PDF} from a \\\\texttt{HTML/Markdown} file (powered by \\\\href{http://lbesson.bitbucket.org/md/}{\\\\texttt{StrapDown.js}}) with \\\\textbf{\\\\href{http://lbesson.bitbucket.org/md/strapdown2pdf.html}{strapdown2pdf}}, \\\\texttt{v${version}}.)\n\\\\end{footnotesize}\n\\\\end{quote}\n"  >> "${name}".tex
+		echo -e "\n\n\n\n%% Added with strapdown2pdf\n\\\\hspace{\\\\fill}\n\\\\vfill{}\n\n\\\\hspace{\\\\fill}\\\\rule{.6\\\\linewidth}{0.4pt}\\\\hspace{\\\\fill}\n\n\\\\begin{quote}\n\\\\begin{footnotesize}\n (Compiled to \\\\textbf{PDF} from a \\\\texttt{HTML/Markdown} file (powered by \\\\href{http://lbesson.bitbucket.org/md/}{\\\\texttt{StrapDown.js}}) with \\\\textbf{\\\\href{http://lbesson.bitbucket.org/md/strapdown2pdf.html}{strapdown2pdf}}, \\\\texttt{v${version}}.)\n\\\\end{footnotesize}\n\\\\end{quote}\n"  >> "${name}".tex
 	fi
 
 	# Compile in batchmode it with autotex, to automatically add headers and packages stuff
