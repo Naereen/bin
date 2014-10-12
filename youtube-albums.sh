@@ -71,7 +71,7 @@ done
 # Change the name of every songs
 echo -e "Apparently, I am done downloading. Can I try to smooth the name of every files I got ? (${magenta}[Enter]${white} if OK)."
 $READ || exit
-time Smooth_Name.sh
+time Smooth_Name.sh --batch
 
 # Generate the HTML/js player
 echo -e "Apparently, I am done downloading and smoothing names. Can I try to generate a HTML/js player for all these albums ? (${magenta}[Enter]${white} if OK)."
