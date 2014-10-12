@@ -26,6 +26,7 @@ if [ "${1}" = "--batch" ]; then
 else
     READ="read"
 fi
+icon=$(ls -H /usr/share/icons/*/*/*/*music*svg 2>/dev/null|uniq|shuf|head -n1)
 
 echo -e "${white}Trying to download the albums : '${blue}${1}${white}'..."
 # Try to download it according to the args passed to the script
@@ -65,7 +66,8 @@ echo -e "Now, I am in the directory ${blue}`pwd`${white}, and this is good."
 # Start downloading !
 echo -e "OK, so I can start the downloading command I showed you : (${magenta}[Enter]${white} to see)"
 for j in $(grep -o "playlist?list=[a-zA-Z0-9_-]*" "${out}"  | sed s/'playlist?list='// | uniq); do
-    time youtube-playlist.sh --batch "$j"
+    time youtube-playlist.sh --batch "$j" && \
+        notify-send --expire-time=3000 --icon=${icon} "youtube-albums.sh" "Download well done for the album ${j} (by the artist ${title})."
 done
 
 # Change the name of every songs
@@ -78,5 +80,6 @@ echo -e "Apparently, I am done downloading and smoothing names. Can I try to gen
 $READ || exit
 time generatejplayer.sh
 
+notify-send --expire-time=3000 --icon=${icon} "youtube-albums.sh" "Download well done for all the albums ${j} of the artist ${title}.\nThere is now $(find ./${newdir}|wc -l) new tracks, for a total of $(du -kh ./${newdir}|tail -n1| grep -o -m1 "^[0-9][,0-9]*[KMG]\?").\n → Well done :)"
 echo -e "Bybye :)"
 # END
