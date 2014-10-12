@@ -909,6 +909,10 @@ firefox() { ( /usr/bin/firefox "$@" || /usr/bin/elinks "$@" ) &> /dev/null & }
 vlc() { /usr/bin/vlc --random "$@" &> /dev/null & }
 linphone() { /usr/bin/linphone "$@" &> /dev/null & }
 libreoffice() { ( /usr/bin/libreoffice "$@" || /usr/bin/abiword "$@" ) &> /dev/null & }
+butterfly() {
+    butterfly.server.py --logging=none --unsecure &> /dev/null &
+    echo "Open your browser at http://127.0.0.1:57575/ to use Butterfly terminal in your browser"
+}
 
 # Better .rst → .html and .md → .html (simpler)
 alias rst2html='rst2html -v -t --no-generator -l fr --cloak-email-addresses '
