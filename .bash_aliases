@@ -732,9 +732,9 @@ GpgDecrypt(){ gpg --decrypt --yes --no-batch --use-agent "$@";}
 alias ssh-add='ssh-add -t 1800'
 
 # Pour que youtube-dl récupère seulement l'audio (en MP3)
-alias youtube='youtube-dl -o "%(title)s.%(ext)s" --extract-audio --console-title -k --audio-format=mp3 -w'
-alias youtube-mp3='youtube-dl -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w'
-alias youtube-video='youtube-dl -o "%(title)s.%(ext)s" --console-title -w'
+alias youtube='youtube-dl --output "%(title)s.%(ext)s" --extract-audio --console-title --keep-video --audio-format=mp3 --no-overwrites'
+alias youtube-mp3='youtube-dl --output "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 --no-overwrites'
+alias youtube-video='youtube-dl --format worst --output "%(title)s.%(ext)s" --console-title --no-overwrites'
 
 # Pour recuperer les droits d'un fichier en octal
 alias getmod='/usr/bin/stat -c "%a"'
