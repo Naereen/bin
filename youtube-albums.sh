@@ -80,6 +80,6 @@ echo -e "Apparently, I am done downloading and smoothing names. Can I try to gen
 $READ || exit
 time generatejplayer.sh
 
-notify-send --expire-time=3000 --icon=${icon} "youtube-albums.sh" "Download well done for all the albums ${j} of the artist ${title}.\nThere is now $(find ./${newdir}|wc -l) new tracks, for a total of $(du -kh ./${newdir}|tail -n1| grep -o -m1 "^[0-9][,0-9]*[KMG]\?").\n → Well done :)"
+notify-send --expire-time=3000 --icon=${icon} "youtube-albums.sh" "Download well done for all the albums ${j} of the artist ${title}.\nThere is now $(find ./|wc -l) new tracks, for a total of $(du -kh ./|tail -n1| grep -o -m1 "^[0-9][,0-9]*[KMG]\?").\n → Well done :)"
 echo -e "Bybye :)"
 # END
