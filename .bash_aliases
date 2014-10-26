@@ -669,9 +669,11 @@ extract() {
 
 # Experimental
 LatexFormula() {
- # tente d'afficher les arguments interpretes comme une formule LaTeX
- wget --quiet http://numberempire.com/equation.render?"${@// /%20}" -O /tmp/LatexFormula_$$.jpg
- display -title "$@" /tmp/LatexFormula_$$.jpg
+    out="/tmp/LatexFormula_$$.jpg"
+    # tente d'afficher les arguments interpretes comme une formule LaTeX, via le bon service web.
+    wget --quiet 'http://s0.wp.com/latex.php?bg=ffffff&fg=1c1c1c&s=0&zoom=10&latex=\displaystyle'"${@// /+}" -O "${out}" \
+    || wget --quiet http://numberempire.com/equation.render?"${@// /%20}" -O "${out}"
+    display -title "Image for the LaTeX formula: '${@//\\/\\\\}'   (thanks to an awesome webservice)" "${out}"
 }
 
 alias GnomeVEILLE='gnome-session-quit --power-off'

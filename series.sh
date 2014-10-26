@@ -1,8 +1,8 @@
 #!/usr/bin/env /bin/bash
 #
-# __author__ = 'Lilian BESSON'
-# __email__ = 'Lilian.BESSON[AT]ens-cachan[DOT]fr'
-# __date__ = '23-10-2013'
+# Author: Lilian BESSON
+# Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
+# Date: 21-10-2014
 #
 # A first try to automatize the selection of the "next"
 # episode in your current TV serie.
@@ -12,7 +12,7 @@
 #
 # A bash completion file is available (http://besson.qc.to/bin/series.sh.bash_completion)
 #
-version='0.3.3'
+version='0.3.4'
 #LANG='en'
 
 # If possible, use .color.sh (http://besson.qc.to/bin/.color.sh)
@@ -30,10 +30,18 @@ for i in "$@"; do
  -h|--help|help)
    echo -e "$green`basename $0`$white --help | [options]"
    echo -e ""
-   echo -e "Play the good next episode of your current serie."
-   echo -e "Help:"
+   echo -e "Play the correct next (or last or previous) episode of your current TV show."
+   echo -e ""
+   echo -e "${u}Requirements:${U}"
+   echo -e "    1. The program reads a file '${blue}~/current${white}', to look to the directory where that TV show is stored."
+   echo -e "    2. Then it reads a '${blue}current_sXXeYY${white}' file on that directory, to know the current season and episode number."
+   echo -e "       (if none is there, it assumes ${magenta}season XX=01${white} and ${magenta}episode YY=01${white})"
+   echo -e "    3. And then it read a file on directory '${blue}Season_XX/${white}' of the form '${blue}*EYY*.[avi,..]${white}'."
+   echo -e ""
+   echo -e "${u}Help:${U}"
    echo -e "    ${yellow}help$white	to print this help message (and quit)."
-   echo -e "Options:"
+   echo -e ""
+   echo -e "${u}Options:${U}"
    echo -e "    ${yellow}next$white	play the next one."
    echo -e "    ${yellow}previous$white	play the previous one."
    echo -e "    ${yellow}last$white	play the last one (default)."
@@ -54,10 +62,6 @@ for i in "$@"; do
  esac
 done
 
-
-#
-#
-#
 echo -e "${yellow}.: Lilian BESSON presents :.$white$reset"
 echo -e "Automatic next episode player, v${version}.$white$reset"
 
@@ -78,8 +82,6 @@ echo -e "Reading ~/current to see the current watched folder..."
 current_path="`cat ~/current || echo -e \"$red Error: no ~/current file, using default current_path...$white\" >/dev/stderr`"
 # FIXME
 current_path="${current_path:-/media/Disque Dur - Naereen/Multimedia/Séries/A VOIR/Stargate SG1/}"
-
-#current_path="/media/Disque Dur - Naereen/Multimedia/Séries/A VOIR/Stargate SG1/Saison 06/"
 
 #
 # Go to the current folder
@@ -182,5 +184,5 @@ for cu in ${currents:-$dflt}; do
 
 done
 
-echo -e "${yellow} .: Contact naereen[@]crans[.]org for any questions :.$reset$white"
+echo -e "${yellow} .: Contact naereen[@]crans[.]org for any questions, proposal or bug :.$reset$white"
 ## END ##

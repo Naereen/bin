@@ -41,7 +41,7 @@ $READ || exit
 echo -e "Just to be sure, I am showing you the downloading commands I will execute : (${magenta}[Enter]${white} to see)."
 $READ || exit
 for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" "${out}"  | sed s/'watch?v='// | uniq); do
-    echo -e youtube-dl --no-overwrites --continue -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w "$j"
+    echo -e youtube-dl --no-overwrites --retries 60 --continue -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w "$j"
 done
 
 echo -e "Are you OK with these downloading commands ? (${magenta}[Enter]${white} if OK)."
@@ -64,7 +64,7 @@ echo -e "Now, I am in the directory ${blue}`pwd`${white}, and this is good."
 # Start downloading !
 echo -e "OK, so I can start the downloading command I showed you : (${magenta}[Enter]${white} to see)"
 for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" "${out}"  | sed s/'watch?v='// | uniq); do
-    time youtube-dl --no-overwrites --continue -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w "$j"
+    time youtube-dl --no-overwrites --retries 60 --continue -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w "$j" || echo "$j" >> tofetch_youtube-dl.url
 done
 
 # Change the name of every songs
