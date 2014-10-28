@@ -1,8 +1,8 @@
 #!/bin/bash
 #
-# __author__ = 'Lilian BESSON'
-# __email__ = 'Lilian.BESSON[AT]ens-cachan[DOT]fr'
-# __date__ = '18-01-2013'
+# Author: Lilian BESSON
+# Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
+# Date: 18-01-2013
 #
 # A small script to download informations from pgp.mit.edu
 #
