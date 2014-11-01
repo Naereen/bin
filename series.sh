@@ -12,10 +12,9 @@
 #
 # A bash completion file is available (http://besson.qc.to/bin/series.sh.bash_completion)
 #
-version='0.3.4'
-#LANG='en'
+version='0.4'
 
-# If possible, use .color.sh (http://besson.qc.to/bin/.color.sh)
+# If possible, use ~/.color.sh (http://besson.qc.to/bin/.color.sh)
 [ -f ~/.color.sh ] && ( . ~/.color.sh ; clear )
 
 previous="no"
@@ -46,7 +45,7 @@ for i in "$@"; do
    echo -e "    ${yellow}previous$white	play the previous one."
    echo -e "    ${yellow}last$white	play the last one (default)."
    echo -e ""
-   echo -e "Copyrights: (c) Lilian Besson 2011-2013."
+   echo -e "Copyrights: (c) Lilian Besson 2011-2014."
    echo -e "Released under the term of the GPL v3 Licence."
    echo -e "In particular, `basename $0` is provided WITHOUT ANY WARANTY."
    exit 0
