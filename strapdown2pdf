@@ -141,7 +141,7 @@ StrapDown2HTML() {
 	echo -e "%autotex% Scale: 0.85" >> "${name}".tex
 
 	# We add the .tex file (it does NOT have any LaTeX headers)
-	# Apparently, I have been able to remove all weird espaced math LaTeX code in the impute file ...
+	# Apparently, I have been able to remove all weird espaced math LaTeX code in the input file ...
 
 	cat "${name}".tex~ \
 		| sed s/'\\\$'/$/g \
