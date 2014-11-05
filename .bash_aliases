@@ -710,6 +710,7 @@ alias Pull='clear; git gc && git pull && git gc'
 alias Commit='clear; git commit -m'
 alias Add='git add'
 alias Aggressive='git gc --aggressive'
+alias Sync='clear; echo -e "Synchronizing (git push, gc, send_zamok, send_dpt)..."; git push; git gc --aggressive; make send_zamok; make send_dpt; alert'
 
 # For vrun:
 alias GetUri="vrun status | grep file | sed s/'( new input: '/''/ | sed s/' )'/''/"
@@ -932,6 +933,8 @@ alias Tor='~/.local/tor-browser_fr/start-tor-browser'
 
 alias kaamelott='vlc --random /host/Users/Lilian/Videos/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
 alias scrubs='vlc --random /host/Users/Lilian/Videos/Séries/Scrubs/ >/dev/null 2>/dev/null &'
+alias kaamelott-totem='totem --fullscreen /host/Users/Lilian/Videos/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
+alias scrubs-totem='totem --fullscreen /host/Users/Lilian/Videos/Séries/Scrubs/ >/dev/null 2>/dev/null &'
 
 alias dropbox='( dropbox start ; alert ) &>/dev/null&'
 
