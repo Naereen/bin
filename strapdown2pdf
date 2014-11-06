@@ -81,7 +81,7 @@ do
 	 esac
 done
 
-StrapDown2HTML() {
+StrapDown2PDF() {
 	input="$(basename "$1")"
 	name="${input%.html}"
 
@@ -191,20 +191,20 @@ log="/tmp/strapdown2pdf.log"
 if [ "$quiet" = "true" ]; then
 	echo -e "On "$(date)", strapdown2pdf is running on quiet mode." > "${log}"
 	echo -e "On quiet mode, arguments were '$@'." &>> "${log}"
-	StrapDown2HTML "${1}" &>> "${log}"
+	StrapDown2PDF "${1}" &>> "${log}"
 	shift
 	for finput in "$@"; do
 		echo -e "\n\n---------------------------" &>> "${log}"
 		echo -e "Generating the next file..." &>> "${log}"
-		StrapDown2HTML "${finput}" &>> "${log}"
+		StrapDown2PDF "${finput}" &>> "${log}"
 	done
 else
-	StrapDown2HTML "${1}"
+	StrapDown2PDF "${1}"
 	shift
 	for finput in "$@"; do
 		echo -e "\n\n---------------------------"
 		echo -e "${blue}Generating the next file..."
-		StrapDown2HTML "${finput}"
+		StrapDown2PDF "${finput}"
 	done
 fi
 

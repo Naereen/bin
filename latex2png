@@ -40,10 +40,12 @@ LatexFormula() {
     out="${1}"
     out="${out%.png}.png"
     shift
-    echo -e "A PNG image of the LaTeX formula in being produced, to ${out}, thanks to a webservice on ${u}s0.wp.com${U} or ${u}numberempire.com${U}."
+    echo -e "A PNG image of the LaTeX formula in being produced, to ${out}, thanks to a webservice on ${u}s0.wp.com${U} (or ${u}numberempire.com${U})."
     # out="/tmp/LatexFormula_$$.jpg"
     # tente d'afficher les arguments interpretes comme une formule LaTeX, via le bon service web.
-    wget --quiet 'http://s0.wp.com/latex.php?bg=ffffff&fg=1c1c1c&s=0&zoom=10&latex=\displaystyle'"${@// /+}" -O "${out}" \
+    latex="${@//+/}"
+    latex="${@// /+}"
+    wget --quiet 'http://s0.wp.com/latex.php?bg=ffffff&fg=1c1c1c&s=0&zoom=10&latex='"${latex}" -O "${out}" \
     || wget --quiet 'http://numberempire.com/equation.render?'"${@// /%20}" -O "${out}"
     display -title "Image for the LaTeX formula: '${@//\\/\\\\}'   (thanks to the script latex2png)" "${out}"
     echo -e "The image has been produced, to ${out}, for the LaTeX formula."
