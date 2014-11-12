@@ -2,17 +2,18 @@
 #
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 23-04-2013
+# Date: 12-11-2013
 # Web version: http://besson.qc.to/bin/generatejplayer.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/generatejplayer.sh
 #
 # Auto generate an 'index.html' page to show and play music with jplayer.
+# NEW: also generate a 'index.htm' page, which works on Windows by fetching the CSS and JS online and not locally.
 #
 # A demo is here : http://besson.qc.to/generatejplayer.sh
 # Last version is here : http://besson.qc.to/bin/generatejplayer.sh
 # with stylesheets and templates is here : http://besson.qc.to/bin/generatejplayer/
 #
-version='1.6'
+version='1.7'
 
 GeneratejPlayer() {
 	# Go to the directory.
@@ -29,7 +30,7 @@ GeneratejPlayer() {
 	cat ~/bin/generatejplayer/header.html \
 	 | sed s{VERSION{"$version"{ \
 	 | sed s{CURRENTDIR{"$currentdir"{ \
-	 | sed s_DATE_"`date +\" %d %b %Y, à %Hh:%Mm:%Ss\"`"_ > index.html
+	 | sed s_DATE_"`date +\"%d %b %Y, à %Hh:%Mm:%Ss\"`"_ > index.html
 
 	# Listing of music (and playlist) (with jquery.jplayer.js)
 	targets=`find . -maxdepth 1 -type f -iname '*'.mp3 -o -iname '*'.ogg -o -iname '*'.wav -o -iname '*'.wma 2>/dev/null`
@@ -203,7 +204,7 @@ GeneratejPlayer() {
 	done
 	# Add the last one. FIXME update height widht according to the right size.
 	echo -e "<br><hr><div class=\"FolderImage\" style=\"text-align: center\">\
-		\n\t<img src=\"./${image}\" height=\"225\" width=\"255\" alt=\"Folder Image default value\"/></div>" >> index.html
+		\n\t<img src=\"${image}\" height=\"225\" width=\"255\" alt=\"Folder Image default value\"/></div>" >> index.html
 
 	# Conclude
 	echo -e "\t <script type=\"text/javascript\">" >> index.html
@@ -267,6 +268,12 @@ for i in $targets; do
 	cat "${direction}/index.html~" \
 		| sed s_TIMESPENT_"`cat \"${direction}/generatejplayer.time\"`"_ \
 		> "${direction}/index.html"
+	rm -v "${direction}/index.html~" "${direction}/generatejplayer.time" >/dev/null
+	cat "${direction}/index.html" \
+		| sed s_"0\.0\.0\.0"_"perso.crans.org/besson/"_ \
+		| sed s_"/index.html"_"/index.htm"_ \
+		| sed s_"Programme pour GNU/Linux"_"Page pour Windows®"_ \
+		> "${direction}/index.htm"
 done
 
 # END
