@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # By: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 17-09-2014
+# Date: 14-11-2014
 # Web: http://besson.qc.to/bin/strapdown2pdf
 # Web2: http://lbesson.bitbucket.org/strapdown2pdf.html
 #
@@ -27,7 +27,7 @@
 #     only for MathJax flavored maths formulas, which are all copied in the .tex with escaped $ and { : \{ and \$ every where :(
 #
 #
-version='0.6.2'
+version='0.7'
 AUTOTEX="autotex batchmode"
 quiet="false"
 sign="false"
