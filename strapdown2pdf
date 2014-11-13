@@ -32,9 +32,10 @@ AUTOTEX="autotex batchmode"
 quiet="false"
 sign="false"
 discrete="false"
+htm="false"
 
 # $OPTARG can contain the argument of the option k (if specified with hvk: or hk:v for example)
-while getopts vhqdsi option
+while getopts vhqdsim option
 do
 	 case $option in
 	 	v|version|-version)
@@ -52,6 +53,7 @@ do
 			echo -e "Options:"
 			echo -e "    ${yellow}-i|-interactive${white}	run PDFLaTeX with the interactive (errorstopmode) mode (default is batchmode)."
 			echo -e "    ${yellow}-q|-quiet${white}		run strapdown2pdf in quiet mode (no output at all, everything is redirected to ${magenta}/tmp/strapdown2pdf.log${white})."
+			echo -e "    ${yellow}-m|-htm${white}		run strapdown2pdf to produce a simple HTML file (which do not use StrapDown.js), written to a .htm file."
 			echo -e "    ${yellow}-d|-discrete${white}		run strapdown2pdf is discrete mode, without adding any creditentials in the produced document."
 			echo -e "    ${yellow}-s|-sign${white}		sign the produce PDF document with GnuPG (thanks to PDFCompress)."
 			echo -e ""
@@ -62,6 +64,11 @@ do
 			;;
 		q|quiet|-quiet)
 			quiet="true"
+			shift
+			;;
+		m|htm|-htm)
+			echo -e "${magenta}Runninn strapdown2pdf with option --htm, to produce a simple HTML file (which do not use StrapDown.js), written to a .htm file.${white}"
+			htm="true"
 			shift
 			;;
 		d|discrete|-discrete)
@@ -122,6 +129,17 @@ StrapDown2PDF() {
 		> /tmp/"${name}".md
 	# Now we have a pure Markdown file (at least we hope)
 
+	title="$(grep -o -m 1 "<title>[^<]*</title>" "${input}" | grep -o ">.*<" | sed s/">"/""/ | sed s/"<"/""/)"
+	echo -e "${cyan}I found this as a possible title${white} : $u${title}$U." | tee -a /tmp/strapdown2pdf.log
+
+	if [ X"${htm}" = "Xtrue" ]; then
+			echo -e "<!DOCTYPE html><html><head><meta charset=\"utf-8\"/><title>${title}</title></head>\n<body>" > "${name}".htm
+			python -m markdown -e utf8 -v /tmp/"${name}".md >> "${name}".htm
+			echo -e "</body>\n</html>\n" >> "${name}".htm
+			echo -e "${cyan}I am done producing ${name}.htm in the current repertory."
+			exit 0
+	fi
+
 	# Convert md -> tex with lunamark (in /tmp/, as always)
 	# FIXME: here we should also try to improve the LaTeX math code preservation
 	lunamark -Xhash_enumerators -t latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
@@ -132,8 +150,6 @@ StrapDown2PDF() {
 
 	# Adding two autotex specials comments,
 	# One for the title
-	title="$(grep -o -m 1 "<title>[^<]*</title>" "${input}" | grep -o ">.*<" | sed s/">"/""/ | sed s/"<"/""/)"
-	echo -e "${cyan}I found this as a possible title${white} : $u${title}$U." | tee -a /tmp/strapdown2pdf.log
 	# read
 	echo -e "%autotex% Titre: ${title}" >> "${name}".tex
 
