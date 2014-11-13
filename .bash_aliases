@@ -978,6 +978,8 @@ alias e='evince'
 complete -o plusdirs -f -X '!*.@(pdf|djvu|PDF)' e
 alias s='clear ; git status | less -r'
 
+alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "^rupee.*$" | sed s/"^rupee"/""/ )${U}${white}."'
+
 ##############################################################################
 # (c) 2011-2014 Lilian BESSON
 # http://perso.crans.org/besson
