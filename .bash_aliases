@@ -973,6 +973,7 @@ complete -o plusdirs -f -X '!*.@(tex|pdf)' a
 alias p='PDFCompress'
 complete -o plusdirs -f -X '!*.@(tex|pdf)' p
 
+alias b='bpython || alert'
 alias f='firefox'
 alias e='evince'
 complete -o plusdirs -f -X '!*.@(pdf|djvu|PDF)' e
