@@ -20,5 +20,6 @@ echo -e "Searching on ${url}..." >/dev/stderr
 # Emails
 echo -e "Printing email addresses..." >/dev/stderr
 wget --quiet "$url" -O - | grep -o "&lt;".*@.*"&gt;" | uniq | sort | sed s/'&lt;'/''/ | sed s/'&gt;'/''/ 
+# echo -e "Disabled :("
 
 # DONE

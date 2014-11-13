@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # By: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 06-11-2014
+# Date: 12-11-2014
 #
 # autonomize.sh, a small tool to be used with autonomize.sh to produce autonomous latex document from autotex-powered document (it adds all the necessary headers)
 #
@@ -14,7 +14,7 @@
 #
 # Licence: [GPLv3](http://besson.qc.to/LICENCE.html)
 #
-version='0.1'
+version='0.2'
 
 justClean="false"
 batch="false"
