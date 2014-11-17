@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # author: Lilian BESSON
 # email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# date: 11-10-2014
+# date: 18-11-2014
 # web: https://bitbucket.org/lbesson/bin/src/master/Smooth_Name.sh
 #
 # A small script to rename all files in a directory semi-automatically.
@@ -13,12 +13,21 @@
 #
 # Licence: GPL v3
 #
-version='1.1'
+version='1.2'
 LANG='fr'
 
 if [ "${1}" = "--batch" ]; then
     echo -e "Nothing asked to the user : batch mode (option --batch)."
     MV="mv -vf"
+    shift
+elif [ "${1}" = "--test" ]; then
+    echo -e "Just a test (option --test)."
+    MV="echo mv -vf"
+    shift
+elif [ "${1}" = "--onlyfiles" ]; then
+    echo -e "Working only on files (option --onlyfiles)."
+    MV="mv -vf"
+    onlyfiles="true"
     shift
 else
     MV="mv -vi"
@@ -44,9 +53,13 @@ for i in ${all}; do
 # for i in *.mp3; do
     i="${i//'%20'/ }"
     # i="${i#./}"
-    echo -e "${black}Working with the file ${white}${u}'${i}'${U}${black}."
+    echo -e "${black}Working with the file ${magenta}${u}'${i}'${U}${white}."
     # echo $MV "$i" "$(smoothnameone.sh "$i")"
-    $MV "$i" "$(smoothnameone.sh "$i")"
+    if [ "X$onlyfiles" = "Xtrue" ]; then
+        $MV "$i" "$(smoothnameone.sh --file "$i")"
+    else
+        $MV "$i" "$(smoothnameone.sh "$i")"
+    fi
 done
 
 # END
