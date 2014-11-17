@@ -980,6 +980,7 @@ complete -o plusdirs -f -X '!*.@(pdf|djvu|PDF)' e
 alias s='clear ; git status | less -r'
 
 alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "^rupee.*$" | sed s/"^rupee"/""/ )${U}${white}."'
+alias brigthness='xrandr --output LVDS --brightness '
 
 ##############################################################################
 # (c) 2011-2014 Lilian BESSON
@@ -988,3 +989,4 @@ alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; ec
 # http://www.dptinfo.ens-cachan.fr/~lbesson
 #
 # Put a blank line after to autorize echo "alias newalias='newentry'" >> ~/.bash_aliases
+
