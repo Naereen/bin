@@ -13,10 +13,10 @@
 # Licence: GPL v3
 #
 
-# if [ X"$1" = X"--file" ]; then
-#     file=true
-#     shift
-# fi
+if [ X"$1" = X"--file" ]; then
+    file=true
+    shift
+fi
 
 i="$@"
 
@@ -40,9 +40,9 @@ i="${i//&#39;/_}"
 i="${i//&lt;/_}"
 i="${i//&gt;/_}"
 i="${i//\'/_}"
-# if [ X"$file" = X"true" ]; then
-#     i="$(echo "${i}" | tr '/' '_')"
-# fi
+if [ X"$file" = X"true" ]; then
+    i="$(echo "${i}" | tr '/' '_')"
+fi
 i="${i//\(/_}"
 i="${i//\)/_}"
 i="${i//\[/_}"

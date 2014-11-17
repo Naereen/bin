@@ -70,7 +70,7 @@ done
 # Change the name of every songs
 echo -e "Apparently, I am done downloading. Can I try to smooth the name of every files I got ? (${magenta}[Enter]${white} if OK)."
 $READ || exit
-Smooth_Name.sh --batch
+Smooth_Name.sh --batch --onlyfiles
 
 echo -e "Bybye :)"
 # END
