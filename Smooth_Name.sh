@@ -30,6 +30,7 @@ all="${all//' '/%20}"
 
 for i in ${all}; do
     i="${i//'%20'/ }"
+    # i="${i#./}"
     echo -e "${green}Working with the directory ${u}'${i}'${U}.${white}"
     echo mv -vi "$i" "$(smoothnameone.sh "$i")"
     $MV "$i" "$(smoothnameone.sh "$i")"
@@ -42,6 +43,7 @@ all="${all//' '/%20}"
 for i in ${all}; do
 # for i in *.mp3; do
     i="${i//'%20'/ }"
+    # i="${i#./}"
     echo -e "${black}Working with the file ${white}${u}'${i}'${U}${black}."
     # echo $MV "$i" "$(smoothnameone.sh "$i")"
     $MV "$i" "$(smoothnameone.sh "$i")"
