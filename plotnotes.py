@@ -18,7 +18,7 @@ csv_file = sys.argv[1]
 csv_name = csv_file[:-3]
 
 #: Load in the csv file
-csv_file_object = csv.reader(open(csv_file, 'rb')) 
+csv_file_object = csv.reader(open(csv_file, 'rb'))
 
 #: Skip the fist line as it is a header
 header = csv_file_object.next()
