@@ -349,14 +349,18 @@ alias rmLaTeX='for i in *.tex; do echo "Pour $i:" ; for j in "${i%tex}dvi" "${i%
 
 # A super pdflatex
 tex2pdf() {
- ( pdflatex "$@" && pdflatex "$@" ) \
- || (clear ; chktex "$@" ; alert )
+    for i in "$@"; do
+        i="${i//.pdf/.tex}"
+        ( pdflatex "$i" && pdflatex "$i" ) || (clear ; chktex "$i" ; alert )
+    done
 }
 TEX2PDF() {
- ( pdflatex "$@" && pdflatex "$@" | tee /tmp/tex2pdf.log) \
- || (clear ; chktex "$@" ; alert )
- out="$(grep -m1 -o "Output written on .*.pdf" /tmp/tex2pdf.log | grep -o "[^ ]*.pdf")" ;
- [ "$(PDFCompress --help)" != "" ] && PDFCompress "$out"
+    for i in "$@"; do
+        i="${i//.pdf/.tex}"
+        ( pdflatex "$i" && pdflatex "$i" && mv -vf "${i%tex}log" "${i%tex}aux" "${i%tex}synctex.gz" "${i%tex}out" /tmp/ ) \
+        || (clear ; chktex "$i" ; alert )
+        PDFCompress "${i%tex}pdf"
+    done
 }
 complete -o plusdirs -f -X '!*.@(tex|pdf)' tex2pdf TEX2PDF
 
@@ -398,9 +402,9 @@ LOG_Colored(){
 }
 
 # Shortend to git
-alias GitChanged='clear ; git status | grep --color=always "modified" | less -r'
-alias GitDeleted='clear ; git status | grep --color=always "deleted" | less -r'
-alias GitAdded='clear ; git status | grep --color=always "added" | less -r'
+alias GitChanged='clear ; git status | grep --color=always "\(modified\|modifié\)" | less -r'
+alias GitDeleted='clear ; git status | grep --color=always "\(deleted\|supprimé\)" | less -r'
+alias GitAdded='clear ; git status | grep --color=always "\(added\|nouveau\)" | less -r'
 alias GitStatus='clear ; git status | less -r'
 alias Status='clear ; git status | less -r'
 
@@ -437,11 +441,9 @@ alias unTarTBZ='tar -xjvf'
 GrepBalises() {
  echo -e "GrepBalises >>> Looking for specials developpement balises in files ${blue}$@${white}."
  notfound=""
- for balise in 'TODO' 'FIXME' 'FIXED' 'HOWTO' 'XXX' 'DEBUG' 'WARNING'
- do
+ for balise in 'TODO' 'FIXME' 'FIXED' 'HOWTO' 'XXX' 'DEBUG' 'WARNING'; do
      res=`grep --color=always -n "$balise" $@`
-     if [ "m$?" != "m1" ]
-     then
+     if [ "m$?" != "m1" ]; then
         echo -e "${magenta}  For the balise $balise :${default}"
         echo -e "${res}" # | pygmentize -f terminal256 -g # -l
      else
@@ -449,7 +451,6 @@ GrepBalises() {
         echo -e "${red} $balise not found in files..." >> /tmp/GrepBalises.log
      fi
  done
-
  if [ "X$notfound" = "X" ]; then
     echo -e "${white}GrepBalises >>> ${green} Done${white}. (on files $@)."
  else
@@ -932,8 +933,8 @@ ExplainShell() { /usr/bin/firefox http://explainshell.com/explain?cmd="${*// /%2
 alias Tor='~/.local/tor-browser_fr/start-tor-browser'
 
 alias kaamelott='vlc --random /host/Users/Lilian/Videos/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
-alias scrubs='vlc --random /host/Users/Lilian/Videos/Séries/Scrubs/ >/dev/null 2>/dev/null &'
 alias kaamelott-totem='totem --fullscreen /host/Users/Lilian/Videos/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
+alias scrubs='vlc --random /host/Users/Lilian/Videos/Séries/Scrubs/ >/dev/null 2>/dev/null &'
 alias scrubs-totem='totem --fullscreen /host/Users/Lilian/Videos/Séries/Scrubs/ >/dev/null 2>/dev/null &'
 
 alias dropbox='( dropbox start ; alert ) &>/dev/null&'
@@ -963,8 +964,6 @@ function PROXY () {
             ;;
     esac
 }
-
-alias Success='zenity --info --title="Succés" --window-icon=success --timeout=120 --text="Opération réussie !\n La commande était : <i>$(history | tail -n1 | sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')</i>."'
 
 # Experimental Shortcuts with hand-written Bash completion
 complete -o plusdirs -f -X '!*.@(html|md)' strapdown2pdf
