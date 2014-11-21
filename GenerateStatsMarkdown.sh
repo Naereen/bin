@@ -74,8 +74,8 @@ uptime >> "$dest"
 echo -e "\n\n***\n\n## [Disques](lns_munin/localdomain/localhost.localdomain/df.html) (\`df -h -T -l -t ext3 -t ext4 -t fuseblk\`)\n> <pre>" >> "$dest"
 df -h -T -l -t ext3 -t ext4 -t fuseblk >> "$dest"
 
-echo -e "</pre>\n\n## [Mémoire RAM et swap](lns_munin/localdomain/localhost.localdomain/memory.html) (\`free\`)\n> <pre>" >> "$dest"
-free >> "$dest"
+echo -e "</pre>\n\n## [Mémoire RAM et swap](lns_munin/localdomain/localhost.localdomain/memory.html) (\`free -h\`)\n> <pre>" >> "$dest"
+free -h >> "$dest"
 
 echo -e "</pre>\n\n## Message du jour (\`cat \"${HOME}\"/motd | tail -n +2\`)\n> <pre>" >> "$dest"
 cat "${HOME}"/motd | tail -n +2 >> "$dest"

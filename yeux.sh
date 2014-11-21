@@ -15,6 +15,6 @@ notify-send 'Repose tes yeux!' 'Prends ces 15 secondes pour bien reposer tes yeu
 
 xrandr --output LVDS --brightness 0.4 | tee -a /tmp/yeux.log
 sleep 15s | tee -a /tmp/yeux.log
-xrandr --output LVDS --brightness .85 | tee -a /tmp/yeux.log
+xrandr --output LVDS --brightness .92 | tee -a /tmp/yeux.log
 
 echo "Terminé :) C'est bien, tu prends soin de tes yeux." | tee -a /tmp/yeux.log
