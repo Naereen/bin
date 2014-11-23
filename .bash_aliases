@@ -405,8 +405,7 @@ LOG_Colored(){
 alias GitChanged='clear ; git status | grep --color=always "\(modified\|modifié\)" | less -r'
 alias GitDeleted='clear ; git status | grep --color=always "\(deleted\|supprimé\)" | less -r'
 alias GitAdded='clear ; git status | grep --color=always "\(added\|nouveau\)" | less -r'
-alias GitStatus='clear ; git status | less -r'
-alias Status='clear ; git status | less -r'
+alias GitSize='clear; echo -e "\n ==> ${white}Ce dépôt git « ${green}$(basename $(pwd))${white} » pèse ${red}$(git count-objects -v -H | grep "size-pack" | sed s/"size-pack: "//)${white} sur ${u}https://BitBucket.org/lbesson/$(basename $(pwd))${U}${white}."'
 
 # Run all test embedded in docstring, in the module $1
 alias DocTest='python -m doctest -v'
