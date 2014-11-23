@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # By: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 14-11-2014
+# Date: 23-11-2014
 # Web: http://besson.qc.to/bin/strapdown2pdf
 # Web2: http://lbesson.bitbucket.org/strapdown2pdf.html
 #
@@ -27,10 +27,11 @@
 #     only for MathJax flavored maths formulas, which are all copied in the .tex with escaped $ and { : \{ and \$ every where :(
 #
 #
-version='0.7'
+version='0.8'
 AUTOTEX="autotex batchmode"
 quiet="false"
 sign="false"
+keep="false"
 discrete="false"
 htm="false"
 
@@ -55,6 +56,7 @@ do
 			echo -e "    ${yellow}-q|-quiet${white}		run strapdown2pdf in quiet mode (no output at all, everything is redirected to ${magenta}/tmp/strapdown2pdf.log${white})."
 			echo -e "    ${yellow}-m|-htm${white}		run strapdown2pdf to produce a simple HTML file (which do not use StrapDown.js), written to a .htm file."
 			echo -e "    ${yellow}-d|-discrete${white}		run strapdown2pdf is discrete mode, without adding any creditentials in the produced document."
+			echo -e "    ${yellow}-k|-keep${white}		keep the intermediate .tex file."
 			echo -e "    ${yellow}-s|-sign${white}		sign the produce PDF document with GnuPG (thanks to PDFCompress)."
 			echo -e ""
 			echo -e "strapdown2pdf v$version : Copyrights: (c) Lilian Besson 2011-2014."
@@ -64,6 +66,10 @@ do
 			;;
 		q|quiet|-quiet)
 			quiet="true"
+			shift
+			;;
+		k|keep|-keep)
+			keep="true"
 			shift
 			;;
 		m|htm|-htm)
@@ -175,7 +181,11 @@ StrapDown2PDF() {
 		| sed 's/\\&/\&/g' \
 		| sed s/'\^{}'/'^'/g \
 		| sed s/'\"\([^"]*\)\"'/'« \1 »'/g \
+		| sed s/'\([A-Za-z]\)_\([A-Za-z]\)'/'\1\\_\2'/g \
+		| sed s_'\(\\href{http[^}]*}\){\([^} ]*\.[^} ]*\)}'_'\1{\\texttt{\2}}'_g \
+		| sed s/'\(\\[a-z]*section\){'/'\1*{'/g \
 		>> "${name}".tex || exit 16
+		# FIXME Add '\([^}]*\)' between on the left and right on {\([^} ]*\.[^} ]*\)} after { and before } ?
 
 	# read
 
@@ -196,6 +206,10 @@ StrapDown2PDF() {
 
 	# Clean up local repertory
 	mv -vf "${name}".tex* /tmp/
+	if [ "$keep" = "true" ]; then
+		cp -vf /tmp/"${name}".tex ./ && \
+		echo -e "${green} The intermediate LaTeX file ${name}.tex has been kept here, as asked by the option -k or --keep."
+	fi
 
 	# Proudly say that we are done
 	echo -e "${green}The file ${name}.pdf have been well generated from ${input}, and it should be really beautiful :)" | tee -a /tmp/strapdown2pdf.log
