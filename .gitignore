@@ -6,3 +6,5 @@ pfnum
 pwnat
 youtube-dl
 imagejs
+*.json
+*.png
