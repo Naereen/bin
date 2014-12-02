@@ -47,14 +47,15 @@ language_default = os.getenv("LANG")[0:2]
 
 lang_to_text = {"en": "english", "fr": "french"}
 
-template_url_default = "http://stats.grok.se/json/{language}/latest30/{page}"
+latest = 30  # also 60 or 90 are available
+
+template_url_default = "http://stats.grok.se/json/{language}/latest{latest}/{page}"
 
 template_output_default = "{page}.{language}.json"
 
 
-def download_json(page="JSON",
+def download_json(page="JSON", language=language_default,
                   template_output=template_output_default,
-                  language=language_default,
                   template_url=template_url_default):
     """ download_json(page="JSON", template_output=template_output_default,                  language=language_default, template_url=templateurl_default) -> str
 
@@ -72,22 +73,22 @@ Example:
 >>> download_json(page="France", language="fr", template_output="out_{page}.fr.json")
 'out_France.fr.json'
     """
+    from sys import stderr
     # To download the JSON file from the web
     # WARNING: https might not be supported
     import urllib2
     # To move the destination file to "/tmp/" if it is already there.
     import distutils.file_util
 
-    url_to_download = template_url.format(page=page, language=language)
+    url_to_download = template_url.format(page=page, language=language, latest=latest)
     outfile = template_output.format(page=page, language=language)
 
     try:
-        print ("The destination file {outfile} was already present in the"
-            " current directory, now it is in {newfile}".format(
+        stderr.write ("\nWarning: The destination file '{outfile}' was already present in the current directory, now it is in {newfile}.\n".format(
                 outfile=outfile,
-                newfile=distutils.file_util.copy_file(outfile, "/tmp/")))
+                newfile=distutils.file_util.copy_file(outfile, "/tmp/")[0]))
     except distutils.file_util.DistutilsFileError:
-        print "Apparently the destination file {outfile} is not there.".format(outfile=outfile)
+        stderr.write("Perfect, apparently the destination file '{outfile}' is not there.\n".format(outfile=outfile))
 
     url_request = urllib2.urlopen(url_to_download)
     distutils.file_util.write_file(outfile, url_request.readlines())
@@ -104,22 +105,22 @@ Try to dump and return the content of the file @outfile.
     import json
     try:
         json_obj = json.loads(outfile.readline())
-    except:  # FIXME
+    except ValueError:
         import string
         json_obj = json.loads(string.join(outfile.readlines()))
     return json_obj
 
 
-def plot_month_stats_from_json(json_obj, graphic_name=None, graphic_name_template="{title}.{lang}.{ext}", ext="png"):
-    """ plot_month_stats_from_json(json_obj, graphic_name=None, graphic_name_template="{title}.{lang}.{ext}", ext="png") -> None
+def plot_stats_from_json(json_obj, graphic_name=None, graphic_name_template="{title}.{lang}.{ext}", ext="all", title=None):
+    """ plot_stats_from_json(json_obj, graphic_name=None, graphic_name_template="{title}.{lang}.{ext}", ext="png") -> None
 
 Plot a couple of PNG/SVG/PDF statistics.
 
 .. warning:: Beta !
     """
-    assert(ext in ["png", "svg", "pdf"])
+    assert(ext in ["png", "svg", "pdf", "all"])
 
-    title = json_obj["title"]
+    title = title if title else json_obj["title"]
     lang = json_obj["project"]
     rank = json_obj["rank"]
     if rank == "-1":
@@ -134,37 +135,41 @@ Plot a couple of PNG/SVG/PDF statistics.
         import datetime
         today = datetime.date.today()
         year, month, day = today.year, today.month, today.day
-    except:  # FIXME
+    except ImportError:
         year, month, day = "2014", "12", "02"
 
-    print "The page \"{title}\", with language {lang}, has been ranked {rank}th on the {month}th month of {year}.".format(title=title, lang=lang, rank=rank, month=month, year=year)
-
-    stats = {}
+#    stats = {}
     data = []
 
-    # FIXME
+    # We sort the keys by increasing dates
     for year_month_day in sorted(views, key=lambda s: s[-5:-3]+s[-2:]):
-        newkey = year_month_day[-5:-3] + "-" + year_month_day[-2:]
-        stats[newkey] = views[year_month_day]
+#        newkey = year_month_day[-5:-3] + "-" + year_month_day[-2:]
+#        stats[newkey] = views[year_month_day]
         data.append([year_month_day, views[year_month_day]])
-        print "On {year}, the {date} the page \"{title}\" (lang={lang}) had {number} visitor{plural}.".format(date=newkey, number=stats[newkey],
-                        title=title, lang=lang, year=year,
-                        plural=("s" if stats[newkey]>1 else "") )
+#        print "On {year}, the {date} the page \"{title}\" (lang={lang}) had {number} visitor{plural}.".format(date=newkey, number=stats[newkey],
+#                        title=title, lang=lang, year=year,
+#                        plural=("s" if stats[newkey]>1 else "") )
 
     # Now make a graphic thanks to this data
     print "A graphic will be produced to the file \"{graphic_name}\" (with the type \"{ext}\").".format(graphic_name=graphic_name, ext=ext)
 
-    # Pour en faire des graphiques.
+    # We use numpy for the data manipulation and pylab for plotting (à la Matlab).
     import numpy
     import pylab
     data_old = data
-    data = numpy.array(data)
+    try:
+        data = numpy.array(data)
+    except:  # durty, almost impossible !
+        print "Unable to convert data to a numpy array. Exiting now..."
+        exit()
 
     # Just the numbers
     numbers = data[::, 1].astype(numpy.int)
     nbnumbers = numpy.size(numbers)
 
-#    # Sort decreasingly
+    print "The page \"{title}\", with language {lang}, has been ranked {rank}th on the {month}th month of {year}, for a total of {total} views.".format(title=title, lang=lang_to_text[lang], rank=rank, month=month, year=year, total=sum(numbers))
+
+#    # Sort decreasingly (bad idea here)
 #    ind = numpy.argsort(numbers)
 #    data = data[ind]
 #    numbers = numbers[ind]
@@ -174,115 +179,72 @@ Plot a couple of PNG/SVG/PDF statistics.
     pylab.ylabel("Number of visitors")
 
     try:
-        lang_name = "(in " + lang_to_text[lang] + ")"
-    except:
+        lang_name = "(in " + lang_to_text[lang].capitalize() + ")"
+    except KeyError:
         lang_name = "(unknown language)"
-    pylab.title(u".: Visiting statistics for the Wikipedia page {title} {lang_name} :.\n (Data from http://stats.grok.se, Python script by Lilian Besson (C) 2014) ".format(title=title, lang_name=lang_name))
+    pylab.title(u".: Visiting statistics for the Wikipedia page '{title}' {lang_name} :.\n (Data from http://stats.grok.se, Python script by Lilian Besson (C) 2014) ".format(title=title, lang_name=lang_name))
 
     # X axis
     pylab.xlim(1, nbnumbers+1)
-    pylab.xticks(numpy.arange(nbnumbers+1), [ s[-2:]+"/"+s[-5:-3] for s in data[:,0] ]
-, rotation=85)
+    pylab.xticks(range(nbnumbers+1), [ s[-2:] for s in data[:,0] ]
+, rotation=70)
     # Y axis
-    pylab.ylim(0, numbers.max() + 1)
+    pylab.ylim(numbers.min()*0.95, numbers.max()*1.05)
 
     pylab.grid(True, alpha=0.4)
 
-    # Compute (and plot) an (invisible) histogram
-    xvalues, bins, patches = pylab.hist(data, numpy.arange(nbnumbers+1), facecolor='blue', alpha=0.0)
+#   # Compute (and plot) an (invisible) histogram
+#   # xvalues, bins, patches = pylab.hist(numbers, range(nbnumbers+1), alpha=0.0)
+    bins = numpy.arange(start=1, stop=nbnumbers+1)
 
-    print len(xvalues), len(bins)
-    print xvalues
-    print bins
-
-    pylab.plot(bins[:][:], xvalues[:], 'go--', linewidth=.5, markersize=5)
+    # We keep the days with visitors
+    idc = numbers > 0
+    pylab.plot(bins[idc], numbers[idc], 'go--', linewidth=.5, markersize=5)
 
     # Tweak spacing to prevent clipping of ylabel
-    pylab.subplots_adjust(left=0.15)
+    pylab.subplots_adjust(left=0.15)  # bottom=0.5
 
-    pylab.show()  # FIXME
-    pylab.savefig(graphic_name, format=ext)  # FIXME
-    print "Ploting the statistics on an histogram on the file \"{graphic_name}\".".format(graphic_name=graphic_name)
-    pylab.draw()
+#    pylab.show()  # only if interactive will testing
+    # Plot the histogram on 3 files (png, svg, pdf)
+    if ext == "all":
+        graphic_name = "{title}.{lang}.".format(title=title, lang=lang)
+        for ext in ["png", "svg", "pdf"]:
+            pylab.savefig(graphic_name + ext, format=ext, dpi=600)
+            print "Ploting the statistics on an histogram on the file \"{graphic_name}\".".format(graphic_name=graphic_name + ext)
+            pylab.draw()
+    # Otherwise use only the one given by the user
+    else:
+        pylab.savefig(graphic_name, format=ext, dpi=400)
+        print "Ploting the statistics on an histogram on the file \"{graphic_name}\".".format(graphic_name=graphic_name)
+        pylab.draw()
     pylab.clf()
 
-    return views, data, data_old
+    return views, data, data_old, numbers
 
 
-def test(page="France", language=language_default):
-    """ test() -> None"""
-    outfile = download_json(page, language)
+def main(argv):
+    """ main(argv) -> None
+
+Main function. Use the arguments of the command line."""
+
+#    print "argv: ", argv
+    if "-h" in argv or "--help" in argv:
+        print "wikistats.py --help|-h | page [language_code]"
+        return 1
+
+    language = argv[1] if len(argv) > 1 else language_default
+    page = argv[0] if len(argv) > 0 else "Professeur Xavier"
+
+    outfile = download_json(page=page, language=language)
+    print "L239: outfile = ", outfile
     json_obj = outfile_to_json(outfile)
-    return plot_month_stats_from_json(json_obj)
+
+    views, data, data_old, numbers = plot_stats_from_json(json_obj, title=page)
+    return 0
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 #    from doctest import testmod
 #    testmod(verbose=False)
-    try:
-        import sys
-        views, data, data_old = test(page=sys.argv[1], language=sys.argv[2])
-    except IndexError:
-        views, data, data_old = test(page="France", language="en")
-#    sys.exit(0)
-
-    # Pour analyser les arguments de l'appel du script en ligne du commande,
-    import argparse
-    import getopt
-
-
-###
-#def main(argv):
-#    try:
-#        opts, args = getopt.getopt(argv, "sdh", ["stdout", "download", "mode=", "authhash=", "ttl=", "help"])
-#    except getopt.GetoptError:
-#        usage()
-#        sys.exit(2)
-#
-#    paste = PasteBox()
-#
-#    for opt, arg in opts:
-#        if opt in ("--mode"):
-#            if arg:
-#                paste.mode = arg
-#            else:
-#                print("You need to provide a mode see usage (--help)")
-#                sys.exit(2)
-#
-#        if opt in ("--authhash"):
-#            if arg:
-#                paste.authhash = arg
-#            else:
-#                print("You need to provide an authhash see usage (--help)")
-#                sys.exit(2)
-#
-#        if opt in ("--ttl"):
-#            if arg:
-#                paste.ttl = arg
-#            else:
-#                print("You need to provide the TTL see usage (--help)")
-#                sys.exit(2)
-#
-#        if opt in ("-h", "--help"):
-#            usage()
-#            sys.exit()
-#        elif opt == '-s' or opt == '--stdout':
-#            for pasteid in args:
-#                paste.stdout(pasteid)
-#        elif opt == '-d' or opt == '--download':
-#            for pasteid in args:
-#                paste.download(pasteid)
-#
-#    if not opts and args:
-#        for file in args:
-#            try:
-#                print("%s: %s"%(file, paste.create(''.join(open(file, 'r').readlines()))))
-#            except IOError:
-#                print("skipping %s: file doesn't exist"%file)
-#
-#    if not sys.stdin.isatty():
-#        paste = paste.create(' '.join(sys.stdin.readlines()))
-#        print(paste)
-#
-#if __name__ == "__main__":
-#    main(sys.argv[1:])
+    import sys
+    sys.exit(int(main(sys.argv[1:])))
