@@ -5,7 +5,7 @@ A simple (beta) Python tool to plot graphics from Wikipédia statistics.
 
 .. warning:: Copyleft 2013 - Lilian Besson.
 .. warning:: License GPLv3.
-.. note:: Last version?
+.. sidebar:: Last version?
 
    Take a look to the latest version at https://bitbucket.org/lbesson/bin/src/master/wikistats.py
 
@@ -13,14 +13,13 @@ A simple (beta) Python tool to plot graphics from Wikipédia statistics.
 
 Examples
 --------
-$ wikistats.py --help
+>>> wikistats.py --help
 Gives help
 
-$ wikistats.py --language=fr "Professeur Xavier"
-$ wikistats.py -l fr "Professeur Xavier"
+>>> wikistats.py "Professeur Xavier" fr
 Will produce a graphic of visiting statistics for the page https://fr.wikipedia.org/wiki/Professeur_Xavier for the last 30 days
 
----
+------
 
 .. note::
 
@@ -45,7 +44,25 @@ import os
 # Default values
 language_default = os.getenv("LANG")[0:2]
 
-lang_to_text = {"en": "english", "fr": "french"}
+def lang_to_text(lang, exception=False):
+    """ lang_to_text(lang, exception=False) -> str
+
+Convert a Wikipédia language code (two letters) to a English version of the language.
+
+Example:
+>>> lang_to_text("en")
+'english'
+>>> lang_to_text("fr")
+'french'
+    """
+    if exception:
+        try:
+            # TODO improve this !
+            return {"en": "english", "fr": "french"}[lang]
+        except:
+            "unknown"
+    else:
+        return {"en": "english", "fr": "french"}[lang]
 
 latest = 30  # also 60 or 90 are available
 
@@ -167,7 +184,7 @@ Plot a couple of PNG/SVG/PDF statistics.
     numbers = data[::, 1].astype(numpy.int)
     nbnumbers = numpy.size(numbers)
 
-    print "The page \"{title}\", with language {lang}, has been ranked {rank}th on the {month}th month of {year}, for a total of {total} views.".format(title=title, lang=lang_to_text[lang], rank=rank, month=month, year=year, total=sum(numbers))
+    print "The page \"{title}\", with language {lang}, has been ranked {rank}th on the {month}th month of {year}, for a total of {total} views.".format(title=title, lang=lang_to_text(lang, exception=True), rank=rank, month=month, year=year, total=sum(numbers))
 
 #    # Sort decreasingly (bad idea here)
 #    ind = numpy.argsort(numbers)
@@ -179,7 +196,7 @@ Plot a couple of PNG/SVG/PDF statistics.
     pylab.ylabel("Number of visitors")
 
     try:
-        lang_name = "(in " + lang_to_text[lang].capitalize() + ")"
+        lang_name = "(in " + lang_to_text(lang, exception=False).capitalize() + ")"
     except KeyError:
         lang_name = "(unknown language)"
     pylab.title(u".: Visiting statistics for the Wikipedia page '{title}' {lang_name} :.\n (Data from http://stats.grok.se, Python script by Lilian Besson (C) 2014) ".format(title=title, lang_name=lang_name))
@@ -198,7 +215,7 @@ Plot a couple of PNG/SVG/PDF statistics.
     bins = numpy.arange(start=1, stop=nbnumbers+1)
 
     # We keep the days with visitors
-    idc = numbers > 0
+    idc = numbers >= 0
     pylab.plot(bins[idc], numbers[idc], 'go--', linewidth=.5, markersize=5)
 
     # Tweak spacing to prevent clipping of ylabel
@@ -236,7 +253,6 @@ Main function. Use the arguments of the command line."""
     page = argv[0] if len(argv) > 0 else "Professeur Xavier"
 
     outfile = download_json(page=page, language=language)
-    print "L239: outfile = ", outfile
     json_obj = outfile_to_json(outfile)
 
     views, data, data_old, numbers = plot_stats_from_json(json_obj, title=page)
