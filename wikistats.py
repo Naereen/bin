@@ -260,7 +260,7 @@ Main function. Use the arguments of the command line."""
 
 
 if __name__ == "__main__":
-#    from doctest import testmod
+    from doctest import testmod
 #    testmod(verbose=False)
     import sys
     sys.exit(int(main(sys.argv[1:])))
