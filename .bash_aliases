@@ -1001,7 +1001,7 @@ alias s='clear ; git status | less -r'
 alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "^rupee.*$" | sed s/"^rupee"/""/ )${U}${white}."'
 alias brigthness='xrandr --output LVDS --brightness '
 
-alias FilesLog='find | tee find.log ; CheckPerms | tee perms.log ; du | tee du.log ; dut | tee dut.log ; quota | tee quota.log'
+alias FilesLog='find | tee find.log ; du | tee du.log ; dut | tee dut.log'
 
 
 ##############################################################################
