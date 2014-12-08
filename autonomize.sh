@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # By: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 12-11-2014
+# Date: 08-12-2014
 #
 # autonomize.sh, a small tool to be used with autonomize.sh to produce autonomous latex document from autotex-powered document (it adds all the necessary headers)
 #
@@ -14,43 +14,63 @@
 #
 # Licence: [GPLv3](http://besson.qc.to/LICENCE.html)
 #
-version='0.2'
+version='0.3'
 
 justClean="false"
+doNothing="false"
 batch="false"
 compile="false"
 
 clear
-echo -e "$@"
+# echo -e "# Arguments are: ${magenta}\n$@${white}\n\n"
 oridir="$(pwd)"
 
-
-# $OPTARG can contain the argument of the option k (if specified with hvk: or hk:v for example)
-while getopts vhcbp option
-do
-     case $option in
-        v|version|-version)
+# Options parsing
+for arg in "$@"; do
+    case "$arg" in
+        -v|-version|--version)
             echo -e "autonomize.sh $version"
             exit 0
             ;;
-        h|help|-help)
-            echo -e "autonomize.sh $version: a small tool to be used with autonomize.sh to produce autonomous latex document from autotex-powered document (it adds all the necessary headers)"
+        -h|-help|--help)
+            echo -e "${green}autonomize.sh${white} -help | [options]"
+            echo -e ""
+            echo -e "Produce autonomous latex document from autotex-powered document (it adds all the necessary headers)."
+            echo -e ""
+            echo -e "Help:"
+            echo -e "    ${yellow}-h${white}           to print this help message (and quit)."
+            echo -e "    ${yellow}-v${white}           to print just the version of strapdown2pdf, and quit."
+            echo -e ""
+            echo -e "Options:"
+            echo -e "    ${yellow}-c|-clean${white}   just cleaning the source."
+            echo -e "    ${yellow}-b|-batch${white}     run without interactivity from the user."
+            echo -e "    ${yellow}-p|-compile${white}  after making the file autonomous, compile it with two uses of pdflatex."
+            echo -e "    ${yellow}-a|-noaction${white}   do nothing (just showing what will be done ?). FIXME"
+            echo -e ""
+            echo -e "autonomize.sh v$version : Copyrights: (c) Lilian Besson 2011-2014."
+            echo -e "Released under the term of the GPL v3 Licence (more details on http://besson.qc.to/LICENSE.html)."
+            echo -e "In particular, autonomize.sh is provided WITHOUT ANY WARANTY."
             exit 0
             ;;
-        c|clean|-clean)
+        -a|-noaction|--noaction)
+            echo -e "${cyan}Option '-a'${white}: do nothing (just showing)."  # FIXME
+            doNothing="true"
+            shift
+            ;;
+        -c|-clean|--clean)
             echo -e "${cyan}Option '-c'${white}: Just cleaning the source."
             justClean="true"
-            # shift
+            shift
             ;;
-        b|batch|-batch)
+        -b|-batch|--batch)
             echo -e "${cyan}Option '-b'${white}: Running without interactivity from the user."
             batch="true"
-            # shift
+            shift
             ;;
-        p|compile|-compile)
+        -p|-compile|--compile)
             echo -e "${cyan}Option '-p'${white}: After making the file autonomous, compile it with two uses of pdflatex."
             compile="true"
-            # shift
+            shift
             ;;
      esac
 done
@@ -131,12 +151,14 @@ autonomize() {
         echo -e "${yellow}Using the first ${firstNlines} lines of the template ${template}."
         # cat "${template}" > "${out}"
         ## From autotex, change title, police size, scale
-        head -n ${firstNlines} "${template}" \
-            | grep -v "^%%%%.*$" \
-            | sed s/"scale=[0-9\.]*\]{geometry}"/"scale=${scale}]{geometry}"/ \
-            | sed s/"11pt\]{article}"/"${policesize}]{article}"/ \
-            | sed s#MyTitleToChangeWithAutonomizeSh#"${title}"# \
-            > "${out}"
+        if [ "${doNothing}" = "false" ]; then  # FIXME
+            head -n ${firstNlines} "${template}" \
+                | grep -v "^%%%%.*$" \
+                | sed s/"scale=[0-9\.]*\]{geometry}"/"scale=${scale}]{geometry}"/ \
+                | sed s/"11pt\]{article}"/"${policesize}]{article}"/ \
+                | sed s#MyTitleToChangeWithAutonomizeSh#"${title}"# \
+                > "${out}"
+        fi
     fi
 
     ##
@@ -146,91 +168,95 @@ autonomize() {
     ##
     ## Edit the input file
     ## From naereen.sty, slowly change every macros, clean up macro and non conventional files
-    cat "${arg}" \
-        | sed s/'\\begin{arab}'/'\\begin{enumerate}[label=(\\arabic*)]'/g \
-        | sed s/'\\begin{roma}'/'\\begin{enumerate}[label=(\\roman*)]'/g \
-        | sed s/'\\begin{Roma}'/'\\begin{enumerate}[label=(\\Roman*)]'/g \
-        | sed s/'\\begin{enumalph}'/'\\begin{enumerate}[label=(\\alph*)]'/g \
-        | sed s/'\\begin{enumAlph}'/'\\begin{enumerate}[label=(\\Alph*)]'/g \
-        | sed s/'\\end{\(arab\|roma\|Roma\|enumalph\|enumAlph\)}'/'\\end{enumerate}'/g \
-        | sed s/'\\arccosh'/'\\mathop{\\mathrm{arccosh}}'/g \
-        | sed s/'\\arcsinh'/'\\mathop{\\mathrm{arcsinh}}'/g \
-        | sed s/'\\arctanh'/'\\mathop{\\mathrm{arctanh}}'/g \
-        | sed s/'=='/'\\mathrel{\\stackrel{\\smash{\\scriptscriptstyle\\mathrm{def}}}{=}}'/g \
-        | sed s/'\\prof\(vijay\|arya\|satya\)\({}\)\?'/''/g \
-        | sed s/'<==>'/'\\mathrel{\\Longleftrightarrow}'/g \
-        | sed s/'--->'/'\\mathrel{\\Longleftrightarrow}'/g \
-        | sed s/'-->'/'\\mathrel{\\longleftrightarrow}'/g \
-        | sed s/'<=>'/'\\mathrel{\\Leftrightarrow}'/g \
-        | sed s/'==>'/'\\mathrel{\\Rightarrow}'/g \
-        | sed s/'<='/'\\leq'/g \
-        | sed s/'>='/'\\geq'/g \
-        | sed s/'\\geqlatex'/'>=latex'/g \
-        | sed s/'\\leqlatex'/'<=latex'/g \
-        | sed s/'|->'/'\\mathrel{\\mapsto}'/g \
-        | sed s/'+oo'/'+\\infty'/g \
-        | sed s/'-oo'/'-\\infty'/g \
-        | sed s/'\\DUtransition\({}\)\?'/'\\hspace*{\\fill}\\hrulefill\\hspace*{\\fill}\\vskip 0.5\\baselineskip %% Horizontal line'/g \
-        | grep -v "^%autotex%.*$" \
-        | sed s/'\\ie'/'\\emph{i.e.}~'/g \
-        | sed s/'\\eg'/'\\emph{e.g.}~'/g \
-        | sed s/'\\ssi'/'\\textbf{ssi}~'/g \
-        | sed s/'\\iff'/'\\textbf{iff}~'/g \
-        | sed s/'\\it{'/'\\textit{'/g \
-        | sed s/'\\tt{'/'\\texttt{'/g \
-        | sed s/'\\bf{'/'\\textbf{'/g \
-        | sed s/'\\sc{'/'\\textsc{'/g \
-        | sed s/'\\todo{'/'\\textcolor{red}{'/g \
-        | sed s/'\\inv{\(.*\)}'/'\\frac{1}{\1}'/g \
-        | sed s/'\\inv{\(.*\)}'/'\\frac{1}{\1}'/g \
-        | sed s/'\\inv{\(.*\)}'/'\\frac{1}{\1}'/g \
-        | sed s/'\\e^'/'\\mathrm{e}^'/g \
-        | sed s/'\\e '/'\\mathrm{e} '/g \
-        | sed s/'\\dx'/'\\mathrm{d}x'/g \
-        | sed s/'\\dy'/'\\mathrm{d}y'/g \
-        | sed s/'\\dz'/'\\mathrm{d}z'/g \
-        | sed s/'\\dt'/'\\mathrm{d}t'/g \
-        | sed s/'\\E '/'\\exists '/g \
-        | sed s/'\\V '/'\\forall '/g \
-        | sed s/'\\Z'/'\\mathbb{Z}'/g \
-        | sed s/'\\N'/'\\mathbb{N}'/g \
-        | sed s/'\\R'/'\\mathbb{R}'/g \
-        | sed s/'\\Q'/'\\mathbb{Q}'/g \
-        | sed s/'\\C'/'\\mathbb{C}'/g \
-        | sed s/'\\D'/'\\mathbb{D}'/g \
-        | sed s/'\\K'/'\\mathbb{K}'/g \
-        | sed s/'\\epsilon'/'\\varepsilon'/g \
-        | sed s/'\\IR'/'\\mathbb{R}'/g \
-        | sed s/'\\IC'/'\\mathbb{C}'/g \
-        | sed s/'\\IQ'/'\\mathbb{Q}'/g \
-        | sed s/'\\IZ'/'\\mathbb{Z}'/g \
-        | sed s/'\\IN'/'\\mathbb{N}'/g \
-        | sed s/'\\IF'/'\\mathbb{F}'/g \
-        | sed s/'\\score{\([0-9\.]*\)}'/''/g \
-        | sed s/'\\exer '/'\\item '/g \
-        | sed s/'\\bonus '/'\\item (\textbf{Bonus:})'/g \
-        >> "${out}"
-        # | sed s/'\\cosh'/'\\mathop{\\mathrm{cosh}}'/g \
-        # | sed s/'\\sinh'/'\\mathop{\\mathrm{sinh}}'/g \
-        # | sed s/'\\tanh'/'\\mathop{\\mathrm{tanh}}'/g \
+    if [ "${doNothing}" = "false" ]; then  # FIXME
+        cat "${arg}" \
+            | sed s/'\\begin{arab}'/'\\begin{enumerate}[label=(\\arabic*)]'/g \
+            | sed s/'\\begin{roma}'/'\\begin{enumerate}[label=(\\roman*)]'/g \
+            | sed s/'\\begin{Roma}'/'\\begin{enumerate}[label=(\\Roman*)]'/g \
+            | sed s/'\\begin{enumalph}'/'\\begin{enumerate}[label=(\\alph*)]'/g \
+            | sed s/'\\begin{enumAlph}'/'\\begin{enumerate}[label=(\\Alph*)]'/g \
+            | sed s/'\\end{\(arab\|roma\|Roma\|enumalph\|enumAlph\)}'/'\\end{enumerate}'/g \
+            | sed s/'\\arccosh'/'\\mathop{\\mathrm{arccosh}}'/g \
+            | sed s/'\\arcsinh'/'\\mathop{\\mathrm{arcsinh}}'/g \
+            | sed s/'\\arctanh'/'\\mathop{\\mathrm{arctanh}}'/g \
+            | sed s/'=='/'\\mathrel{\\stackrel{\\smash{\\scriptscriptstyle\\mathrm{def}}}{=}}'/g \
+            | sed s/'\\prof\(vijay\|arya\|satya\)\({}\)\?'/''/g \
+            | sed s/'<==>'/'\\mathrel{\\Longleftrightarrow}'/g \
+            | sed s/'--->'/'\\mathrel{\\Longleftrightarrow}'/g \
+            | sed s/'-->'/'\\mathrel{\\longleftrightarrow}'/g \
+            | sed s/'<=>'/'\\mathrel{\\Leftrightarrow}'/g \
+            | sed s/'==>'/'\\mathrel{\\Rightarrow}'/g \
+            | sed s/'<='/'\\leq'/g \
+            | sed s/'>='/'\\geq'/g \
+            | sed s/'\\geqlatex'/'>=latex'/g \
+            | sed s/'\\leqlatex'/'<=latex'/g \
+            | sed s/'|->'/'\\mathrel{\\mapsto}'/g \
+            | sed s/'+oo'/'+\\infty'/g \
+            | sed s/'-oo'/'-\\infty'/g \
+            | sed s/'\\DUtransition\({}\)\?'/'\\hspace*{\\fill}\\hrulefill\\hspace*{\\fill}\\vskip 0.5\\baselineskip %% Horizontal line'/g \
+            | grep -v "^%autotex%.*$" \
+            | sed s/'\\ie'/'\\emph{i.e.}~'/g \
+            | sed s/'\\eg'/'\\emph{e.g.}~'/g \
+            | sed s/'\\ssi'/'\\textbf{ssi}~'/g \
+            | sed s/'\\iff'/'\\textbf{iff}~'/g \
+            | sed s/'\\it{'/'\\textit{'/g \
+            | sed s/'\\tt{'/'\\texttt{'/g \
+            | sed s/'\\bf{'/'\\textbf{'/g \
+            | sed s/'\\sc{'/'\\textsc{'/g \
+            | sed s/'\\todo{'/'\\textcolor{red}{'/g \
+            | sed s/'\\inv{\(.*\)}'/'\\frac{1}{\1}'/g \
+            | sed s/'\\inv{\(.*\)}'/'\\frac{1}{\1}'/g \
+            | sed s/'\\inv{\(.*\)}'/'\\frac{1}{\1}'/g \
+            | sed s/'\\e^'/'\\mathrm{e}^'/g \
+            | sed s/'\\e '/'\\mathrm{e} '/g \
+            | sed s/'\\dx'/'\\mathrm{d}x'/g \
+            | sed s/'\\dy'/'\\mathrm{d}y'/g \
+            | sed s/'\\dz'/'\\mathrm{d}z'/g \
+            | sed s/'\\dt'/'\\mathrm{d}t'/g \
+            | sed s/'\\E '/'\\exists '/g \
+            | sed s/'\\V '/'\\forall '/g \
+            | sed s/'\\Z'/'\\mathbb{Z}'/g \
+            | sed s/'\\N'/'\\mathbb{N}'/g \
+            | sed s/'\\R'/'\\mathbb{R}'/g \
+            | sed s/'\\Q'/'\\mathbb{Q}'/g \
+            | sed s/'\\C'/'\\mathbb{C}'/g \
+            | sed s/'\\D'/'\\mathbb{D}'/g \
+            | sed s/'\\K'/'\\mathbb{K}'/g \
+            | sed s/'\\epsilon'/'\\varepsilon'/g \
+            | sed s/'\\IR'/'\\mathbb{R}'/g \
+            | sed s/'\\IC'/'\\mathbb{C}'/g \
+            | sed s/'\\IQ'/'\\mathbb{Q}'/g \
+            | sed s/'\\IZ'/'\\mathbb{Z}'/g \
+            | sed s/'\\IN'/'\\mathbb{N}'/g \
+            | sed s/'\\IF'/'\\mathbb{F}'/g \
+            | sed s/'\\score{\([0-9\.]*\)}'/''/g \
+            | sed s/'\\exer '/'\\item '/g \
+            | sed s/'\\bonus '/'\\item (\textbf{Bonus:})'/g \
+            >> "${out}"
+            # | sed s/'\\cosh'/'\\mathop{\\mathrm{cosh}}'/g \
+            # | sed s/'\\sinh'/'\\mathop{\\mathrm{sinh}}'/g \
+            # | sed s/'\\tanh'/'\\mathop{\\mathrm{tanh}}'/g \
 
-    ## Closing documents
-    if [ "${justClean}" = "false" ]; then
-        echo -e "\n\\\\end{document}\n%% End of the document ${arg}" >> "${out}"
-    fi
-
-    echo -e "${green}Done: new file is ${out}.${white}"
-    if [ "${batch}" = "false" ]; then
-        colordiff "${arg}" "${out}"
-        subl "${out}"
-    fi
-    if [ "${compile}" = "true" ]; then
-        ( pdflatex "${out}" && pdflatex "${out}" ) \
-        || echo -e "${red} Problem with the file ${arg} converted to ${out}"
-        if [ -f "${out%.tex}.pdf" -a "${batch}" = "false" ]; then
-            evince "${out%.tex}.pdf" &> /dev/null &
+        ## Closing documents
+        if [ "${justClean}" = "false" ]; then
+            echo -e "\n\\\\end{document}\n%% End of the document ${arg}" >> "${out}"
         fi
-        mv -vf *.aux *.out *.synctex.gz *.log /tmp/
+
+        echo -e "${green}Done: new file is ${out}.${white}"
+        if [ "${batch}" = "false" ]; then
+            colordiff "${arg}" "${out}"
+            subl "${out}"
+        fi
+
+        if [ "${compile}" = "true" ]; then
+            echo -e "${green}Compiling ${out} ...${white}"
+            ( pdflatex "${out}" && pdflatex "${out}" ) \
+            || echo -e "${red} Problem with the file ${arg} converted to ${out}"
+            if [ -f "${out%.tex}.pdf" -a "${batch}" = "false" ]; then
+                evince "${out%.tex}.pdf" &> /dev/null &
+            fi
+            mv -vf "${out%.tex}.aux" "${out%.tex}.out" "${out%.tex}".synctex.gz* "${out%.tex}.log" /tmp/
+        fi
     fi
 }
 
