@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # author: Lilian BESSON
 # email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# date: 18-11-2014
+# date: 09-12-2014
 # web: https://bitbucket.org/lbesson/bin/src/master/Smooth_Name.sh
 #
 # A small script to rename all files in a directory semi-automatically.
@@ -13,8 +13,9 @@
 #
 # Licence: GPL v3
 #
-version='1.2'
+version='1.3'
 LANG='fr'
+log=/tmp/$(basename $0).log
 
 if [ "${1}" = "--batch" ]; then
     echo -e "Nothing asked to the user : batch mode (option --batch)."
@@ -34,32 +35,37 @@ else
 fi
 
 # Change sub-directory
-all=`find . -type d -iname [A-Za-z]'*'`
-all="${all//' '/%20}"
+allfolder=`find . -type d -iname [A-Za-z]'*'`
+allfolder="${allfolder//' '/%20}"
 
-for i in ${all}; do
-    i="${i//'%20'/ }"
-    # i="${i#./}"
-    echo -e "${green}Working with the directory ${u}'${i}'${U}.${white}"
-    echo mv -vi "$i" "$(smoothnameone.sh "$i")"
-    $MV "$i" "$(smoothnameone.sh "$i")"
+for folder in ${allfolder}; do
+    folder="${folder//'%20'/ }"
+    # folder="${folder#./}"
+    newfolder="$(smoothnameone.sh "${folder}")"
+    echo -e "${green}Working with the directory ${u}'${folder}'${U}.${white}"
+    echo mv -vi "${folder}" "${newfolder}"
+    $MV "${folder}" "${newfolder}"
+    folder="${newfolder}"
+
+    # Change content
+    allfile=`find "${folder}"/ -type f`
+    # allfile=`find "${folder}"/ -type f -iname '*'.mp3 -o -iname '*'.avi -o -iname '*'.mkv -o -iname '*'.wma -o -iname '*'.srt -o -iname '*'.png -o -iname '*'.jpg -o -iname '*'.jpeg -o -iname '*'.txt -o -iname '*'.mp4`
+    allfile="${allfile//' '/%20}"
+
+    for file in ${allfile}; do
+    # for file in *.mp3; do
+        file="${file//'%20'/ }"
+        # file="${file#./}"
+        echo -e "${black}Working with the file ${magenta}${u}'${file}'${U}${white}."
+        # echo $MV "$file" "$(smoothnameone.sh "$file")"
+        if [ "X$onlyfiles" = "Xtrue" ]; then
+            $MV "$file" "$(smoothnameone.sh --file "$file")" 2>>$log
+            # Réf: http://abs.traduc.org/abs-5.3-fr/ch19.html#ioredirref
+        else
+            $MV "$file" "$(smoothnameone.sh "$file")" 2>>$log
+        fi
+    done
 done
 
-# Change content
-all=`find . -type f -iname '*'.mp3 -o -iname '*'.avi -o -iname '*'.mkv -o -iname '*'.wma -o -iname '*'.srt -o -iname '*'.png -o -iname '*'.jpg -o -iname '*'.jpeg -o -iname '*'.txt -o -iname '*'.mp4`
-all="${all//' '/%20}"
-
-for i in ${all}; do
-# for i in *.mp3; do
-    i="${i//'%20'/ }"
-    # i="${i#./}"
-    echo -e "${black}Working with the file ${magenta}${u}'${i}'${U}${white}."
-    # echo $MV "$i" "$(smoothnameone.sh "$i")"
-    if [ "X$onlyfiles" = "Xtrue" ]; then
-        $MV "$i" "$(smoothnameone.sh --file "$i")"
-    else
-        $MV "$i" "$(smoothnameone.sh "$i")"
-    fi
-done
 
 # END
