@@ -81,9 +81,15 @@ autonomize() {
     arg="${1}"
 
     if [ ! -f "$arg" ]; then
-        echo -e "${red}The file ${cyan}${u}'${arg}'${U}${red} is NOT HERE : I skip it...${white}"
+        echo -e "${red}The file ${cyan}${u}'${arg}'${U}${red} is NOT HERE : I skip it ...${white}"
         return 3
     fi
+
+    if [ "$(grep "\\documentclass" "$arg")" ]; then
+        echo -e "${red}The file ${cyan}${u}'${arg}'${U}${red} seems to be autonomous already (it contains a \\documentclass) : I skip it ...${white}"
+        return 4
+    fi
+
     f="$(basename "$1")"
     echo -e "${cyan}f = ${f}${white}"
     dossier="$(dirname "$1")"
@@ -93,6 +99,7 @@ autonomize() {
     name="${arg%.en.tex}"
     name="${name%.fr.tex}"
     name="${name%.tex}"
+    name="${name%__autonomize}"  # better !
 
     # Try to change the template regarding the language
     echo -e "We have f='${f}', and {f%.fr.tex}.fr.tex='${f%.fr.tex}.fr.tex', and {f%.en.tex}.en.tex='${f%.en.tex}.en.tex'..."
@@ -259,10 +266,13 @@ autonomize() {
             # cd "${p}"
             echo -e "${green}Compiling ${outf}${white}... (in pwd=${u}$(pwd)${U})${white}"
             head -n1 "${outf}"
-            ( pdflatex "${outf}" &>/dev/null && pdflatex "${outf}" ) \
+            ( pdflatex -interaction=batchmode "${outf}" && pdflatex -interaction=batchmode "${outf}" &>/dev/null ) \
             || echo -e "${red} Problem with the file ${arg} converted to ${outf}"
             if [ -f "${outf%.tex}.pdf" -a "${batch}" = "false" ]; then
                 evince "${outf%.tex}.pdf" &> /dev/null &
+            fi
+            if [ -f "${outf%.tex}.pdf" ]; then
+                PDFCompress --no-notify "${outf%.tex}.pdf"
             fi
             mv -vf "${outf%.tex}.aux" "${outf%.tex}.out" "${outf%.tex}".synctex.gz* "${outf%.tex}.log" /tmp/
         fi
@@ -276,7 +286,7 @@ autonomize "${1}"
 shift
 for finput in "$@"; do
     echo -e "\n\n---------------------------"
-    read # debug
+    # read # debug
     echo -e "${blue}Generating the next file..."
     autonomize "${finput}"
 done
