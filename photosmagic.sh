@@ -38,13 +38,13 @@ time (
 	Smooth_Name.sh
 	notify-send "$(basename $0)" "I am done <b>smoothing the name</b> (in $(pwd))."
 	# read
-	echo -e "${red}Compressing all JPEG (*.jpe?g, *.JPE?G) pictures....${white}" | tee -a $log
+	echo -e "${red}Compressing all JPEG (*.jpe?g, *.JPE?G) pictures...${white} (using jpegoptim $simulate_jpeg --max=85 --strip-all --size=50% --threshold=25% --verbose --total)" | tee -a $log
 	( time jpegoptim $simulate_jpeg --max=85 --strip-all --size=50% --threshold=25% --verbose --total $(find ./ -type f -iname '*'.jpeg -o -iname '*'.jpg 2>$logjpeg ) ) | tee -a $log
 	notify-send "$(basename $0)" "I am done <b>compressing all JPEG pictures</b> (in $(pwd))."
 	# read
-	echo -e "${red}Compressing all PNG (*.png, *.PNG) pictures....${white}" | tee -a $log
+	echo -e "${red}Compressing all PNG (*.png, *.PNG) pictures...${white} (using 'optipng $simulate_png -preserve -o1')" | tee -a $log
 	# # time ( for i in $(find ./ -type f -iname '*'.png 2>$log ); do
-	( time optipng $simulate_png -preserve $(find ./ -type f -iname '*'.png 2>$logpng ) ) | tee -a $log
+	( time optipng $simulate_png -preserve -o1 $(find ./ -type f -iname '*'.png 2>$logpng ) ) | tee -a $log
 	notify-send "$(basename $0)" "I am done <b>compressing all PNG pictures</b> (in $(pwd))."
 	# read
 	# # done )
@@ -58,7 +58,7 @@ time (
 du -kh > du.log
 tail -n1 du.log~ > /tmp/du.log~
 tail -n1 du.log > /tmp/du.log
-echo -e "${red}Size before | Size after${cyan}" | tee -a $log
 rm -vf du.log~
+echo -e "${red}Size before | Size after${cyan}" | tee -a $log
 diff -y /tmp/du.log~ /tmp/du.log
 echo -e "${white}\n\nDone :)" | tee -a $log
