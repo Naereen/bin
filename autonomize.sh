@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # By: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 08-12-2014
+# Date: 09-12-2014
 #
 # autonomize.sh, a small tool to be used with autonomize.sh to produce autonomous latex document from autotex-powered document (it adds all the necessary headers)
 #
@@ -14,7 +14,7 @@
 #
 # Licence: [GPLv3](http://besson.qc.to/LICENCE.html)
 #
-version='0.3'
+version='0.4'
 
 justClean="false"
 doNothing="false"
@@ -84,8 +84,11 @@ autonomize() {
         echo -e "${red}The file ${cyan}${u}'${arg}'${U}${red} is NOT HERE : I skip it...${white}"
         return 3
     fi
-    f="$(basename $1)"
-    dossier="$(dirname $1)"
+    f="$(basename "$1")"
+    echo -e "${cyan}f = ${f}${white}"
+    dossier="$(dirname "$1")"
+    echo -e "${cyan}dossier = ${dossier}${white}"
+    dossier="${dossier#./}"
 
     name="${arg%.en.tex}"
     name="${name%.fr.tex}"
@@ -103,6 +106,9 @@ autonomize() {
     fi
 
     out="${name}__autonomize.${langf}.tex"
+    echo -e "${cyan}out = ${out}${white}"
+    outf="$(basename "$out")"
+    echo -e "${cyan}outf = ${outf}${white}"
     mv -vf "${out}" /tmp/
 
     ##
@@ -120,6 +126,7 @@ autonomize() {
     fi
 
     echo -e "Working with $u'$f'$U on $blue'$p'$white."
+    cd "${p}"
 
     title="$(grep "%autotex% Titre: " "${p}/${f}")"
     title="${title#%autotex% Titre: }"
@@ -157,7 +164,7 @@ autonomize() {
                 | sed s/"scale=[0-9\.]*\]{geometry}"/"scale=${scale}]{geometry}"/ \
                 | sed s/"11pt\]{article}"/"${policesize}]{article}"/ \
                 | sed s#MyTitleToChangeWithAutonomizeSh#"${title}"# \
-                > "${out}"
+                > "${outf}"
         fi
     fi
 
@@ -169,7 +176,7 @@ autonomize() {
     ## Edit the input file
     ## From naereen.sty, slowly change every macros, clean up macro and non conventional files
     if [ "${doNothing}" = "false" ]; then  # FIXME
-        cat "${arg}" \
+        cat "${p}/${f}" \
             | sed s/'\\begin{arab}'/'\\begin{enumerate}[label=(\\arabic*)]'/g \
             | sed s/'\\begin{roma}'/'\\begin{enumerate}[label=(\\roman*)]'/g \
             | sed s/'\\begin{Roma}'/'\\begin{enumerate}[label=(\\Roman*)]'/g \
@@ -232,32 +239,37 @@ autonomize() {
             | sed s/'\\score{\([0-9\.]*\)}'/''/g \
             | sed s/'\\exer '/'\\item '/g \
             | sed s/'\\bonus '/'\\item (\textbf{Bonus:})'/g \
-            >> "${out}"
+            >> "${outf}"
             # | sed s/'\\cosh'/'\\mathop{\\mathrm{cosh}}'/g \
             # | sed s/'\\sinh'/'\\mathop{\\mathrm{sinh}}'/g \
             # | sed s/'\\tanh'/'\\mathop{\\mathrm{tanh}}'/g \
 
         ## Closing documents
         if [ "${justClean}" = "false" ]; then
-            echo -e "\n\\\\end{document}\n%% End of the document ${arg}" >> "${out}"
+            echo -e "\n\\\\end{document}\n%% End of the document ${arg}" >> "${outf}"
         fi
 
         echo -e "${green}Done: new file is ${out}.${white}"
         if [ "${batch}" = "false" ]; then
-            colordiff "${arg}" "${out}"
-            subl "${out}"
+            colordiff "${p}/${f}" "${outf}"
+            subl "${outf}"
         fi
 
         if [ "${compile}" = "true" ]; then
-            echo -e "${green}Compiling ${out} ...${white}"
-            ( pdflatex "${out}" && pdflatex "${out}" ) \
-            || echo -e "${red} Problem with the file ${arg} converted to ${out}"
-            if [ -f "${out%.tex}.pdf" -a "${batch}" = "false" ]; then
-                evince "${out%.tex}.pdf" &> /dev/null &
+            # cd "${p}"
+            echo -e "${green}Compiling ${outf}${white}... (in pwd=${u}$(pwd)${U})${white}"
+            head -n1 "${outf}"
+            ( pdflatex "${outf}" &>/dev/null && pdflatex "${outf}" ) \
+            || echo -e "${red} Problem with the file ${arg} converted to ${outf}"
+            if [ -f "${outf%.tex}.pdf" -a "${batch}" = "false" ]; then
+                evince "${outf%.tex}.pdf" &> /dev/null &
             fi
-            mv -vf "${out%.tex}.aux" "${out%.tex}.out" "${out%.tex}".synctex.gz* "${out%.tex}.log" /tmp/
+            mv -vf "${outf%.tex}.aux" "${outf%.tex}.out" "${outf%.tex}".synctex.gz* "${outf%.tex}.log" /tmp/
         fi
+
+        notify-send "autonomize.sh" "Done for the file <b>${f}</b> --> <b>${out}</b>. $([ "${compile}" = "true" ] && echo "\nIt has been compiled to <b>${out%.tex}.pdf</b>") "
     fi
+    cd "${oridir}"
 }
 
 autonomize "${1}"

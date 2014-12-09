@@ -35,23 +35,26 @@ echo -e "${white}Sure ?"
 
 time (
 	echo -e "${red}Smoothing names...${white}" | tee -a $log
-	Smooth_Name.sh
-	notify-send "$(basename $0)" "I am done <b>smoothing the name</b> (in $(pwd))."
 	# read
+	Smooth_Name.sh --batch
+	notify-send --icon=jpg "$(basename $0)" "I am done <b>smoothing the name</b> (in $(pwd))."
 	echo -e "${red}Compressing all JPEG (*.jpe?g, *.JPE?G) pictures...${white} (using jpegoptim $simulate_jpeg --max=85 --strip-all --size=50% --threshold=25% --verbose --total)" | tee -a $log
-	( time jpegoptim $simulate_jpeg --max=85 --strip-all --size=50% --threshold=25% --verbose --total $(find ./ -type f -iname '*'.jpeg -o -iname '*'.jpg 2>$logjpeg ) ) | tee -a $log
-	notify-send "$(basename $0)" "I am done <b>compressing all JPEG pictures</b> (in $(pwd))."
+	echo -e "${red}There is $(find ./ -type f -iname '*'.jpeg -o -iname '*'.jpg 2>$logjpeg | wc -l ) JPEG pictures.${white}" | tee -a $log
 	# read
+	( time jpegoptim $simulate_jpeg --max=85 --strip-all --size=50% --threshold=25% --verbose --total $(find ./ -type f -iname '*'.jpeg -o -iname '*'.jpg 2>$logjpeg ) ) | tee -a $log
+	notify-send --icon=jpg "$(basename $0)" "I am done <b>compressing all JPEG pictures</b> (in $(pwd))."
 	echo -e "${red}Compressing all PNG (*.png, *.PNG) pictures...${white} (using 'optipng $simulate_png -preserve -o1')" | tee -a $log
+	echo -e "${red}There is $(find ./ -type f -iname '*'.png 2>$logpng | wc -l ) JPEG pictures.${white}" | tee -a $log
+	# read
 	# # time ( for i in $(find ./ -type f -iname '*'.png 2>$log ); do
 	( time optipng $simulate_png -preserve -o1 $(find ./ -type f -iname '*'.png 2>$logpng ) ) | tee -a $log
-	notify-send "$(basename $0)" "I am done <b>compressing all PNG pictures</b> (in $(pwd))."
-	# read
+	notify-send --icon=jpg "$(basename $0)" "I am done <b>compressing all PNG pictures</b> (in $(pwd))."
 	# # done )
 	echo -e "${red}Generating glisse index.html...${white}" | tee -a $log
+	# read
 	generateglisse.sh | tee -a $log
-	notify-send "$(basename $0)" "I am done <b>generating glisse index.html</b> (in $(pwd))."
-) && ( alert ; clear ; notify-send "$(basename $0)" "And now I am completely done :)" )
+	notify-send --icon=jpg "$(basename $0)" "I am done <b>generating glisse index.html</b> (in $(pwd))."
+) && ( alert ; clear ; notify-send --icon=jpg "$(basename $0)" "And now I am completely done :)" )
 
 
 # Comparison of the size
