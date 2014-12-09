@@ -351,13 +351,13 @@ alias rmLaTeX='for i in *.tex; do echo "Pour $i:" ; for j in "${i%tex}dvi" "${i%
 tex2pdf() {
     for i in "$@"; do
         i="${i//.pdf/.tex}"
-        ( pdflatex "$i" && pdflatex "$i" ) || (clear ; chktex "$i" ; alert )
+        ( pdflatex "$i" && pdflatex "$i" && mv -vf "${i%tex}log" "${i%tex}snm" "${i%tex}nav" "${i%tex}aux" "${i%tex}synctex.gz" "${i%tex}out" /tmp/ ) || (clear ; chktex "$i" ; alert )
     done
 }
 TEX2PDF() {
     for i in "$@"; do
         i="${i//.pdf/.tex}"
-        ( pdflatex "$i" && pdflatex "$i" && mv -vf "${i%tex}log" "${i%tex}aux" "${i%tex}synctex.gz" "${i%tex}out" /tmp/ ) \
+        ( pdflatex "$i" && pdflatex "$i" && mv -vf "${i%tex}log" "${i%tex}snm" "${i%tex}nav" "${i%tex}aux" "${i%tex}synctex.gz" "${i%tex}out" /tmp/ ) \
         || (clear ; chktex "$i" ; alert )
         PDFCompress "${i%tex}pdf"
     done
