@@ -54,7 +54,7 @@ time (
 	# read
 	generateglisse.sh | tee -a $log
 	notify-send --icon=jpg "$(basename $0)" "I am done <b>generating glisse index.html</b> (in $(pwd))."
-) && ( alert ; clear ; notify-send --icon=jpg "$(basename $0)" "And now I am completely done :)" )
+) && ( alert ; clear ; notify-send --icon=jpg "$(basename $0)" "And <b>now I am completely done :)</b> (in $(pwd)" )
 
 
 # Comparison of the size
