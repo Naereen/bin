@@ -1,4 +1,9 @@
+# Type
 *.txt
+*.json
+*.png
+
+# Examples
 git-crypt
 camlmix
 nano.last
@@ -6,5 +11,4 @@ pfnum
 pwnat
 youtube-dl
 imagejs
-*.json
-*.png
+CorutilsViewer
