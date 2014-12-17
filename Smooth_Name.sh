@@ -35,7 +35,7 @@ else
 fi
 
 # Change sub-directory
-allfolder=`find . -type d -iname [0-9A-Za-z]'*'`
+allfolder=`find . -type d -iname [\.0-9A-Za-z]'*'`
 allfolder="${allfolder//' '/%20}"
 
 for folder in ${allfolder}; do
