@@ -466,4 +466,4 @@ fi
 # Put a blank line after
 #  to autorize echo "newentry" >> "$HOME"/.bashrc
 
-export BYOBU_NO_TITLE=yes
+# export BYOBU_NO_TITLE=yes

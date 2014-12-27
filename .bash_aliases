@@ -960,8 +960,10 @@ alias scrubs-totem='totem --fullscreen /host/Users/Lilian/Videos/Séries/Scrubs/
 
 alias dropbox='( dropbox start ; alert ) &>/dev/null&'
 
+# Put your laptop in Suspend (veille)
 alias veille='date >> /tmp/veille.log ; ( gnome-session-quit --power-off || xfce4-session-logout || (Lock ; gksudo pm-suspend) )'
-alias veille2='date >> /tmp/veille.log ; Lock ; dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend'
+alias veille2='date >> /tmp/veille.log ; Lock ; dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend' # does not work
+alias veillesudo='sudo dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend' # works
 
 # With Linphone
 alias ETTelephoneMaison='linphone -c 0492202627@crans.org'
@@ -1012,4 +1014,3 @@ alias FilesLog='find | tee find.log ; du | tee du.log ; dut | tee dut.log'
 # http://www.dptinfo.ens-cachan.fr/~lbesson
 #
 # Put a blank line after to autorize echo "alias newalias='newentry'" >> ~/.bash_aliases
-
