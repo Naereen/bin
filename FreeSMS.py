@@ -21,6 +21,7 @@ Will send a test message to your mobile phone.
 .. sidebar:: Last version?
 
    Take a look to the latest version at https://bitbucket.org/lbesson/bin/src/master/FreeSMS.py
+
 .. note:: Initial Copyright : José - Juin 2014 (http://eyesathome.free.fr/index.php/tag/freemobile/)
 .. note::
 
@@ -42,10 +43,22 @@ from sys import exit, argv
 from urllib import urlencode
 from urllib2 import urlopen, HTTPError
 from base64 import b64decode
+from os import getenv
+
+
+#: Number (not necessary)
+number = b64decode("MDYyODQxMjI1Nw==")
+
+#: Identification Number free mobile
+user = b64decode("MjM5NzgzMzY=")
+
+#: Password
+password = b64decode("VVFaSmdiOHhwcm01TWc=")
+
+#: FIXME find a way to secure this step better than the way it is right now.
 
 
 # Detect language
-from os import getenv
 try:
     language = getenv("LANG")[0:2]
 except:
@@ -55,29 +68,22 @@ if language == "fr":
     errorcodes = {
         400: "Un des paramètres obligatoires est manquant.",
         402: "Trop de SMS ont été envoyés en trop peu de temps.",
-        403: "Le service n'est pas activé sur l'espace abonné, ou login / clé incorrect.",
+        403: """Le service n'est pas activé sur l'espace abonné, ou login / clé incorrect.
+Allez sur 'https://mobile.free.fr/moncompte/index.php?page=options&show=20' svp""",
         500: "Erreur côté serveur. Veuillez réessayez ultérieurement.",
-        1:   "Le SMS a été envoyé sur votre mobile.",
+        1:   "Le SMS a été envoyé sur votre mobile ({number}).".format(number=number),
         "toolong": "Attention : le message est trop long (+ de 3*160 caracters, soit plus de 3 SMS)."
     }
 else:
     errorcodes = {
-        400: "Missing Parameter",
-        402: "Spammer!",
-        403: "Access Denied",
-        500: "Server Down",
-        1:   "Success",
+        400: "One of the necessary parameter is missing.",
+        402: "Too many SMSs has been sent in a short time (you might be a spammer!).",
+        403: """Access denied: the service might not be activated on the online personnal space, or login/password is wrong.
+Please go on 'https://mobile.free.fr/moncompte/index.php?page=options&show=20' svp""",
+        500: "Error from the server side. Please try again later.",
+        1:   "The SMS has been sent to your mobile ({number}).".format(number=number),
         "toolong": "Warning: message is too long (more than 3*160 caracters, so more than 3 SMS)."
     }
-
-
-#: Identification Number free mobile
-user = b64decode("MjM5NzgzMzY=")
-
-#: Password
-password = b64decode("VVFaSmdiOHhwcm01TWc=")
-
-#: FIXME find a way to secure this step better than the way it is right now.
 
 
 def send_sms(text="Empty!", user=user, password=password, secured=True):
