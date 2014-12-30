@@ -44,16 +44,19 @@ from urllib import urlencode
 from urllib2 import urlopen, HTTPError
 from base64 import b64decode
 from os import getenv
+from time import strftime
+
+today = strftime("%H:%M:%S %Y-%m-%d")
 
 
 #: Number (not necessary)
-number = b64decode("MDYyODQxMjI1Nw==")
+number = b64decode( open('/home/lilian/.smsapifreemobile_number.b64').readline()[:-1] )
 
 #: Identification Number free mobile
-user = b64decode("MjM5NzgzMzY=")
+user = b64decode( open('/home/lilian/.smsapifreemobile_user.b64').readline()[:-1] )
 
 #: Password
-password = b64decode("VVFaSmdiOHhwcm01TWc=")
+password = b64decode( open('/home/lilian/.smsapifreemobile_password.b64').readline()[:-1] )
 
 #: FIXME find a way to secure this step better than the way it is right now.
 
@@ -99,6 +102,7 @@ def send_sms(text="Empty!", user=user, password=password, secured=True):
     if len(text) >= 3*160:
         print errorcodes["toolong"]
 
+    print "\nYour message is:\n'" + text + "'."
     query = urlencode({"user": user, "pass": password, "msg": text})
     url = "http" + ("s" if secured else "")
     url += "://smsapi.free-mobile.fr/sendmsg?{}".format(query)
@@ -120,12 +124,15 @@ def main(argv):
 Main function. Use the arguments of the command line. """
 
     if "-h" in argv or "--help" in argv:
-        print """FreeSMS.py --help|-h | body of the message
+        print """FreeSMS.py --help|-h | -f file | body of the message
 A simple Python script to send a text message to a Free Mobile phone.
 The message should be smaller than 480 caracters.
 
 Examples:
 $ FreeSMS.py --help
+Print this help message!
+
+$ FreeSMS.py -f /tmp/MyMessageFile.txt
 Print this help message!
 
 $ FreeSMS.py "I like using Python to send me SMS from my laptop -- and it"s free thanks to Free !"
@@ -138,18 +145,26 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."""
         return 1
 
-    if argv:
-        #: Text of the SMS
-        text = " ".join(argv)
+    if "-f" in argv:
+        try:
+            with open(argv[argv.index("-f")+1], 'r') as filename:
+                text = "".join(filename.readlines())[:-1]
+        except:
+            text = " ".join(argv)
     else:
-        text = """Test SMS sent from jarvis.crans.org with FreeSMS.py.
+        if argv:
+            #: Text of the SMS
+            text = " ".join(argv)
+        else:
+            text = """Test SMS sent from jarvis.crans.org with FreeSMS.py (the {date}).
 
-(a Python 2.7 script by Lilian Besson, open source, you can find the code
-at https://bitbucket.org/lbesson/bin/src/master/FreeSMS.py
-or http://perso.crans.org/besson/bin/FreeSMS.py)
+    (a Python 2.7 script by Lilian Besson, open source, you can find the code
+    at https://bitbucket.org/lbesson/bin/src/master/FreeSMS.py
+    or http://perso.crans.org/besson/bin/FreeSMS.py)
 
-For any issues, reach me by email at jarvis[at]crans[dot]org !
-""".replace("[at]", "@").replace("[dot]", ".")
+    For any issues, reach me by email at jarvis[at]crans[dot]org !"""
+            text = text.format(date=today)
+            text = text.replace("[at]", "@").replace("[dot]", ".")
 
     answer = send_sms(text)
     print answer[1]
