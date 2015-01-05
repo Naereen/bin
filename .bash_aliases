@@ -89,8 +89,7 @@ alias du='/usr/bin/du -kh'
 alias df='/bin/df -h -l -t ext3 -t ext4 -t fuseblk -t vfat'
 
 # Commandes avec GNU-Nano :
-alias nano='nano --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds --undo'
-alias nano='xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { GNU Nano 2.3.2 }" ; nano'
+alias nano='xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { GNU Nano 2.3.2 }" ; /home/lilian/bin/nano.last --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds --undo'
 
 # Un meilleur make, qui remonte dans le dossier jusqu'à trouver un bon Makefile
 MAKE="make -w"
@@ -220,7 +219,7 @@ ExportColorLaTeXFull(){
 
 ########################################################################
 export RLWRAP_HOME='/home/lilian/'
-export RLWRAP_EDITOR='nano --autoindent --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve'
+export RLWRAP_EDITOR='/home/lilian/bin/nano.last --autoindent --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve'
 
 voirImage() {
     for image in "$@"; do
@@ -899,7 +898,7 @@ export null="/dev/null"
 alias send_bashrc_bashalias='CP ~/.bashrc ~/.bash_aliases ~/.bashrc.asc ~/.bash_aliases.asc'
 
 # Shortcut. FIXME ? available ONLY if 'n' is not a command.
-function n() { nano "$@" || alert; }
+function n() { /home/lilian/bin/nano.last "$@" || alert; }
 function t() { htop || alert; }
 
 # Get the latest QC strip ;)
