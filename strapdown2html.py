@@ -3,14 +3,10 @@
 """ Convert a Markdown/StrapDown.js file to a simple HTML (.html),
 which looks as a StrapDown.js powered page, but is autonomous and *do not* require JavaScript at all.
 
-Try to do it as well as possible (and include nice features, like jQuery.QuickSearch ?).
+Try to do it as well as possible (and include nice features).
 
 Includes:
 - SquirtFr (http://lbesson.bitbucket.org/squirt/)
-
-FIXME:
-- arguments reading,
-- zooming issue.
 """
 __author__ = "Lilian Besson"
 __version__ = "0.2"
@@ -19,6 +15,8 @@ import sys
 import codecs
 import markdown
 import re
+import os.path
+
 try:
     from ANSIColors import printc
 except ImportError:
@@ -31,17 +29,19 @@ except ImportError:
 # Fix UTF-8 output
 sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 use_jquery = False
-beta = True  # FIXME change when script is good.
+
+# FIXME change when script is good.
+beta = True
 
 
 def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom_navbar=1.2):
     """ Convert every input file from Markdown to HTML, and concatenate all them to an output."""
 
     printc("<green>Starting main, with:<white> \n\tpath='{path}',\n\toutfile='{outfile}',\n\ttitle='{title}',\n\tzoom='{zoom}',\n\tzoom_navbar='{zoom_navbar}'.".format(path=path, outfile=outfile, title=title, zoom=zoom, zoom_navbar=zoom_navbar))
+    fullpath=os.path.join(path, outfile)
 
-    with open("/tmp/test.html", "w") as html_file:
+    with open(fullpath, "w") as html_file:
         html_file = codecs.getwriter('utf8')(html_file)
-        # FIXME? Add ', target-densitydpi=device-dpi' to the meta.name=viewport?
         html_file.write(u"""<!DOCTYPE html>
 <html>
 <head>
@@ -95,7 +95,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
     <!-- <div style="padding:{margin:d}px 1px 1px 1px;"> -->
     <!-- <div id="experimentalZoom" class="container" style="zoom:{zoomprct:g}%; -moz-transform: scale({zoom:g});"> -->
 """.format(margin=int(round(49 * zoom)), zoomprct=zoom*100, zoom=zoom))
-        # Include the jQuery.QuickSearch plugin.
+        # Include the jQuery.QuickSearch plugin (no by default).
         if use_jquery:
             html_file.write(u"""
     <blockquote class="pull-right" style="right-margin: 5%;">
@@ -132,7 +132,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
                         except Exception as e:
                             print e
                             printc(" ===> <WARNING> I failed to markdownise this line. Next!<reset><white>")
-                    # FIXME: maybe better to read all the lines once ?
+                    # MAYBE: better to read all the lines once ?
                     # t = ''.join(openinputfile.readlines())
                     # printc("I read the lines.")
                     # s = markdown.markdown(t)
@@ -177,16 +177,14 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
 """)
         html_file.write(u"""
 <script type="text/javascript" src="http://perso.crans.org/besson/_static/ga.js" async defer></script>
-<img alt="GA|Analytics" style="visibility:hidden;display:none;" src="http://perso.crans.org/besson/beacon/{path}/{outfile}?pixel"/>
+<img alt="GA|Analytics" style="visibility:hidden;display:none;" src="http://perso.crans.org/besson/beacon/{fullpath}?pixel"/>
 </body></html>
-""".format(path=path, outfile=outfile))
-    # TODO: also print the web-path and name of that script ($0)
+""".format(fullpath=fullpath))
     return True
 
 
 if __name__ == '__main__':
     args = sys.argv
-    # TODO: handle options, display help.
     if '-?' in args or '-h' in args or '--help' in args:
         printc("""<yellow>strapdown2html.py<white>: -h | [options] file1 [file2 [file3 ..]]
 
@@ -195,27 +193,36 @@ Convert the input files (Markdown (.md) or HTML (.html) StrapDown.js-powered) to
 Options:
     <magenta>-?|-h|--help<white>:\n\t\tdisplay this help,
     <magenta>-o|--out<white>:\n\t\tspecify the output file. Default is based on the first file name. <red>TODO: implement.<white>
-    <magenta>-t|--title<white>:\n\t\tspecify the title of the output. Default is based on the first file name. <red>TODO: conclude.<white>
+    <magenta>-t|--title<white>:\n\t\tspecify the title of the output. Default is based on the first file name.
     <magenta>-z|--zoom<white>:\n\t\tspecify zoom factor. Default is 1.0 (ie 100%, no zoom).
     <magenta>-zn|--zoomnavbar<white>:\n\t\tspecify zoom factor for the navbar. Default is 1.2 (120%).
     <magenta>-v|--view<white>:\n\t\topen the output file when done.
 
 Warning:
-    Experimental !
+    Experimental! Almost done?
 
 Copyright: 2015, Lilian Besson.
 License: GPLv3.""")
         exit(1)
 
-    path = '/tmp'  # FIXME get from the user
-    outfile = 'test.html'  # FIXME get from the user
+    # OK get it from the user
+    out = "/tmp/test.html"
+    if '-o' in args:
+        out = str(args.pop(1 + args.index('-o')))
+        args.remove('-o')
+    if '--out' in args:
+        out = str(args.pop(1 + args.index('--out')))
+        args.remove('--out')
+
+    path = os.path.dirname(out) if out else '/tmp/'
+    outfile = os.path.basename(out) if out else 'test.html'
 
     # OK get from the user or from the file
-    if '-t' in args:
-        title = args[1 + args.index('-t')]
-    if '--title' in args:
-        title = args[1 + args.index('--title')]
     title = ''
+    if '-t' in args:
+        title = args.pop(1 + args.index('-t'))
+    if '--title' in args:
+        title = args.pop(1 + args.index('--title'))
     i = 0
     while title == '':
         i += 1
@@ -259,6 +266,6 @@ License: GPLv3.""")
         try:
             printc("Opening that document in your favorite browser...")
             import webbrowser  # Thanks to antigravity.py
-            webbrowser.open(path + '/' + outfile)
+            webbrowser.open(os.path.join(path, outfile))
         except Exception as e:
             printc("But I failed in opening that page to show you the content")
