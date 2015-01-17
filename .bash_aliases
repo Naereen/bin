@@ -1004,7 +1004,7 @@ alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; ec
 alias brigthness='xrandr --output LVDS --brightness '
 
 alias FilesLog='find | tee find.log ; du | tee du.log ; dut | tee dut.log'
-
+alias mario='vba --fullscreen --filter-lq2x ~/Public/rom/gba/pyrio.gba'
 
 ##############################################################################
 # (c) 2011-2014 Lilian BESSON
