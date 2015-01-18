@@ -6,10 +6,13 @@ which looks as a StrapDown.js powered page, but is autonomous and *do not* requi
 Try to do it as well as possible (and include nice features).
 
 Includes:
-- SquirtFr (http://lbesson.bitbucket.org/squirt/)
+- a link to SquirtFr (http://lbesson.bitbucket.org/squirt/).
 """
 __author__ = "Lilian Besson"
 __version__ = "0.2"
+
+# TODO: remove the stupid ideas for zooming.
+# TODO: test on Chrome and Internet Explorer.
 
 import sys
 import codecs
@@ -38,7 +41,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
     """ Convert every input file from Markdown to HTML, and concatenate all them to an output."""
 
     printc("<green>Starting main, with:<white> \n\tpath='{path}',\n\toutfile='{outfile}',\n\ttitle='{title}',\n\tzoom='{zoom}',\n\tzoom_navbar='{zoom_navbar}'.".format(path=path, outfile=outfile, title=title, zoom=zoom, zoom_navbar=zoom_navbar))
-    fullpath=os.path.join(path, outfile)
+    fullpath = os.path.join(path, outfile)
 
     with open(fullpath, "w") as html_file:
         html_file = codecs.getwriter('utf8')(html_file)
@@ -52,7 +55,10 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
     <link href="http://perso.crans.org/besson/_static/md/themes/united.min.css" rel="stylesheet">
     <link href="http://perso.crans.org/besson/_static/md/strapdown.min.css" rel="stylesheet">
     <link href="http://perso.crans.org/besson/_static/md/themes/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="http://perso.crans.org/besson/_static/prism/prism.css" rel="stylesheet">
     <link rel="shortcut icon" href="http://perso.crans.org/besson/_static/.favicon.ico">
+    <meta name="author" content="Lilian Besson">
+    <meta name="generator" content="https://bitbucket.org/lbesson/bin/src/master/strapdown2html.py">
 """.format(title=title))
         # Include jquery, and some plugins
         if use_jquery:
@@ -60,8 +66,6 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
     <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.js"></script>
     <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.quicksearch.min.js"></script>
     <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.smooth-scroll.min.js"></script>
-    <meta name="author" content="Lilian Besson">
-    <meta name="generator" content="https://bitbucket.org/lbesson/bin/src/master/strapdown2html.py">
 """)
         html_file.write(u"""</head>
 <body>
@@ -125,19 +129,26 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
                     openinputfile = codecs.getreader('utf8')(openinputfile)
                     printc(" Codec changed to utf8.")
                     s = ''
-                    for line in openinputfile:
-                        # printc("I read one line, and I am converting it to Markdown.")
-                        try:
-                            s += markdown.markdown(line)
-                        except Exception as e:
-                            print e
-                            printc(" ===> <WARNING> I failed to markdownise this line. Next!<reset><white>")
-                    # MAYBE: better to read all the lines once ?
-                    # t = ''.join(openinputfile.readlines())
-                    # printc("I read the lines.")
-                    # s = markdown.markdown(t)
+                    # for line in openinputfile:
+                    #     # printc("I read one line, and I am converting it to Markdown.")
+                    #     try:
+                    #         s += markdown.markdown(line)
+                    #     except Exception as e:
+                    #         print e
+                    #         printc(" ===> <WARNING> I failed to markdownise this line. Next!<reset><white>")
+                    # MAYBE: better to read all the lines once ? Yes indeed, otherwise it breaks each paragraph into many <p>one line</p>
+                    t = ''.join(openinputfile.readlines())
+                    printc("I read the lines.")
+                    try:
+                        # FIXME: use markdown.markdownFromFile instead (simpler ?)
+                        # Cf. https://pythonhosted.org/Markdown/reference.html#markdownFromFile
+                        s = markdown.markdown(t)
+                    except Exception as e:
+                        print e
+                        printc(" ===> <WARNING> I failed to markdownise these lines. Next!<reset><white>")
                     printc(" I converted from Markdown to HTML.")
-                    # TODO: change code (according to:)
+                    # TODO: add code to add the good Prism.js class to <code> and <pre>, to color the code accordingly.
+# Or, according to:
 # // Prettify
 #   var codeEls = document.getElementsByTagName('code');
 #   for (var i=0, ii=codeEls.length; i<ii; i++) {
@@ -155,8 +166,8 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
                 printc(" ==> <ERROR>: Failed to read from the file {inputfile}. Going to the next one.<reset><white>\n".format(inputfile=inputfile))
 
         # FIXME: search through what if there is no table ?
-        # $('input#id_search').quicksearch('table tbody tr');
         # // Smooth Scroll jQuery plugin
+        # // $('input#id_search').quicksearch('table tbody tr');
         if use_jquery:
             html_file.write(u"""
     <script type="text/javascript">
@@ -177,6 +188,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
 """)
         html_file.write(u"""
 <script type="text/javascript" src="http://perso.crans.org/besson/_static/ga.js" async defer></script>
+<script type="text/javascript" src="http://perso.crans.org/besson/_static/prism/prism.js"></script>
 <img alt="GA|Analytics" style="visibility:hidden;display:none;" src="http://perso.crans.org/besson/beacon/{fullpath}?pixel"/>
 </body></html>
 """.format(fullpath=fullpath))
@@ -221,8 +233,12 @@ License: GPLv3.""")
     title = ''
     if '-t' in args:
         title = args.pop(1 + args.index('-t'))
+        args.remove('-t')
+
     if '--title' in args:
         title = args.pop(1 + args.index('--title'))
+        args.remove('--title')
+
     i = 0
     while title == '':
         i += 1
