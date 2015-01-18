@@ -23,6 +23,7 @@ __author__ = "Lilian Besson"
 __version__ = "0.3"
 
 # TODO: test on Chrome and Internet Explorer.
+# TODO: improve conformity with StrapDown.js Markdown parser. (nested list, small blockquote etc).
 
 # Load ANSIColors (Cf. http://pythonhosted.org/ANSIColors-balises/)
 try:
@@ -43,26 +44,49 @@ try:
         'markdown.extensions.headerid',  # https://pythonhosted.org/Markdown/extensions/header_id.html
         'markdown.extensions.tables',  # https://pythonhosted.org/Markdown/extensions/tables.html
         'markdown.extensions.smart_strong',  # https://pythonhosted.org/Markdown/extensions/smart_strong.html
+        # 'urlize'  # https://github.com/r0wb0t/markdown-urlize
     ]
-except ImportError:
+    try:
+        # From https://github.com/selcuk/markdown-urlify
+        from markdown.preprocessors import Preprocessor
+        from markdown.extensions import Extension
+
+        urlfinder = re.compile(r'((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+(:[0-9]+)?|'
+                           r'(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:/[\+~%/\.\w\-_]*)?\??'
+                           r'(?:[\-\+=&;%@\.\w_]*)#?(?:[\.!/\\\w]*))?)')
+
+        class URLify(Preprocessor):
+            def run(self, lines):
+                return [urlfinder.sub(r'<\1>', line) for line in lines]
+
+        class URLifyExtension(Extension):
+            def extendMarkdown(self, md, md_globals):
+                md.preprocessors.add('urlify', URLify(md), '_end')
+
+        urlify_ext = URLifyExtension()
+        list_extensions.append(urlify_ext)
+    except:
+        printc(" <INFO> Failed to define the 'urlify' extension.<white>")
+    # That it is
+except:
     list_extensions = []
+    # No extension
 
 # Fix UTF-8 output
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
-use_jquery = False
 
 # FIXME change when script is good.
 beta = False
+eraseFileAlreadyThere = False
 
 
-def main(argv=[], path='/tmp', outfile='test.html', title='Test'):
+def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=False):
     """ Convert every input file from Markdown to HTML, and concatenate all them to an output."""
 
-    printc("""<green>Starting main, with:<white>
-        path='{path}',
-        outfile='{outfile}',
-        title='{title}'.
-    """.format(path=path, outfile=outfile, title=title))
+    printc("<green>Starting main, with:<white>")
+    # FIXME printc does not handle UTF-8 correctly ?
+    print("path='{path}', outfile='{outfile}'.".format(path=path, outfile=outfile))
+    print "And the title is:", title
     fullpath = os.path.join(path, outfile)
 
     printc("<magenta>The output file will be <white>'<u>{fullpath}<U>'.".format(fullpath=fullpath))
@@ -85,14 +109,13 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test'):
     <meta name="author" content="Lilian Besson">
     <meta name="generator" content="https://bitbucket.org/lbesson/bin/src/master/strapdown2html.py">
 """.format(title=title))
-        # Include jquery, and some plugins
-        # FIXME (Useless?) Except if there is a table in the input document
+        # Include jquery, and some plugins. Useless except if there is a table in the input document
+        # FIXME improve detection
         if use_jquery:
             html_file.write(u"""
     <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.js"></script>
     <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.quicksearch.min.js"></script>
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.smooth-scroll.min.js"></script>
-""")
+    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.smooth-scroll.min.js"></script>\n""")
         # Beginning of the header
         html_file.write(u"""</head>
 <body>
@@ -126,8 +149,8 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test'):
         if use_jquery:
             html_file.write(u"""
     <blockquote class="pull-right" style="right-margin: 5%;">
-        <h3>Search on that page?</h3>
-            (Thanks to the <a href="http://deuxhuithuit.github.io/quicksearch/">QuickSearch</a> <a href="https://www.jQuery.com/">jQuery</a> plugin.)
+        <h2>Search on that page?</h2>
+            <p>(Thanks to the <a href="http://deuxhuithuit.github.io/quicksearch/">QuickSearch</a> <a href="https://www.jQuery.com/">jQuery</a> plugin.)</p>
             <form><fieldset>
                 <input type="text" name="search" value="" id="id_search" placeholder="Search on that page" autofocus />
             </fieldset></form>
@@ -187,21 +210,30 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test'):
                             # This should be good.
                         except Exception as e:
                             printc(" <warning> Exception found: <yellow>{e}<white>.".format(e=e))
-                            printc("  ===> <WARNING> I tried to read the file as a StrapDown.js powered file, but failed.\n I will now read it as a simple Markdown file.<white>")
+                            printc("  ===> <WARNING> I tried to read the file as a StrapDown.js powered file, but failed.<white>\n <magenta>I will now read it as a simple Markdown file.<white>")
 
+                        # This is so durty...
+                        try:
+                            markdown_text = markdown_text.replace('<!DOCTYPE html><html><head><meta charset="utf-8"/><title>', '<h1>')
+                            markdown_text = markdown_text.replace('<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>', '<h1>')
+                            markdown_text = markdown_text.replace('</title></head><body><xmp>', '</h1>')
+                            markdown_text = markdown_text.replace('</title></head><body><xmp theme="united">', '</h1>')
+                            markdown_text = markdown_text.replace('<xmp theme="united">', '')
+                            markdown_text = markdown_text.replace('</title></head><body><xmp theme="cyborg">', '</h1>')
+                            markdown_text = markdown_text.replace('<xmp theme="cyborg">', '')
+                            markdown_text = markdown_text.replace('<p></xmp><script type="text/javascript" src="http://perso.crans.org/besson/s/md/strapdown.min.js"></script></body></html></p>', '')
+                            printc(" <INFO> Now I replace '<xmp>' --> '' and '</xmp>' --> ''. Lets go!<white>")
+                        except:
+                            printc(" I tried (again) to replace '<xmp>' --> '' and '</xmp>' --> '' byt failed")
                         # Alright, let us convert this MD text to HTML
                         printc(" Let convert the content I read to HTML with markdown.markdown.")
+                        if beta:
+                            print markdown_text
                         # FIXME: use markdown.markdownFromFile instead (simpler ?)
                         # Cf. https://pythonhosted.org/Markdown/reference.html#markdownFromFile
                         html_text = markdown.markdown(markdown_text, extensions=list_extensions)
-                        # This is so durty...
-                        try:
-                            html_text = html_text.replace('<!DOCTYPE html><html><head><meta charset="utf-8"/><title>', '<h1>')
-                            html_text = html_text.replace('</title></head><body><xmp>', '</h1>')
-                            html_text = html_text.replace('<p></xmp><script type="text/javascript" src="http://perso.crans.org/besson/s/md/strapdown.min.js"></script></body></html></p>', '')
-                            printc(" <INFO> Now I replace '<xmp>' --> '' and '</xmp>' --> ''. Lets go!")
-                        except:
-                            printc(" I tried (again) to replace '<xmp>' --> '' and '</xmp>' --> '' byt failed")
+                        # BETA: improve how tables look like
+                        html_text = html_text.replace('<table>', '<table class="table table-striped table-bordered">')
                         printc(" I converted from Markdown to HTML: yeah!!<white>")
                     # Oups ! Bug !
                     except Exception as e:
@@ -255,9 +287,11 @@ Convert the input files (Markdown (.md) or HTML (.html) StrapDown.js-powered) to
 
 Options:
     <magenta>-?|-h|--help<white>:\n\t\tdisplay this help,
-    <magenta>-o|--out<white>:\n\t\tspecify the output file. Default is based on the first file name. <red>TODO: implement.<white>
+    <magenta>-o|--out<white>:\n\t\tspecify the output file. Default is based on the first file name.
     <magenta>-t|--title<white>:\n\t\tspecify the title of the output. Default is based on the first file name.
-    <magenta>-v|--view<white>:\n\t\topen the output file when done.
+    <magenta>-v|--view<white>:\n\t\topen the output file when done (default is not to do it).
+    <magenta>--use-jquery<white>:\n\t\tforce to include jQuery and the jQuery.QuickSearch plugin (in case of a table for example).
+    <magenta>-f|--force<white>:\n\t\teven if the output file is present, <red>erase it<white> (default is to find a new name).
 
 Warning:
     Experimental! Almost done?
@@ -275,9 +309,6 @@ License: GPLv3.""")
         out = str(args.pop(1 + args.index('--out')))
         args.remove('--out')
 
-    path = os.path.dirname(out) if out else '/tmp/'
-    outfile = os.path.basename(out) if out else 'test.html'
-
     # OK get from the user or from the file
     title = ''
     if '-t' in args:
@@ -288,13 +319,29 @@ License: GPLv3.""")
         title = args.pop(1 + args.index('--title'))
         args.remove('--title')
 
+    if '--force' in args:
+        eraseFileAlreadyThere = True
+        args.pop(args.index('--force'))
+
+    if '-f' in args:
+        eraseFileAlreadyThere = True
+        args.pop(args.index('-f'))
+
+    use_jquery = False
+    if '--use-jquery' in args:
+        use_jquery = True
+        args.pop(args.index('--use-jquery'))
+
     i = 0
     while title == '':
         i += 1
         try:
-            with open(args[i], 'r') as file1:
+            # with open(args[i], 'r') as file1:
+            with codecs.open(args[i], 'r', encoding='utf-8') as file1:
                 try:
-                    title = re.search("<title>[^<]+</title>", "".join(file1.readlines())).group()
+                    contentfile1 = file1.read()
+                    # use_jquery = use_jquery or ((contentfile1.find('<table>') >= 0) or (contentfile1.find('') >= 0))
+                    title = re.search("<title>[^<]+</title>", contentfile1).group()
                     title = title.replace('<title>', '').replace('</title>', '')
                 except Exception as e:
                     # printc("<ERROR> Exception found: <yellow>{e}<white>.".format(e=e))
@@ -306,9 +353,29 @@ License: GPLv3.""")
         printc("<WARNING> I tried to read the title in one of the input file, but failed.<white>\n")
         title = 'This is a test title!'
 
+    # Try to guess path+outfile from the first inputfile.
+    try:
+        out = args[1].replace('.md', '.html').replace('.markdown', '.html')
+        while os.path.exists(out):
+            if eraseFileAlreadyThere:
+                import distutils.file_util
+                # distutils.file_util.copy_file(out, '/tmp/')
+                distutils.file_util.copy_file(out+'~', '/tmp/')
+                distutils.file_util.move_file(out, out+'~')
+            else:
+                out = out.replace('.html', '__new.html')
+            if len(out) > 100:
+                break
+    except:
+        printc("<WARNING> I tried to guess the output file myself, but failed. Let used '/tmp/test.html'...<white>")
+
+    path = os.path.dirname(out) if out else '/tmp/'
+    outfile = os.path.basename(out) if out else 'test.html'
+
     # Calling main
-    main(args[1:], path=path, outfile=outfile, title=title)
+    main(args[1:], path=path, outfile=outfile, title=title, use_jquery=use_jquery)
     printc("\n<green>Done, I wrote to the file '{outfile}' in the dir '{path}'.<white>".format(path=path, outfile=outfile))
+
     if '-v' in args or '--view' in args:
         try:
             printc("Opening that document in your favorite browser...")
