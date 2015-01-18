@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 """ Convert a Markdown/StrapDown.js file to a simple HTML (.html),
 which looks as a StrapDown.js powered page, but is autonomous and *do not* require JavaScript at all.
 
@@ -8,17 +8,20 @@ Try to do it as well as possible (and include nice features).
 Includes:
 - a link to SquirtFr (http://lbesson.bitbucket.org/squirt/).
 """
-__author__ = "Lilian Besson"
-__version__ = "0.2"
-
-# TODO: remove the stupid ideas for zooming.
-# TODO: test on Chrome and Internet Explorer.
 
 import sys
 import codecs
 import markdown
 import re
 import os.path
+from bs4 import BeautifulSoup, SoupStrainer
+
+__author__ = "Lilian Besson"
+__version__ = "0.2"
+
+# TODO: improve conversion from a StrapDown.js file (remove the first line and the last line? remove line with <xmp>, </xmp> etc) I am doing it!
+# TODO: remove the stupid ideas for zooming. Not yet.
+# TODO: test on Chrome and Internet Explorer.
 
 try:
     from ANSIColors import printc
@@ -30,11 +33,12 @@ except ImportError:
         print(args)
 
 # Fix UTF-8 output
-sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+# sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 use_jquery = False
 
 # FIXME change when script is good.
-beta = True
+beta = False
 
 
 def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom_navbar=1.2):
@@ -44,7 +48,8 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
     fullpath = os.path.join(path, outfile)
 
     with open(fullpath, "w") as html_file:
-        html_file = codecs.getwriter('utf8')(html_file)
+        # html_file = codecs.getwriter('utf8')(html_file)
+        html_file = codecs.getwriter('utf-8')(html_file)
         html_file.write(u"""<!DOCTYPE html>
 <html>
 <head>
@@ -109,6 +114,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
                 <input type="text" name="search" value="" id="id_search" placeholder="Search on that page" autofocus />
             </fieldset></form>
     </blockquote><hr><br>""")
+        # Not useful anymore, my script works fine.
         if beta:
             html_file.write(u"""
     <div class="alert alert-dismissable alert-warning">
@@ -119,50 +125,87 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
     </div><br><hr>""")
         html_file.write(u"""\n<!-- First file -->\n""")
 
-        # Now, print each file.
+        # Now, work with each file.
         for inputfile in argv:
             try:
                 printc("## Trying to read from the file '{inputfile}'.".format(inputfile=inputfile))
                 with open(inputfile, 'r') as openinputfile:
                     printc(" I opened it, to '{openinputfile}'.".format(openinputfile=openinputfile))
                     # FIXME detect encoding better?
-                    openinputfile = codecs.getreader('utf8')(openinputfile)
+                    # openinputfile = codecs.getreader('utf8')(openinputfile)
+                    openinputfile = codecs.getreader('utf-8')(openinputfile)
                     printc(" Codec changed to utf8.")
-                    s = ''
+                    html_text = "\t<!-- Failed to read from '{inputfile}'... This comment should have been replaced with the content of that file, converted to pure HTML -->".format(inputfile=inputfile)
+
                     # for line in openinputfile:
                     #     # printc("I read one line, and I am converting it to Markdown.")
                     #     try:
                     #         s += markdown.markdown(line)
                     #     except Exception as e:
-                    #         print e
+                    #         printc("<ERROR> Exception found: <yellow>{e}<white>.".format(e=e))
                     #         printc(" ===> <WARNING> I failed to markdownise this line. Next!<reset><white>")
                     # MAYBE: better to read all the lines once ? Yes indeed, otherwise it breaks each paragraph into many <p>one line</p>
-                    t = ''.join(openinputfile.readlines())
-                    printc("I read the lines.")
+
+                    markdown_text = openinputfile.read()
+                    printc(" I just read from that file.")
+                    # print markdown_text
+
+                    # Let try to convert this text to HTML from Markdown
                     try:
+                        # First, let try to see if the input file was not a StrapDown.js file.
+                        try:
+                            only_xmp_tag = SoupStrainer("xmp")
+                            html = BeautifulSoup(markdown_text, "html.parser", parse_only=only_xmp_tag, from_encoding="utf-8")
+                            x = html.xmp
+                            printc(" <black>BeautifulSoup<white> was used to read the input file as an HTML file, and reading its first xmp tag.")
+                            # I found the content of the <xmp> tag:
+                            # OMG this is so durty !
+                            print "x=\n\t", x
+                            new_markdown_text = x.encode("utf-8")
+                            printc(" I found the xmp tag and its content.")
+                            print new_markdown_text
+                            markdown_text = new_markdown_text.replace('<xmp>', '').replace('</xmp>', '')
+                            printc(" Now I replaced '<xmp>' → '' and '</xmp>' → ''. Lets go!")
+                            # This should be good.
+                        except Exception as e:
+                            printc("<ERROR> Exception found: <yellow>{e}<white>.".format(e=e))
+                            printc("  ===> <WARNING> I tried to read the file as a StrapDown.js powered file, but failed.\n I will now read it as a simple Markdown file.<white>")
+                            # markdown_text = markdown_text.replace('<xmp>', '').replace('</xmp>', '')
+                            # printc(" 2) Now I replace '<xmp>' → '' and '</xmp>' → ''. Lets go!")
+
+                        # Alright, let us convert this MD text to HTML
+                        printc(" Let convert the content I read to HTML with markdown.markdown.")
                         # FIXME: use markdown.markdownFromFile instead (simpler ?)
                         # Cf. https://pythonhosted.org/Markdown/reference.html#markdownFromFile
-                        s = markdown.markdown(t)
+                        html_text = markdown.markdown(markdown_text)
+                        # html_text = html_text.replace('<xmp>', '').replace('</xmp>', '')
+                        printc(" I converted from Markdown to HTML: yeah!!<white>")
+                    # Oups ! Bug !
                     except Exception as e:
-                        print e
+                        printc("<ERROR> Exception found: <yellow>{e}<white>.".format(e=e))
                         printc(" ===> <WARNING> I failed to markdownise these lines. Next!<reset><white>")
-                    printc(" I converted from Markdown to HTML.")
+
                     # TODO: add code to add the good Prism.js class to <code> and <pre>, to color the code accordingly.
-# Or, according to:
-# // Prettify
-#   var codeEls = document.getElementsByTagName('code');
-#   for (var i=0, ii=codeEls.length; i<ii; i++) {
-#     var codeEl = codeEls[i];
-#     var lang = codeEl.className;
-#     codeEl.className = 'prettyprint lang-' + lang;
-#   }
-#   prettyPrint();
-                    html_file.write(s)
+
+                    # Or, according to:
+                    # // Prettify
+                    #   var codeEls = document.getElementsByTagName('code');
+                    #   for (var i=0, ii=codeEls.length; i<ii; i++) {
+                    #     var codeEl = codeEls[i];
+                    #     var lang = codeEl.className;
+                    #     codeEl.className = 'prettyprint lang-' + lang;
+                    #   }
+                    #   prettyPrint();
+
+                    # Now we have that html_text, lets write to the output file (append mode).
+                    html_file.write(html_text)
                     printc(" <blue>I wrote this to the output file '{html_file}'<white>.".format(html_file=html_file))
                     # Done for that reading from that file
+
                 html_file.write("\n<!-- End of the HTML converted from the file '{inputfile}'. -->\n<br><hr><br>\n<!-- Next file -->\n".format(inputfile=inputfile))
+            # Opening the input file failed !
             except Exception as e:
-                print e
+                printc("<ERROR> Exception found: <yellow>{e}<white>.".format(e=e))
                 printc(" ==> <ERROR>: Failed to read from the file {inputfile}. Going to the next one.<reset><white>\n".format(inputfile=inputfile))
 
         # FIXME: search through what if there is no table ?
@@ -178,14 +221,14 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
         });
     </script>""")
         html_file.write(u"""
-    <div class="alert alert-dismissable alert-success pull-right">
-        <button type="button" class="close" data-dismiss="alert">×</button>
-        <h4 class="pull-right">© 2015 <a title="Check out my web-pages!" href="http://perso.crans.org/besson/">Lilian Besson</a>, generated by <a href="https://bitbucket.org/lbesson/bin/src/master/strapdown2html.py" title="Python 2.7 is cool!">an open-source Python script</a>.</h4>
+    <div class="alert alert-success pull-right">
+        <h4>© 2015 <a title="Check out my web-pages!" href="http://perso.crans.org/besson/">Lilian Besson</a>, generated by <a href="https://bitbucket.org/lbesson/bin/src/master/strapdown2html.py" title="Python 2.7 is cool!">an open-source Python script</a>.</h4>
     </div>
     <!-- </div> -->
     <!-- </div> -->
 </div>
 """)
+        # These two closing </div> are there for the experiment for the zoom (FIXME: remove)
         html_file.write(u"""
 <script type="text/javascript" src="http://perso.crans.org/besson/_static/ga.js" async defer></script>
 <script type="text/javascript" src="http://perso.crans.org/besson/_static/prism/prism.js"></script>
@@ -248,10 +291,10 @@ License: GPLv3.""")
                     title = re.search("<title>[^<]+</title>", "".join(file1.readlines())).group()
                     title = title.replace('<title>', '').replace('</title>', '')
                 except Exception as e:
-                    # print e
+                    # printc("<ERROR> Exception found: <yellow>{e}<white>.".format(e=e))
                     printc("<WARNING> Failed to read title from the file '{file1}'.<white>".format(file1=file1))
         except Exception as e:
-            # print e
+            # printc("<ERROR> Exception found: <yellow>{e}<white>.".format(e=e))
             break
     if title == '':
         printc("<WARNING> I tried to read the title in one of the input file, but failed.<white>\n")
