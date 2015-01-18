@@ -203,7 +203,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
                             printc(" Now lets replaced '<xmp>' --> '' and '</xmp>' --> ''. Lets go!")
                             markdown_text = new_markdown_text.replace('<xmp>', '').replace('</xmp>', '')
                             printc(" Yeah, I replaced '<xmp>' --> '' and '</xmp>' --> ''. I did it!")
-                            # FIXME: add code to add the good Prism.js class to <code> and <pre>, to color the code accordingly.
+                            # Add code to add the good Prism.js class to <code> and <pre>, to color the code accordingly.
                             markdown_text = markdown_text.replace('```python', '<pre><code class="language-python" style="font-size:145%;">')
                             markdown_text = markdown_text.replace('```bash', '<pre><code class="language-bash" style="font-size:145%;">')
                             markdown_text = markdown_text.replace('```', '</code></pre>')
@@ -251,8 +251,6 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
                 printc("<ERROR> Exception found: <yellow>{e}<white>.".format(e=e))
                 printc(" ==> <ERROR>: Failed to read from the file {inputfile}. Going to the next one.<reset><white>\n".format(inputfile=inputfile))
 
-        # FIXME: search through what if there is no table ?
-        # // Smooth Scroll jQuery plugin
         if use_jquery:
             html_file.write(u"""
     <script type="text/javascript">
