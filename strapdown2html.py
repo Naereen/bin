@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-""" Convert a Markdown/StrapDown.js file to a simple HTML (.html),
-which looks as a StrapDown.js powered page, but is autonomous and *do not* require JavaScript at all.
+""" Convert some Markdown/StrapDown.js files to a single, simple HTML (.html) file,
+which looks as a StrapDown.js powered page, but is autonomous and *does not* require JavaScript at all.
 
-Try to do it as well as possible (and include nice features).
+I tried to do it as well as possible (and I included a couple of nice features).
 
-Includes:
-- a link to SquirtFr (http://lbesson.bitbucket.org/squirt/).
+Features:
+- include a link to SquirtFr (http://lbesson.bitbucket.org/squirt/),
+- include the bootstrap theme, cf. http://bootswatch.com/united for all the possibilities,
+- support UTF-8 (FIXME: try with another encoding?),
+- quick and pretty.
 """
 
 import sys
@@ -19,9 +22,9 @@ from bs4 import BeautifulSoup, SoupStrainer
 __author__ = "Lilian Besson"
 __version__ = "0.3"
 
-# TODO: remove the stupid ideas for zooming. Not yet.
 # TODO: test on Chrome and Internet Explorer.
 
+# Load ANSIColors (Cf. http://pythonhosted.org/ANSIColors-balises/)
 try:
     from ANSIColors import printc
 except ImportError:
@@ -31,8 +34,20 @@ except ImportError:
         """ Erzatz of ANSIColors.printc."""
         print(args)
 
+# Load some Markdown extensions (Cf. https://pythonhosted.org/Markdown/extensions/index.html)
+try:
+    import markdown.extensions
+    list_extensions = [
+        'markdown.extensions.extra',  # https://pythonhosted.org/Markdown/extensions/extra.html
+        'markdown.extensions.smarty',  # https://pythonhosted.org/Markdown/extensions/smarty.html
+        'markdown.extensions.headerid',  # https://pythonhosted.org/Markdown/extensions/header_id.html
+        'markdown.extensions.tables',  # https://pythonhosted.org/Markdown/extensions/tables.html
+        'markdown.extensions.smart_strong',  # https://pythonhosted.org/Markdown/extensions/smart_strong.html
+    ]
+except ImportError:
+    list_extensions = []
+
 # Fix UTF-8 output
-# sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 use_jquery = False
 
@@ -40,15 +55,21 @@ use_jquery = False
 beta = False
 
 
-def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom_navbar=1.2):
+def main(argv=[], path='/tmp', outfile='test.html', title='Test'):
     """ Convert every input file from Markdown to HTML, and concatenate all them to an output."""
 
-    printc("<green>Starting main, with:<white> \n\tpath='{path}',\n\toutfile='{outfile}',\n\ttitle='{title}',\n\tzoom='{zoom}',\n\tzoom_navbar='{zoom_navbar}'.".format(path=path, outfile=outfile, title=title, zoom=zoom, zoom_navbar=zoom_navbar))
+    printc("""<green>Starting main, with:<white>
+        path='{path}',
+        outfile='{outfile}',
+        title='{title}'.
+    """.format(path=path, outfile=outfile, title=title))
     fullpath = os.path.join(path, outfile)
 
+    printc("<magenta>The output file will be <white>'<u>{fullpath}<U>'.".format(fullpath=fullpath))
+
     with open(fullpath, "w") as html_file:
-        # html_file = codecs.getwriter('utf8')(html_file)
         html_file = codecs.getwriter('utf-8')(html_file)
+        # Writing the head of the HTML file
         html_file.write(u"""<!DOCTYPE html>
 <html>
 <head>
@@ -65,22 +86,24 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
     <meta name="generator" content="https://bitbucket.org/lbesson/bin/src/master/strapdown2html.py">
 """.format(title=title))
         # Include jquery, and some plugins
+        # FIXME (Useless?) Except if there is a table in the input document
         if use_jquery:
             html_file.write(u"""
     <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.js"></script>
     <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.quicksearch.min.js"></script>
     <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.smooth-scroll.min.js"></script>
 """)
+        # Beginning of the header
         html_file.write(u"""</head>
 <body>
 <div class="navbar navbar-fixed-top">
-    <!-- <div style="zoom:{zoomprct}%; -moz-transform: scale({zoom});"> -->
         <div class="navbar-inner">
             <div class="container">
                 <div id="headline" class="brand">
-                    <span id="title" style="font-size: {zoomprct}%;">{title}</span>
+                    <span id="title" style="font-size:115%;">{title}</span>
                 </div>
-""".format(title=title, zoom=zoom_navbar, zoomprct=zoom_navbar*100))
+""".format(title=title))
+        # Last part of the navbar
         html_file.write(u"""
                 <div id="headline-copyrights" class="brand">
                     Generated with <a href="https://bitbucket.org/lbesson/bin/src/master/strapdown2html.py">Python</a>,
@@ -97,12 +120,8 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
         </div>
     <!-- </div> -->
 </div>
-<br><br>""")
-        html_file.write(u"""
-<div id="content" class="container" style="font-size:140%;">
-    <!-- <div style="padding:{margin:d}px 1px 1px 1px;"> -->
-    <!-- <div id="experimentalZoom" class="container" style="zoom:{zoomprct:g}%; -moz-transform: scale({zoom:g});"> -->
-""".format(margin=int(round(49 * zoom)), zoomprct=zoom*100, zoom=zoom))
+<br><br>
+<div id="content" class="container" style="font-size:140%;">""")
         # Include the jQuery.QuickSearch plugin (no by default).
         if use_jquery:
             html_file.write(u"""
@@ -127,27 +146,19 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
         # Now, work with each file.
         for inputfile in argv:
             try:
-                printc("## Trying to read from the file '{inputfile}'.".format(inputfile=inputfile))
+                printc("# <INFO> Trying to read from the file '<green><u>{inputfile}<reset><white>'.".format(inputfile=inputfile))
                 with open(inputfile, 'r') as openinputfile:
                     printc(" I opened it, to '{openinputfile}'.".format(openinputfile=openinputfile))
                     # FIXME detect encoding better?
-                    # openinputfile = codecs.getreader('utf8')(openinputfile)
                     openinputfile = codecs.getreader('utf-8')(openinputfile)
-                    printc(" Codec changed to utf8.")
-                    html_text = "\t<!-- Failed to read from '{inputfile}'... This comment should have been replaced with the content of that file, converted to pure HTML -->".format(inputfile=inputfile)
+                    printc(" <INFO> Codec manually changed to utf8.<white>")
+                    html_text = "\t<!-- Failed to read from '{inputfile}'... This comment should have been replaced with the content of that file, converted to pure HTML... -->".format(inputfile=inputfile)
 
-                    # for line in openinputfile:
-                    #     # printc("I read one line, and I am converting it to Markdown.")
-                    #     try:
-                    #         s += markdown.markdown(line)
-                    #     except Exception as e:
-                    #         printc("<ERROR> Exception found: <yellow>{e}<white>.".format(e=e))
-                    #         printc(" ===> <WARNING> I failed to markdownise this line. Next!<reset><white>")
-                    # MAYBE: better to read all the lines once ? Yes indeed, otherwise it breaks each paragraph into many <p>one line</p>
-
+                    # Read that file !
                     markdown_text = openinputfile.read()
                     printc(" I just read from that file.")
-                    # print markdown_text
+                    if beta:
+                        print markdown_text  # yes this works, useless now
 
                     # Let try to convert this text to HTML from Markdown
                     try:
@@ -155,36 +166,40 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
                         try:
                             only_xmp_tag = SoupStrainer("xmp")
                             html = BeautifulSoup(markdown_text, "html.parser", parse_only=only_xmp_tag, from_encoding="utf-8")
-                            print " BTW, this html read with Beautiful soup has the encoding,", html.original_encoding
+                            if beta:
+                                print " BTW, this html read with Beautiful soup has the encoding,", html.original_encoding
                             x = html.xmp
                             printc(" <black>BeautifulSoup<white> was used to read the input file as an HTML file, and reading its first xmp tag.")
                             # new_markdown_text = unicode(x.prettify("utf-8"), encoding="utf-8")
                             new_markdown_text = unicode(x.encode("utf-8"), encoding="utf-8")
                             printc(" I found the xmp tag and its content. Printing it:")
                             # OMG this is so durty !
-                            print type(new_markdown_text)
-                            # print new_markdown_text
+                            if beta:
+                                print type(new_markdown_text)
+                                print new_markdown_text
                             printc(" Now lets replaced '<xmp>' --> '' and '</xmp>' --> ''. Lets go!")
-                            markdown_text = new_markdown_text.replace(u'<xmp>', u'').replace(u'</xmp>', u'')
+                            markdown_text = new_markdown_text.replace('<xmp>', '').replace('</xmp>', '')
                             printc(" Yeah, I replaced '<xmp>' --> '' and '</xmp>' --> ''. I did it!")
+                            # FIXME: add code to add the good Prism.js class to <code> and <pre>, to color the code accordingly.
+                            markdown_text = markdown_text.replace('```python', '<pre><code class="language-python" style="font-size:145%;">')
+                            markdown_text = markdown_text.replace('```bash', '<pre><code class="language-bash" style="font-size:145%;">')
+                            markdown_text = markdown_text.replace('```', '</code></pre>')
                             # This should be good.
                         except Exception as e:
                             printc(" <warning> Exception found: <yellow>{e}<white>.".format(e=e))
                             printc("  ===> <WARNING> I tried to read the file as a StrapDown.js powered file, but failed.\n I will now read it as a simple Markdown file.<white>")
-                            # markdown_text = markdown_text.replace('<xmp>', '').replace('</xmp>', '')
-                            # printc(" 2) Now I replace '<xmp>' --> '' and '</xmp>' --> ''. Lets go!")
 
                         # Alright, let us convert this MD text to HTML
                         printc(" Let convert the content I read to HTML with markdown.markdown.")
                         # FIXME: use markdown.markdownFromFile instead (simpler ?)
                         # Cf. https://pythonhosted.org/Markdown/reference.html#markdownFromFile
-                        html_text = markdown.markdown(markdown_text)
-                        # This is so durty
+                        html_text = markdown.markdown(markdown_text, extensions=list_extensions)
+                        # This is so durty...
                         try:
                             html_text = html_text.replace('<!DOCTYPE html><html><head><meta charset="utf-8"/><title>', '<h1>')
                             html_text = html_text.replace('</title></head><body><xmp>', '</h1>')
                             html_text = html_text.replace('<p></xmp><script type="text/javascript" src="http://perso.crans.org/besson/s/md/strapdown.min.js"></script></body></html></p>', '')
-                            # printc(" 2) Now I replace '<xmp>' --> '' and '</xmp>' --> ''. Lets go!")
+                            printc(" <INFO> Now I replace '<xmp>' --> '' and '</xmp>' --> ''. Lets go!")
                         except:
                             printc(" I tried (again) to replace '<xmp>' --> '' and '</xmp>' --> '' byt failed")
                         printc(" I converted from Markdown to HTML: yeah!!<white>")
@@ -192,18 +207,6 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
                     except Exception as e:
                         printc("<ERROR> Exception found: <yellow>{e}<white>.".format(e=e))
                         printc(" ===> <WARNING> I failed to markdownise these lines. Next!<reset><white>")
-
-                    # TODO: add code to add the good Prism.js class to <code> and <pre>, to color the code accordingly.
-
-                    # Or, according to:
-                    # // Prettify
-                    #   var codeEls = document.getElementsByTagName('code');
-                    #   for (var i=0, ii=codeEls.length; i<ii; i++) {
-                    #     var codeEl = codeEls[i];
-                    #     var lang = codeEl.className;
-                    #     codeEl.className = 'prettyprint lang-' + lang;
-                    #   }
-                    #   prettyPrint();
 
                     # Now we have that html_text, lets write to the output file (append mode).
                     html_file.write(html_text)
@@ -218,36 +221,33 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
 
         # FIXME: search through what if there is no table ?
         # // Smooth Scroll jQuery plugin
-        # // $('input#id_search').quicksearch('table tbody tr');
         if use_jquery:
             html_file.write(u"""
     <script type="text/javascript">
-        $('input#id_search').quicksearch('p');
+        $('input#id_search').quicksearch('table tbody tr');
         $('a').smoothScroll({
             offset: ((screen.width > 680) ? -60 : 0), preventDefault: true,
             direction: 'top', easing: 'swing', speed:  350, autoCoefficent: 3,
         });
     </script>""")
+        # Print the © message
         html_file.write(u"""
     <div class="alert alert-success pull-right">
         <h4>© 2015 <a title="Check out my web-pages!" href="http://perso.crans.org/besson/">Lilian Besson</a>, generated by <a href="https://bitbucket.org/lbesson/bin/src/master/strapdown2html.py" title="Python 2.7 is cool!">an open-source Python script</a>.</h4>
     </div>
-    <!-- </div> -->
-    <!-- </div> -->
 </div>
-""")
-        # These two closing </div> are there for the experiment for the zoom (FIXME: remove)
-        html_file.write(u"""
-<script type="text/javascript" src="http://perso.crans.org/besson/_static/ga.js" async defer></script>
 <script type="text/javascript" src="http://perso.crans.org/besson/_static/prism/prism.js"></script>
-<img alt="GA|Analytics" style="visibility:hidden;display:none;" src="http://perso.crans.org/besson/beacon/{fullpath}?pixel"/>
+<noscript><img alt="GA|Analytics" style="visibility:hidden;display:none;" src="http://perso.crans.org/besson/beacon/{fullpath}?pixel"/></noscript>
+<script type="text/javascript" src="http://perso.crans.org/besson/_static/ga.js" async defer></script>
 </body></html>
 """.format(fullpath=fullpath))
     return True
 
 
+# Now call that thing.
 if __name__ == '__main__':
     args = sys.argv
+    # J'ai la flemme, je fais la gestion des options à la main.
     if '-?' in args or '-h' in args or '--help' in args:
         printc("""<yellow>strapdown2html.py<white>: -h | [options] file1 [file2 [file3 ..]]
 
@@ -257,8 +257,6 @@ Options:
     <magenta>-?|-h|--help<white>:\n\t\tdisplay this help,
     <magenta>-o|--out<white>:\n\t\tspecify the output file. Default is based on the first file name. <red>TODO: implement.<white>
     <magenta>-t|--title<white>:\n\t\tspecify the title of the output. Default is based on the first file name.
-    <magenta>-z|--zoom<white>:\n\t\tspecify zoom factor. Default is 1.0 (ie 100%, no zoom).
-    <magenta>-zn|--zoomnavbar<white>:\n\t\tspecify zoom factor for the navbar. Default is 1.2 (120%).
     <magenta>-v|--view<white>:\n\t\topen the output file when done.
 
 Warning:
@@ -308,26 +306,8 @@ License: GPLv3.""")
         printc("<WARNING> I tried to read the title in one of the input file, but failed.<white>\n")
         title = 'This is a test title!'
 
-    # OK get it from the user
-    zoom = 1.0
-    if '-z' in args:
-        zoom = float(args.pop(1 + args.index('-z')))
-        args.remove('-z')
-    if '--zoom' in args:
-        zoom = float(args.pop(1 + args.index('--zoom')))
-        args.remove('--zoom')
-
-    # OK get it from the user
-    zoom_navbar = 1.2
-    if '-zn' in args:
-        zoom_navbar = float(args.pop(1 + args.index('-zn')))
-        args.remove('-zn')
-    if '--zoomnavbar' in args:
-        zoom_navbar = float(args.pop(1 + args.index('--zoomnavbar')))
-        args.remove('--zoomnavbar')
-
     # Calling main
-    main(args[1:], path=path, outfile=outfile, title=title, zoom=zoom, zoom_navbar=zoom_navbar)
+    main(args[1:], path=path, outfile=outfile, title=title)
     printc("\n<green>Done, I wrote to the file '{outfile}' in the dir '{path}'.<white>".format(path=path, outfile=outfile))
     if '-v' in args or '--view' in args:
         try:
