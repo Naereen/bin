@@ -17,9 +17,8 @@ import os.path
 from bs4 import BeautifulSoup, SoupStrainer
 
 __author__ = "Lilian Besson"
-__version__ = "0.2"
+__version__ = "0.3"
 
-# TODO: improve conversion from a StrapDown.js file (remove the first line and the last line? remove line with <xmp>, </xmp> etc) I am doing it!
 # TODO: remove the stupid ideas for zooming. Not yet.
 # TODO: test on Chrome and Internet Explorer.
 
@@ -156,29 +155,38 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', zoom=1.0, zoom
                         try:
                             only_xmp_tag = SoupStrainer("xmp")
                             html = BeautifulSoup(markdown_text, "html.parser", parse_only=only_xmp_tag, from_encoding="utf-8")
+                            print " BTW, this html read with Beautiful soup has the encoding,", html.original_encoding
                             x = html.xmp
                             printc(" <black>BeautifulSoup<white> was used to read the input file as an HTML file, and reading its first xmp tag.")
-                            # I found the content of the <xmp> tag:
+                            # new_markdown_text = unicode(x.prettify("utf-8"), encoding="utf-8")
+                            new_markdown_text = unicode(x.encode("utf-8"), encoding="utf-8")
+                            printc(" I found the xmp tag and its content. Printing it:")
                             # OMG this is so durty !
-                            print "x=\n\t", x
-                            new_markdown_text = x.encode("utf-8")
-                            printc(" I found the xmp tag and its content.")
-                            print new_markdown_text
-                            markdown_text = new_markdown_text.replace('<xmp>', '').replace('</xmp>', '')
-                            printc(" Now I replaced '<xmp>' → '' and '</xmp>' → ''. Lets go!")
+                            print type(new_markdown_text)
+                            # print new_markdown_text
+                            printc(" Now lets replaced '<xmp>' --> '' and '</xmp>' --> ''. Lets go!")
+                            markdown_text = new_markdown_text.replace(u'<xmp>', u'').replace(u'</xmp>', u'')
+                            printc(" Yeah, I replaced '<xmp>' --> '' and '</xmp>' --> ''. I did it!")
                             # This should be good.
                         except Exception as e:
-                            printc("<ERROR> Exception found: <yellow>{e}<white>.".format(e=e))
+                            printc(" <warning> Exception found: <yellow>{e}<white>.".format(e=e))
                             printc("  ===> <WARNING> I tried to read the file as a StrapDown.js powered file, but failed.\n I will now read it as a simple Markdown file.<white>")
                             # markdown_text = markdown_text.replace('<xmp>', '').replace('</xmp>', '')
-                            # printc(" 2) Now I replace '<xmp>' → '' and '</xmp>' → ''. Lets go!")
+                            # printc(" 2) Now I replace '<xmp>' --> '' and '</xmp>' --> ''. Lets go!")
 
                         # Alright, let us convert this MD text to HTML
                         printc(" Let convert the content I read to HTML with markdown.markdown.")
                         # FIXME: use markdown.markdownFromFile instead (simpler ?)
                         # Cf. https://pythonhosted.org/Markdown/reference.html#markdownFromFile
                         html_text = markdown.markdown(markdown_text)
-                        # html_text = html_text.replace('<xmp>', '').replace('</xmp>', '')
+                        # This is so durty
+                        try:
+                            html_text = html_text.replace('<!DOCTYPE html><html><head><meta charset="utf-8"/><title>', '<h1>')
+                            html_text = html_text.replace('</title></head><body><xmp>', '</h1>')
+                            html_text = html_text.replace('<p></xmp><script type="text/javascript" src="http://perso.crans.org/besson/s/md/strapdown.min.js"></script></body></html></p>', '')
+                            # printc(" 2) Now I replace '<xmp>' --> '' and '</xmp>' --> ''. Lets go!")
+                        except:
+                            printc(" I tried (again) to replace '<xmp>' --> '' and '</xmp>' --> '' byt failed")
                         printc(" I converted from Markdown to HTML: yeah!!<white>")
                     # Oups ! Bug !
                     except Exception as e:
