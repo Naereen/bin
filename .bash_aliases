@@ -993,6 +993,7 @@ alias a='autotex'
 complete -o plusdirs -f -X '!*.@(tex|pdf)' a
 alias p='PDFCompress'
 complete -o plusdirs -f -X '!*.@(tex|pdf)' p
+complete -o plusdirs -f -X '!*.pdf' pdfinfo
 
 alias b='bpython || alert'
 alias f='firefox'

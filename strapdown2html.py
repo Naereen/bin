@@ -64,7 +64,7 @@ try:
                 md.preprocessors.add('urlify', URLify(md), '_end')
 
         urlify_ext = URLifyExtension()
-        list_extensions.append(urlify_ext)
+        # list_extensions.append(urlify_ext)
     except:
         printc(" <INFO> Failed to define the 'urlify' extension.<white>")
     # That it is
@@ -352,20 +352,21 @@ License: GPLv3.""")
         title = 'This is a test title!'
 
     # Try to guess path+outfile from the first inputfile.
-    try:
-        out = args[1].replace('.md', '.html').replace('.markdown', '.html')
-        while os.path.exists(out):
-            if eraseFileAlreadyThere:
-                import distutils.file_util
-                # distutils.file_util.copy_file(out, '/tmp/')
-                distutils.file_util.copy_file(out+'~', '/tmp/')
-                distutils.file_util.move_file(out, out+'~')
-            else:
-                out = out.replace('.html', '__new.html')
-            if len(out) > 100:
-                break
-    except:
-        printc("<WARNING> I tried to guess the output file myself, but failed. Let used '/tmp/test.html'...<white>")
+    if out == "/tmp/test.html":
+        try:
+            out = args[1].replace('.md', '.html').replace('.markdown', '.html')
+            while os.path.exists(out):
+                if eraseFileAlreadyThere:
+                    import distutils.file_util
+                    # distutils.file_util.copy_file(out, '/tmp/')
+                    distutils.file_util.copy_file(out+'~', '/tmp/')
+                    distutils.file_util.move_file(out, out+'~')
+                else:
+                    out = out.replace('.html', '__new.html')
+                if len(out) > 100:
+                    break
+        except:
+            printc("<WARNING> I tried to guess the output file myself, but failed. Let used '/tmp/test.html'...<white>")
 
     path = os.path.dirname(out) if out else '/tmp/'
     outfile = os.path.basename(out) if out else 'test.html'
