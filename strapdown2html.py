@@ -149,10 +149,10 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
         if use_jquery:
             html_file.write(u"""
     <blockquote class="pull-right" style="right-margin: 5%;">
-        <h2>Search on that page?</h2>
+        <h2>Search on that table?</h2>
             <p>(Thanks to the <a href="http://deuxhuithuit.github.io/quicksearch/">QuickSearch</a> <a href="https://www.jQuery.com/">jQuery</a> plugin.)</p>
             <form><fieldset>
-                <input type="text" name="search" value="" id="id_search" placeholder="Search on that page" autofocus />
+                <input type="text" name="search" value="" id="id_search" placeholder="Search on that table" autofocus />
             </fieldset></form>
     </blockquote><hr><br>""")
         # Not useful anymore, my script works fine.
