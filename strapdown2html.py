@@ -10,6 +10,14 @@ Features:
 - include the bootstrap theme, cf. http://bootswatch.com/united for all the possibilities,
 - support UTF-8 (FIXME: try with another encoding?),
 - quick and pretty.
+
+Links:
+- more information on StrapDown.js can be found here http://lbesson.bitbucket.org/md/,
+- another script I wrote for StrapDown.js is strapdown2pdf, here http://lbesson.bitbucket.org/md/strapdown2pdf.html
+- Similarly, this page http://lbesson.bitbucket.org/md/strapdown2html.html will give info about ath program strapdown2html.py
+
+Copyright: 2015, Lilian Besson.
+License: GPLv3.
 """
 
 import sys
@@ -22,7 +30,6 @@ from bs4 import BeautifulSoup, SoupStrainer
 __author__ = "Lilian Besson"
 __version__ = "0.3"
 
-# TODO: test on Chrome and Internet Explorer.
 # TODO: improve conformity with StrapDown.js Markdown parser. (nested list, small blockquote etc).
 
 # Load ANSIColors (Cf. http://pythonhosted.org/ANSIColors-balises/)
@@ -65,9 +72,9 @@ try:
 
         urlify_ext = URLifyExtension()
         # list_extensions.append(urlify_ext)
+        # FIXME improve that extension
     except:
         printc(" <INFO> Failed to define the 'urlify' extension.<white>")
-    # That it is
 except:
     list_extensions = []
     # No extension
@@ -75,7 +82,6 @@ except:
 # Fix UTF-8 output
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 
-# FIXME change when script is good.
 beta = False
 eraseFileAlreadyThere = False
 
@@ -84,7 +90,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
     """ Convert every input file from Markdown to HTML, and concatenate all them to an output."""
 
     printc("<green>Starting main, with:<white>")
-    # FIXME printc does not handle UTF-8 correctly ?
+    # FIXME printc does not handle UTF-8 correctly ! AAAH!
     print("path='{path}', outfile='{outfile}'.".format(path=path, outfile=outfile))
     print "And the title is:", title
     fullpath = os.path.join(path, outfile)
@@ -196,7 +202,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
                             # new_markdown_text = unicode(x.prettify("utf-8"), encoding="utf-8")
                             new_markdown_text = unicode(x.encode("utf-8"), encoding="utf-8")
                             printc(" I found the xmp tag and its content. Printing it:")
-                            # OMG this is so durty !
+                            # OMG this is so durty ! FIXME do better?
                             if beta:
                                 print type(new_markdown_text)
                                 print new_markdown_text
@@ -212,7 +218,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
                             printc(" <warning> Exception found: <yellow>{e}<white>.".format(e=e))
                             printc("  ===> <WARNING> I tried to read the file as a StrapDown.js powered file, but failed.<white>\n <magenta>I will now read it as a simple Markdown file.<white>")
 
-                        # This is so durty...
+                        # This is so durty... FIXME do better?
                         try:
                             markdown_text = markdown_text.replace('<!DOCTYPE html><html><head><meta charset="utf-8"/><title>', '<h1>')
                             markdown_text = markdown_text.replace('<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>', '<h1>')
@@ -274,10 +280,10 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
     return True
 
 
-# Now call that thing.
+# Now let us use that thing.
 if __name__ == '__main__':
     args = sys.argv
-    # J'ai la flemme, je fais la gestion des options à la main.
+    # J'ai la flemme, je fais la gestion des options à la main. Et j'écris ce commentaire en français, OHOO!
     if '-?' in args or '-h' in args or '--help' in args:
         printc("""<yellow>strapdown2html.py<white>: -h | [options] file1 [file2 [file3 ..]]
 
@@ -330,6 +336,7 @@ License: GPLv3.""")
         use_jquery = True
         args.pop(args.index('--use-jquery'))
 
+    # Cleverly detect the title. So durty, again!
     i = 0
     while title == '':
         i += 1
@@ -338,18 +345,18 @@ License: GPLv3.""")
             with codecs.open(args[i], 'r', encoding='utf-8') as file1:
                 try:
                     contentfile1 = file1.read()
+                    # FIXME experimental detection of the need for QuickSearch
                     # use_jquery = use_jquery or ((contentfile1.find('<table>') >= 0) or (contentfile1.find('') >= 0))
                     title = re.search("<title>[^<]+</title>", contentfile1).group()
                     title = title.replace('<title>', '').replace('</title>', '')
                 except Exception as e:
                     # printc("<ERROR> Exception found: <yellow>{e}<white>.".format(e=e))
                     printc("<WARNING> Failed to read title from the file '{file1}'.<white>".format(file1=file1))
-        except Exception as e:
-            # printc("<ERROR> Exception found: <yellow>{e}<white>.".format(e=e))
+        except:
             break
     if title == '':
         printc("<WARNING> I tried to read the title in one of the input file, but failed.<white>\n")
-        title = 'This is a test title!'
+        title = '(No title for that StrapDown document)'
 
     # Try to guess path+outfile from the first inputfile.
     if out == "/tmp/test.html":
@@ -357,7 +364,8 @@ License: GPLv3.""")
             out = args[1].replace('.md', '.html').replace('.markdown', '.html')
             while os.path.exists(out):
                 if eraseFileAlreadyThere:
-                    import distutils.file_util
+                    # OMG, so bad! Only for Linux! FIXME
+                    import distutils.file_util  # Mais quel débile !
                     # distutils.file_util.copy_file(out, '/tmp/')
                     distutils.file_util.copy_file(out+'~', '/tmp/')
                     distutils.file_util.move_file(out, out+'~')
@@ -366,7 +374,7 @@ License: GPLv3.""")
                 if len(out) > 100:
                     break
         except:
-            printc("<WARNING> I tried to guess the output file myself, but failed. Let used '/tmp/test.html'...<white>")
+            printc("<WARNING> I tried to guess the output file myself, but failed. Let use '/tmp/test.html'...<white>")
 
     path = os.path.dirname(out) if out else '/tmp/'
     outfile = os.path.basename(out) if out else 'test.html'
@@ -378,7 +386,7 @@ License: GPLv3.""")
     if '-v' in args or '--view' in args:
         try:
             printc("Opening that document in your favorite browser...")
-            import webbrowser  # Thanks to antigravity.py
+            import webbrowser  # Thanks to antigravity.py!
             webbrowser.open(os.path.join(path, outfile))
         except Exception as e:
             printc("But I failed in opening that page to show you the content")
