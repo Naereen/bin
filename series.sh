@@ -152,7 +152,7 @@ for cu in ${currents:-$dflt}; do
 
  #possibles=`find . -type f -wholename '*'$d'*'/'*'s$d'*'e$e'*'`
  #possibles=`find . -type f -wholename '*'$d'*'/'*'[sS]$d'*'[eE]$e'*'`
- possibles=`find . -type f -wholename '*'$d'*'/'*'$d'*'$e'*' | grep "\(avi\|mp4\|mkv\|AVI\|flv\|wma\)"`
+ possibles=`find . -type f -wholename '*'$d'*'/'*'$d'*'$e'*' | grep "\(avi\|mp4\|mkv\|AVI\|flv\|wma\|rmvb\)"`
 
  [ "0$?" != "00" ] && \
   ( echo -e "${red} Error: no next files found for this $black$current_$white file." ; exit 2 )
