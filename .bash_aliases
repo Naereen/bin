@@ -899,6 +899,7 @@ alias send_bashrc_bashalias='CP ~/.bashrc ~/.bash_aliases ~/.bashrc.asc ~/.bash_
 
 # Shortcut. FIXME ? available ONLY if 'n' is not a command.
 function n() { /home/lilian/bin/nano.last "$@" || alert; }
+export EDITOR="/home/lilian/bin/nano.last"
 function t() { htop || alert; }
 
 # Get the latest QC strip ;)
@@ -906,6 +907,7 @@ alias GetQC='wget `wget http://questionablecontent.net/ -O - | grep -o "http://w
 
 # Print the current read/watched TV shows or movies
 Currents() {
+    clear
     for i in ~/current*; do
             dir="$(cat "$i")"
             echo -e "\n$u$black~/$(basename "$i")$U$white\t ---> \t$blue${dir}$white"
@@ -993,6 +995,7 @@ alias a='autotex'
 complete -o plusdirs -f -X '!*.@(tex|pdf)' a
 alias p='PDFCompress'
 complete -o plusdirs -f -X '!*.@(tex|pdf)' p
+function pdfinfo() { for i in "$@"; do echo -e "\n${green}# For '${red}${u}$i${U}${white}':"; /usr/bin/pdfinfo "$i"; done }
 complete -o plusdirs -f -X '!*.pdf' pdfinfo
 
 alias b='bpython || alert'
