@@ -23,6 +23,9 @@
     <script type="text/javascript" src="http://0.0.0.0/_static/jplayer/jquery.jplayer.min.js"></script>
     <script type="text/javascript" src="http://0.0.0.0/_static/jplayer/jplayer.playlist.min.js"></script>
 
+    <!-- jQuery.QuickSearch.js (http://deuxhuithuit.github.io/quicksearch/) -->
+    <script type="text/javascript" src="http://0.0.0.0/_static/jquery.quicksearch.min.js"></script>
+
     <script type="text/javascript">
      console.log("[INFO] Loading jQuery, jQuery.noty, Moustrap, NProgress, jQuery.jPlayer, jPlayer.playlist !");
      // jQuery.noty plugin
@@ -103,7 +106,7 @@
       <a href="https://bitbucket.org/lbesson/bin/issues/new">(n'hésitez pas à signaler un <b>bug</b> !)</a>. Voir le projet <a href="https://bitbucket.org/lbesson/bin/">sur BitBucket ?</a><br>
     Générée le DATE par <a title="Version VERSION !" href="https://bitbucket.org/lbesson/bin/src/master/generatejplayer.sh"><tt>generatejplayer.sh</tt></a>
     (basé sur <a href="http://jplayer.org/" target="_blank">jPlayer</a>).
-    Programme pour GNU/Linux, par <a href="http://besson.qc.to">Lilian BESSON</a> (C) 2013-2014.<br>
+    Programme pour GNU/Linux, par <a href="http://besson.qc.to">Lilian BESSON</a> (C) 2013-2015.<br>
       <span id="printherethetitle">Aucun morceau sélectionné.</span>
       <span id="printheretheduration">Position : 00:00/00:00.</span>
       <span id="printherethevolume">Volume 80%.</span>
@@ -111,4 +114,16 @@
   </p></div>
 
     <div id="content">
+
+      <div id="div_search" style="color: white; font-size: 80%; text-align: center;">
+          <h3><abbr title="Type some text to select your favorite song and then click on it to play it!">Search</abbr> through the playlist?
+                  (Thanks to the <a href="http://deuxhuithuit.github.io/quicksearch/">QuickSearch</a> <a href="https://www.jQuery.com/">jQuery</a> plugin)
+          </h3>
+          <form>
+              <fieldset>
+                  <input type="text" name="search" value="" id="id_search" placeholder="Search for your favorite song!" autofocus />
+              </fieldset>
+          </form>
+      </div>
+
     <!-- End of header.html -->

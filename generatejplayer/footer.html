@@ -52,9 +52,27 @@
         // Conclude the Nprogress bar
         NProgress.inc();
 		setTimeout(function(){ NProgress.done(); }, 1000);
+        // QuickSearch jQuery plugin
+        // $('input#id_search').quicksearch('div.jp-playlist > ul li > div');
+        $('input#id_search').quicksearch('div.jp-playlist > ul li', {
+            'selector': 'div',
+            // 'show': function () {
+            //     $(this).addClass('quicksearch_show');
+            // },
+            // 'hide': function () {
+            //     $(this).removeClass('quicksearch_show');
+            // },
+            'onAfter': function() {
+                console.log('The QuickSearch bar has been used, and the onAfter function has been called.');
+                // var title = $('div.jp-playlist > ul li:first-child div').text;
+                // var mp3 = $('div.jp-playlist > ul li:first-child div').text;
+                // myPlaylist.
+            },
+            'removeDiacritics': true,
+        });
     });
     </script>
-<!-- <script async type="text/javascript" src="http://0.0.0.0/_static/ga.js"></script> -->
+<script async type="text/javascript" src="http://0.0.0.0/_static/ga.js"></script>
 <img style="visibility: hidden; display: none;" src="http://perso.crans.org/besson/beacon/music/PATHTOBECHANGED?pixel"/>
 <!-- (C) Lilian Besson, 2014, for http://besson.qc.to/generatejplayer.sh/ -->
 </body></html>

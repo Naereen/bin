@@ -3,7 +3,8 @@
         <div id="jquery_jplayer_1" class="jp-jplayer"></div>
         <div id="jp_container_1" class="jp-audio">
             <div class="jp-type-playlist">
-                <div class="jp-gui jp-interface">
+                <!-- FIXME: make the jp-gui and jp-interface div responsive (the width should NOT be specified here) -->
+                <div style="position: fixed; z-index: 1; width: 982px;" class="jp-gui jp-interface">
                     <ul class="jp-controls">
                         <li><a href="javascript:;" class="jp-previous" tabindex="1">previous</a></li>
                         <li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
@@ -31,7 +32,9 @@
                         <li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
                     </ul>
                 </div>
-                <div class="jp-playlist">
+                <!-- Beginning of the playlist (empty right now, will be added after) -->
+                <!-- FIXME improve style of this -->
+                <div class="jp-playlist" style="position: relative; padding-top: 91px;">
                     <ul>
                         <li></li>
                     </ul>
