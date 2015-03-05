@@ -601,6 +601,7 @@ export PYTHONSTARTUP="$HOME/.pythonrc"
 export PYTHONWARNINGS="ignore"
 #export PYTHONOPTIMIZE= # no optimization.
 #export PYTHONVERBOSE=  # no verbose adds.
+export PYTHONPATH="/usr/local/lib/python2.7/" # /usr/lib/python2.7:
 
 # Many differents mutt :
 
