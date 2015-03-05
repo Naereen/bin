@@ -1,4 +1,4 @@
-       // (C) Lilian Besson, 2014, for http://besson.qc.to/generatejplayer.sh/
+       // (C) Lilian Besson, 2015, for http://besson.qc.to/generatejplayer.sh/
        console.log("[INFO] footer.html starts now.");
        NProgress.start();
       </script>
@@ -20,19 +20,19 @@
     $(window).load(function(){
 		// Noty message.
 		setTimeout(function(){ noty({
-		text: 'Cette page vous paraît-elle <i>bien écrite</i> ?', timeout: false, layout: "bottomRight",
+		text: 'Cette page vous paraît-elle <i>bien écrite</i> ?', timeout: 30000, layout: "bottomRight",
 		buttons: [ // this = button element, $noty = $noty element
 		  {addClass: 'btn btn-primary', text: 'Oui !', onClick: function($noty) {
 		      $noty.close();
 		      noty({text: "<strong>Normal, je code <i>très bien</i> ;) !</strong>"
-		       + "\n</br>N'hésitez pas à consulter d'<a href=\"http://besson.qc.to/\">autres pages</a> !", type: 'success', timeout: false});
+		       + "\n</br>N'hésitez pas à consulter d'<a href=\"http://besson.qc.to/\">autres pages</a> !", type: 'success', timeout: 30000});
 		    }
 		  },
 		  {addClass: 'btn btn-danger', text: 'Non ?!', onClick: function($noty) {
 		      $noty.close();
 		      noty({text: "<span style=\"font-size: large;\"><b>Ooouups !</b>\n</br>Peut-être pouvez vous prendre quelques instants pour signaler un bug ? " +
 		       "\n</br>Via <a title=\"bitbucket.org\" href=\"https://bitbucket.org/lbesson/bin/issues/new\">bitbucket.org/lbesson/bin/issues/new</a>, <i>c'est facile !</i></span>",
-		       type: 'error', layout: 'center', timeout: false, onClick: function($noty){
+		       type: 'error', layout: 'center', timeout: 45000, onClick: function($noty){
 		         $noty.close();
 		         console.log("[INFO] Opening a new window with https://bitbucket.org/lbesson/bin/issues/new.");
 		         window.open("https://bitbucket.org/lbesson/bin/issues/new");
@@ -76,5 +76,5 @@
     </script>
 <script async type="text/javascript" src="http://0.0.0.0/_static/ga.js"></script>
 <img style="visibility: hidden; display: none;" src="http://perso.crans.org/besson/beacon/music/PATHTOBECHANGED?pixel"/>
-<!-- (C) Lilian Besson, 2014, for http://besson.qc.to/generatejplayer.sh/ -->
+<!-- (C) Lilian Besson, 2015, for http://besson.qc.to/generatejplayer.sh/ -->
 </body></html>

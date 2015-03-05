@@ -2,18 +2,18 @@
 #
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 12-11-2013
+# Date: 05-13-2015
 # Web version: http://besson.qc.to/bin/generatejplayer.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/generatejplayer.sh
 #
 # Auto generate an 'index.html' page to show and play music with jplayer.
-# NEW: also generate a 'index.htm' page, which works on Windows by fetching the CSS and JS online and not locally.
+# Also generate a 'index.htm' page, which works on Windows by fetching the CSS and JS online (http://perso.crans.org/besson/_static/) and not locally (http://0.0.0.0/).
 #
 # A demo is here : http://besson.qc.to/generatejplayer.sh
 # Last version is here : http://besson.qc.to/bin/generatejplayer.sh
 # with stylesheets and templates is here : http://besson.qc.to/bin/generatejplayer/
 #
-version='1.7'
+version='1.8'
 
 GeneratejPlayer() {
 	# Go to the directory.
@@ -232,7 +232,6 @@ GeneratejPlayer() {
 }
 
 # Find every folder. Warning: in a folder like / or /home/user/ the script can run for a VERY LONG TIME !
-# FIXED
 pathtobechecked="$(pwd)"
 pathtobechecked="${pathtobechecked#/home/lilian/Music/}"
 if [ ! /home/lilian/Music/"${pathtobechecked}" = "$(pwd)" ]; then
@@ -265,10 +264,8 @@ for i in $targets; do
 		| sed s_"./"_"http://./"_ \
 		| sed s_"/home/lilian/Music/"_"http://0.0.0.0/music/"_ \
 		| ansi2html -a \
-		| sed s_"http://./"_"./"_ \
-		| sed s_"http://./"_"./"_ \
-		| sed s_"http://.http://"_"http://"_ \
-		| sed s_"http://.http://"_"http://"_ \
+		| sed s_"http://./"_"./"_g \
+		| sed s_"http://.http://"_"http://"_g \
 		> "${direction}/generatejplayer.html"
 	cp "${direction}/index.html" "${direction}/index.html~"
 	cat "${direction}/index.html~" \
