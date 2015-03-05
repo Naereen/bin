@@ -38,6 +38,9 @@ GeneratejPlayer() {
 	echo -e "Total size for all musics (*.mp3) = $taille."
 
 	if [ "X${targets//'%20'/}" != "X" ]; then
+		# New: a search bar for the playlist
+		echo -e "<div id='div_search' style='color: white; font-size: 80%; text-align: center;'>\n          <h3><abbr title='Type some text to select your favorite song and then click on it to play it!'>Search</abbr> through the list of playlist?\n                  (Thanks to the <a href='http://deuxhuithuit.github.io/quicksearch/'>QuickSearch</a> <a href='https://www.jQuery.com/'>jQuery</a> plugin)\n          </h3>\n          <form>\n              <fieldset>\n                  <input type='text' name='search' value='' id='id_search' placeholder='Search for your favorite song!' autofocus />\n              </fieldset>\n          </form>\n      </div>\n" >> index.html
+
 		 # Jplayer Header
 		 cat ~/bin/generatejplayer/jplayerheader.html >> index.html
 		 targets="${targets//' '/%20}"
@@ -136,6 +139,9 @@ GeneratejPlayer() {
 		fi
 
 		echo -e "<span style=\"font-size: 130%\"><ul>" >> index.html
+
+		# New: a search bar for the list of folders
+		echo -e "<div id='div_search_folder' style='color: white; font-size: 60%; text-align: center;'>\n          <h3><abbr title='Type some text to select the folder you want to go to, and then click on it!'>Search</abbr> through the list of folder?\n                  (Thanks to the <a href='http://deuxhuithuit.github.io/quicksearch/'>QuickSearch</a> <a href='https://www.jQuery.com/'>jQuery</a> plugin)\n          </h3>\n          <form>\n              <fieldset>\n                  <input type='text' name='search' value='' id='id_search_folder' placeholder='Search for your favorite folder!' />\n              </fieldset>\n          </form>\n      </div>\n" >> index.html
 		echo -e "<li><a href=\"../index.html\" title=\"Dossier parent !\">..</a> (dossier parent)</li>" >> index.html
 
 		# For every sub directories

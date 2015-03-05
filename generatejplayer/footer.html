@@ -52,7 +52,7 @@
         // Conclude the Nprogress bar
         NProgress.inc();
 		setTimeout(function(){ NProgress.done(); }, 1000);
-        // QuickSearch jQuery plugin
+        // QuickSearch jQuery plugin is now used for two search bars for the playlist and folder list
         // $('input#id_search').quicksearch('div.jp-playlist > ul li > div');
         $('input#id_search').quicksearch('div.jp-playlist > ul li', {
             'selector': 'div',
@@ -64,12 +64,14 @@
             // },
             'onAfter': function() {
                 console.log('The QuickSearch bar has been used, and the onAfter function has been called.');
+                // FIXME: we should update the playlist in the javascript variable myPlaylist also (and not just the DOM)
                 // var title = $('div.jp-playlist > ul li:first-child div').text;
                 // var mp3 = $('div.jp-playlist > ul li:first-child div').text;
-                // myPlaylist.
             },
             'removeDiacritics': true,
         });
+        // Second search for the folder
+        $('input#id_search_folder').quicksearch('div.subdirs > span > ul li');
     });
     </script>
 <script async type="text/javascript" src="http://0.0.0.0/_static/ga.js"></script>
