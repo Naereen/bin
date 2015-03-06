@@ -39,7 +39,7 @@ GeneratejPlayer() {
 
 	if [ "X${targets//'%20'/}" != "X" ]; then
 		# New: a search bar for the playlist
-		echo -e "<div id='div_search' style='color: white; font-size: 80%; text-align: center;'>\n          <h3><abbr title='Type some text to select your favorite song and then click on it to play it!'>Search</abbr> through the list of playlist?\n                  (Thanks to the <a href='http://deuxhuithuit.github.io/quicksearch/'>QuickSearch</a> <a href='https://www.jQuery.com/'>jQuery</a> plugin)\n          </h3>\n          <form>\n              <fieldset>\n                  <input type='text' name='search' value='' id='id_search' placeholder='Search for your favorite song!' autofocus />\n              </fieldset>\n          </form>\n      </div>\n" >> index.html
+		echo -e "<div id='div_search' style='color: white; font-size: 80%; text-align: center;'>\n          <h3><abbr title='Type some text to select your favorite song and then click on it to play it!'>Search</abbr> through the playlist?\n                  (Thanks to the <a href='http://deuxhuithuit.github.io/quicksearch/'>QuickSearch</a> <a href='https://www.jQuery.com/'>jQuery</a> plugin)\n          </h3>\n          <form>\n              <fieldset>\n                  <input type='text' name='search' value='' id='id_search' placeholder='Search for your favorite song!' autofocus />\n              </fieldset>\n          </form>\n      </div>\n" >> index.html
 
 		 # Jplayer Header
 		 cat ~/bin/generatejplayer/jplayerheader.html >> index.html
@@ -273,8 +273,8 @@ for i in $targets; do
 		> "${direction}/index.html"
 	rm -v "${direction}/index.html~" "${direction}/generatejplayer.time" >/dev/null
 	cat "${direction}/index.html" \
-		| sed s_"0\.0\.0\.0"_"perso.crans.org/besson/"_ \
-		| sed s_"/index.html"_"/index.htm"_ \
+		| sed s_"0\.0\.0\.0"_"perso.crans.org/besson/"_g \
+		| sed s_"/index.html"_"/index.htm"_g \
 		| sed s_"Programme pour GNU/Linux"_"Page pour Windows®"_ \
 		> "${direction}/index.htm"
 done
