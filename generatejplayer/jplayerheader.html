@@ -180,7 +180,7 @@
 			var artist = (e.jPlayer.status.media.artist !== undefined) ? ' (by ' + e.jPlayer.status.media.artist : '';
 			printHereTheTitle.innerHTML = 'Élément courant : <a href="' + e.jPlayer.status.src + '">' + e.jPlayer.status.media.title + artist + '</a> (en pause).';
 			setTimeout(function(){ NProgress.done(); }, 200);
-			notifyUser("Musique avec jPlayer", ("Pause (chanson courante : " + e.jPlayer.status.media.title + artist + ")."), "pause_512.png?src=event_pause");
+			// notifyUser("Musique avec jPlayer", ("Pause (chanson courante : " + e.jPlayer.status.media.title + artist + ")."), "pause_512.png?src=event_pause");
 		});
 
         // Playing
