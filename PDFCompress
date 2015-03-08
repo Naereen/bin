@@ -49,7 +49,9 @@ fi
 # Default quality. FIXME: in fact, does not change very much the result....
 quality="ebook"
 # Image resolution (the smaller this is, the smaller the new PDF will be, but the quality will decrease)
-ImageResolution="130"
+# FIXME add one option of the command line for this
+# ImageResolution="130"
+ImageResolution="800"
 # False to simply change the meta data (and sign ?)
 compress="true"
 # True to force compression (even if pdfinfo said that Ghostscript or PDFCompress

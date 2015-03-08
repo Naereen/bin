@@ -1,9 +1,9 @@
 #!/bin/bash
 # .bash_aliases for GNU Bash v4+
-# (c) 2011-2014 Lilian BESSON
-# http://perso.crans.org/besson
-# On Bitbucket: http://bitbucket.org/lbesson/bin/src/master/.bash_aliases
-# http://www.dptinfo.ens-cachan.fr/~lbesson
+# (c) 2011-2015 Lilian BESSON
+# Cr@ns: http://perso.crans.org/besson
+# On Bitbucket:   https://bitbucket.org/lbesson/home/
+# ENS de Cachan:  http://www.dptinfo.ens-cachan.fr/~lbesson
 
 # A try with erase line.
 LS_ECHO()
@@ -197,14 +197,14 @@ complete -o plusdirs -f -X '!*.ml' iocaml leditocaml leocaml rlocaml mocaml moca
 ########################################################################
 # Outil pygmentize : permet une coloration syntaxique dans la console
 case $TERM in
-*dumb*|*term*)
-    CAT_COLOR="terminal256"
-    export CAT_COLOR="terminal256"
-    ;;
-*)
-    CAT_COLOR="terminal"
-    export CAT_COLOR="terminal"
-    ;;
+    *dumb*|*term*)
+        CAT_COLOR="terminal256"
+        export CAT_COLOR="terminal256"
+        ;;
+    *)
+        CAT_COLOR="terminal"
+        export CAT_COLOR="terminal"
+        ;;
 esac
 
 alias catColor='pygmentize -f $CAT_COLOR -g'
@@ -212,7 +212,6 @@ alias catColor='pygmentize -f $CAT_COLOR -g'
 ExportColorLaTeX(){
     pygmentize -f latex -P encoding=utf8 -o $1.tex $1
 }
-
 ExportColorLaTeXFull(){
     pygmentize -f latex -P encoding=utf8 -O full -o $1.full.tex $1
 }
@@ -252,7 +251,7 @@ Wavemon(){
 }
 
 # alias captureEcran='scrot --delay 3 --count --quality 100 "captureEcran_$USER@$HOSTNAME[display=$DISPLAY]_%Y-%m-%d_%H-%M-%S_\$wx\$h.jpg"'
-captureEcran() {
+captureEcran() {  # now the Alt+$ shortcut does the same!
     sleep 3s
     xfce4-screenshooter -r -d 5 || gnome-screenshot -i
     clear
@@ -424,7 +423,7 @@ alias CowThink='cowthink -W 160 -f /usr/share/cowsay/cows/moose.cow'
 alias TarXZ='tar -Jcvf'
 alias TarGZ='tar -zcvf'
 alias TarBZ2='tar -jcvf'
-# For tar un-compression
+# For tar un-compression (see extract for a better commad)
 alias untar='echo -e "Desarchivage du fichier archive tar en cours ..." && tar xfv'
 alias untar_gz='echo -e "Desarchivage du fichier archive tar.gz en cours ..." && tar xzfv'
 alias untar_bz2='echo -e "Desarchivage du fichier archive tar.bz2 en cours..." && tar xjfv'
@@ -573,38 +572,35 @@ function swap()         # swap 2 filenames around
 
 function my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,bsdtime,command ; }
 
-function pp()
-{ my_ps f | awk '!/awk/ && $0~var' var=${1:-".*"} ; }
+function pp() { my_ps f | awk '!/awk/ && $0~var' var=${1:-".*"} ; }
 
 function my_ip() # get IP adresses
 {
-        MY_IP=$(/sbin/ifconfig | awk '/inet adr:/ { print $2 } ' | \
-sed -e s/addr://)
+        MY_IP=$(/sbin/ifconfig | awk '/inet adr:/ { print $2 } ' | sed -e s/addr://)
 }
 
 function ii()   # get current host related info
 {
-    echo -e "\nYou are logged on ${red}$HOSTNAME ($HOSTNAME_WIFI)"
+    echo -e "\nYou are logged on ${blue}$HOSTNAME ($HOSTNAME_WIFI)"
     echo -e "\nAdditionnal information:${reset}${white} " ; uname -a
-    echo -e "\n${red}Users logged on:${reset}${white} " ; w -h
-    echo -e "\n${red}Current date :${reset}${white} " ; date
-    echo -e "\n${red}Machine stats :${reset}${white} " ; uptime
-    echo -e "\n${red}Memory stats :${reset}${white} " ; free
+    echo -e "\n${blue}Users logged on:${reset}${white} " ; w -h
+    echo -e "\n${blue}Current date :${reset}${white} " ; date
+    echo -e "\n${blue}Machine stats :${reset}${white} " ; uptime
+    echo -e "\n${blue}Memory stats :${reset}${white} " ; free
     my_ip 2>&- ;
-    echo -e "\n${red}Local IP Address :${reset}${white}" ; echo ${MY_IP:-"Not connected"}
+    echo -e "\n${blue}Local IP Address :${reset}${white}" ; echo ${MY_IP:-"Not connected"}
     echo
 }
 
 ###############################################################################
-# FOR Python
+# For Python  # WARNING
 export PYTHONSTARTUP="$HOME/.pythonrc"
 export PYTHONWARNINGS="ignore"
 #export PYTHONOPTIMIZE= # no optimization.
 #export PYTHONVERBOSE=  # no verbose adds.
 export PYTHONPATH="/usr/local/lib/python2.7/" # /usr/lib/python2.7:
 
-# Many differents mutt :
-
+# Three different mutt (useless):
 mutt(){
  xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { Mutt 1.5.21 } : for localhost"
  /usr/bin/mutt-patched "$@"
@@ -628,16 +624,15 @@ alias CleanPicturesR='echo "Erasing EXIF infos...." && exiftool -v2 -recurse -fa
 alias CleanPictures='echo "Erasing EXIF infos...." && exiftool -v2 -fast -overwrite_original_in_place -all= * | tee "exiftool__$$_`date "+%H_%M_%S"`".log && echo "All EXIF infos have been erased :)"'
 alias CleanJPEG='exiftool -all= *.jpg *.png *.gif *.JPG .*.jpg .*.png .*.gif .*.JPG && echo "Donnees EXIF supprimees :)"'
 
-## A less for PDF files
+## A less for PDF files (useless)
 lessPDF() {
-for f in "$@"; do
-    pdftotext -r 200 -layout -eol unix -enc UTF-8 -raw "$f" && less -f -J "${f%.pdf}.txt"
-done
+    for f in "$@"; do
+        pdftotext -r 200 -layout -eol unix -enc UTF-8 -raw "$f" && less -f -J "${f%.pdf}.txt"
+    done
 }
 
 # FIXME ?
 eval "$(/bin/lesspipe)"
-
 # Man visual
 Man() { yelp "man:$@" ; }
 
@@ -673,7 +668,7 @@ LatexFormula() {
     out="/tmp/LatexFormula_$$.jpg"
     # tente d'afficher les arguments interpretes comme une formule LaTeX, via le bon service web.
     wget --quiet 'http://s0.wp.com/latex.php?bg=ffffff&fg=1c1c1c&s=0&zoom=10&latex=\displaystyle'"${@// /+}" -O "${out}" \
-    || wget --quiet http://numberempire.com/equation.render?"${@// /%20}" -O "${out}"
+    || wget --quiet 'http://numberempire.com/equation.render?'"${@// /%20}" -O "${out}"
     display -title "Image for the LaTeX formula: '${@//\\/\\\\}'   (thanks to an awesome webservice)" "${out}"
 }
 
@@ -713,7 +708,7 @@ alias Add='git add'
 alias Aggressive='git gc --aggressive'
 alias Sync='clear; echo -e "Synchronizing (git push, gc, send_zamok, send_dpt)..."; git push; git gc --aggressive; make send_zamok; make send_dpt; alert'
 
-# For vrun:
+# For vrun (FIXME does not work anymore? my vlc is bugged I guess):
 alias GetUri="vrun status | grep file | sed s/'( new input: '/''/ | sed s/' )'/''/"
 alias Next='vrun next && clear ; tmp1=`vrun get_title`; tmp2=`vrun status|head -n1`; echo -e "$u$tmp2$reset${white}\n${green} (→) Playing${white}: $neg$tmp1$Neg"'
 alias Prev='vrun prev && clear ; tmp1=`vrun get_title`; tmp2=`vrun status|head -n1`; echo -e "$u$tmp2$reset${white}\n${green} (←) Playing${white}: $neg$tmp1$Neg"'
@@ -735,7 +730,6 @@ GpgDecrypt(){ gpg --decrypt --yes --no-batch --use-agent "$@";}
 # Pour que ssh-add ne memorise la passphrase que pendant 30 minutes
 alias ssh-add='ssh-add -t 1800'
 
-# Pour que youtube-dl récupère seulement l'audio (en MP3)
 youtube(){
     for i in "$@"; do
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
@@ -757,7 +751,7 @@ youtube-video(){
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
         echo -e "${green}Launching youtube-dl on ${white}${u}${arg}${U} ${black}(with the good options to download just the ${cyan}video${black}).${white}"
-        youtube-dl --format worst --output "%(title)s.%(ext)s" --console-title --no-overwrites "$arg"
+        youtube-dl --output "%(title)s.%(ext)s" --console-title --no-overwrites "$arg"
     done
 }
 
@@ -767,7 +761,7 @@ alias getmod='/usr/bin/stat -c "%a"'
 alias watch='watch -b -d -e'
 
 # Do a job, only for a certain amount of time
-# Exemple : DoForATime 60 my-very-long-command-that-can-not-terminate
+# Exemple : DoForATime 60 my-very-long-command-that-can-never-terminate
 DoForATime(){
  log=/tmp/DoForATime`date "+%Hh-%Mm-%Ss"`.log
  TIMEOUT=$1
@@ -795,7 +789,7 @@ alias sz='sshzamok'
 alias sshvo='sshtmux besson@vo.crans.org'
 alias sshdpt='sshtmux lbesson@ssh.dptinfo.ens-cachan.fr'
 alias sd='sshdpt'
-alias s22='sshtmux 03.dptinfo.ens-cachan.fr'
+alias s22='sshtmux 03.dptinfo.ens-cachan.fr'  # FIXME not up-to-date right?
 alias s04='sshtmux 04.dptinfo.ens-cachan.fr'
 alias s05='sshtmux 05.dptinfo.ens-cachan.fr'
 alias s06='sshtmux 06.dptinfo.ens-cachan.fr'
@@ -838,7 +832,6 @@ randquote(){
 }
 
 ## RandQuote(){ zenity --title="Rand Quote" --timeout=30 --window-icon="~/.link.ico" --info --text="<big><b>`randquote | sed s_'--'_'</b>--\n<i>'_`</i></big>" }
-
 ## alias MailRandQuote='mail_ghost.py "`randquote`" "RandQuote"'
 alias CalendarRandQuote='google calendar add "`randquote`"'
 
@@ -888,7 +881,8 @@ Munin_Start() {
 
 Munin_UpdateMunstrap(){
     cd ~/.local/etc/munin/munstrap/
-    # git pull # disallow updating like this, because I did some changes in the theme.
+    # git pull # disallow updating like this
+    # because I did some changes in the theme. It my git repo now...
     cdBack
 }
 
@@ -972,8 +966,7 @@ alias ETTelephoneMaison='linphone -c 0492202627@crans.org'
 Appeler() {
     echo -e linphone -c "$1"@crans.org
     echo -e "Confirmez-vous l'appel au numéro $1 ?"
-    read
-    linphone -c "$1"@crans.org
+    read &&  linphone -c "$1"@crans.org
 }
 
 function PROXY () {
@@ -990,7 +983,7 @@ function PROXY () {
     esac
 }
 
-# Experimental Shortcuts with hand-written Bash completion
+# Short Shortcuts with hand-written Bash completion
 complete -o plusdirs -f -X '!*.@(html|md)' strapdown2pdf
 alias a='autotex'
 complete -o plusdirs -f -X '!*.@(tex|pdf)' a
@@ -1012,9 +1005,9 @@ alias FilesLog='find | tee find.log ; du | tee du.log ; dut | tee dut.log'
 alias mario='vba --fullscreen --filter-lq2x ~/Public/rom/gba/pyrio.gba'
 
 ##############################################################################
-# (c) 2011-2014 Lilian BESSON
-# http://perso.crans.org/besson
-# On Bitbucket: https://bitbucket.org/lbesson/bin/src/master/.bash_aliases
-# http://www.dptinfo.ens-cachan.fr/~lbesson
+# (c) 2011-2015 Lilian BESSON
+# Cr@ns: http://perso.crans.org/besson
+# On Bitbucket:   https://bitbucket.org/lbesson/home/
+# ENS de Cachan:  http://www.dptinfo.ens-cachan.fr/~lbesson
 #
 # Put a blank line after to autorize echo "alias newalias='newentry'" >> ~/.bash_aliases

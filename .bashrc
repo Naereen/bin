@@ -1,11 +1,9 @@
 #!/bin/bash
 #	.bashrc for GNU Bash v4+
-#	(c) 2011-2014 Lilian BESSON
-#		ENS de Cachan & Cr@ns
-#	http://www.dptinfo.ens-cachan.fr/~lbesson
-#	http://perso.crans.org/besson
-#		On Bitbucket:
-#	http://bitbucket.org/lbesson/home/
+#	(c) 2011-2015 Lilian BESSON
+#	Cr@ns: http://perso.crans.org/besson
+#	On Bitbucket:	https://bitbucket.org/lbesson/home/
+# ENS de Cachan:  http://www.dptinfo.ens-cachan.fr/~lbesson
 #
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
@@ -19,17 +17,17 @@
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
-HISTCONTROL=ignoredups
-#:ignorespace
+# HISTCONTROL=ignoredups  #:ignorespace
+HISTCONTROL=ignoreboth  # FIXME this try comes from https://github.com/tmux-plugins/tmux-resurrect
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 # pour sauvegarder les commandes de plusieurs lignes (\ ) en une seule
-# shopt -s cmdhist
+shopt -s cmdhist
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=10000
-HISTFILESIZE=20000
+HISTSIZE=100000
+HISTFILESIZE=500000
 # Memoriser le timestamp d'execution de la commande
 export HISTTIMEFORMAT='%F %T - '
 
@@ -456,12 +454,10 @@ else
 fi
 
 ##############################################################################
-#	(c) 2011-2014 Lilian BESSON
-#		ENS de Cachan & Cr@ns
-#	http://www.dptinfo.ens-cachan.fr/~lbesson
-#	http://perso.crans.org/besson
-#		On Bitbucket:
-#	http://bitbucket.org/lbesson/home/
+# (c) 2011-2015 Lilian BESSON
+# Cr@ns: http://perso.crans.org/besson
+# On Bitbucket: https://bitbucket.org/lbesson/home/
+# ENS de Cachan:  http://www.dptinfo.ens-cachan.fr/~lbesson
 #
 # Put a blank line after
 #  to autorize echo "newentry" >> "$HOME"/.bashrc
