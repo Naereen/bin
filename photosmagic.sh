@@ -41,7 +41,7 @@ time (
 	echo -e "${red}Compressing all JPEG (*.jpe?g, *.JPE?G) pictures...${white} (using jpegoptim $simulate_jpeg --max=85 --strip-all --size=50% --threshold=25% --verbose --total)" | tee -a $log
 	echo -e "${red}There is $(find ./ -type f -iname '*'.jpeg -o -iname '*'.jpg 2>$logjpeg | wc -l ) JPEG pictures.${white}" | tee -a $log
 	# read
-	( time jpegoptim $simulate_jpeg --max=85 --strip-all --size=50% --threshold=25% --verbose --total $(find ./ -type f -iname '*'.jpeg -o -iname '*'.jpg 2>$logjpeg ) ) | tee -a $log
+	( time jpegoptim $simulate_jpeg --max=85 --strip-all --size=75% --threshold=20% --verbose --total $(find ./ -type f -iname '*'.jpeg -o -iname '*'.jpg 2>$logjpeg ) ) | tee -a $log
 	notify-send --icon=jpg "$(basename $0)" "I am done <b>compressing all JPEG pictures</b> (in $(pwd))."
 	echo -e "${red}Compressing all PNG (*.png, *.PNG) pictures...${white} (using 'optipng $simulate_png -preserve -o1')" | tee -a $log
 	echo -e "${red}There is $(find ./ -type f -iname '*'.png 2>$logpng | wc -l ) JPEG pictures.${white}" | tee -a $log
@@ -59,9 +59,9 @@ time (
 
 # Comparison of the size
 du -kh > du.log
-tail -n1 du.log~ > /tmp/du.log~
+tail -n1 du.log_ > /tmp/du.log_
 tail -n1 du.log > /tmp/du.log
-rm -vf du.log~
+rm -vf du.log_
 echo -e "${red}Size before | Size after${cyan}" | tee -a $log
-diff -y /tmp/du.log~ /tmp/du.log
+diff -y /tmp/du.log_ /tmp/du.log
 echo -e "${white}\n\nDone :)" | tee -a $log
