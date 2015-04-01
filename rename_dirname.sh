@@ -20,7 +20,7 @@ ext="${1:-JPG}"
 smallext="$( echo "${ext}" | tr A-Z a-z )"
 destext="${2:-$smallext}"
 
-echo -e "${yellow}rename_dirname.sh${white} working with the extension ${red}${ext}${white} ${yellow}and the destination extension ${red}${destext}${white}."
+echo -e "${yellow}rename_dirname.sh${white} working with the extension ${red}${ext}${white} and the destination extension ${red}${destext}${white}."
 
 namedir="$( smoothnameone.sh "$(basename "$(pwd)")" )"
 echo -e "${magenta}Working in the directory ${white}${u}${namedir}${reset}.${white}"
