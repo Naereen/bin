@@ -994,6 +994,7 @@ complete -o plusdirs -f -X '!*.pdf' pdfinfo
 
 alias b='bpython || alert'
 alias f='firefox'
+alias i='ipython'
 alias e='evince'
 complete -o plusdirs -f -X '!*.@(pdf|djvu|PDF)' e
 alias s='clear ; git status | less -r'
