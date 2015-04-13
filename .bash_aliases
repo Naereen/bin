@@ -349,14 +349,14 @@ alias rmLaTeX='for i in *.tex; do echo "Pour $i:" ; for j in "${i%tex}dvi" "${i%
 tex2pdf() {
     for i in "$@"; do
         i="${i//.pdf/.tex}"
-        ( pdflatex "$i" && pdflatex "$i" && mv -f "${i%tex}log" "${i%tex}aux" "${i%tex}synctex.gz" "${i%tex}out" /tmp/ 2>/dev/null ) || (clear ; chktex "$i" ; alert )
+        ( pdflatex "$i" && pdflatex "$i" && mv -f "${i%tex}log" "${i%tex}aux" "${i%tex}synctex.gz" "${i%tex}out" "${i%tex}vrb" /tmp/ 2>/dev/null ) || (clear ; chktex "$i" ; alert )
         mv -f "${i%tex}snm" "${i%tex}nav" "${i%tex}toc" /tmp/ 2>/dev/null
     done
 }
 TEX2PDF() {
     for i in "$@"; do
         i="${i//.pdf/.tex}"
-        ( pdflatex "$i" && pdflatex "$i" && mv -f "${i%tex}log" "${i%tex}aux" "${i%tex}synctex.gz" "${i%tex}out" /tmp/ 2>/dev/null ) || (clear ; chktex "$i" ; alert )
+        ( pdflatex "$i" && pdflatex "$i" && mv -f "${i%tex}log" "${i%tex}aux" "${i%tex}synctex.gz" "${i%tex}out" "${i%tex}vrb" /tmp/ 2>/dev/null ) || (clear ; chktex "$i" ; alert )
         mv -f "${i%tex}snm" "${i%tex}nav" "${i%tex}toc" /tmp/ 2>/dev/null
         PDFCompress "${i%tex}pdf"
     done
