@@ -1,0 +1,7 @@
+#! /usr/bin/env bash
+
+arg="${1:--w}"
+# line="${2:--n3}"
+
+/usr/local/bin/wakatime "${arg}" | sed -r "s:\x1B\[[0-9;]*[mK]::g"
+
