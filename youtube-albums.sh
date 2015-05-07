@@ -43,7 +43,7 @@ echo -e "Just to be sure, I am showing you the downloading commands I will execu
 $READ || exit
 for j in $(grep -o "playlist?list=[a-zA-Z0-9_-]*" "${out}"  | sed s/'playlist?list='// | uniq); do
     echo -e youtube-playlist.sh --batch "$j"
-    # echo -e youtube-dl -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w "$j"
+    # echo -e youtube-dl -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w -- "$j"
 done
 
 echo -e "Are you OK with these downloading commands (using ${u}youtube-playlist.sh${U}) ? (${magenta}[Enter]${white} if OK)."

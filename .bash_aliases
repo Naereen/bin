@@ -735,7 +735,7 @@ youtube(){
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
         echo -e "${green}Launching youtube-dl on ${white}${u}${arg}${U} ${black}(with the good options to download ${cyan}video${black} and ${cyan}mp3${black}).${white}"
-        youtube-dl --output "%(title)s.%(ext)s" --extract-audio --console-title --keep-video --audio-format=mp3 --no-overwrites "$arg"
+        youtube-dl --output "%(title)s.%(ext)s" --extract-audio --console-title --keep-video --audio-format=mp3 --no-overwrites -- "$arg"
     done
 }
 youtube-mp3(){
@@ -743,7 +743,7 @@ youtube-mp3(){
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
         echo -e "${green}Launching youtube-dl on ${white}${u}${arg}${U} ${black}(with the good options to download just the ${cyan}mp3${black}).${white}"
-        youtube-dl --format worst --output "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 --no-overwrites "$arg"
+        youtube-dl --format worst --output "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 --no-overwrites -- "$arg"
     done
 }
 youtube-video(){
@@ -751,7 +751,7 @@ youtube-video(){
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
         echo -e "${green}Launching youtube-dl on ${white}${u}${arg}${U} ${black}(with the good options to download just the ${cyan}video${black}).${white}"
-        youtube-dl --output "%(title)s.%(ext)s" --console-title --no-overwrites "$arg"
+        youtube-dl --output "%(title)s.%(ext)s" --console-title --no-overwrites -- "$arg"
     done
 }
 
@@ -999,7 +999,7 @@ alias e='evince'
 complete -o plusdirs -f -X '!*.@(pdf|djvu|PDF)' e
 alias s='clear ; git status | less -r'
 
-alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "^rupee.*$" | sed s/"^rupee"/""/ )${U}${white}."'
+alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "^rupee.*$" | sed s/"^rupee"/""/ )${U}${white}." | tee -a /tmp/RoupiesCourse.log'
 alias brigthness='xrandr --output LVDS --brightness '
 
 alias FilesLog='find | tee find.log ; du | tee du.log ; dut | tee dut.log'
