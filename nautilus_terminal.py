@@ -6,7 +6,7 @@
 ## Nautilus Terminal - A terminal embedded in Nautilus                    ##
 ##                                                                        ##
 ## Copyright (C) 2011  Fabien LOISON <flo at flogisoft dot com>           ##
-## Copyright (C) 2013  Lilian BESSON <lbesson at ens-cachan dot fr>       ##
+## Copyright (C) 2013-15  Lilian BESSON <besson at crans dot org>         ##
 ##                                                                        ##
 ## This program is free software: you can redistribute it and/or modify   ##
 ## it under the terms of the GNU General Public License as published by   ##
@@ -22,30 +22,33 @@
 ## along with this program.  If not, see <http://www.gnu.org/licenses/>.  ##
 ##                                                                        ##
 ##                                                                        ##
-## WEB SITE: http://projects.flogisoft.com/nautilus-terminal/             ##
+## WEB SITE: https://bitbucket.org/lbesson/nautilus-terminal/             ##
 ##                                                                        ##
 ############################################################################
 ## To copy here : /usr/share/nautilus-python/extensions/
 
-"""A terminal embedded in Nautilus, v1.1."""
+"""A terminal embedded in Nautilus, v1.2."""
 
-__author__ = "Fabien LOISON <flo at flogisoft dot com>, Lilian BESSON <lbesson at ens-cachan dot fr>"
-__version__ = "1.1"
+__author__ = "Fabien LOISON <flo at flogisoft dot com>, Lilian BESSON <besson at crans dot org>"
+__version__ = "1.2"
 __appname__ = "nautilus-terminal"
 __app_disp_name__ = "Nautilus Terminal"
-__website__ = "http://projects.flogisoft.com/nautilus-terminal/"
+# __website__ = "http://projects.flogisoft.com/nautilus-terminal/"  # Thanks bro for the v1.0 :-)
+__website__ = "https://bitbucket.org/lbesson/nautilus-terminal/"
 
-print "\n.:[ Initializing %s, v%s. (c) %s ]:." % (__app_disp_name__, __version__, __author__)
-print ".:[ Take a look at %s for more informations. ]:." % (__website__)
+print("\n.:[ Initializing %s, v%s. (c) %s ]:." % (__app_disp_name__, __version__, __author__))
+print(".:[ Take a look at %s for more informations. ]:." % (__website__))
 
 import os
 import sys
 from signal import SIGTERM, SIGKILL
-#Specific imports for Python 2 and 3
+# Specific imports for Python 2 and 3
 if sys.version_info < (3, 0):
+    print("Python version 2.")
     from urllib import url2pathname
     from ConfigParser import RawConfigParser
 else:
+    print("Python version 3 (bug).")
     from urllib.request import url2pathname
     from configparser import RawConfigParser
 
@@ -72,7 +75,7 @@ class Config(object):
 
     def read(self):
         """Read the configuration from a file."""
-        #Determine where is stored the configuration
+        # Determine where is stored the configuration
         config_file = os.path.join(os.environ.get("HOME"), ".%s" % __appname__)
         if not os.path.isfile(config_file):
             try:
@@ -119,21 +122,32 @@ class NautilusTerminal(object):
     """
 
     def __init__(self, uri, window):
-    	print "Calling __init__", uri
-        """The constructor."""
+        """ The constructor."""
+    	print("[{}] I: Calling __init__ with uri={}, window={}".format(__app_disp_name__, str(uri), str(window)))
         self._window = window
         self._path = self._uri_to_path(uri)
-        #Term
+        # Term
         self.shell_pid = -1
         self.term = Vte.Terminal()
-        self.term.set_opacity(0.5)	# FIXME
-        self.shell_pid = self.term.fork_command_full(Vte.PtyFlags.DEFAULT,
-                self._path, [CONF.get("terminal/shell")], None,
-                GLib.SpawnFlags.SEARCH_PATH, None, None)[1]
+        self.term.set_opacity(1.0)  # FIXME
+        ## NEW VERSION VTE v0.38+
+        ## http://stackoverflow.com/a/30197401
+        ## OLD 
+        if hasattr(self.term, 'fork_command_full'):
+            self.shell_pid = self.term.fork_command_full(Vte.PtyFlags.DEFAULT,
+                    self._path, [CONF.get("terminal/shell")], None,
+                    GLib.SpawnFlags.SEARCH_PATH, None, None)[1]
+        ## NEW :
+        elif hasattr(self.term, 'spawn_sync'):
+            self.shell_pid = self.term.spawn_sync(Vte.PtyFlags.DEFAULT,
+                    self._path, [CONF.get("terminal/shell")], None,
+                    GLib.SpawnFlags.SEARCH_PATH, None, None)[1]
+        else:
+            print("[%s] E: self.term does not have either the fork_command_full function (VTE v0.37-) nor the function spawn_sync (VTE v0.38+).\nPlease contact the developper (besson at crans dot org)." % __app_disp_name__)
         self.term.connect_after("child-exited", self._on_term_child_exited)
         self.term.connect_after("popup-menu", self._on_term_popup_menu)
         self.term.connect("button-release-event", self._on_term_popup_menu)
-        #Accelerators
+        # Accelerators
         accel_group = Gtk.AccelGroup()
         self._window.add_accel_group(accel_group)
         self.term.add_accelerator(
@@ -148,7 +162,7 @@ class NautilusTerminal(object):
                 ord("C"),
                 Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK,
                 Gtk.AccelFlags.VISIBLE)
-        #Drag & Drop
+        # Drag & Drop
         self.term.drag_dest_set(
                 Gtk.DestDefaults.MOTION |
                 Gtk.DestDefaults.HIGHLIGHT |
@@ -158,43 +172,43 @@ class NautilusTerminal(object):
                 )
         self.term.drag_dest_add_uri_targets()
         self.term.connect("drag_data_received", self._on_drag_data_received)
-        #Swin
+        # Swin
         self.swin = Gtk.ScrolledWindow()
         self.swin.nt = self
-        #Popup Menu
+        # Popup Menu
         self.menu = Gtk.Menu()
-        #MenuItem => copy
+        # MenuItem => copy
         menu_item = Gtk.ImageMenuItem.new_from_stock("gtk-copy", None)
         menu_item.connect_after("activate",
                 lambda w: self.term.copy_clipboard())
         self.menu.add(menu_item)
-        #MenuItem => paste
+        # MenuItem => paste
         menu_item = Gtk.ImageMenuItem.new_from_stock("gtk-paste", None)
         menu_item.connect_after("activate",
                 lambda w: self.term.paste_clipboard())
         self.menu.add(menu_item)
-        #MenuItem => separator #TODO: Implement the preferences window
+        # MenuItem => separator #TODO: Implement the preferences window
         #menu_item = Gtk.SeparatorMenuItem()
         #self.menu.add(menu_item)
-        #MenuItem => preferences
+        # MenuItem => preferences
         #menu_item = Gtk.ImageMenuItem.new_from_stock("gtk-preferences", None)
         #self.menu.add(menu_item)
-        #MenuItem => separator
+        # MenuItem => separator
         menu_item = Gtk.SeparatorMenuItem()
         self.menu.add(menu_item)
-        #MenuItem => About
+        # MenuItem => About
         menu_item = Gtk.ImageMenuItem.new_from_stock("gtk-about", None)
         menu_item.connect_after("activate",
                 lambda w: self.show_about_dialog())
         self.menu.add(menu_item)
         #
         self.menu.show_all()
-        #Conf
+        # Conf
         self._set_term_height(CONF.get("general/def_term_height", int))
         self._visible = True
-        #Lock
+        # Lock
         self._respawn_lock = False
-        #Register the callback for show/hide
+        # Register the callback for show/hide
         if hasattr(window, "toggle_hide_cb"):
             window.toggle_hide_cb.append(self.set_visible)
 
@@ -206,7 +220,7 @@ class NautilusTerminal(object):
         """
         self._path = self._uri_to_path(uri)
         if not self._shell_is_busy():
-            cdcmd = " cd '%s' # Inserted by Nautilus-Terminal.\n" % self._path.replace("'", r"'\''")
+            cdcmd = " cd '%s' # Inserted by Nautilus-Terminal v%s.\n" % (self._path.replace("'", r"'\''"), __version__)
             #self.term.feed("\033[8m", len("\033[8m"))
             self.term.feed_child(cdcmd, len(cdcmd))
 
@@ -234,33 +248,33 @@ class NautilusTerminal(object):
     def show_about_dialog(self):
         """Display the about dialog."""
         about_dlg = Gtk.AboutDialog()
-        #Set the content of the dialog
+        # Set the content of the dialog
         about_dlg.set_program_name(__app_disp_name__)
         about_dlg.set_version(__version__)
         about_dlg.set_comments(__doc__)
         about_dlg.set_website(__website__)
-        about_dlg.set_copyright("Copyright (c) 2011-13  %s" % __author__)
+        about_dlg.set_copyright("Copyright (C) 2011-15  %s" % __author__)
         logo = Gtk.Image.new_from_file(
                 "/usr/share/nautilus-terminal/logo_120x120.png")
         about_dlg.set_logo(logo.get_pixbuf())
-        #Signal
+        # Signal
         about_dlg.connect("response", lambda w, r: w.destroy())
-        #Display the dialog
+        # Display the dialog
         about_dlg.show()
 
     def destroy(self):
         """Release widgets and the shell process."""
-        #Terminate the shell
+        # Terminate the shell
         self._respawn_lock = True
         try:
             os.kill(self.shell_pid, SIGTERM)
             os.kill(self.shell_pid, SIGKILL)
         except OSError:
             pass
-        #Remove some widgets
+        # Remove some widgets
         self.term.destroy()
         self.swin.destroy()
-        #Remove callback
+        # Remove callback
         if hasattr(self._window, "toggle_hide_cb"):
             self._window.toggle_hide_cb.remove(self.set_visible)
 
@@ -278,7 +292,7 @@ class NautilusTerminal(object):
                         return False
                 return True
             except IOError:
-                #We can't know...
+                # We can't know...
                 return False
         else:
             return True
@@ -338,10 +352,10 @@ class Crowbar(object):
         """The constructor."""
         self._uri = uri
         self._window = window
-        #Crowbar
+        # Crowbar
         self._crowbar = Gtk.EventBox()
         self._crowbar.connect_after("parent-set", self._on_crowbar_parent_set)
-        #Lock
+        # Lock
         self._lock = False
 
     def get_widget(self):
@@ -355,33 +369,33 @@ class Crowbar(object):
             widget -- The crowbar (self._crowbar).
             old_parent -- The previous parent of the crowbar (None...).
         """
-        #Check if the work has already started
+        # Check if the work has already started
         if self._lock:
             return
         else:
             self._lock = True
-        #Get the parents of the crowbar
+        # Get the parents of the crowbar
         crowbar_p = self._crowbar.get_parent()
         crowbar_pp = crowbar_p.get_parent()
         crowbar_ppp = crowbar_pp.get_parent()
         crowbar_pp.connect_after("parent-set", self._on_crowbar_pp_parent_set)
-        #Get the childen of crowbar_pp
+        # Get the childen of crowbar_pp
         crowbar_pp_children = crowbar_pp.get_children()
-        #Check if our vpan is already there
+        # Check if our vpan is already there
         if type(crowbar_ppp) == Gtk.VPaned:
-            #Find the Nautilus Terminal
+            # Find the Nautilus Terminal
             nterm = None
             for crowbar_ppp_child in crowbar_ppp.get_children():
                 if type(crowbar_ppp_child) == Gtk.ScrolledWindow:
                     if hasattr(crowbar_ppp_child, "nt"):
                         nterm = crowbar_ppp_child.nt
                     break
-            #Update the temrinal (cd,...)
+            # Update the temrinal (cd,...)
             if nterm:
                 nterm.change_directory(self._uri)
-        #New tab/window/split
+        # New tab/window/split
         else:
-            #Create the vpan
+            # Create the vpan
             vpan = Gtk.VPaned()
             vpan.show()
             vbox = Gtk.VBox()
@@ -390,14 +404,14 @@ class Crowbar(object):
                 vpan.add2(vbox)
             else:
                 vpan.add1(vbox)
-            #Add the vpan in Nautilus, and reparent some widgets
+            # Add the vpan in Nautilus, and reparent some widgets
             if len(crowbar_pp_children) == 2:
                 for crowbar_pp_child in crowbar_pp_children:
                     crowbar_pp.remove(crowbar_pp_child)
                 crowbar_pp.pack_start(vpan, True, True, 0)
                 vbox.pack_start(crowbar_pp_children[0], False, False, 0)
                 vbox.pack_start(crowbar_pp_children[1], True, True, 0)
-            #Create the terminal
+            # Create the terminal
             nterm = NautilusTerminal(self._uri, self._window)
             if hasattr(self._window, "term_visible"):
                 nterm.set_visible(self._window.term_visible)
@@ -455,14 +469,14 @@ class NautilusTerminalProvider(GObject.GObject, Nautilus.LocationWidgetProvider)
             window.toggle_hide_cb = []
         if not hasattr(window, "term_visible"):
             window.term_visible = CONF.get("general/def_visible", bool)
-        #URI specific stuff
+        # URI specific stuff
         if uri.startswith("x-nautilus-desktop:///"):
             return
         elif not uri.startswith("file:///"):
             uri = "file://%s" % os.environ["HOME"]
-        #Event
-#:        window.connect_after("key-release-event", self._toggle_visible)
-        #Return the crowbar
+        # Event
+        # window.connect_after("key-release-event", self._toggle_visible)
+        # Return the crowbar
         return Crowbar(uri, window).get_widget()
 
     def _toggle_visible(self, window, event):
@@ -475,19 +489,19 @@ class NautilusTerminalProvider(GObject.GObject, Nautilus.LocationWidgetProvider)
             window -- The Nautilus' window.
             event -- The detail of the event.
         """
-        if event.keyval == 65473: #F4
+        if event.keyval == 65473: # F4
             if CONF.get("general/f_close"):
-             window.term_visible = not window.term_visible
-             for callback in window.toggle_hide_cb:
-                callback(window.term_visible)
+                window.term_visible = not window.term_visible
+                for callback in window.toggle_hide_cb:
+                    callback(window.term_visible)
             else:
-             print "The F4 key no longer have any impact." #FIXME
-            return True #Stop the event propagation
+                print("The F4 key no longer have any impact.") #FIXME
+            return True # Stop the event propagation
 
 CONF = Config()
 
 if __name__ == "__main__":
-    #Code for testing Nautilus Terminal outside of Nautilus
+    # Code for testing Nautilus Terminal outside of Nautilus
     print("%s %s\nBy %s" % (__app_disp_name__, __version__, __author__))
     win = Gtk.Window()
     win.set_title("%s %s" % (__app_disp_name__, __version__))
