@@ -697,7 +697,7 @@ for i in "$@"; do
 done
 }
 
-alias MacAdress='ifconfig | grep "HWaddr [0-9a-f:]*"'
+alias MacAddress='ifconfig | grep "HWaddr [0-9a-f:]*"'
 
 # For Git
 alias Push='clear; git push && git gc'
