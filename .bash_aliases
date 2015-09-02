@@ -87,6 +87,7 @@ alias dut='/usr/bin/du -kx | egrep -v "\./.+/" | sort -n'
 alias dush='/usr/bin/du -sh'
 alias du='/usr/bin/du -kh'
 alias df='/bin/df -h -l -t ext3 -t ext4 -t fuseblk -t vfat'
+alias free='/usr/bin/free -h'
 
 # Commandes avec GNU-Nano :
 alias nano='xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { GNU Nano 2.3.2 }" ; /home/lilian/bin/nano.last --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds --undo'
@@ -951,8 +952,10 @@ alias Tor='~/.local/tor-browser_fr/start-tor-browser'
 
 alias kaamelott='vlc --random /host/Users/Lilian/Videos/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
 alias kaamelott-totem='totem --fullscreen /host/Users/Lilian/Videos/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
+alias kaamelott-parole='parole --fullscreen /host/Users/Lilian/Videos/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
 alias scrubs='vlc --random /host/Users/Lilian/Videos/Séries/Scrubs/ >/dev/null 2>/dev/null &'
 alias scrubs-totem='totem --fullscreen /host/Users/Lilian/Videos/Séries/Scrubs/ >/dev/null 2>/dev/null &'
+alias scrubs-parole='parole --fullscreen /host/Users/Lilian/Videos/Séries/Scrubs/ >/dev/null 2>/dev/null &'
 
 alias dropbox='( dropbox start ; alert ) &>/dev/null&'
 
