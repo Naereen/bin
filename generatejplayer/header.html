@@ -55,10 +55,10 @@
       function alert(texttoprint, extradict) {
         if ($.noty !== undefined){
           if (extradict !== undefined){
-          	var args = extradict;
-          	if (args.layout == undefined){ args.layout = 'bottomRight'; }
-          	args.text = texttoprint;
-          	noty(args);
+            var args = extradict;
+            if (args.layout == undefined){ args.layout = 'bottomRight'; }
+            args.text = texttoprint;
+            noty(args);
           } else { noty({text: texttoprint, layout: 'bottomRight'}); }
         }
         else {
@@ -101,7 +101,7 @@
     </script>
 </head>
 <body>
-	<div class="tabbar"><p>
+    <div class="tabbar"><p>
     Cette page permet l'<i>affichage</i> et la <i>lecture</i> des morceaux de musique
       <a href="https://bitbucket.org/lbesson/bin/issues/new">(n'hésitez pas à signaler un <b>bug</b> !)</a>. Voir le projet <a href="https://bitbucket.org/lbesson/bin/">sur BitBucket ?</a><br>
     Générée le DATE par <a title="Version VERSION !" href="https://bitbucket.org/lbesson/bin/src/master/generatejplayer.sh"><tt>generatejplayer.sh</tt></a>
