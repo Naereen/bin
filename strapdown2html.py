@@ -1,20 +1,20 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """ Convert some Markdown/StrapDown.js files to a single, simple HTML (.html) file,
 which looks as a StrapDown.js powered page, but is autonomous and *does not* require JavaScript at all.
 
-I tried to do it as well as possible (and I included a couple of nice features).
+I tried to do it as (durtily) well as possible (and I included a couple of nice features).
 
 Features:
 - include a link to SquirtFr (http://lbesson.bitbucket.org/squirt/),
 - include the bootstrap theme, cf. http://bootswatch.com/united for all the possibilities,
 - support UTF-8 (FIXME: try with another encoding?),
-- quick and pretty.
+- quick and pretty, even if the script is really DURTY...
 
 Links:
 - more information on StrapDown.js can be found here http://lbesson.bitbucket.org/md/,
 - another script I wrote for StrapDown.js is strapdown2pdf, here http://lbesson.bitbucket.org/md/strapdown2pdf.html
-- Similarly, this page http://lbesson.bitbucket.org/md/strapdown2html.html will give info about ath program strapdown2html.py
+- (TODO) Similarly, this page http://lbesson.bitbucket.org/md/strapdown2html.html will give info about that program strapdown2html.py
 
 Copyright: 2015, Lilian Besson.
 License: GPLv3.
@@ -28,9 +28,10 @@ import os.path
 from bs4 import BeautifulSoup, SoupStrainer
 
 __author__ = "Lilian Besson"
-__version__ = "0.3"
+__version__ = "0.3.1"
 
-# TODO: improve conformity with StrapDown.js Markdown parser. (nested list, small blockquote etc).
+# TODO: improve conformity with StrapDown.js Markdown parser:
+# nested list for instance, generic source code printer etc.
 
 # Load ANSIColors (Cf. http://pythonhosted.org/ANSIColors-balises/)
 try:
@@ -39,7 +40,7 @@ except ImportError:
     print("ANSIColors.printc not available.")
 
     def printc(*args):
-        """ Erzatz of ANSIColors.printc."""
+        """ Ersatz of ANSIColors.printc."""
         print(args)
 
 # Load some Markdown extensions (Cf. https://pythonhosted.org/Markdown/extensions/index.html)
@@ -149,7 +150,6 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
         </div>
     <!-- </div> -->
 </div>
-<br><br>
 <div id="content" class="container" style="font-size:140%;">""")
         # Include the jQuery.QuickSearch plugin (no by default).
         if use_jquery:
@@ -236,6 +236,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
                         if beta:
                             print markdown_text
                         # FIXME: use markdown.markdownFromFile instead (simpler ?)
+                        markdown_text = markdown_text.replace('&gt; ', '> ')
                         # Cf. https://pythonhosted.org/Markdown/reference.html#markdownFromFile
                         html_text = markdown.markdown(markdown_text, extensions=list_extensions)
                         # BETA: improve how tables look like
@@ -292,7 +293,7 @@ Convert the input files (Markdown (.md) or HTML (.html) StrapDown.js-powered) to
 Options:
     <magenta>-?|-h|--help<white>:\n\t\tdisplay this help,
     <magenta>-o|--out<white>:\n\t\tspecify the output file. Default is based on the first file name.
-    <magenta>-t|--title<white>:\n\t\tspecify the title of the output. Default is based on the first file name.
+    <magenta>-t|--title<white>:\n\t\tspecify the title of the output. Default is based on the first file name (autodetection is not perfect).
     <magenta>-v|--view<white>:\n\t\topen the output file when done (default is not to do it).
     <magenta>--use-jquery<white>:\n\t\tforce to include jQuery and the jQuery.QuickSearch plugin (in case of a table for example).
     <magenta>-f|--force<white>:\n\t\teven if the output file is present, <red>erase it<white> (default is to find a new name).
