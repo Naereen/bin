@@ -1010,6 +1010,9 @@ alias mario='vba --fullscreen --filter-lq2x ~/Public/rom/gba/pyrio.gba'
 
 alias update_codecivil='p="$(pwd)"; cd /home/lilian/france.code-civil ; git pull && cd "${p}"'
 
+alias impressive='impressive.py --nologo --clock --tracking --transtime 0'
+alias slides='impressive'
+
 ##############################################################################
 # (c) 2011-2015 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
