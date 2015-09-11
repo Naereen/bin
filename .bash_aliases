@@ -901,7 +901,7 @@ function t() { htop || alert; }
 # Get the latest QC strip ;)
 alias GetQC='wget `wget http://questionablecontent.net/ -O - | grep -o "http://www.questionablecontent.net/comics.*[0-9]*.*\(png\|jpg\|jpeg\|gif\)"`'
 
-# Print the current read/watched TV shows or movies
+# Print the current read/watched TV shows or movies (series.sh list now does the same)
 Currents() {
     clear
     for i in ~/current*; do
