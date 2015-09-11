@@ -2,17 +2,16 @@
 #
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 21-10-2014
+# Date: 11-09-2015
 #
-# A first try to automatize the selection of the "next"
-# episode in your current TV serie.
+# A first try to automatize the selection of the "next" episode in your current TV serie.
 #
 # Requires VLC 2.0+.
-# vrun is not yet included (http://besson.qc.to/bin/vrun)
+# vrun is not yet included nor required (http://besson.qc.to/bin/vrun)
 #
 # A bash completion file is available (http://besson.qc.to/bin/series.sh.bash_completion)
 #
-version='0.4'
+version='0.5'
 
 # If possible, use ~/.color.sh (http://besson.qc.to/bin/.color.sh)
 [ -f ~/.color.sh ] && ( . ~/.color.sh ; clear )
@@ -35,7 +34,7 @@ for i in "$@"; do
    echo -e "    1. The program reads a file '${blue}~/current${white}', to look to the directory where that TV show is stored."
    echo -e "    2. Then it reads a '${blue}current_sXXeYY${white}' file on that directory, to know the current season and episode number."
    echo -e "       (if none is there, it assumes ${magenta}season XX=01${white} and ${magenta}episode YY=01${white})"
-   echo -e "    3. And then it read a file on directory '${blue}Season_XX/${white}' of the form '${blue}*EYY*.[avi,..]${white}'."
+   echo -e "    3. And then it read a file on directory '${blue}Season_XX/${white}' of the form '${blue}*EYY*.{avi,mp4,mkv,AVI,flv,wma,rmvb}${white}'."
    echo -e ""
    echo -e "${u}Help:${U}"
    echo -e "    ${yellow}help$white	to print this help message (and quit)."
@@ -43,9 +42,10 @@ for i in "$@"; do
    echo -e "${u}Options:${U}"
    echo -e "    ${yellow}next$white	play the next one."
    echo -e "    ${yellow}previous$white	play the previous one."
-   echo -e "    ${yellow}last$white	play the last one (default)."
+   echo -e "    ${yellow}last$white play the last one (default)."
+   echo -e "    ${yellow}list$white	shows the location and number of the current episodes for your TV shows."
    echo -e ""
-   echo -e "Copyrights: (c) Lilian Besson 2011-2014."
+   echo -e "Copyrights: (c) Lilian Besson 2011-2015."
    echo -e "Released under the term of the GPL v3 Licence."
    echo -e "In particular, `basename $0` is provided WITHOUT ANY WARANTY."
    exit 0
@@ -55,6 +55,8 @@ for i in "$@"; do
  -p|--previous|p|previous)	previous="yes"; echo -e "${cyan} option previous found."; last="no"
   ;;
  -l|--last|l|last)	last="yes"
+  ;;
+ --list|list|--currents|currents|c)  list="yes"; echo -e "${cyan} option list found."; last="no"
   ;;
  *)
   ;;
@@ -80,7 +82,7 @@ dflt="current_s01e01"
 echo -e "Reading ~/current to see the current watched folder..."
 current_path="`cat ~/current || echo -e \"$red Error: no ~/current file, using default current_path...$white\" >/dev/stderr`"
 # FIXME
-current_path="${current_path:-/media/Disque Dur - Naereen/Multimedia/Séries/A VOIR/Stargate SG1/}"
+current_path="${current_path:-~/Séries/TBBT/}"
 
 #
 # Go to the current folder
@@ -135,6 +137,33 @@ for cu in ${currents:-$dflt}; do
   echo -e "${cyan} Playing the next one.$white"
  fi
 
+  # Handling list of current TV shows
+  # Print the current read/watched TV shows or movies
+    Currents() {
+        clear
+        echo -e "${white}Listing (`basename $0` list):"
+        for i in ~/current*; do
+                dir="$(cat "$i")"
+                echo -e "\n$u$black~/$(basename "$i")$U$white\t ---> \t$blue${dir}$white"
+                serie="$(basename "${dir}")"
+                cu=$( find "${dir}" -type f -iname current'*' 2>/dev/null || echo -e "Disque Dur Externe ['${u}/media/Disque Dur - Naereen/${U}']: ${red}pas branché${white}." >/dev/stderr)
+                cu2="$(echo "$(basename "$cu")" | tr A-Z a-z)"
+                cu2=${cu2#current_}
+                # echo -e "sSSeEE  ---> $u$cu2$U"
+                d=${cu2#s}; d=${d%e[0-9]*}
+                # echo -e "Season :  $d"
+                e=${cu2#s[0-9]*e}
+                e=${e#0*}
+                if [[ "${d}${e}" != "" ]]; then
+                    echo -e "For « ${u}${cyan}${serie}${white}${U} », the last watched episode is ${Black}${red}Season ${d:-?}${white}, ${magenta}Episode ${e:-?}${Default}${white}."
+                fi
+        done
+    }
+ if [ "$list" = "yes" ]; then
+  Currents
+  exit 0
+ fi
+
   # Handling last one
  if [ "$last" = "yes" ]; then
   if [ $e -ge 10 ]; then
@@ -178,10 +207,10 @@ for cu in ${currents:-$dflt}; do
 
  #if [ "$next" = "yes" ]; then
  [ "$cu" != "nextcu" ] && mv "$cu" "$nextcu"
- echo -e "${green}OK: the episode have been read, new one is $magenta$nextcu$white"
+ echo -e "${green}OK: the episode has been read, new one is $magenta$nextcu$white"
  #fi
 
 done
 
-echo -e "${yellow} .: Contact naereen[@]crans[.]org for any questions, proposal or bug :.$reset$white"
+echo -e "${yellow} .: Contact me at naereen[@]crans[.]org for any questions, proposals or bugs :.$reset$white"
 ## END ##
