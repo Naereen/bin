@@ -107,10 +107,10 @@ def open_file(buffer, filename):
 #	gtk-source-style-scheme-manager-get-default
     manager2 = buffer.get_data('styles-scheme-manager')
 #    print manager2
-#    stylescheme=buffer.get_style_scheme() # un autre si possible
-    stylescheme = manager2.get_scheme("naereen")
+    stylescheme=buffer.get_style_scheme() # un autre si possible
+    # stylescheme = manager2.get_scheme("naereen")
     ## A modifier si on veut un autre
-#    print stylescheme
+    print stylescheme
 #    print buffer
 #    stylescheme = manager.get_style_scheme("Naereen")
     buffer.set_style_scheme(stylescheme)
