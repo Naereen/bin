@@ -12,7 +12,7 @@ echo -e "${cyan}Random Maths Exercice, v1.2${reset}"
 
 # Quicker if you keep this value up-to-date here
 # n=$(wget -O - --quiet "http://mp.cpgedupuydelome.fr/index.php" | html2text | grep Exercice | grep -o [0-9]*)
-n=3886
+n=4139
 echo -e "${reset}Choix aléatoire parmi ${neg}${n}${Neg} exercices de maths (niveau MPSI et MP)..."
 
 # Formule de Bill Gradwohl, merci à http://abs.traduc.org/abs-5.3-fr/ch09s06.html

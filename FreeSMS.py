@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding:utf8 -*-
 """
 A simple Python script to send a text message to a Free Mobile phone.
@@ -100,9 +100,10 @@ def send_sms(text="Empty!", user=user, password=password, secured=True):
     Returns a boolean and a status string."""
 
     if len(text) >= 3*160:
-        print errorcodes["toolong"]
+        print(errorcodes["toolong"])
 
-    print "\nYour message is:\n'" + text + "'."
+    print("\nYour message is:\n'" + text + "'.")
+    print("\nYour query will be based on:\n{}.".format({"user": user, "pass": password, "msg": text}))
     query = urlencode({"user": user, "pass": password, "msg": text})
     url = "http" + ("s" if secured else "")
     url += "://smsapi.free-mobile.fr/sendmsg?{}".format(query)
@@ -124,7 +125,7 @@ def main(argv):
 Main function. Use the arguments of the command line. """
 
     if "-h" in argv or "--help" in argv:
-        print """FreeSMS.py --help|-h | -f file | body of the message
+        print("""FreeSMS.py --help|-h | -f file | body of the message
 A simple Python script to send a text message to a Free Mobile phone.
 The message should be smaller than 480 caracters.
 
@@ -142,7 +143,7 @@ Copyleft 2014-15 Lilian Besson (License GPLv3)
 
 FreeSMS.py is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."""
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.""")
         return 1
 
     if "-f" in argv:
@@ -167,7 +168,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."""
             text = text.replace("[at]", "@").replace("[dot]", ".")
 
     answer = send_sms(text)
-    print answer[1]
+    print(answer[1])
     return answer[0]
 
 if __name__ == "__main__":
