@@ -6,18 +6,16 @@
 # ENS de Cachan:  http://www.dptinfo.ens-cachan.fr/~lbesson
 
 # A try with erase line.
-LS_ECHO()
-{
- printf " ${blue}${u} Listing${reset} \$*..."
- sleep 0.5
- printf "${el}..."
- for i in $*
- do
-    printf "${green}$i${reset}..."
-    sleep 0.05
+LS_ECHO() {
+    printf " ${blue}${u} Listing${reset} \$*..."
+    sleep 0.5
     printf "${el}..."
- done
- printf "${red}Done !${reset}"
+    for i in $*; do
+        printf "${green}$i${reset}..."
+        sleep 0.05
+        printf "${el}..."
+    done
+    printf "${red}Done !${reset}"
 }
 # Commandes mv :
 alias mv='/bin/mv -i'
@@ -26,39 +24,40 @@ alias mv='/bin/mv -i'
 # The 'ls' family (this assumes you use the GNU ls)
 
 la() {
- arg=`history | tail -n1 | sed s/'^.*la '/''/`
- if [[ X"$@" = X ]]; then
-     echo -e "Contenu du dossier $reset${u}`pwd`$U$white ${magenta}[option -A]$white"
- else
-     echo -e "Liste des fichiers pour $reset$u$arg$U$white ${magenta}[option -A]$white"
- fi
- /bin/ls --color=auto -A "$@"
+    arg=`history | tail -n1 | sed s/'^.*la '/''/`
+    if [[ X"$@" = X ]]; then
+        echo -e "Contenu du dossier $reset${u}`pwd`$U$white ${magenta}[option -A]$white"
+    else
+        echo -e "Liste des fichiers pour $reset$u$arg$U$white ${magenta}[option -A]$white"
+    fi
+    /bin/ls --color=auto -A "$@"
 }
 
 l() {
- arg="`history | tail -n1 | sed s/'^.*l '/''/`"
- if [[ X"$@" = X ]]; then
-     echo -e "Contenu du dossier $reset${u}`pwd`$U$white ${magenta}[option -hCF]$white"
- else
-     echo -e "Liste des fichiers pour $reset$u$arg$U$white ${magenta}[option -hCF]$white"
- fi
- /bin/ls --color=auto -hCF "$@"
+    arg="`history | tail -n1 | sed s/'^.*l '/''/`"
+    if [[ X"$@" = X ]]; then
+        echo -e "Contenu du dossier $reset${u}`pwd`$U$white ${magenta}[option -hCF]$white"
+    else
+        echo -e "Liste des fichiers pour $reset$u$arg$U$white ${magenta}[option -hCF]$white"
+    fi
+    /bin/ls --color=auto -hCF "$@"
 }
 
 lnc() {
- arg="`history | tail -n1 | sed s/'^.*l '/''/`"
- if [[ X"$@" = X ]]; then
-     echo -e "Contenu du dossier $reset${u}`pwd`$U$white ${magenta}[option -hCF]$white"
- else
-     echo -e "Liste des fichiers pour $reset$u$arg$U$white ${magenta}[option -hCF]$white"
- fi
- /bin/ls --color=never -hCF "$@"
+    arg="`history | tail -n1 | sed s/'^.*l '/''/`"
+    if [[ X"$@" = X ]]; then
+        echo -e "Contenu du dossier $reset${u}`pwd`$U$white ${magenta}[option -hCF]$white"
+    else
+        echo -e "Liste des fichiers pour $reset$u$arg$U$white ${magenta}[option -hCF]$white"
+    fi
+    /bin/ls --color=never -hCF "$@"
 }
 
 # To print directory
 alias lD='find . -maxdepth 1 -type d'
 
 alias ll='/bin/ls --color=auto -larth'
+alias lsnocolor='/bin/ls --color=no'
 alias lt='/bin/ls --color=auto -lSrha'
 alias ltime='/bin/ls --color=auto -time-style=+%D | grep `date +%D`'
 alias lx='/bin/ls --color=auto -lXB' # sort by extension
@@ -72,7 +71,6 @@ alias tree='tree -Csuh' # nice alternative to 'ls'
 
 # Shortcuts.
 alias cp='/bin/cp -iv'
-
 alias h='history'
 alias which='type -all'
 alias ..='cd ..'
@@ -96,25 +94,25 @@ alias nano='xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { GNU Nano 2.3.2 }" ; /hom
 MAKE="make -w"
 
 mymake() {
- old=$(pwd)"/"
- echo -e "Looking for a valid ${magenta}Makefile${white} from ${blue}${old}/${white} :"
- c="."
- while [ ! -f ${old}${c}/Makefile ]; do
-    echo -e "${red}${old}${c}/Makefile${white} is not there, going up ..."
-    c="../${c}"
-    cd "$c"
-    [ `pwd` = "/" ] && break
-    #read
- done
- if [ -f ${old}${c}/Makefile ]; then
-    echo -e "${green}${old}${c}/Makefile${white} is there, I'm using it :"
-    $MAKE --file="${old}${c}/Makefile" $@
-    cd "$old"
- else
-    cd "$old"
-    echo -e "${red}${old}${c}/Makefile${white} is not there and I'm in '/' I cannot go up ..."
-    return 2
- fi
+    old=$(pwd)"/"
+    echo -e "Looking for a valid ${magenta}Makefile${white} from ${blue}${old}/${white} :"
+    c="."
+    while [ ! -f ${old}${c}/Makefile ]; do
+        echo -e "${red}${old}${c}/Makefile${white} is not there, going up ..."
+        c="../${c}"
+        cd "$c"
+        [ `pwd` = "/" ] && break
+        #read
+    done
+    if [ -f ${old}${c}/Makefile ]; then
+        echo -e "${green}${old}${c}/Makefile${white} is there, I'm using it :"
+        $MAKE --file="${old}${c}/Makefile" $@
+        cd "$old"
+    else
+        cd "$old"
+        echo -e "${red}${old}${c}/Makefile${white} is not there and I'm in '/' I cannot go up ..."
+        return 2
+    fi
 }
 # alias make='xtitle "Making $(basename "`pwd -P`")..." ; mymake'
 alias make='mymake'
@@ -145,7 +143,7 @@ CD() {
 
 # Magie noire
 alias cd..="CD .."
-alias cdBack='CD "${OLDPWD:=$PWD}"'
+alias cdBack='CD "${OLDPWD:=$PWD}"'  # Nul : cd - fait la même chose !
 alias cdP='cd "`pwd -P`"'
 alias cd="CD"
 
@@ -154,8 +152,8 @@ alias ssh='/usr/bin/ssh -X -C'
 
 # Des commandes auxquelles on rajoute des messages inutiles :
 mkdir() {
- echo -e "Le système va essayer de créer le dossier $@..."
- /bin/mkdir -p "$@"
+    echo -e "Le système va essayer de créer le dossier $@..."
+    /bin/mkdir -p "$@"
 }
 
 # Une commande /*geek*/ pour afficher une video en ASCII ... en console !
@@ -186,11 +184,11 @@ alias modebugcaml='rlwrap -t dumb --file=/home/lilian/.mocaml/modebugcaml_list_o
 
 # Interpréter les fichiers. Bien mieux que 'ocaml file1.ml file2.ml'.
 iocaml() {
- for i in $@; do
-    cat "$i" >> /tmp/iocaml.ml
-    echo -e "(** OCaml on ${i}:1:1 *)" >> /tmp/iocaml.log
-    /usr/bin/ocaml graphics.cma < "$i" 2>&1 | tee -a /tmp/iocaml.log | sed s{//toplevel//{"$i"{ | pygmentize -l ocaml -P encoding=`file -b --mime-encoding "$i"`
- done
+    for i in $@; do
+        cat "$i" >> /tmp/iocaml.ml
+        echo -e "(** OCaml on ${i}:1:1 *)" >> /tmp/iocaml.log
+        /usr/bin/ocaml graphics.cma < "$i" 2>&1 | tee -a /tmp/iocaml.log | sed s{//toplevel//{"$i"{ | pygmentize -l ocaml -P encoding=`file -b --mime-encoding "$i"`
+    done
 }
 # Reference for this is https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
 complete -o plusdirs -f -X '!*.ml' iocaml leditocaml leocaml rlocaml mocaml mocaml_noANSI
@@ -207,13 +205,11 @@ case $TERM in
         export CAT_COLOR="terminal"
         ;;
 esac
-
 alias catColor='pygmentize -f $CAT_COLOR -g'
-
-ExportColorLaTeX(){
+ExportColorLaTeX() {
     pygmentize -f latex -P encoding=utf8 -o $1.tex $1
 }
-ExportColorLaTeXFull(){
+ExportColorLaTeXFull() {
     pygmentize -f latex -P encoding=utf8 -O full -o $1.full.tex $1
 }
 
@@ -233,22 +229,22 @@ voirImage() {
 complete -o plusdirs -f -X '!*.@(gif|GIF|jp?(e)g|pn[gm]|PN[GM]|ico|ICO)' voirImage
 
 xtitle() {
- echo -e "${reset}Setting title to $@..." >> /tmp/xtitle.log
- echo -e "${cyan}Setting title to ${white}${u}$@${U}...${reset}${white}"
- if [ -x /usr/bin/xtitle ]; then
-    /usr/bin/xtitle "$@"
- fi
+    echo -e "${reset}Setting title to $@..." >> /tmp/xtitle.log
+    echo -e "${cyan}Setting title to ${white}${u}$@${U}...${reset}${white}"
+    if [ -x /usr/bin/xtitle ]; then
+       /usr/bin/xtitle "$@"
+    fi
 }
 
 # Autre outils pratiques
 Regler_son(){
- xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { AlsaMixer v1.0.25 }" || true
- clear; alsamixer; clear
+    xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { AlsaMixer v1.0.25 }" || true
+    clear; alsamixer; clear
 }
 
 Wavemon(){
- xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { `wavemon -v | head -n1` }" || true
- clear; wavemon; clear
+    xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { `wavemon -v | head -n1` }" || true
+    clear; wavemon; clear
 }
 
 # alias captureEcran='scrot --delay 3 --count --quality 100 "captureEcran_$USER@$HOSTNAME[display=$DISPLAY]_%Y-%m-%d_%H-%M-%S_\$wx\$h.jpg"'
@@ -273,13 +269,11 @@ alias MatrixVeille='cmatrix -b -f -s -u 9'
 alias cacademoTerminal='OLDDISPLAY=$DISPLAY; DISPLAY=""; cacademo; DISPLAY=$OLDDISPLAY'
 alias cacafireTerminal='OLDDISPLAY=$DISPLAY; DISPLAY=""; cacafire; DISPLAY=$OLDDISPLAY'
 
-alias Btime='/usr/bin/time'
-
 lessColor() {
- for i in $*; do
-    pygmentize -P encoding=`file -b --mime-encoding "$i"` -f $CAT_COLOR -g "$i" | less -r || \
-    echo -e "${red}[ERROR]${yellow} LessColor failed to read $u$i$U ...${white}" > /dev/stderr
- done
+    for i in $*; do
+        pygmentize -P encoding=`file -b --mime-encoding "$i"` -f $CAT_COLOR -g "$i" | less -r || \
+        echo -e "${red}[ERROR]${yellow} LessColor failed to read $u$i$U ...${white}" > /dev/stderr
+    done
 }
 
 ## Emuler l'appuis sur les touches de volumes (ne fonctionne temporairement plus)
@@ -300,13 +294,13 @@ export Sjarvis='~/Public/'
 # Un outil pour les messages du jour
 alias motd='changemotd.sh --print'
 chmotd() {
- if [ "X$DISPLAY" = "X" ]; then
-    echo -e "Using : dialog."
-    changemotd.sh --new-dialog
- else
-    echo -e "Using : zenity."
-    changemotd.sh --new-zenity
- fi
+    if [ "X$DISPLAY" = "X" ]; then
+        echo -e "Using : dialog."
+        changemotd.sh --new-dialog
+    else
+        echo -e "Using : zenity."
+        changemotd.sh --new-zenity
+    fi
 }
 
 LessColor() { pygmentize -f $CAT_COLOR -g $* | less -r; }
@@ -318,26 +312,21 @@ alias rsync='/usr/bin/rsync --verbose --times --perms --compress --human-readabl
 
 DOCXtoPDF() { for i in $*; do echo -e "$i ----[abiword]----> ${i%.docx}.pdf"; abiword "$i" --to="${i%.docx}.pdf"; echo -e $?; done }
 
-# Alias pour executer localement des commandes crans. Deprecated: je ne suis plus cableur.
-# alias who2b='ssh vo "who2b"'
-# alias whokfet='ssh zamok "whokfet"'
-# alias whos='ssh zamok "whos"'
-
 # Netoyer les fichiers temporaires (sauvegarde, python, ou emacs)
 alias rmPyc='rm -f *.py[co] && echo "Local Python compiled files (*.pyc and *.pyo) have been deleted..."'
 alias rmt='rm -fv *~ .*~ *.py[co] \#*\#'
 
 rmTilde() {
- if [ X"$1" != X"" ]; then
-    for i in $@; do
-     #d="`basename \"$i\"`" # ? inutile ?
-     d="$i"
-     rm -vf "$d"/*~ "$d"/.*~ "$d"/*.py[co] \#*\#
-    done
-    echo "Fichiers temporaires (*~ .*~) bien supprimes."
- else
-    rm -vf *~ .*~ *.py[co] \#*\# && echo "Fichiers temporaires (*~ .*~) bien supprimes."
- fi
+    if [ X"$1" != X"" ]; then
+        for i in $@; do
+            #d="`basename \"$i\"`" # ? inutile ?
+            d="$i"
+            rm -vf "$d"/*~ "$d"/.*~ "$d"/*.py[co] \#*\#
+        done
+        echo "Fichiers temporaires (*~ .*~) bien supprimes."
+    else
+        rm -vf *~ .*~ *.py[co] \#*\# && echo "Fichiers temporaires (*~ .*~) bien supprimes."
+    fi
 }
 
 alias rmt=rmTilde
@@ -382,7 +371,7 @@ alias IpAdresses='ifconfig | grep "inet adr:"'
 # Nouveau jouet : cat /proc/acpi/...
 alias Version='cat /proc/version'
 
-# Check today content of Google Calendar
+# Check today content of Google Calendar (FIXME)
 alias CheckGoogleCalendar='google calendar today | grep "`date \"+%d\"`" && google --cal="Cours" calendar today | grep "`date \"+%d\"`"'
 
 # Gobby Server
@@ -390,7 +379,7 @@ alias SOBBY='sobby -p 6522 --password 120193 --autosave-file=/home/lilian/.gobby
 # Via monip.org
 alias AdressIP='wget --tries=5 --quiet --output-document=/tmp/monip.org.html monip.org && html2text /tmp/monip.org.html' # | pygmentize -f terminal -g
 
-# Efface les fichiers temporaires dus a un Mac qui a monte le disque
+# Efface les fichiers temporaires dus à un Mac qui a monté le disque
 alias EffacePresenceAPPLE='find -type d -name *Apple* -exec rm -vrI {} \;'
 # Affiche tous les programmes dans le $PATH.
 alias LS_PATH='ls ${PATH//:/ }'
@@ -409,10 +398,10 @@ alias GitSize='clear; echo -e "\n ==> ${white}Ce dépôt git « ${green}$(basena
 
 # Run all test embedded in docstring, in the module $1
 alias DocTest='python -m doctest -v'
+alias DocTest3='python3 -m doctest -v'
 
 # Make colorgcc an remplacement for GCC (all makefiles use CC usually)
 export CC="colorgcc"
-
 alias diff="colordiff"
 
 # For PyLint
@@ -438,24 +427,24 @@ alias unTarTBZ='tar -xjvf'
 #  Use grep to look for TODO or FIXME or FIXED                   #
 #   or HOWTO or XXX or DEBUG, or WARNING balises in code         #
 GrepBalises() {
- echo -e "GrepBalises >>> Looking for specials developpement balises in files ${blue}$@${white}."
- notfound=""
- for balise in 'TODO' 'FIXME' 'FIXED' 'HOWTO' 'XXX' 'DEBUG' 'WARNING'; do
-     res=`grep --color=always -n "$balise" $@`
-     if [ "m$?" != "m1" ]; then
-        echo -e "${magenta}  For the balise $balise :${default}"
-        echo -e "${res}" # | pygmentize -f terminal256 -g # -l
-     else
-        notfound="${notfound}${balise}, "
-        echo -e "${red} $balise not found in files..." >> /tmp/GrepBalises.log
-     fi
- done
- if [ "X$notfound" = "X" ]; then
+    echo -e "GrepBalises >>> Looking for specials developpement balises in files ${blue}$@${white}."
+    notfound=""
+    for balise in 'TODO' 'FIXME' 'FIXED' 'HOWTO' 'XXX' 'DEBUG' 'WARNING'; do
+        res=`grep --color=always -n "$balise" $@`
+        if [ "m$?" != "m1" ]; then
+            echo -e "${magenta}  For the balise $balise :${default}"
+            echo -e "${res}" # | pygmentize -f terminal256 -g # -l
+        else
+            notfound="${notfound}${balise}, "
+            echo -e "${red} $balise not found in files..." >> /tmp/GrepBalises.log
+        fi
+    done
+    if [ "X$notfound" = "X" ]; then
     echo -e "${white}GrepBalises >>> ${green} Done${white}. (on files $@)."
- else
+    else
     echo -e "${white}GrepBalises >>> ${red} Balises $notfound not found :("
     echo -e "${white}GrepBalises >>> Done. (on files $@)."
- fi
+    fi
 }
 
 # Super ack-grep
@@ -484,16 +473,13 @@ export LESS=' -r -F -B -i -J -w -W -~ -K -d -w -W -m -X -u -r'
 #-----------------------------------
 
 # Find a file with a pattern in name:
-function ff()
-{ find . -type f -iname '*'$*'*' -ls ; }
+function ff() { find . -type f -iname '*'$*'*' -ls ; }
 
 # Find a file with pattern $1 in name and Execute $2 on it:
-function fe()
-{ find . -type f -iname '*'$1'*' -exec "${2:-file}" {} \;  ; }
+function fe() { find . -type f -iname '*'$1'*' -exec "${2:-file}" {} \;  ; }
 
 # find pattern in a set of filesand highlight them:
-function fstr()
-{
+function fstr() {
         OPTIND=1
         local case=""
         local usage="fstr: find string in files.
@@ -517,14 +503,7 @@ Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
         sed "s/$1/${SMSO}\0${RMSO}/gI" | more
 }
 
-function cuttail() # Cut last n lines in file, 10 by default.
-{
-        nlines=${2:-10}
-        sed -n -e :a -e "1,${nlines}!{P;N;D;};N;ba" $1
-}
-
-function lowercase()  # move filenames to lowercase
-{
+function lowercase() { # move filenames to lowercase
         for file ; do
                 filename=${file##*/}
                 case "$filename" in
@@ -542,8 +521,7 @@ function lowercase()  # move filenames to lowercase
         done
 }
 
-function capitalize()  # move filenames to Capitalize
-{
+function capitalize() { # move filenames to Capitalize
         for file ; do
                 filename=${file##*/}
                 case "$filename" in
@@ -563,8 +541,7 @@ function capitalize()  # move filenames to Capitalize
         done
 }
 
-function swap()         # swap 2 filenames around
-{
+function swap() {        # swap 2 filenames around
         local TMPFILE=tmp.$$
         mv "$1" $TMPFILE
         mv "$2" "$1"
@@ -575,13 +552,11 @@ function my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,bsdtime,command ; }
 
 function pp() { my_ps f | awk '!/awk/ && $0~var' var=${1:-".*"} ; }
 
-function my_ip() # get IP adresses
-{
+function my_ip() { # get IP adresses
         MY_IP=$(/sbin/ifconfig | awk '/inet adr:/ { print $2 } ' | sed -e s/addr://)
 }
 
-function ii()   # get current host related info
-{
+function ii() {   # get current host related info
     echo -e "\nYou are logged on ${blue}$HOSTNAME ($HOSTNAME_WIFI)"
     echo -e "\nAdditionnal information:${reset}${white} " ; uname -a
     echo -e "\n${blue}Users logged on:${reset}${white} " ; w -h
@@ -599,7 +574,8 @@ export PYTHONSTARTUP="$HOME/.pythonrc"
 export PYTHONWARNINGS="ignore"
 #export PYTHONOPTIMIZE= # no optimization.
 #export PYTHONVERBOSE=  # no verbose adds.
-export PYTHONPATH="/usr/local/lib/python2.7/" # /usr/lib/python2.7:
+# export PYTHONPATH="/usr/local/lib/python2.7/"  # /usr/lib/python2.7:
+export PYTHONPATH="/usr/lib/python2.7"
 
 # Three different mutt (useless):
 mutt(){
@@ -673,8 +649,6 @@ LatexFormula() {
     display -title "Image for the LaTeX formula: '${@//\\/\\\\}'   (thanks to an awesome webservice)" "${out}"
 }
 
-alias GnomeVEILLE='gnome-session-quit --power-off'
-
 alias CheckHomePage_crans='wget -q http://perso.crans.org/besson/index.fr.html -O - | grep "Mis.*jour"'
 alias CheckHomePage_dpt='wget -q http://www.dptinfo.ens-cachan.fr/~lbesson/index.fr.html -O - | grep "Mis.*jour"'
 alias CheckHomePage_jarvis='wget -q http://jarvis/index.fr.html -O - | grep "Mis.*jour"'
@@ -692,10 +666,10 @@ alias PlusRGroup='chmod -vR g+r ./ | tee /tmp/.script_droit_Rgroup.log'
 alias PLUS='( PlusROwner ; PlusRGroup) | grep -v symbolique | grep modif'
 
 ViewHTML() {
-for i in "$@"; do
-    echo -e "Trying to see the file at the address ${yellow}'${i}'${white}"
-    curl --insecure "$i" 2> /tmp/ViewHTML.$$.log | html2text | pygmentize -f terminal -l rst
-done
+    for i in "$@"; do
+        echo -e "Trying to see the file at the address ${yellow}'${i}'${white}"
+        curl --insecure "$i" 2> /tmp/ViewHTML.$$.log | html2text | pygmentize -f terminal -l rst
+    done
 }
 
 alias MacAddress='ifconfig | grep "HWaddr [0-9a-f:]*"'
@@ -731,12 +705,13 @@ GpgDecrypt(){ gpg --decrypt --yes --no-batch --use-agent "$@";}
 # Pour que ssh-add ne memorise la passphrase que pendant 30 minutes
 alias ssh-add='ssh-add -t 1800'
 
+# youtube-dl shortcuts (there is also youtube-playlist.sh and youtube-albums.sh)
 youtube(){
     for i in "$@"; do
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
         echo -e "${green}Launching youtube-dl on ${white}${u}${arg}${U} ${black}(with the good options to download ${cyan}video${black} and ${cyan}mp3${black}).${white}"
-        youtube-dl --output "%(title)s.%(ext)s" --extract-audio --console-title --keep-video --audio-format=mp3 --no-overwrites -- "$arg"
+        youtube-dl --youtube-skip-dash-manifest --output "%(title)s.%(ext)s" --extract-audio --console-title --keep-video --audio-format=mp3 --no-overwrites -- "$arg"
     done
 }
 youtube-mp3(){
@@ -744,7 +719,7 @@ youtube-mp3(){
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
         echo -e "${green}Launching youtube-dl on ${white}${u}${arg}${U} ${black}(with the good options to download just the ${cyan}mp3${black}).${white}"
-        youtube-dl --format worst --output "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 --no-overwrites -- "$arg"
+        youtube-dl --youtube-skip-dash-manifest --format worst --output "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 --no-overwrites -- "$arg"
     done
 }
 youtube-video(){
@@ -752,7 +727,7 @@ youtube-video(){
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
         echo -e "${green}Launching youtube-dl on ${white}${u}${arg}${U} ${black}(with the good options to download just the ${cyan}video${black}).${white}"
-        youtube-dl --output "%(title)s.%(ext)s" --console-title --no-overwrites -- "$arg"
+        youtube-dl --youtube-skip-dash-manifest --output "%(title)s.%(ext)s" --console-title --no-overwrites -- "$arg"
     done
 }
 
@@ -790,7 +765,7 @@ alias sz='sshzamok'
 alias sshvo='sshtmux besson@vo.crans.org'
 alias sshdpt='sshtmux lbesson@ssh.dptinfo.ens-cachan.fr'
 alias sd='sshdpt'
-alias s22='sshtmux 03.dptinfo.ens-cachan.fr'  # FIXME not up-to-date right?
+alias s22='sshtmux 03.dptinfo.ens-cachan.fr'
 alias s04='sshtmux 04.dptinfo.ens-cachan.fr'
 alias s05='sshtmux 05.dptinfo.ens-cachan.fr'
 alias s06='sshtmux 06.dptinfo.ens-cachan.fr'
@@ -832,8 +807,6 @@ randquote(){
     fi
 }
 
-## RandQuote(){ zenity --title="Rand Quote" --timeout=30 --window-icon="~/.link.ico" --info --text="<big><b>`randquote | sed s_'--'_'</b>--\n<i>'_`</i></big>" }
-## alias MailRandQuote='mail_ghost.py "`randquote`" "RandQuote"'
 alias CalendarRandQuote='google calendar add "`randquote`"'
 
 # With nginx
@@ -878,13 +851,6 @@ Munin_Start() {
     fi
     echo -e "${red} PIDs or command line of ${cyan}${u}munin${U}${reset} :"
     echo "$(ps aux |grep "[a-z/]*perl.*munin[a-z-]*$")"
-}
-
-Munin_UpdateMunstrap(){
-    cd ~/.local/etc/munin/munstrap/
-    # git pull # disallow updating like this
-    # because I did some changes in the theme. It my git repo now...
-    cdBack
 }
 
 # Shortcut : long command &>$null& is shorten that &>/dev/null& :)
@@ -933,7 +899,7 @@ linphone() { /usr/bin/linphone "$@" &> /dev/null & }
 libreoffice() { ( /usr/bin/libreoffice "$@" || /usr/bin/abiword "$@" ) &> /dev/null & }
 butterfly() {
     butterfly.server.py --logging=none --unsecure &> /dev/null &
-    echo "Open your browser at http://127.0.0.1:57575/ to use Butterfly terminal in your browser"
+    echo "Open your browser at http://127.0.0.1:57575/ to use the Butterfly terminal in your browser"
 }
 
 # Better .rst → .html and .md → .html (simpler)
@@ -951,11 +917,13 @@ ExplainShell() { /usr/bin/firefox http://explainshell.com/explain?cmd="${*// /%2
 alias Tor='~/.local/tor-browser_fr/start-tor-browser'
 
 alias kaamelott='vlc --random /host/Users/Lilian/Videos/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
-alias kaamelott-totem='totem --fullscreen /host/Users/Lilian/Videos/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
 alias kaamelott-parole='parole --fullscreen /host/Users/Lilian/Videos/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
 alias scrubs='vlc --random /host/Users/Lilian/Videos/Séries/Scrubs/ >/dev/null 2>/dev/null &'
-alias scrubs-totem='totem --fullscreen /host/Users/Lilian/Videos/Séries/Scrubs/ >/dev/null 2>/dev/null &'
 alias scrubs-parole='parole --fullscreen /host/Users/Lilian/Videos/Séries/Scrubs/ >/dev/null 2>/dev/null &'
+alias scrubs-vo='vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs VO" >/dev/null 2>/dev/null &'
+alias scrubs-vo-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs VO" >/dev/null 2>/dev/null &'
+alias friends='vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
+alias friends-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
 
 alias dropbox='( dropbox start ; alert ) &>/dev/null&'
 
@@ -997,10 +965,11 @@ complete -o plusdirs -f -X '!*.pdf' pdfinfo
 
 alias b='bpython || alert'
 alias f='firefox'
-alias i='ipython'
+alias i='ipython --pylab'
 alias e='evince'
 complete -o plusdirs -f -X '!*.@(pdf|djvu|PDF)' e
 alias s='clear ; git status | less -r'
+alias wd='clear ; git wdiff'
 
 alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "^rupee.*$" | sed s/"^rupee"/""/ )${U}${white}." | tee -a /tmp/RoupiesCourse.log'
 alias brigthness='xrandr --output LVDS --brightness '
