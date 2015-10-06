@@ -250,14 +250,14 @@ alias LOCK_NO_SLEEP='mail_ghost.py "Automatically sent by the machine $HOSTNAME.
 alias Mail_LOG_save='mail.py "Automatically sent by the machine $HOSTNAME.crans.org when saving." "[LOG] ${USER}@${HOSTNAME} : save"'
 
 case "`/usr/bin/who|tail -n1|grep -v tty[1-7]`" in
-pts/*)
-  # Send an email only if connecting from a remote computer.
-  Mail_LOG_in
-  ;;
-tty[1-6]*)
-  # Change color of terminal ?
-  setterm -foreground green -bold -store
-  ;;
+   pts/*)
+       # Send an email only if connecting from a remote computer.
+       # Mail_LOG_in
+   ;;
+   tty[1-6]*)
+       # Change color of terminal ?
+       setterm -foreground green -bold -store
+   ;;
 esac
 
 export COLORTERM=gnome-terminal

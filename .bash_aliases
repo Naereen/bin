@@ -568,14 +568,12 @@ function ii() {   # get current host related info
     echo
 }
 
-###############################################################################
-# For Python  # WARNING
+# For Python (2.7)
 export PYTHONSTARTUP="$HOME/.pythonrc"
-export PYTHONWARNINGS="ignore"
+#export PYTHONWARNINGS="ignore"
 #export PYTHONOPTIMIZE= # no optimization.
 #export PYTHONVERBOSE=  # no verbose adds.
-# export PYTHONPATH="/usr/local/lib/python2.7/"  # /usr/lib/python2.7:
-export PYTHONPATH="/usr/lib/python2.7"
+# export PYTHONPATH="/usr/local/lib/python2.7/":"/usr/local/lib/python2.7/dist-packages/":"/usr/lib/python2.7/":"/usr/lib/python2.7/dist-packages"
 
 # Three different mutt (useless):
 mutt(){
