@@ -958,12 +958,21 @@ complete -f -X '!*.@(tex|pdf)' p
 pdfinfo() { for i in "$@"; do echo -e "\n${green}# For '${red}${u}$i${U}${white}':"; /usr/bin/pdfinfo "$i"; done }
 complete -f -X '!*.pdf' pdfinfo
 
-alias b='bpython || alert'
-alias f='firefox || alert'
-alias i='ipython --pylab || alert'
-alias pti='ptipython3 || alert'  # ptipython from https://github.com/jonathanslenders/ptpython
-alias e='evince || alert'
+f() { echo -e "Opening args '$@' in firefox..."; firefox "$@" || alert; }
+
+b() { echo -e "Executing args '$@' with bpython..."; bpython "$@" || alert; }
+# Default to Python 3
+i2() { echo -e "Executing args '$@' with ipython2..."; ipython2 --pylab "$@" || alert; }
+pti2() { echo -e "Executing args '$@' with ptipython2..."; ptipython2 "$@" || alert; }  # custom script
+i() { echo -e "Executing args '$@' with ipython3..."; ipython3 --pylab "$@" || alert; }
+# ptipython from https://github.com/jonathanslenders/ptpython
+pti() { echo -e "Executing args '$@' with ptipython..."; ptipython "$@" || alert; }
+i3() { echo -e "Executing args '$@' with ipython3..."; ipython3 --pylab "$@" || alert; }
+pti3() { echo -e "Executing args '$@' with ptipython3..."; ptipython3 "$@" || alert; }  # custom script
+
+e() { echo -e "Opening args '$@' in evince..."; evince "$@" || alert; }
 complete -f -X '!*.@(pdf|djvu|PDF)' e
+
 alias s='clear ; git status | less -r'
 alias wd='clear ; git wdiff || alert'
 
