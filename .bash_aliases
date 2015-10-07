@@ -24,27 +24,27 @@ alias mv='/bin/mv -i'
 # The 'ls' family (this assumes you use the GNU ls)
 
 la() {
-    arg=`history | tail -n1 | sed s/'^.*la '/''/`
+    arg=$(history | tail -n1 | sed s/'^.*la '/''/)
     if [[ X"$@" = X ]]; then
-        echo -e "Contenu du dossier $reset${u}`pwd`$U$white ${magenta}[option -A]$white"
+        echo -e "Contenu du dossier $reset${u}$(pwd)$U$white ${magenta}[option -A]$white"
     else
         echo -e "Liste des fichiers pour $reset$u$arg$U$white ${magenta}[option -A]$white"
     fi
     /bin/ls --color=auto -A "$@"
 }
 l() {
-    arg="`history | tail -n1 | sed s/'^.*l '/''/`"
+    arg="$(history | tail -n1 | sed s/'^.*l '/''/)"
     if [[ X"$@" = X ]]; then
-        echo -e "Contenu du dossier $reset${u}`pwd`$U$white ${magenta}[option -hCF]$white"
+        echo -e "Contenu du dossier $reset${u}$(pwd)$U$white ${magenta}[option -hCF]$white"
     else
         echo -e "Liste des fichiers pour $reset$u$arg$U$white ${magenta}[option -hCF]$white"
     fi
     /bin/ls --color=auto -hCF "$@"
 }
 lnc() {
-    arg="`history | tail -n1 | sed s/'^.*l '/''/`"
+    arg="$(history | tail -n1 | sed s/'^.*l '/''/)"
     if [[ X"$@" = X ]]; then
-        echo -e "Contenu du dossier $reset${u}`pwd`$U$white ${magenta}[option -hCF]$white"
+        echo -e "Contenu du dossier $reset${u}$(pwd)$U$white ${magenta}[option -hCF]$white"
     else
         echo -e "Liste des fichiers pour $reset$u$arg$U$white ${magenta}[option -hCF]$white"
     fi
@@ -55,7 +55,7 @@ alias lD='find . -maxdepth 1 -type d' # To print directory
 alias ll='/bin/ls --color=auto -larth' # all in the current dir
 alias lsnocolor='/bin/ls --color=no'  # lnc is better
 alias lt='/bin/ls --color=auto -lSrha' # print all, sorted by size
-alias ltime='/bin/ls --color=auto --time-style=+%D | grep `date +%D`'
+alias ltime='/bin/ls --color=auto --time-style=+%D | grep $(date +%D)'
 alias lx='/bin/ls --color=auto -lXB' # sort by extension
 alias lk='/bin/ls --color=auto -lSr' # sort by size
 alias lc='/bin/ls --color=auto -lcr' # sort by change time
@@ -84,7 +84,7 @@ alias df='/bin/df -h -l -t ext3 -t ext4 -t fuseblk -t vfat'
 alias free='/usr/bin/free -h'
 
 # Commandes avec GNU-Nano :
-alias nano='xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { GNU Nano 2.3.2 }" ; /home/lilian/bin/nano.last --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds --undo'
+alias nano='xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { GNU Nano 2.3.2 }" ; /home/lilian/bin/nano.last --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds'
 
 # Un meilleur make, qui remonte dans le dossier jusqu'à trouver un bon Makefile
 MAKE="make -w"
@@ -97,7 +97,7 @@ mymake() {
         echo -e "${red}${old}${c}/Makefile${white} is not there, going up ..."
         c="../${c}"
         cd "$c"
-        [ `pwd` = "/" ] && break
+        [ $(pwd) = "/" ] && break
         #read
     done
     if [ -f ${old}${c}/Makefile ]; then
@@ -110,7 +110,7 @@ mymake() {
         return 2
     fi
 }
-# alias make='xtitle "Making $(basename "`pwd -P`")..." ; mymake'
+# alias make='xtitle "Making $(basename "$(pwd -P)")..." ; mymake'
 alias make='mymake'
 
 # Ajout de securite sur la commande 'rm' :
@@ -119,8 +119,8 @@ alias rm='/bin/rm -vi'
 
 alias _cd_old='cd'
 CD() {
-    p="`pwd`"
-    p2="`pwd -P`"
+    p="$(pwd)"
+    p2="$(pwd -P)"
     if [ "X$*" = "X" ]
     then
         args="$HOME"
@@ -140,7 +140,7 @@ CD() {
 # Magie noire
 alias cd..="CD .."
 alias cdBack='CD "${OLDPWD:=$PWD}"'  # Nul : cd - fait la même chose !
-alias cdP='cd "`pwd -P`"'
+alias cdP='cd "$(pwd -P)"'
 alias cd="CD"
 
 # Commandes avec SSH :
@@ -167,7 +167,7 @@ alias Installer='echo -e "Recherche des paquets demandés... Veuillez rentrer vo
 alias Prononcer='espeak -s 170 -v french --stdin'
 
 # Avec nautilus
-alias nautici='echo -e "Ouverture de Nautilus dans le repertoire courant [${blue}`pwd`${white}]... en cours de traitement..." && nautilus "`pwd`" &> /dev/null &'
+alias nautici='echo -e "Ouverture de Nautilus dans le repertoire courant [${blue}$(pwd)${white}]... en cours de traitement..." && nautilus "$(pwd)" &> /dev/null &'
 
 # Support de l'outil LEDIT pour un meilleur toplevel ocaml.
 alias leditocaml='ledit -x -h ocaml_history.ml ocaml'
@@ -176,18 +176,17 @@ alias rlocaml='rlwrap -t dumb -z count_in_prompt --file=/home/lilian/keyword_moc
 
 alias mocaml='rlwrap -t dumb --file=/home/lilian/keyword_mocaml_rlwrap.txt --renice --remember -Acm -aPassword: -pGreen --break-chars "(){}[],+-=&^%$#@\"" --histsize 3000000 -H mocaml_history.ml  ledit -x -u -l $COLUMNS -h mocaml_history.ml ocaml'
 alias mocaml_noANSI='rlwrap -t dumb --file=/home/lilian/keyword_mocaml_rlwrap.txt --renice --remember -Acm -aPassword: -pGreen --break-chars "(){}[],+-=&^%$#@\"" --histsize 3000000 -H mocaml_history.ml ledit -x -u -l $COLUMNS -h mocaml_history.ml /home/lilian/.mocaml/launch_noANSI.sh'
-alias modebugcaml='rlwrap -t dumb --file=/home/lilian/.mocaml/modebugcaml_list_of_commands --renice --remember -Acm -aPassword: -pGreen --break-chars "(){}[],+-=&^%$#@\"" --histsize 3000000 -H mocamlDebug_history.log ledit -x -u -l $COLUMNS -h mocamlDebug_history.log ocamldebug'
 
 # Interpréter les fichiers. Bien mieux que 'ocaml file1.ml file2.ml'.
 iocaml() {
     for i in $@; do
         cat "$i" >> /tmp/iocaml.ml
         echo -e "(** OCaml on ${i}:1:1 *)" >> /tmp/iocaml.log
-        /usr/bin/ocaml graphics.cma < "$i" 2>&1 | tee -a /tmp/iocaml.log | sed s{//toplevel//{"$i"{ | pygmentize -l ocaml -P encoding=`file -b --mime-encoding "$i"`
+        /usr/bin/ocaml graphics.cma < "$i" 2>&1 | tee -a /tmp/iocaml.log | sed s{//toplevel//{"$i"{ | pygmentize -l ocaml -P encoding=$(file -b --mime-encoding "$i")
     done
 }
 # Reference for this is https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
-complete -o plusdirs -f -X '!*.ml' iocaml leditocaml leocaml rlocaml mocaml mocaml_noANSI
+complete -f -X '!*.ml' ocaml ocamlc ocamlopt leocaml leditocaml rlocaml mocaml mocaml_noANSI iocaml
 
 ########################################################################
 # Outil pygmentize : permet une coloration syntaxique dans la console
@@ -222,7 +221,7 @@ voirImage() {
     done
 }
 # Ajout d'une bash complétion comme ça, en une ligne ! TODO: à étendre !
-complete -o plusdirs -f -X '!*.@(gif|GIF|jp?(e)g|pn[gm]|PN[GM]|ico|ICO)' voirImage
+complete -f -X '!*.@(gif|GIF|jp?(e)g|pn[gm]|PN[GM]|ico|ICO)' voirImage
 
 xtitle() {
     echo -e "${reset}Setting title to $@..." >> /tmp/xtitle.log
@@ -234,14 +233,20 @@ xtitle() {
 
 # Autre outils pratiques
 Regler_son() {
-    xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { AlsaMixer v1.0.25 }" || true
+    xtitle "($(date)<$USER@$HOSTNAME> { AlsaMixer v1.0.25 }" || true
     clear; alsamixer; clear
 }
 
 Wavemon() {
-    xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { `wavemon -v | head -n1` }" || true
+    xtitle "($(date)<$USER@$HOSTNAME> { Wavemon v0.7.6 }" || true
     clear; wavemon; clear
 }
+t() {
+    xtitle "($(date)<$USER@$HOSTNAME> { htop 1.0.3 }" || true
+    htop || alert
+    clear
+}
+
 
 captureEcran() {  # now the Alt+$ shortcut does the same!
     sleep 3s
@@ -254,7 +259,7 @@ alias Byobu='echo -e "You should rather use TMUX instead"; byobu -A -D -RR -fa -
 alias Byobu-tmux='byobu-tmux -2 -q -u'
 
 alias py2html='pyhtmlizer --stylesheet=http://perso.crans.org/besson/pyhtmlizer.css'
-complete -o plusdirs -f -X '!*.py' py2html
+complete -f -X '!*.py' py2html
 
 # Ecrans de veilles
 alias MatrixVeille='cmatrix -b -f -s -u 9'
@@ -265,7 +270,7 @@ alias cacafireTerminal='OLDDISPLAY=$DISPLAY; DISPLAY=""; cacafire; DISPLAY=$OLDD
 
 lessColor() {
     for i in $*; do
-        pygmentize -P encoding=`file -b --mime-encoding "$i"` -f $CAT_COLOR -g "$i" | less -r || \
+        pygmentize -P encoding=$(file -b --mime-encoding "$i") -f $CAT_COLOR -g "$i" | less -r || \
         echo -e "${red}[ERROR]${yellow} LessColor failed to read $u$i$U ...${white}" > /dev/stderr
     done
 }
@@ -313,7 +318,7 @@ alias rmt='rm -fv *~ .*~ *.py[co] \#*\#'
 rmTilde() {
     if [ X"$1" != X"" ]; then
         for i in $@; do
-            #d="`basename \"$i\"`" # ? inutile ?
+            #d="$(basename \"$i\")" # ? inutile ?
             d="$i"
             rm -vf "$d"/*~ "$d"/.*~ "$d"/*.py[co] \#*\#
         done
@@ -354,13 +359,13 @@ TEX2PDF() {
         PDFCompress "${i%tex}pdf"
     done
 }
-complete -o plusdirs -f -X '!*.@(tex|pdf)' tex2pdf TEX2PDF
+complete -f -X '!*.@(tex|pdf)' tex2pdf TEX2PDF
 
 # N'afficher que les processus lances par l'utilisateur courant dans htop.
 alias Htop='htop -u $USER'
 
 # Pour afficher la temperature.
-alias TempDisk='echo -e "Hard drive temperature : ${green}$((`sudo hddtemp --numeric --wake-up /dev/disk/by-label/SYSTEM`))${white} °C."'
+alias TempDisk='echo -e "Hard drive temperature : ${green}$(($(sudo hddtemp --numeric --wake-up /dev/disk/by-label/SYSTEM)))${white} °C."'
 
 # Affiche la taille du repertoire courant. Peut etre long a calculer !
 alias TailleCourante='LS_ECHO -e "*"; echo -e "${el}Taille du repertoire ${u}courant${U} : \033[01;31m`du -sh \"\`pwd -P\`\"`\033[01;37m"'
@@ -375,8 +380,8 @@ alias IpAdresses='ifconfig | grep "inet adr:"'
 alias version='cat /proc/version'
 
 # Check today content of Google Calendar (FIXME)
-alias CheckGoogleCalendar='google calendar today | grep "`date \"+%d\"`" && google --cal="Cours" calendar today | grep "`date \"+%d\"`"'
-alias CalendarRandQuote='google calendar add "`randquote`"'
+alias CheckGoogleCalendar='google calendar today | grep "$(date \"+%d\")" && google --cal="Cours" calendar today | grep "$(date \"+%d\")"'
+alias CalendarRandQuote='google calendar add "$(randquote)"'
 
 # Gobby Server
 alias SOBBY='sobby -p 6522 --password 120193 --autosave-file=/home/lilian/.gobby.savefile --autosave-interval=10'
@@ -429,7 +434,7 @@ GrepBalises() {
     echo -e "GrepBalises >>> Looking for specials developpement balises in files ${blue}$@${white}."
     notfound=""
     for balise in 'TODO' 'FIXME' 'FIXED' 'HOWTO' 'XXX' 'DEBUG' 'WARNING'; do
-        res=`grep --color=always -n "$balise" $@`
+        res=$(grep --color=always -n "$balise" $@)
         if [ "m$?" != "m1" ]; then
             echo -e "${magenta}  For the balise $balise :${default}"
             echo -e "${res}" # | pygmentize -f terminal256 -g # -l
@@ -462,22 +467,22 @@ export LESS=' -r -F -B -i -J -w -W -~ -K -d -w -W -m -X -u -r'
 ###-P"%t?%f%f :stdin .?pb%pb\%:?lbLine %lb:?bbByte %bb:-..." -e'
 
 # # Wrapper around current interpreters;
-# alias ocaml='xtitle "OCaml 4.01.0 on `pwd -P`. `date`" ; ocaml'
-# alias python='xtitle "Python on `pwd -P`. `date`" ; python'
-# alias bpython='xtitle "BPython on `pwd -P`. `date`" ; bpython'
-# alias octave='xtitle ".: Octave (-q -V --traditional --persist) 3.2.4 on `pwd -P`. `date` -- $USER@$HOSTNAME :." ; octave --silent --verbose --traditional --persist'
+# alias ocaml='xtitle "OCaml 4.01.0 on $(pwd -P). $(date)" ; ocaml'
+# alias python='xtitle "Python on $(pwd -P). $(date)" ; python'
+# alias bpython='xtitle "BPython on $(pwd -P). $(date)" ; bpython'
+# alias octave='xtitle ".: Octave (-q -V --traditional --persist) 3.2.4 on $(pwd -P). $(date) -- $USER@$HOSTNAME :." ; octave --silent --verbose --traditional --persist'
 
 #-----------------------------------
 # File & strings related functions:
 
 # Find a file with a pattern in name:
-function ff() { find . -type f -iname '*'$*'*' -ls ; }
+ff() { find . -type f -iname '*'$*'*' -ls ; }
 
 # Find a file with pattern $1 in name and Execute $2 on it:
-function fe() { find . -type f -iname '*'$1'*' -exec "${2:-file}" {} \;  ; }
+fe() { find . -type f -iname '*'$1'*' -exec "${2:-file}" {} \;  ; }
 
 # find pattern in a set of filesand highlight them:
-function fstr() {
+fstr() {
         OPTIND=1
         local case=""
         local usage="fstr: find string in files.
@@ -500,7 +505,7 @@ Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
         sed "s/$1/${SMSO}\0${RMSO}/gI" | more
 }
 
-function lowercase() {  # move filenames to lowercase
+lowercase() {  # move filenames to lowercase
     for file ; do
         filename=${file##*/}
         case "$filename" in
@@ -518,7 +523,7 @@ function lowercase() {  # move filenames to lowercase
     done
 }
 
-function capitalize() {  # move filenames to Capitalize
+capitalize() {  # move filenames to Capitalize
     for file ; do
         filename=${file##*/}
         case "$filename" in
@@ -538,22 +543,22 @@ function capitalize() {  # move filenames to Capitalize
     done
 }
 
-function swap() {        # swap 2 filenames around
+swap() {        # swap 2 filenames around
     local TMPFILE=tmp.$$
     mv "$1" $TMPFILE
     mv "$2" "$1"
     mv $TMPFILE "$2"
 }
 
-function my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,bsdtime,command ; }
+my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,bsdtime,command ; }
 
-function pp() { my_ps f | awk '!/awk/ && $0~var' var=${1:-".*"} ; }
+pp() { my_ps f | awk '!/awk/ && $0~var' var=${1:-".*"} ; }
 
-function my_ip() {  # get IP adresses
+my_ip() {  # get IP adresses
     MY_IP=$(/sbin/ifconfig | awk '/inet adr:/ { print $2 } ' | sed -e s/addr://)
 }
 
-function ii() {   # get current host related info
+ii() {   # get current host related info
     echo -e "\nYou are logged on ${blue}$HOSTNAME ($HOSTNAME_WIFI)"
     echo -e "\nAdditionnal information:${reset}${white} " ; uname -a
     echo -e "\n${blue}Users logged on:${reset}${white} " ; w -h
@@ -575,26 +580,26 @@ export PYLINTHOME="$HOME"
 
 # Three different mutt (useless):
 mutt(){
-    xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { Mutt 1.5.21 } : for localhost"
+    xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { Mutt 1.5.21 } : for localhost"
     /usr/bin/mutt-patched "$@"
     [ -f yes ] && rm -f yes
 }
 
 mutt-crans(){
-    xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { Mutt 1.5.21 } : for crans.org"
+    xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { Mutt 1.5.21 } : for crans.org"
     clear ; /usr/bin/mutt-patched -F ~/.mutt/crans.muttrc "$@" && clear
     [ -f yes ] && rm -f yes
 }
 
 mutt-ens(){
-    xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { Mutt 1.5.21 } : for ens-cachan.fr"
+    xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { Mutt 1.5.21 } : for ens-cachan.fr"
     clear ; /usr/bin/mutt-patched -F ~/.mutt/ens.muttrc "$@" && clear
     [ -f yes ] && rm -f yes
 }
 
 # Supprimer les meta-donnees des images jpeg et png
-alias CleanPicturesR='echo "Erasing EXIF infos...." && exiftool -v2 -recurse -fast -overwrite_original_in_place -all= * | tee "exiftool__$$_`date "+%H_%M_%S"`".log && echo "All EXIF infos have been erased :)"'
-alias CleanPictures='echo "Erasing EXIF infos...." && exiftool -v2 -fast -overwrite_original_in_place -all= * | tee "exiftool__$$_`date "+%H_%M_%S"`".log && echo "All EXIF infos have been erased :)"'
+alias CleanPicturesR='echo "Erasing EXIF infos...." && exiftool -v2 -recurse -fast -overwrite_original_in_place -all= * | tee "exiftool__$$_$(date "+%H_%M_%S")".log && echo "All EXIF infos have been erased :)"'
+alias CleanPictures='echo "Erasing EXIF infos...." && exiftool -v2 -fast -overwrite_original_in_place -all= * | tee "exiftool__$$_$(date "+%H_%M_%S")".log && echo "All EXIF infos have been erased :)"'
 alias CleanJPEG='exiftool -all= *.jpg *.png *.gif *.JPG .*.jpg .*.png .*.gif .*.JPG && echo "Donnees EXIF supprimees :)"'
 
 ## A less for PDF files (useless)
@@ -681,10 +686,10 @@ alias Sync='clear; echo -e "Synchronizing (git push, gc, send_zamok, send_dpt)..
 
 # For vrun (FIXME does not work anymore? my vlc is bugged I guess):
 alias GetUri="vrun status | grep file | sed s/'( new input: '/''/ | sed s/' )'/''/"
-alias Next='vrun next && clear ; tmp1=`vrun get_title`; tmp2=`vrun status|head -n1`; echo -e "$u$tmp2$reset${white}\n${green} (→) Playing${white}: $neg$tmp1$Neg"'
-alias Prev='vrun prev && clear ; tmp1=`vrun get_title`; tmp2=`vrun status|head -n1`; echo -e "$u$tmp2$reset${white}\n${green} (←) Playing${white}: $neg$tmp1$Neg"'
-alias Pause='vrun pause && clear ; tmp1=`vrun get_title`; tmp2=`vrun status|head -n1`; echo -e "$u$tmp2$reset${white}\n${green} (:) Was Playing${white}: $neg$tmp1$Neg"'
-alias Play='vrun play && clear ; tmp1=`vrun get_title`; tmp2=`vrun status|head -n1`; echo -e "$u$tmp2$reset${white}\n${green} (>) Now Playing${white}: $neg$tmp1$Neg"'
+alias Next='vrun next && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (→) Playing${white}: $neg$tmp1$Neg"'
+alias Prev='vrun prev && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (←) Playing${white}: $neg$tmp1$Neg"'
+alias Pause='vrun pause && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (:) Was Playing${white}: $neg$tmp1$Neg"'
+alias Play='vrun play && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (>) Now Playing${white}: $neg$tmp1$Neg"'
 
 # Irssi
 alias irc='screen irssi'
@@ -733,7 +738,7 @@ alias watch='watch -b -d -e'
 # Do a job, only for a certain amount of time
 # Exemple : DoForATime 60 my-very-long-command-that-can-never-terminate
 DoForATime(){
-    log=/tmp/DoForATime`date "+%Hh-%Mm-%Ss"`.log
+    log=/tmp/DoForATime$(date "+%Hh-%Mm-%Ss").log
     TIMEOUT=$1
     shift
     echo -e "${reset}Launching $@, in $PWD, for $TIMEOUT seconds only." | tee "$log"
@@ -768,8 +773,8 @@ alias s06='sshtmux 06.dptinfo.ens-cachan.fr'
 alias elinks='elinks -verbose 0'
 
 Lock(){
-    echo -e "New use of Lock from `w`.\n\n Last: `last`.\n Date: `date`.\n\n" >> ~/.Lock.log
-    if [ "X`pidof gnome-screensaver`" != "X0" ]; then
+    echo -e "New use of Lock from $(w).\n\n Last: $(last).\n Date: $(date).\n\n" >> ~/.Lock.log
+    if [ "X$(pidof gnome-screensaver)" != "X0" ]; then
         gnome-screensaver-command --lock
         xset dpms force standby
     else
@@ -850,12 +855,11 @@ export null="/dev/null"
 alias send_bashrc_bashalias='CP ~/.bashrc ~/.bash_aliases ~/.bashrc.asc ~/.bash_aliases.asc'
 
 # Shortcut. FIXME ? available ONLY if 'n' is not a command.
-function n() { /home/lilian/bin/nano.last "$@" || alert; }
+n() { /home/lilian/bin/nano.last "$@" || alert; }
 export EDITOR="/home/lilian/bin/nano.last"
-function t() { htop || alert; }
 
 # Get the latest QC strip ;)
-alias GetQC='wget `wget http://questionablecontent.net/ -O - | grep -o "http://www.questionablecontent.net/comics.*[0-9]*.*\(png\|jpg\|jpeg\|gif\)"`'
+alias GetQC='wget $(wget http://questionablecontent.net/ -O - | grep -o "http://www.questionablecontent.net/comics.*[0-9]*.*\(png\|jpg\|jpeg\|gif\)")'
 
 # Print the current read/watched TV shows or movies ('series.sh list' now does the same)
 Currents() {
@@ -894,9 +898,9 @@ butterfly() {
 
 # Better .rst → .html and .md → .html (simpler)
 alias rst2html='rst2html -v -t --no-generator -l fr --cloak-email-addresses '
-complete -o plusdirs -f -X '!*.rst' rst2html
+complete -f -X '!*.rst' rst2html
 alias markdown='python -m markdown -e utf8 -v '
-complete -o plusdirs -f -X '!*.@(md|mdown|markdown|mkdown|txt)' markdown
+complete -f -X '!*.@(md|mdown|markdown|mkdown|txt)' markdown
 
 alias bd='. bd -s'
 
@@ -931,7 +935,7 @@ Appeler() {
     read &&  linphone -c "$1"@crans.org
 }
 
-function PROXY () {
+PROXY () {
     case $1 in
         off)
             rm -vf /tmp/startSocksProxy.list && echo -e "${green}PROXY is off.${white}"
@@ -946,20 +950,20 @@ function PROXY () {
 }
 
 # Short Shortcuts with hand-written Bash completion
-complete -o plusdirs -f -X '!*.@(html|md)' strapdown2pdf
+complete -f -X '!*.@(html|md)' strapdown2pdf
 alias a='autotex'
-complete -o plusdirs -f -X '!*.@(tex|pdf)' a
+complete -f -X '!*.@(tex|pdf)' a
 alias p='PDFCompress'
-complete -o plusdirs -f -X '!*.@(tex|pdf)' p
-function pdfinfo() { for i in "$@"; do echo -e "\n${green}# For '${red}${u}$i${U}${white}':"; /usr/bin/pdfinfo "$i"; done }
-complete -o plusdirs -f -X '!*.pdf' pdfinfo
+complete -f -X '!*.@(tex|pdf)' p
+pdfinfo() { for i in "$@"; do echo -e "\n${green}# For '${red}${u}$i${U}${white}':"; /usr/bin/pdfinfo "$i"; done }
+complete -f -X '!*.pdf' pdfinfo
 
 alias b='bpython || alert'
 alias f='firefox || alert'
 alias i='ipython --pylab || alert'
 alias pti='ptipython3 || alert'  # ptipython from https://github.com/jonathanslenders/ptpython
 alias e='evince || alert'
-complete -o plusdirs -f -X '!*.@(pdf|djvu|PDF)' e
+complete -f -X '!*.@(pdf|djvu|PDF)' e
 alias s='clear ; git status | less -r'
 alias wd='clear ; git wdiff || alert'
 
@@ -973,7 +977,7 @@ alias update_codecivil='p="$(pwd)"; cd /home/lilian/france.code-civil ; git pull
 
 alias impressive='impressive.py --nologo --clock --tracking --transtime 0'
 alias slides='impressive'
-complete -o plusdirs -f -X '!*.@(pdf|djvu|PDF|png|PNG|jpg|JPG|jpeg|JPEG)' impressive slides
+complete -f -X '!*.@(pdf|djvu|PDF|png|PNG|jpg|JPG|jpeg|JPEG)' impressive slides
 
 ##############################################################################
 # (c) 2011-2015 Lilian BESSON
