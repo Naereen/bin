@@ -32,7 +32,6 @@ la() {
     fi
     /bin/ls --color=auto -A "$@"
 }
-
 l() {
     arg="`history | tail -n1 | sed s/'^.*l '/''/`"
     if [[ X"$@" = X ]]; then
@@ -42,7 +41,6 @@ l() {
     fi
     /bin/ls --color=auto -hCF "$@"
 }
-
 lnc() {
     arg="`history | tail -n1 | sed s/'^.*l '/''/`"
     if [[ X"$@" = X ]]; then
@@ -53,13 +51,11 @@ lnc() {
     /bin/ls --color=never -hCF "$@"
 }
 
-# To print directory
-alias lD='find . -maxdepth 1 -type d'
-
-alias ll='/bin/ls --color=auto -larth'
-alias lsnocolor='/bin/ls --color=no'
-alias lt='/bin/ls --color=auto -lSrha'
-alias ltime='/bin/ls --color=auto -time-style=+%D | grep `date +%D`'
+alias lD='find . -maxdepth 1 -type d' # To print directory
+alias ll='/bin/ls --color=auto -larth' # all in the current dir
+alias lsnocolor='/bin/ls --color=no'  # lnc is better
+alias lt='/bin/ls --color=auto -lSrha' # print all, sorted by size
+alias ltime='/bin/ls --color=auto --time-style=+%D | grep `date +%D`'
 alias lx='/bin/ls --color=auto -lXB' # sort by extension
 alias lk='/bin/ls --color=auto -lSr' # sort by size
 alias lc='/bin/ls --color=auto -lcr' # sort by change time
@@ -69,7 +65,7 @@ alias lm='/bin/ls --color=auto -al | less' # pipe through 'more'
 
 alias tree='tree -Csuh' # nice alternative to 'ls'
 
-# Shortcuts.
+# Shortcuts on cp
 alias cp='/bin/cp -iv'
 alias h='history'
 alias which='type -all'
@@ -237,26 +233,24 @@ xtitle() {
 }
 
 # Autre outils pratiques
-Regler_son(){
+Regler_son() {
     xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { AlsaMixer v1.0.25 }" || true
     clear; alsamixer; clear
 }
 
-Wavemon(){
+Wavemon() {
     xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { `wavemon -v | head -n1` }" || true
     clear; wavemon; clear
 }
 
-# alias captureEcran='scrot --delay 3 --count --quality 100 "captureEcran_$USER@$HOSTNAME[display=$DISPLAY]_%Y-%m-%d_%H-%M-%S_\$wx\$h.jpg"'
 captureEcran() {  # now the Alt+$ shortcut does the same!
     sleep 3s
     xfce4-screenshooter -r -d 5 || gnome-screenshot -i
     clear
 }
 
-alias EditXMLConf='dconf-editor &'
 alias manH='man -Helinks'
-alias Byobu='byobu -A -D -RR -fa -h 150000 -l -O -U'
+alias Byobu='echo -e "You should rather use TMUX instead"; byobu -A -D -RR -fa -h 150000 -l -O -U'  # TMUX is better
 alias Byobu-tmux='byobu-tmux -2 -q -u'
 
 alias py2html='pyhtmlizer --stylesheet=http://perso.crans.org/besson/pyhtmlizer.css'
@@ -333,7 +327,16 @@ alias rmt=rmTilde
 alias rm~="rmTilde *"
 
 # Netoyer les fichiers temporaires crees par LaTeX (pdflatex et hevea)
-alias rmLaTeX='for i in *.tex; do echo "Pour $i:" ; for j in "${i%tex}dvi" "${i%tex}htoc" "${i%tex}frompdf[0-9]*.png" "${i%tex}bbl" "${i%tex}blg" "${i%tex}brf" "${i%tex}tms" "${i%tex}tid" "${i%tex}lg" "${i%tex}idv" "${i%tex}vrb" "${i%tex}toc" "${i%tex}snm" "${i%tex}nav" "${i%tex}htmp" "${i%tex}synctex.gz" "${i%tex}synctex.gz(busy)" "${i%tex}aux" "${i%tex}fdb_latexmk" "${i%tex}fls" "${i%tex}log" "${i%tex}tmp" "${i%tex}idx" "${i%tex}aux" "${i%tex}out" "${i%tex}haux" "${i%tex}hidx"; do mv -vf "$j" /tmp/ 2>/dev/null; done; echo -e "Fichiers `ls --color=always --format=horizontal ${i%tex}html ${i%tex}pdf` : conserves..."; done'
+rmLaTeX() {
+    echo -e "# ${blue}rmLaTeX:${white}"
+    for i in *.tex; do
+        echo "# For the file ${yellow}${u}$i${U}${white}:"
+        for j in "${i%tex}dvi" "${i%tex}htoc" "${i%tex}frompdf[0-9]*.png" "${i%tex}bbl" "${i%tex}blg" "${i%tex}brf" "${i%tex}tms" "${i%tex}tid" "${i%tex}lg" "${i%tex}idv" "${i%tex}vrb" "${i%tex}toc" "${i%tex}snm" "${i%tex}nav" "${i%tex}htmp" "${i%tex}synctex.gz" "${i%tex}synctex.gz(busy)" "${i%tex}aux" "${i%tex}fdb_latexmk" "${i%tex}fls" "${i%tex}log" "${i%tex}tmp" "${i%tex}idx" "${i%tex}aux" "${i%tex}out" "${i%tex}haux" "${i%tex}hidx"; do
+            mv -vf "$j" /tmp/ 2>/dev/null
+        done
+    echo -e "Fichiers $(ls --color=always --format=horizontal ${i%tex}html ${i%tex}pdf) : conserves..."
+    done
+}
 
 # A super pdflatex
 tex2pdf() {
@@ -362,17 +365,18 @@ alias TempDisk='echo -e "Hard drive temperature : ${green}$((`sudo hddtemp --num
 # Affiche la taille du repertoire courant. Peut etre long a calculer !
 alias TailleCourante='LS_ECHO -e "*"; echo -e "${el}Taille du repertoire ${u}courant${U} : \033[01;31m`du -sh \"\`pwd -P\`\"`\033[01;37m"'
 
-# eteint simplement l'ecran !
+# Simply shutdown the main screen (force it to be black!)
 alias VeilleEcranNoir='xset dpms force standby'
 alias VeilleEcranNoirContinue='watch --interval=1 "echo -e \"Screen is sleeping, Ctrl+C, ^C to cancel.\" ; xset dpms force standby"'
 
 alias IpAdresses='ifconfig | grep "inet adr:"'
 
-# Nouveau jouet : cat /proc/acpi/...
-alias Version='cat /proc/version'
+# Get Linux kernel versions and informations
+alias version='cat /proc/version'
 
 # Check today content of Google Calendar (FIXME)
 alias CheckGoogleCalendar='google calendar today | grep "`date \"+%d\"`" && google --cal="Cours" calendar today | grep "`date \"+%d\"`"'
+alias CalendarRandQuote='google calendar add "`randquote`"'
 
 # Gobby Server
 alias SOBBY='sobby -p 6522 --password 120193 --autosave-file=/home/lilian/.gobby.savefile --autosave-interval=10'
@@ -384,7 +388,7 @@ alias EffacePresenceAPPLE='find -type d -name *Apple* -exec rm -vrI {} \;'
 # Affiche tous les programmes dans le $PATH.
 alias LS_PATH='ls ${PATH//:/ }'
 
-LOG_Colored(){
+LOG_Colored() {
     $* 2> /tmp/LOG_Colored.log
     printf "${reset}${el}\a"
     catColor /tmp/LOG_Colored.log
@@ -404,9 +408,6 @@ alias DocTest3='python3 -m doctest -v'
 export CC="colorgcc"
 alias diff="colordiff"
 
-# For PyLint
-export PYLINTHOME="$HOME"
-
 alias CowThink='cowthink -W 160 -f /usr/share/cowsay/cows/moose.cow'
 
 # For tar compression.
@@ -423,9 +424,7 @@ alias unTarGZ='tar -zxvf'
 alias unTarBZ2='tar -jxvf'
 alias unTarTBZ='tar -xjvf'
 
-##################################################################
-#  Use grep to look for TODO or FIXME or FIXED                   #
-#   or HOWTO or XXX or DEBUG, or WARNING balises in code         #
+#  Use grep to look for TODO or FIXME or FIXED or HOWTO or XXX or DEBUG, or WARNING balises in code
 GrepBalises() {
     echo -e "GrepBalises >>> Looking for specials developpement balises in files ${blue}$@${white}."
     notfound=""
@@ -440,10 +439,10 @@ GrepBalises() {
         fi
     done
     if [ "X$notfound" = "X" ]; then
-    echo -e "${white}GrepBalises >>> ${green} Done${white}. (on files $@)."
+        echo -e "${white}GrepBalises >>> ${green} Done${white}. (on files $@)."
     else
-    echo -e "${white}GrepBalises >>> ${red} Balises $notfound not found :("
-    echo -e "${white}GrepBalises >>> Done. (on files $@)."
+        echo -e "${white}GrepBalises >>> ${red} Balises $notfound not found :("
+        echo -e "${white}GrepBalises >>> Done. (on files $@)."
     fi
 }
 
@@ -464,13 +463,12 @@ export LESS=' -r -F -B -i -J -w -W -~ -K -d -w -W -m -X -u -r'
 
 # # Wrapper around current interpreters;
 # alias ocaml='xtitle "OCaml 4.01.0 on `pwd -P`. `date`" ; ocaml'
-# alias python='xtitle "Python 2.7.6 on `pwd -P`. `date`" ; python'
-# alias bpython='xtitle "BPython 2.7.6 on `pwd -P`. `date`" ; bpython'
+# alias python='xtitle "Python on `pwd -P`. `date`" ; python'
+# alias bpython='xtitle "BPython on `pwd -P`. `date`" ; bpython'
 # alias octave='xtitle ".: Octave (-q -V --traditional --persist) 3.2.4 on `pwd -P`. `date` -- $USER@$HOSTNAME :." ; octave --silent --verbose --traditional --persist'
 
 #-----------------------------------
 # File & strings related functions:
-#-----------------------------------
 
 # Find a file with a pattern in name:
 function ff() { find . -type f -iname '*'$*'*' -ls ; }
@@ -484,17 +482,16 @@ function fstr() {
         local case=""
         local usage="fstr: find string in files.
 Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
-        while getopts :it opt
-        do
-                case "$opt" in
-                i) case="-i " ;;
-                *) echo "$usage"; return;;
-                esac
+        while getopts :it opt; do
+            case "$opt" in
+            i) case="-i " ;;
+            *) echo "$usage"; return;;
+            esac
         done
         shift $(( $OPTIND - 1 ))
         if [ "$#" -lt 1 ]; then
-                echo "$usage"
-                return;
+            echo "$usage"
+            return;
         fi
         local SMSO=$(tput smso)
         local RMSO=$(tput rmso)
@@ -503,57 +500,57 @@ Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
         sed "s/$1/${SMSO}\0${RMSO}/gI" | more
 }
 
-function lowercase() { # move filenames to lowercase
-        for file ; do
-                filename=${file##*/}
-                case "$filename" in
-                */*) dirname==${file%/*} ;;
-                *) dirname=.;;
-                esac
-                nf=$(echo $filename | tr A-Z a-z)
-                newname="${dirname}/${nf}"
-                if [ "$nf" != "$filename" ]; then
-                        mv "$file" "$newname"
-                        echo "lowercase: $file --> $newname"
-                else
-                        echo "lowercase: $file not changed."
-                fi
-        done
+function lowercase() {  # move filenames to lowercase
+    for file ; do
+        filename=${file##*/}
+        case "$filename" in
+            */*) dirname==${file%/*} ;;
+            *) dirname=.;;
+        esac
+        nf=$(echo $filename | tr A-Z a-z)
+        newname="${dirname}/${nf}"
+        if [ "$nf" != "$filename" ]; then
+            mv "$file" "$newname"
+            echo "lowercase: $file --> $newname"
+        else
+            echo "lowercase: $file not changed."
+        fi
+    done
 }
 
-function capitalize() { # move filenames to Capitalize
-        for file ; do
-                filename=${file##*/}
-                case "$filename" in
-                */*) dirname==${file%/*} ;;
-                *) dirname=.;;
-                esac
-    premierelettre=${filename:0:1}
-    pl=$(echo $premierelettre | tr a-z A-Z)
-    nf=${pl}${filename:1}
-                newname="${dirname}/${nf}"
-                if [ "$nf" != "$filename" ]; then
-                        mv "$file" "$newname"
-                        echo "lowercase: $file --> $newname"
-                else
-                        echo "lowercase: $file not changed."
-                fi
-        done
+function capitalize() {  # move filenames to Capitalize
+    for file ; do
+        filename=${file##*/}
+        case "$filename" in
+            */*) dirname==${file%/*} ;;
+            *) dirname=.;;
+        esac
+        premierelettre=${filename:0:1}
+        pl=$(echo $premierelettre | tr a-z A-Z)
+        nf=${pl}${filename:1}
+        newname="${dirname}/${nf}"
+        if [ "$nf" != "$filename" ]; then
+            mv "$file" "$newname"
+            echo "lowercase: $file --> $newname"
+        else
+            echo "lowercase: $file not changed."
+        fi
+    done
 }
 
 function swap() {        # swap 2 filenames around
-        local TMPFILE=tmp.$$
-        mv "$1" $TMPFILE
-        mv "$2" "$1"
-        mv $TMPFILE "$2"
+    local TMPFILE=tmp.$$
+    mv "$1" $TMPFILE
+    mv "$2" "$1"
+    mv $TMPFILE "$2"
 }
 
 function my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,bsdtime,command ; }
 
 function pp() { my_ps f | awk '!/awk/ && $0~var' var=${1:-".*"} ; }
 
-function my_ip() { # get IP adresses
-        MY_IP=$(/sbin/ifconfig | awk '/inet adr:/ { print $2 } ' | sed -e s/addr://)
+function my_ip() {  # get IP adresses
+    MY_IP=$(/sbin/ifconfig | awk '/inet adr:/ { print $2 } ' | sed -e s/addr://)
 }
 
 function ii() {   # get current host related info
@@ -565,7 +562,6 @@ function ii() {   # get current host related info
     echo -e "\n${blue}Memory stats :${reset}${white} " ; free
     my_ip 2>&- ;
     echo -e "\n${blue}Local IP Address :${reset}${white}" ; echo ${MY_IP:-"Not connected"}
-    echo
 }
 
 # For Python (2.7)
@@ -574,24 +570,26 @@ export PYTHONSTARTUP="$HOME/.pythonrc"
 #export PYTHONOPTIMIZE= # no optimization.
 #export PYTHONVERBOSE=  # no verbose adds.
 # export PYTHONPATH="/usr/local/lib/python2.7/":"/usr/local/lib/python2.7/dist-packages/":"/usr/lib/python2.7/":"/usr/lib/python2.7/dist-packages"
+# For PyLint
+export PYLINTHOME="$HOME"
 
 # Three different mutt (useless):
 mutt(){
- xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { Mutt 1.5.21 } : for localhost"
- /usr/bin/mutt-patched "$@"
- [ -f yes ] && rm -f yes
+    xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { Mutt 1.5.21 } : for localhost"
+    /usr/bin/mutt-patched "$@"
+    [ -f yes ] && rm -f yes
 }
 
 mutt-crans(){
- xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { Mutt 1.5.21 } : for crans.org"
- clear ; /usr/bin/mutt-patched -F ~/.mutt/crans.muttrc "$@" && clear
- [ -f yes ] && rm -f yes
+    xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { Mutt 1.5.21 } : for crans.org"
+    clear ; /usr/bin/mutt-patched -F ~/.mutt/crans.muttrc "$@" && clear
+    [ -f yes ] && rm -f yes
 }
 
 mutt-ens(){
- xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { Mutt 1.5.21 } : for ens-cachan.fr"
- clear ; /usr/bin/mutt-patched -F ~/.mutt/ens.muttrc "$@" && clear
- [ -f yes ] && rm -f yes
+    xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { Mutt 1.5.21 } : for ens-cachan.fr"
+    clear ; /usr/bin/mutt-patched -F ~/.mutt/ens.muttrc "$@" && clear
+    [ -f yes ] && rm -f yes
 }
 
 # Supprimer les meta-donnees des images jpeg et png
@@ -675,7 +673,7 @@ alias MacAddress='ifconfig | grep "HWaddr [0-9a-f:]*"'
 # For Git
 alias Push='clear; git push && git gc'
 alias Pull='clear; git gc && git pull && git gc'
-# alias Status='clear; git status'
+alias Status='clear; git status'
 alias Commit='clear; git commit -m'
 alias Add='git add'
 alias Aggressive='git gc --aggressive'
@@ -695,16 +693,16 @@ alias irc='screen irssi'
 alias TMUX='tmux -2 -q -u attach-session || tmux -2 -q -u'
 
 # For GPG
-GpgSign(){ gpg --armor --detach-sign --yes --no-batch --use-agent "$@";}
-GpgVerify(){ gpg --verify --no-batch --use-agent "$@";}
-GpgEncrypt(){ gpg --encrypt --yes --no-batch --use-agent -r "$EMAIL" "$@";}
-GpgDecrypt(){ gpg --decrypt --yes --no-batch --use-agent "$@";}
+GpgSign() { gpg --armor --detach-sign --yes --no-batch --use-agent "$@"; }
+GpgVerify() { gpg --verify --no-batch --use-agent "$@"; }
+GpgEncrypt() { gpg --encrypt --yes --no-batch --use-agent -r "$EMAIL" "$@"; }
+GpgDecrypt() { gpg --decrypt --yes --no-batch --use-agent "$@"; }
 
 # Pour que ssh-add ne memorise la passphrase que pendant 30 minutes
 alias ssh-add='ssh-add -t 1800'
 
 # youtube-dl shortcuts (there is also youtube-playlist.sh and youtube-albums.sh)
-youtube(){
+youtube() {
     for i in "$@"; do
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
@@ -712,7 +710,7 @@ youtube(){
         youtube-dl --youtube-skip-dash-manifest --output "%(title)s.%(ext)s" --extract-audio --console-title --keep-video --audio-format=mp3 --no-overwrites -- "$arg"
     done
 }
-youtube-mp3(){
+youtube-mp3() {
     for i in "$@"; do
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
@@ -720,7 +718,7 @@ youtube-mp3(){
         youtube-dl --youtube-skip-dash-manifest --format worst --output "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 --no-overwrites -- "$arg"
     done
 }
-youtube-video(){
+youtube-video() {
     for i in "$@"; do
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
@@ -729,20 +727,18 @@ youtube-video(){
     done
 }
 
-# Pour recuperer les droits d'un fichier en octal
 alias getmod='/usr/bin/stat -c "%a"'
-
 alias watch='watch -b -d -e'
 
 # Do a job, only for a certain amount of time
 # Exemple : DoForATime 60 my-very-long-command-that-can-never-terminate
 DoForATime(){
- log=/tmp/DoForATime`date "+%Hh-%Mm-%Ss"`.log
- TIMEOUT=$1
- shift
- echo -e "${reset}Launching $@, in $PWD, for $TIMEOUT seconds only." | tee "$log"
- echo -e "$white"
- "$@" & { sleep ${TIMEOUT}; eval 'kill -9 $!' &>> "$log"; }
+    log=/tmp/DoForATime`date "+%Hh-%Mm-%Ss"`.log
+    TIMEOUT=$1
+    shift
+    echo -e "${reset}Launching $@, in $PWD, for $TIMEOUT seconds only." | tee "$log"
+    echo -e "$white"
+    "$@" & { sleep ${TIMEOUT}; eval 'kill -9 $!' &>> "$log"; }
 }
 
 pstree() { /usr/bin/pstree -a -h -s -c -U "$@"; }
@@ -757,7 +753,7 @@ sshtmux() {
     fi
 }
 
-# Raccourcis avec ssh
+# ssh shortcuts
 alias sshzamok='sshtmux besson@zamok.crans.org'
 alias sz='sshzamok'
 alias sshvo='sshtmux besson@vo.crans.org'
@@ -771,7 +767,6 @@ alias s06='sshtmux 06.dptinfo.ens-cachan.fr'
 # Navigateur en console
 alias elinks='elinks -verbose 0'
 
-# Short alias
 Lock(){
     echo -e "New use of Lock from `w`.\n\n Last: `last`.\n Date: `date`.\n\n" >> ~/.Lock.log
     if [ "X`pidof gnome-screensaver`" != "X0" ]; then
@@ -785,7 +780,6 @@ Lock(){
     fi
 }
 
-################
 # Make shortcuts
 send_dpt(){
 ( make send_dpt 2>&1 | tee /tmp/make.log ) ; ( grep "Pas de règle" /tmp/make.log >/dev/null && echo -e "${red}Error: send_dpt not found.${white}" ; alert ) || echo -e "${green}Success in sending to zamok.crans.org :)${white}"
@@ -804,8 +798,6 @@ randquote(){
         echo -e "No citation, ~/motd is not there, and \$quotes is not set."
     fi
 }
-
-alias CalendarRandQuote='google calendar add "`randquote`"'
 
 # With nginx
 Nginx_Access() { watch tail -n 10 /var/log/nginx/access.log || alert; }
@@ -865,7 +857,7 @@ function t() { htop || alert; }
 # Get the latest QC strip ;)
 alias GetQC='wget `wget http://questionablecontent.net/ -O - | grep -o "http://www.questionablecontent.net/comics.*[0-9]*.*\(png\|jpg\|jpeg\|gif\)"`'
 
-# Print the current read/watched TV shows or movies (series.sh list now does the same)
+# Print the current read/watched TV shows or movies ('series.sh list' now does the same)
 Currents() {
     clear
     for i in ~/current*; do
@@ -914,10 +906,11 @@ ExplainShell() { /usr/bin/firefox http://explainshell.com/explain?cmd="${*// /%2
 
 alias Tor='~/.local/tor-browser_fr/start-tor-browser'
 
-alias kaamelott='vlc --random /host/Users/Lilian/Videos/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
-alias kaamelott-parole='parole --fullscreen /host/Users/Lilian/Videos/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
-alias scrubs='vlc --random /host/Users/Lilian/Videos/Séries/Scrubs/ >/dev/null 2>/dev/null &'
-alias scrubs-parole='parole --fullscreen /host/Users/Lilian/Videos/Séries/Scrubs/ >/dev/null 2>/dev/null &'
+# Quickly play my favorite TV series
+alias kaamelott='vlc --random ~/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
+alias kaamelott-parole='parole --fullscreen ~/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
+alias scrubs='vlc --random ~/Séries/Scrubs/ >/dev/null 2>/dev/null &'
+alias scrubs-parole='parole --fullscreen ~/Séries/Scrubs/ >/dev/null 2>/dev/null &'
 alias scrubs-vo='vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs VO" >/dev/null 2>/dev/null &'
 alias scrubs-vo-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs VO" >/dev/null 2>/dev/null &'
 alias friends='vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
@@ -962,12 +955,13 @@ function pdfinfo() { for i in "$@"; do echo -e "\n${green}# For '${red}${u}$i${U
 complete -o plusdirs -f -X '!*.pdf' pdfinfo
 
 alias b='bpython || alert'
-alias f='firefox'
-alias i='ipython --pylab'
-alias e='evince'
+alias f='firefox || alert'
+alias i='ipython --pylab || alert'
+alias pti='ptipython3 || alert'  # ptipython from https://github.com/jonathanslenders/ptpython
+alias e='evince || alert'
 complete -o plusdirs -f -X '!*.@(pdf|djvu|PDF)' e
 alias s='clear ; git status | less -r'
-alias wd='clear ; git wdiff'
+alias wd='clear ; git wdiff || alert'
 
 alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "^rupee.*$" | sed s/"^rupee"/""/ )${U}${white}." | tee -a /tmp/RoupiesCourse.log'
 alias brigthness='xrandr --output LVDS --brightness '
@@ -979,6 +973,7 @@ alias update_codecivil='p="$(pwd)"; cd /home/lilian/france.code-civil ; git pull
 
 alias impressive='impressive.py --nologo --clock --tracking --transtime 0'
 alias slides='impressive'
+complete -o plusdirs -f -X '!*.@(pdf|djvu|PDF|png|PNG|jpg|JPG|jpeg|JPEG)' impressive slides
 
 ##############################################################################
 # (c) 2011-2015 Lilian BESSON
