@@ -898,9 +898,9 @@ butterfly() {
 
 # Better .rst → .html and .md → .html (simpler)
 alias rst2html='rst2html -v -t --no-generator -l fr --cloak-email-addresses '
-complete -f -X '!*.rst' rst2html
+complete -f -X '!*.@(rst|txt)' rst2html rst2latex rst2man rst2odt rst2odt_prepstyles rst2pdf rst2pseudoxml rst2s5 rst2xetex rst2xml rst2pdf 
 alias markdown='python -m markdown -e utf8 -v '
-complete -f -X '!*.@(md|mdown|markdown|mkdown|txt)' markdown
+complete -f -X '!*.@(md|mdown|markdown|mkdown|txt)' markdown markdown2 markdown_py
 
 alias bd='. bd -s'
 
@@ -949,8 +949,8 @@ PROXY () {
     esac
 }
 
-# Short Shortcuts with hand-written Bash completion
-complete -f -X '!*.@(html|md)' strapdown2pdf
+# Short shortcuts with hand-written Bash completions
+complete -f -X '!*.@(html|md)' strapdown2pdf strapdown2html.py
 alias a='autotex'
 complete -f -X '!*.@(tex|pdf)' a
 alias p='PDFCompress'
