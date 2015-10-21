@@ -22,7 +22,7 @@ while [ -n "$1" ]; do
     ;;
     "-C")
         LOGOPTS+=("-C")
-	LOGOPTS+=("--find-copies-harder")
+        LOGOPTS+=("--find-copies-harder")
     ;;
     "-M")
         LOGOPTS+=("-M")
@@ -34,7 +34,7 @@ done
 #test if the directory is a git
 git branch &> /dev/null || exit 3
 
-echo "$(basename $0): to statistics on this git repository."
+echo "$(basename $0): do statistics on this git repository."
 echo "Number of commits per author:"
 git --no-pager shortlog "${END_AND_BEGIN[@]}" -sn --all
 AUTHORS=$(git shortlog "${END_AND_BEGIN[@]}" -sn --all | cut -f2 | cut -f1 -d' ')
