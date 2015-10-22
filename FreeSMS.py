@@ -13,7 +13,7 @@ Examples
 >>> FreeSMS.py --help
 Gives help
 
->>> FreeSMS.py "I like using Python to send me SMS from my laptop -- and it"s free thanks to Free !"
+>>> FreeSMS.py "I like using Python to send me SMS from my laptop -- and it's free thanks to Free !"
 Will send a test message to your mobile phone.
 
 ------
@@ -133,8 +133,8 @@ Examples:
 $ FreeSMS.py --help
 Print this help message!
 
-$ FreeSMS.py -f /tmp/MyMessageFile.txt
-Print this help message!
+$ FreeSMS.py -f MyMessageFile.txt
+Try to send the content of the file MyMessageFile.txt.
 
 $ FreeSMS.py "I like using Python to send me SMS from my laptop -- and it"s free thanks to Free !"
 Will send a test message to your mobile phone.
@@ -150,7 +150,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.""")
         try:
             with open(argv[argv.index("-f")+1], 'r') as filename:
                 text = "".join(filename.readlines())[:-1]
-        except:
+        except Exception as e:
+            print(e)
             text = " ".join(argv)
     else:
         if argv:
