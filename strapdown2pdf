@@ -23,7 +23,7 @@
 #
 # Bugs / FIXME:
 #  1. I think it is way better now. Hack something to preserve LaTeX code verbatim between $ $ in the HTML initial document
-#     Example: http://javis/a/maths.html -> http://javis/a/maths.pdf works very well,
+#     Example: http://jarvis/a/maths.html -> http://jarvis/a/maths.pdf works very well,
 #     only for MathJax flavored maths formulas, which are all copied in the .tex with escaped $ and { : \{ and \$ every where :(
 #
 #
