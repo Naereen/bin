@@ -1,6 +1,6 @@
 #!/bin/sh
 ## About:
-#  This script remove all the colors defined in my .color.sh script
+#  This script remove all the colors defined in my .color.sh script.
 #  Use this script with other GNU Bash scripts, simply by importing him with
 #  $ . ~/.nocolor.sh
 #
@@ -11,8 +11,11 @@
 #
 ## How to use it after?
 #  For example, echo -e "${red}This part is red. ${blue}That's blue :) ${black}And black.${reset}${white}"
-#  will print: This part is red. That's blue :) And black. <-- with colors!
+#  will print: This part is red. That's blue :) And black. <-- WITHOUT colors!
 #
+## Warning:
+#  Removing the color aliases is NOT recursive: if a script calls a script using ~/.color.sh (or any ANSI color codes), it will not work.
+#  You can pipe a colored command through ' | sed -r "s:\x1B\[[0-9;]*[mK]::g"' to remove all colors.
 #
 ## Copyrigths:
 #  (c) 2013-15, Lilian Besson
