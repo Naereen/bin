@@ -911,16 +911,18 @@ ExplainShell() { /usr/bin/firefox http://explainshell.com/explain?cmd="${*// /%2
 alias Tor='~/.local/tor-browser_fr/start-tor-browser'
 
 # Quickly play my favorite TV series
-alias kaamelott='vlc --random ~/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
+alias kaamelott='/usr/bin/vlc --random ~/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
 alias kaamelott-parole='parole --fullscreen ~/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
-alias scrubs='vlc --random ~/Séries/Scrubs/ >/dev/null 2>/dev/null &'
+alias scrubs='/usr/bin/vlc --random ~/Séries/Scrubs/ >/dev/null 2>/dev/null &'
 alias scrubs-parole='parole --fullscreen ~/Séries/Scrubs/ >/dev/null 2>/dev/null &'
-alias scrubs-vo='vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs VO" >/dev/null 2>/dev/null &'
-alias scrubs-vo-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs VO" >/dev/null 2>/dev/null &'
-alias friends='vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
+alias scrubs-vo='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" >/dev/null 2>/dev/null &'
+alias scrubs-vo-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" >/dev/null 2>/dev/null &'
+alias friends='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
 alias friends-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
+alias himym='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" >/dev/null 2>/dev/null &'
+alias himym-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" >/dev/null 2>/dev/null &'
 
-alias dropbox='( dropbox start ; alert ) &>/dev/null&'
+alias dropbox='( /usr/bin/dropbox start ; alert ) &>/dev/null&'
 
 # Put your laptop in Suspend (veille)
 alias veille='date >> /tmp/veille.log ; ( gnome-session-quit --power-off || xfce4-session-logout || (Lock ; gksudo pm-suspend) )'
