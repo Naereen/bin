@@ -70,12 +70,12 @@ for arg in "$@"; do
 			echo -e "    ${yellow}-q|-quiet${white}		run strapdown2pdf in quiet mode (no output at all, everything is redirected to ${magenta}/tmp/strapdown2pdf.log${white})."
 			echo -e "    ${yellow}-m|-htm${white}		run strapdown2pdf to produce a simple HTML file (which do not use StrapDown.js), written to a .htm file.\n\t\t\t For important document, producing a .htm autonomous file is a good idea."
 			echo -e "    ${yellow}-d|-discrete${white}	run strapdown2pdf is discrete mode, without adding any creditentials in the produced document."
-			echo -e "    ${yellow}-s[0-9][0-9]*%${white}	change the default scale used by autotex (default is 85%, '-70%', '-75%' or '-80%' are good also) ${cyan}"'New!'
-			echo -e "    ${yellow}-[0-9][0-9]*pt${white}	change the default police size used by autotex (default is 11pt, '-10pt' or '-12pt' are good also) ${cyan}"'New!'
-			echo -e "    ${yellow}-k|-keep${white}		keep the intermediate .tex file. ${cyan}"'New!'
+			echo -e "    ${yellow}-s[0-9][0-9]*%${white}	change the default scale used by autotex (default is 85%, '-70%', '-75%' or '-80%' are good also)"
+			echo -e "    ${yellow}-[0-9][0-9]*pt${white}	change the default police size used by autotex (default is 11pt, '-10pt' or '-12pt' are good also)"
+			echo -e "    ${yellow}-k|-keep${white}		keep the intermediate .tex file."
 			echo -e "    ${yellow}-s|-sign${white}		sign the produce PDF document with GnuPG (thanks to PDFCompress)."
-			echo -e "    ${yellow}-n|-nocolor${white}		remove ANSI colors from the output."
-			echo -e ""
+			echo -e "    ${yellow}-n|-nocolor${white}		remove ANSI colors from the output. ${cyan}"'New!'
+			echo -e "${white}"
 			echo -e "strapdown2pdf v$version : Copyrights: (c) Lilian Besson 2011-2015."
 			echo -e "Released under the term of the GPL v3 Licence (more details on http://besson.qc.to/LICENSE.html)."
 			echo -e "In particular, strapdown2pdf is provided WITHOUT ANY WARANTY."
