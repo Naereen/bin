@@ -2,6 +2,7 @@
 #-*- coding: utf-8 -*-
 """ A simple and consice SudoKu solver with z3. """
 
+from __future__ import print_function
 from z3 import *
 
 # 9x9 matrix of integer variables
@@ -50,4 +51,4 @@ if s.check() == sat:
           for i in xrange(9) ]
     print_matrix(r)
 else:
-    print "failed to solve"
+    print("Failed to solve the grid.")
