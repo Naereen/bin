@@ -2,14 +2,14 @@
 #
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 31-04-2013
+# Date: 26-10-2015
 # Web version: http://besson.qc.to/bin/generateglisse.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/generateglisse.sh
 #
 # Auto generate an 'index.html' page to show photos with glisse.js
-# FUTUR: use http://dimsemenov.com/plugins/magnific-popup/documentation.html#gallery instead, seems better.
+# FUTURE: use http://dimsemenov.com/plugins/magnific-popup/documentation.html#gallery instead, seems better.
 #
-# A demo is here : http://besson.qc.to/generateglisse.sh
+# A demo is here : http://besson.qc.to/generateglisse.sh/
 # Last version is here : http://besson.qc.to/bin/generateglisse.sh
 # with stylesheets and templates is here : http://besson.qc.to/bin/generateglisse/
 #
@@ -180,7 +180,7 @@ targets=`find . -type d`
 targets=${targets//' '/%20}
 echo -e "${blue}${targets}${white}" | less -r
 
-# TO find every concerned directory
+# To find every concerned directory
 for i in $targets; do
 	direction=${i//'%20'/ }
 	echo -e "For the directory ${blue}'${direction}'${white}........."
