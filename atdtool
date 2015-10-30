@@ -4,7 +4,7 @@ Command-line client for After the Deadline:
 http://www.afterthedeadline.com
 
 Based on AtD module by Miguel Ventura:
-http://bitbucket.org/miguelventura/after_the_deadline/wiki/Home
+https://bitbucket.org/miguelventura/after_the_deadline/wiki/Home
 '''
 
 from optparse import OptionParser
