@@ -2,7 +2,7 @@
 # author: Lilian BESSON
 # email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # date: 03-11-2015
-# web: https://bitbucket.org/lbesson/bin/src/master/restartvolti.sh
+# web: https://bitbucket.org/lbesson/bin/src/master/restart_volti.sh
 #
 # A small script to easily pkill and restart volti
 # More detail at https://github.com/gen2brain/volti/issues/52
