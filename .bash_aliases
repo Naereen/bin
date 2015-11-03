@@ -684,12 +684,12 @@ alias Add='git add'
 alias Aggressive='git gc --aggressive'
 alias Sync='clear; echo -e "Synchronizing (git push, gc, send_zamok, send_dpt)..."; git push; git gc --aggressive; make send_zamok; make send_dpt; alert'
 
-# For vrun (FIXME does not work anymore? my vlc is bugged I guess):
-alias GetUri="vrun status | grep file | sed s/'( new input: '/''/ | sed s/' )'/''/"
-alias Next='vrun next && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (→) Playing${white}: $neg$tmp1$Neg"'
-alias Prev='vrun prev && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (←) Playing${white}: $neg$tmp1$Neg"'
-alias Pause='vrun pause && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (:) Was Playing${white}: $neg$tmp1$Neg"'
-alias Play='vrun play && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (>) Now Playing${white}: $neg$tmp1$Neg"'
+# For gmusicbrowser
+# alias GetUri="vrun status | grep file | sed s/'( new input: '/''/ | sed s/' )'/''/"
+alias Next='gmusicbrowser -cmd NextSong'  # && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (→) Playing${white}: $neg$tmp1$Neg"'
+alias Prev='gmusicbrowser -cmd PrevSong'  # && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (←) Playing${white}: $neg$tmp1$Neg"'
+alias Pause='gmusicbrowser -cmd PlayPause'  # && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (:) Was Playing${white}: $neg$tmp1$Neg"'
+alias Play='gmusicbrowser -cmd Play'  # && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (>) Now Playing${white}: $neg$tmp1$Neg"'
 
 # Irssi
 alias irc='screen irssi'
@@ -976,7 +976,7 @@ e() { echo -e "Opening args '$@' in evince..."; evince "$@" || alert; }
 complete -f -X '!*.@(pdf|djvu|PDF)' e
 
 alias s='clear ; git status | less -r'
-alias wd='clear ; git wdiff || alert'
+alias wd='clear ; git wdiff'
 
 alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "^rupee.*$" | sed s/"^rupee"/""/ )${U}${white}." | tee -a /tmp/RoupiesCourse.log'
 alias brigthness='xrandr --output LVDS --brightness '
