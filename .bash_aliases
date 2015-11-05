@@ -91,31 +91,30 @@ alias MAKE="/usr/bin/make -w"
 
 # Un meilleur make, qui remonte dans le dossier jusqu'à trouver un bon Makefile
 mymake() {
-    old=$(pwd)"/"
+    old="$(pwd)/"
+    xtitle "make $@ - (in ${old})"
     echo -e "Looking for a valid ${magenta}Makefile${white} from ${blue}${old}${white} :"
-    c="."
-    while [ ! -f ${old}${c}/Makefile ]; do
-        echo -e "${red}${old}${c}/Makefile${white} is not there, going up ..."
+    c=""
+    while [ ! -f "${old}${c}Makefile" ]; do
+        echo -e "${red}${old}${c}Makefile${white} is not there, going up ..."
         c="../${c}"
         cd "$c"
-        [ $(pwd) = "/" ] && break
-        #read
+        [ "$(pwd)" = "/" ] && break
     done
-    if [ -f ${old}${c}/Makefile ]; then
-        echo -e "${green}${old}${c}/Makefile${white} is there, I'm using it :"
-        $MAKE --file="${old}${c}/Makefile" $@
+    if [ -f "${old}${c}Makefile" ]; then
+        echo -e "${green}${old}${c}Makefile${white} is there, I'm using it :"
+        /usr/bin/make -w --file="${old}${c}Makefile" "$@"
         cd "$old"
     else
         cd "$old"
-        echo -e "${red}${old}${c}/Makefile${white} is not there and I'm in '/' I cannot go up ..."
+        echo -e "${red}${old}${c}Makefile${white} is not there and I'm in '/'... I cannot go up anymore"
         return 2
     fi
 }
-# alias make='xtitle "Making $(basename "$(pwd -P)")..." ; mymake'
 alias make='mymake'
 
 # Ajout de securite sur la commande 'rm' :
-alias delete='echo -e "Supression avec une seule confirmation ?" && /bin/rm -I'
+alias delete='echo -e "Supression avec une seule confirmation ?"; /bin/rm -I'
 alias rm='/bin/rm -vi'
 
 alias _cd_old='cd'
@@ -153,7 +152,7 @@ mkdir() {
     /bin/mkdir -p "$@"
 }
 
-# Une commande /*geek*/ pour afficher une video en ASCII ... en console !
+# Une commande *geek* pour afficher une video en ASCII ... en console !
 alias VideoAscii='mplayer -vo caca'
 
 # Pour convertir des fichiers textes :
