@@ -84,8 +84,8 @@ alias df='/bin/df -h -l -t ext3 -t ext4 -t fuseblk -t vfat'
 alias free='/usr/bin/free -h'
 
 # Commandes avec GNU-Nano :
-alias nano='xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { GNU Nano 2.2.6 (/bin/nano) }" ; /bin/nano --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds'
-alias nano.last='xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { GNU Nano 2.3.2 (nano.last) }" ; /home/lilian/bin/nano.last --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds'
+alias nano='xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { GNU Nano 2.4.2 (/bin/nano) }" ; /bin/nano --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds'
+alias nano.last='xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { GNU Nano 2.4.2 (nano.last) }" ; /home/lilian/bin/nano.last --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds'
 
 alias MAKE="/usr/bin/make -w"
 
@@ -855,8 +855,10 @@ export null="/dev/null"
 alias send_bashrc_bashalias='CP ~/.bashrc ~/.bash_aliases ~/.bashrc.asc ~/.bash_aliases.asc'
 
 # Shortcut. FIXME ? available ONLY if 'n' is not a command.
-n() { /home/lilian/bin/nano.last "$@" || alert; }
-export EDITOR="/home/lilian/bin/nano.last"
+# n() { /home/lilian/bin/nano.last "$@" || alert; }
+# n() { /bin/nano "$@" || alert; }
+alias n=nano
+export EDITOR="/bin/nano"
 
 # Get the latest QC strip ;)
 alias GetQC='wget $(wget http://questionablecontent.net/ -O - | grep -o "http://www.questionablecontent.net/comics.*[0-9]*.*\(png\|jpg\|jpeg\|gif\)")'
