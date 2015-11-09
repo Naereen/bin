@@ -301,6 +301,9 @@ chmotd() {
         changemotd.sh --new-zenity
     fi
 }
+SMSmotd() {
+    FreeSMS.py "$(tail -n +2 ~/motd)"
+}
 
 LessColor() { pygmentize -f $CAT_COLOR -g $* | less -r; }
 
