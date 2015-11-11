@@ -2,7 +2,7 @@
 #
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 11-09-2015
+# Date: 11-11-2015
 #
 # A first try to automatize the selection of the "next" episode in your current TV serie.
 #
@@ -11,7 +11,7 @@
 #
 # A bash completion file is available (http://besson.qc.to/bin/series.sh.bash_completion)
 #
-version='0.5'
+version='0.6'
 
 # If possible, use ~/.color.sh (http://besson.qc.to/bin/.color.sh)
 [ -f ~/.color.sh ] && ( . ~/.color.sh ; clear )
@@ -193,6 +193,17 @@ for cu in ${currents:-$dflt}; do
 
  # meta=`cat $cu`
  # [ 0"$meta" = "0" ] && echo -e "${reset}No time start data in $magenta$cu$reset... Starting from the beginning.$reset$white"
+
+ # New : pause GMusicBrowser or VLC before starting playing
+ if $(type vrun &>/dev/null); then
+     echo -e "${blue}Pausing VLC (with the vrun CLI tool)...${white}"
+     pidof vlc &>/dev/null && ( vrun play && vrun pause ) || echo -e "${red}Warning: VLC not playing.${white}"
+ fi
+ # if [ -f /usr/bin/gmusicbrowser ]; then
+ if $(type gmusicbrowser &>/dev/null); then
+     echo -e "${blue}Pausing GMusicBrowser (with the 'gmusicbrowser -cmd' CLI tool)...${white}"
+     pidof gmusicbrowser &>/dev/null && gmusicbrowser -cmd Pause || echo -e "${red}Warning: GMusicBrowser not playing.${white}"
+ fi
 
  # PROPOSAL: on pourrait sauvegarder la position de la lecture, afin de pouvoir reprendre exactement là où on en était.
  # À utiliser: format dernierFichierLu.1h02m23s.position
