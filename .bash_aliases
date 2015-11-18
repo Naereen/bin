@@ -364,6 +364,9 @@ TEX2PDF() {
 }
 complete -f -X '!*.@(tex|pdf)' tex2pdf TEX2PDF
 
+alias bib2html='bibtex2html -a -charset utf-8 -linebreak'
+complete -f -X '!*.@(bib)' bibtex2html bib2html
+
 # N'afficher que les processus lances par l'utilisateur courant dans htop.
 alias Htop='htop -u $USER'
 
