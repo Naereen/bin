@@ -106,6 +106,10 @@ autotexf() {
         langf="en"
         template="template.en.tex"
         echo -e "Switching language from default (en) to ${green}en (English)${white}..." | tee -a /tmp/autotex.log
+    elif [ "${f%_twocolumns.tex}_twocolumns.tex" = "$f" ]; then
+        langf="fr"
+        template="template_twocolumns.tex"
+        echo -e "Switching template from default (template.tex) to ${green}two columns${white} (template_twocolumns.tex)..." | tee -a /tmp/autotex.log
     fi
 
     # There you can perform any automatic transformation to ~/$template !
