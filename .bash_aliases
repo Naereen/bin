@@ -1,9 +1,9 @@
 #!/bin/bash
 # .bash_aliases for GNU Bash v4+
 # (c) 2011-2015 Lilian BESSON
+# GPLv3 Licensed
 # Cr@ns: http://perso.crans.org/besson
-# On Bitbucket:   https://bitbucket.org/lbesson/home/
-# ENS de Cachan:  http://www.dptinfo.ens-cachan.fr/~lbesson
+# On Bitbucket:   https://bitbucket.org/lbesson/bin/
 
 # A try with erase line.
 LS_ECHO() {
@@ -186,7 +186,7 @@ iocaml() {
     done
 }
 # Reference for this is https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
-complete -f -X '!*.ml' ocaml ocamlc ocamlopt leocaml leditocaml rlocaml mocaml mocaml_noANSI iocaml
+complete -f -X '!*.ml' -o plusdirs ocaml ocamlc ocamlopt leocaml leditocaml rlocaml mocaml mocaml_noANSI iocaml
 
 ########################################################################
 # Outil pygmentize : permet une coloration syntaxique dans la console
@@ -202,10 +202,10 @@ case $TERM in
 esac
 alias catColor='pygmentize -f $CAT_COLOR -g'
 ExportColorLaTeX() {
-    pygmentize -f latex -P encoding=utf8 -o $1.tex $1
+    pygmentize -f latex -P encoding=utf8 -o "$1.tex" "$1"
 }
 ExportColorLaTeXFull() {
-    pygmentize -f latex -P encoding=utf8 -O full -o $1.full.tex $1
+    pygmentize -f latex -P encoding=utf8 -O full -o "$1.full.tex" "$1"
 }
 
 ########################################################################
@@ -220,8 +220,8 @@ voirImage() {
         fi;
     done
 }
-# Ajout d'une bash complétion comme ça, en une ligne ! TODO: à étendre !
-complete -f -X '!*.@(gif|GIF|jp?(e)g|pn[gm]|PN[GM]|ico|ICO)' voirImage
+# Ajout d'une bash complétion comme ça, en une ligne !
+complete -f -X '!*.@(gif|GIF|jp?(e)g|pn[gm]|PN[GM]|ico|ICO)' -o plusdirs voirImage
 
 xtitle() {
     echo -e "${reset}Setting title to $@..." >> /tmp/xtitle.log
@@ -259,7 +259,7 @@ alias Byobu='echo -e "You should rather use TMUX instead"; byobu -A -D -RR -fa -
 alias Byobu-tmux='byobu-tmux -2 -q -u'
 
 alias py2html='pyhtmlizer --stylesheet=http://perso.crans.org/besson/pyhtmlizer.css'
-complete -f -X '!*.py' py2html
+complete -f -X '!*.@(py|py3)' -o plusdirs py2html
 
 # Ecrans de veilles
 alias MatrixVeille='cmatrix -b -f -s -u 9'
@@ -305,14 +305,14 @@ SMSmotd() {
     FreeSMS.py "$(tail -n +2 ~/motd)"
 }
 
-LessColor() { pygmentize -f $CAT_COLOR -g $* | less -r; }
+LessColor() { pygmentize -f $CAT_COLOR -g "$@" | less -r; }
 
 # Un meilleur 'scp'. Ne fonctionne pas avec tous les serveurs, car la cible **doit** avoir rsync aussi.
 # NOTE: fonctionne aussi en local (et donne un avancement et propose une compression, meme en local).
 alias rsync='/usr/bin/rsync --verbose --times --perms --compress --human-readable --progress --archive'
 # Deprecated: use http://besson.qc.to/bin/CP instead (with colours!)
 
-DOCXtoPDF() { for i in $*; do echo -e "$i ----[abiword]----> ${i%.docx}.pdf"; abiword "$i" --to="${i%.docx}.pdf"; echo -e $?; done }
+DOCXtoPDF() { for i in $@; do echo -e "$i ----[abiword]----> ${i%.docx}.pdf"; abiword "$i" --to="${i%.docx}.pdf"; echo -e "$?"; done }
 
 # Netoyer les fichiers temporaires (sauvegarde, python, ou emacs)
 alias rmPyc='rm -f *.py[co] && echo "Local Python compiled files (*.pyc and *.pyo) have been deleted..."'
@@ -362,10 +362,10 @@ TEX2PDF() {
         PDFCompress "${i%tex}pdf"
     done
 }
-complete -f -X '!*.@(tex|pdf)' tex2pdf TEX2PDF
+complete -f -X '!*.@(tex|pdf)' -o plusdirs tex2pdf TEX2PDF
 
 alias bib2html='bibtex2html -a -charset utf-8 -linebreak'
-complete -f -X '!*.@(bib)' bibtex2html bib2html
+complete -f -X '!*.@(bib)' -o plusdirs bibtex2html bib2html
 
 # N'afficher que les processus lances par l'utilisateur courant dans htop.
 alias Htop='htop -u $USER'
@@ -400,7 +400,7 @@ alias EffacePresenceAPPLE='find -type d -name *Apple* -exec rm -vrI {} \;'
 alias LS_PATH='ls ${PATH//:/ }'
 
 LOG_Colored() {
-    $* 2> /tmp/LOG_Colored.log
+    $@ 2> /tmp/LOG_Colored.log
     printf "${reset}${el}\a"
     catColor /tmp/LOG_Colored.log
 }
@@ -461,7 +461,6 @@ GrepBalises() {
 alias agrep='ack-grep -ri -H --sort-files'
 
 # Other aliases, from http://abs.traduc.org/abs-5.3-fr/apk.html
-
 # tailoring 'less'
 export PAGER=less
 export LESSCHARSET='latin1'
@@ -472,22 +471,16 @@ export LESSOPEN='|/usr/bin/lesspipe.sh %s 2>&-'
 export LESS=' -r -F -B -i -J -w -W -~ -K -d -w -W -m -X -u -r'
 ###-P"%t?%f%f :stdin .?pb%pb\%:?lbLine %lb:?bbByte %bb:-..." -e'
 
-# # Wrapper around current interpreters;
-# alias ocaml='xtitle "OCaml 4.01.0 on $(pwd -P). $(date)" ; ocaml'
-# alias python='xtitle "Python on $(pwd -P). $(date)" ; python'
-# alias bpython='xtitle "BPython on $(pwd -P). $(date)" ; bpython'
-# alias octave='xtitle ".: Octave (-q -V --traditional --persist) 3.2.4 on $(pwd -P). $(date) -- $USER@$HOSTNAME :." ; octave --silent --verbose --traditional --persist'
-
 #-----------------------------------
 # File & strings related functions:
 
 # Find a file with a pattern in name:
-ff() { find . -type f -iname '*'$*'*' -ls ; }
+ff() { find . -type f -iname '*'$@'*' -ls ; }
 
 # Find a file with pattern $1 in name and Execute $2 on it:
-fe() { find . -type f -iname '*'$1'*' -exec "${2:-file}" {} \;  ; }
+fe() { find . -type f -iname '*'"$1"'*' -exec "${2:-file}" {} \;  ; }
 
-# find pattern in a set of filesand highlight them:
+# find pattern in a set of files and highlight them:
 fstr() {
         OPTIND=1
         local case=""
@@ -656,9 +649,9 @@ LatexFormula() {
     display -title "Image for the LaTeX formula: '${@//\\/\\\\}'   (thanks to an awesome webservice)" "${out}"
 }
 
-alias CheckHomePage_crans='wget -q http://perso.crans.org/besson/index.fr.html -O - | grep "Mis.*jour"'
-alias CheckHomePage_dpt='wget -q http://www.dptinfo.ens-cachan.fr/~lbesson/index.fr.html -O - | grep "Mis.*jour"'
-alias CheckHomePage_jarvis='wget -q http://jarvis/index.fr.html -O - | grep "Mis.*jour"'
+alias CheckHomePage_crans='wget -q http://perso.crans.org/besson -O - | grep "Mis.*jour"'
+alias CheckHomePage_dpt='wget -q http://www.dptinfo.ens-cachan.fr/~lbesson -O - | grep "Mis.*jour"'
+alias CheckHomePage_jarvis='wget -q http://jarvis -O - | grep "Mis.*jour"'
 
 alias GenP="base64 < /dev/urandom | tr -d +/ | head -c 18; echo"
 
@@ -776,7 +769,7 @@ alias s05='sshtmux 05.dptinfo.ens-cachan.fr'
 alias s06='sshtmux 06.dptinfo.ens-cachan.fr'
 
 # Navigateur en console
-alias elinks='elinks -verbose 0'
+alias elinks='/usr/bin/elinks -verbose 0'
 
 Lock(){
     echo -e "New use of Lock from $(w).\n\n Last: $(last).\n Date: $(date).\n\n" >> ~/.Lock.log
@@ -860,14 +853,11 @@ export null="/dev/null"
 # Use it like 'send_.. ${Szam}bin/' or 'send_.. ~/Dropbox/'
 alias send_bashrc_bashalias='CP ~/.bashrc ~/.bash_aliases ~/.bashrc.asc ~/.bash_aliases.asc'
 
-# Shortcut. FIXME ? available ONLY if 'n' is not a command.
-# n() { /home/lilian/bin/nano.last "$@" || alert; }
-# n() { /bin/nano "$@" || alert; }
 alias n=nano
 export EDITOR="/bin/nano"
 
 # Get the latest QC strip ;)
-alias GetQC='wget $(wget http://questionablecontent.net/ -O - | grep -o "http://www.questionablecontent.net/comics.*[0-9]*.*\(png\|jpg\|jpeg\|gif\)")'
+alias GetQC='wget "$(wget http://questionablecontent.net/ -O - | grep -o "http://www.questionablecontent.net/comics.*[0-9]*.*\(png\|jpg\|jpeg\|gif\)")"'
 
 # Print the current read/watched TV shows or movies ('series.sh list' now does the same)
 Currents() {
@@ -890,7 +880,7 @@ Currents() {
     done
 }
 
-alias UPDATE='( clear ; sudo apt-get update ; sudo apt-get upgrade ; sudo apt-get autoremove ; sudo apt-get clean ; sudo apt-get autoclean ) || alert | tee /tmp/apt.log'
+alias UPDATE='( clear ; echo -e "You used the UPDATE alias: updating apt cache, upgrading, auto-removing and cleaning..."; sudo apt-get update ; sudo apt-get upgrade ; sudo apt-get autoremove ; sudo apt-get clean ; sudo apt-get autoclean ) || alert | tee /tmp/apt.log'
 
 # To avoid painfull &>$null& at the end of some commands
 evince() { ( /usr/bin/evince "$@" || /usr/bin/firefox "$@" ) &> /dev/null & }
@@ -899,16 +889,16 @@ firefox() { ( /usr/bin/firefox "$@" || /usr/bin/elinks "$@" ) &> /dev/null & }
 vlc() { /usr/bin/vlc --random "$@" &> /dev/null & }
 linphone() { /usr/bin/linphone "$@" &> /dev/null & }
 libreoffice() { ( /usr/bin/libreoffice "$@" || /usr/bin/abiword "$@" ) &> /dev/null & }
-butterfly() {
+butterfly() {  # From pip install butterfly
     butterfly.server.py --logging=none --unsecure &> /dev/null &
-    echo "Open your browser at http://127.0.0.1:57575/ to use the Butterfly terminal in your browser"
+    echo -e "Butterfly running... Open your browser at http://127.0.0.1:57575/ to use the Butterfly terminal in your browser"
 }
 
 # Better .rst → .html and .md → .html (simpler)
 alias rst2html='rst2html -v -t --no-generator -l fr --cloak-email-addresses '
-complete -f -X '!*.@(rst|txt)' rst2html rst2latex rst2man rst2odt rst2odt_prepstyles rst2pdf rst2pseudoxml rst2s5 rst2xetex rst2xml rst2pdf 
+complete -f -X '!*.@(rst|txt|rST)' -o plusdirs rst2html rst2latex rst2man rst2odt rst2odt_prepstyles rst2pdf rst2pseudoxml rst2s5 rst2xetex rst2xml rst2pdf 
 alias markdown='python -m markdown -e utf8 -v '
-complete -f -X '!*.@(md|mdown|markdown|mkdown|txt)' markdown markdown2 markdown_py
+complete -f -X '!*.@(md|mdown|markdown|mkdown|txt)' -o plusdirs markdown markdown2 markdown_py
 
 alias bd='. bd -s'
 
@@ -960,13 +950,13 @@ PROXY () {
 }
 
 # Short shortcuts with hand-written Bash completions
-complete -f -X '!*.@(html|md)' strapdown2pdf strapdown2html.py
+complete -f -X '!*.@(html|md|mdown|markdown|mkdown|txt)' -o plusdirs strapdown2pdf strapdown2html.py
 alias a='autotex'
-complete -f -X '!*.@(tex|pdf)' a
+complete -f -X '!*.@(tex|pdf)' -o plusdirs a autotex
 alias p='PDFCompress'
-complete -f -X '!*.@(tex|pdf)' p
+complete -f -X '!*.pdf' -o plusdirs p
 pdfinfo() { for i in "$@"; do echo -e "\n${green}# For '${red}${u}$i${U}${white}':"; /usr/bin/pdfinfo "$i"; done }
-complete -f -X '!*.pdf' pdfinfo
+complete -f -X '!*.pdf' -o plusdirs pdfinfo pdftk pdfgrep pdftohtml pdftotext
 
 f() { echo -e "Opening args '$@' in firefox..."; firefox "$@" || alert; }
 
@@ -981,7 +971,7 @@ i3() { echo -e "Executing args '$@' with ipython3..."; ipython3 --pylab "$@" || 
 pti3() { echo -e "Executing args '$@' with ptipython3..."; ptipython3 "$@" || alert; }  # custom script
 
 e() { echo -e "Opening args '$@' in evince..."; evince "$@" || alert; }
-complete -f -X '!*.@(pdf|djvu|PDF)' e
+complete -f -X '!*.@(pdf|djvu|PDF)' -o plusdirs e
 
 alias s='clear ; git status | less -r'
 alias wd='clear ; git wdiff'
@@ -997,12 +987,12 @@ alias sudo='sudo -H'  # flag to remove warning in 'sudo pip install [..]' and 's
 
 alias impressive='impressive.py --nologo --clock --tracking --transtime 0'
 alias slides='impressive'
-complete -f -X '!*.@(pdf|djvu|PDF|png|PNG|jpg|JPG|jpeg|JPEG)' impressive slides
+complete -f -X '!*.@(pdf|djvu|PDF|png|PNG|jpg|JPG|jpeg|JPEG)' -o plusdirs impressive slides
 
 ##############################################################################
 # (c) 2011-2015 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
-# On Bitbucket:   https://bitbucket.org/lbesson/home/
-# ENS de Cachan:  http://www.dptinfo.ens-cachan.fr/~lbesson
+# On Bitbucket:   https://bitbucket.org/lbesson/bin/
 #
 # Put a blank line after to autorize echo "alias newalias='newentry'" >> ~/.bash_aliases
+
