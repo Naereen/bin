@@ -989,7 +989,7 @@ alias impressive='impressive.py --nologo --clock --tracking --transtime 0'
 alias slides='impressive'
 complete -f -X '!*.@(pdf|djvu|PDF|png|PNG|jpg|JPG|jpeg|JPEG)' -o plusdirs impressive slides
 
-alias todo_message='for i in $(seq 1 1000); do figlet "T O D O" | lolcat ; sleep 10s ; done'
+alias todo_message='for i in $(seq 1 1000); do figlet -w ${COLUMNS} ">  T O D O ,  T O D O ,  T O D O ,  T O D O ,  T O D O" | lolcat ; sleep 10s ; done'
 
 ##############################################################################
 # (c) 2011-2015 Lilian BESSON
