@@ -599,7 +599,7 @@ mutt-ens(){
 # Supprimer les meta-donnees des images jpeg et png
 alias CleanPicturesR='echo "Erasing EXIF infos...." && exiftool -v2 -recurse -fast -overwrite_original_in_place -all= * | tee "exiftool__$$_$(date "+%H_%M_%S")".log && echo "All EXIF infos have been erased :)"'
 alias CleanPictures='echo "Erasing EXIF infos...." && exiftool -v2 -fast -overwrite_original_in_place -all= * | tee "exiftool__$$_$(date "+%H_%M_%S")".log && echo "All EXIF infos have been erased :)"'
-alias CleanJPEG='exiftool -all= *.jpg *.png *.gif *.JPG .*.jpg .*.png .*.gif .*.JPG && echo "Donnees EXIF supprimees :)"'
+alias CleanPNG='echo "Cleaning and compressing PNG images..." && exiftool -v2 -fast -overwrite_original_in_place -all= *.png && advpng -z -2 *.png && M'
 
 ## A less for PDF files (useless)
 lessPDF() {
