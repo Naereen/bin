@@ -991,6 +991,8 @@ complete -f -X '!*.@(pdf|djvu|PDF|png|PNG|jpg|JPG|jpeg|JPEG)' -o plusdirs impres
 
 alias todo_message='for i in $(seq 1 1000); do figlet -w ${COLUMNS} ">  T O D O ,  T O D O ,  T O D O ,  T O D O ,  T O D O" | lolcat ; sleep 10s ; done'
 
+alias nhtaccess='nano .htaccess -Y sh'
+
 ##############################################################################
 # (c) 2011-2015 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
