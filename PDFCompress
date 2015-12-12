@@ -1,7 +1,7 @@
 #!/usr/bin/env /bin/bash
 ################################## INFO #####################################
 # A GNU Bash script to automatically TRY to compress PDF files in the current directory.
-# Copyright (C) 2013-2014 Lilian BESSON (lbesson at ens-cachan dot fr)
+# Copyright (C) 2013-2015 Lilian BESSON (lbesson at ens-cachan dot fr)
 #
 # Find the latest version on http://perso.crans.org/besson/bin/PDFCompress
 #
@@ -33,7 +33,7 @@ ECHO="echo -e"
 # If editing the meta data, change them to say that the PDF have been modified.
 # in fact, it is the default behavior :)
 ## FIXME: if using '{' or '/' in $creator, warning when using sed ...
-creator="LaTeX, compressed with http://besson.qc.to/bin/PDFCompress v$version -- a script by Lilian BESSON (C) 2013-2014"
+creator="LaTeX, compressed with http://besson.qc.to/bin/PDFCompress v$version -- a script by Lilian BESSON (C) 2013-2015"
 creator="`$ECHO \"$creator\" | tr { _`"
 
 # If possible, use .color.sh (http://besson.qc.to/bin/.color.sh or http://lbesson.qc.to/bin/.color.sh)
@@ -75,7 +75,7 @@ PKILL="echo"
 
 
 ########################## Copyrights and options ##############################
-$ECHO "${green}$BIN v$version : Copyright (C) 2013-2014 Lilian BESSON"
+$ECHO "${green}$BIN v$version : Copyright (C) 2013-2015 Lilian BESSON"
 $ECHO "This is free software, and you are welcome to redistribute it under certain conditions."
 $ECHO "This program comes with ABSOLUTELY NO WARRANTY; for details see http://perso.crans.org/besson/LICENSE ${white}"
 
