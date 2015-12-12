@@ -990,7 +990,7 @@ alias slides='impressive'
 complete -f -X '!*.@(pdf|djvu|PDF|png|PNG|jpg|JPG|jpeg|JPEG)' -o plusdirs impressive slides
 
 alias todo_message='for i in $(seq 1 1000); do figlet -w ${COLUMNS} ">  T O D O ,  T O D O ,  T O D O ,  T O D O ,  T O D O" | lolcat ; sleep 10s ; done'
-
+alias timake='time make && alert'
 alias nhtaccess='nano .htaccess -Y sh'
 
 ##############################################################################
