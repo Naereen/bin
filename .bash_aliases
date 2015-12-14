@@ -421,7 +421,9 @@ alias diff="colordiff"
 
 alias CowThink='cowthink -W 160 -f /usr/share/cowsay/cows/moose.cow'
 
-# For tar compression.
+# For zip compression (by default, DO NOT FOLLOW symlinks!)
+alias zip='/usr/bin/zip -r -9 -y'
+# For tar compression
 alias TarXZ='tar -Jcvf'
 alias TarGZ='tar -zcvf'
 alias TarBZ2='tar -jcvf'
