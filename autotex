@@ -163,6 +163,7 @@ autotexf() {
     echo -e "${cyan}Using ~/$template as the template file.${white}" | tee -a /tmp/autotex.log
 
     echo -e "\n\n\n===============================================================================\n\n\n"
+    # $pdflatex $template && $pdflatex $template && \
     $pdflatex $template && $pdflatex $template && \
         mv -f -v ${template%.tex}.pdf "$p"/${f%.tex}.pdf
     answ="$?"
