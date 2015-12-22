@@ -390,11 +390,14 @@ fi
 #esac
 
 # OPAM configuration. TOO SLOW !!!
-if [ -d /home/lilian/.opam/ ]; then
-  # echo "OPAM init..."
-  . /home/lilian/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
-  # echo -e "${el}"
-fi
+#if [ -d /home/lilian/.opam/ ]; then
+#  # echo "OPAM init..."
+#  . /home/lilian/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
+#  # echo -e "${el}"
+#fi
+
+# Disable the ctrl+s / ctrl+q shortcuts (freeze, unfreeze the terminal)
+stty -ixon
 
 ##############################################################################
 # GPG Security, adapt the $GPGKEY to be the defaut Key you use (for mutt for example, or pypi)
