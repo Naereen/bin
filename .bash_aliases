@@ -1,6 +1,6 @@
 #!/bin/bash
 # .bash_aliases for GNU Bash v4+
-# (c) 2011-2015 Lilian BESSON
+# (c) 2011-2016 Lilian BESSON
 # GPLv3 Licensed
 # Cr@ns: http://perso.crans.org/besson
 # On Bitbucket:   https://bitbucket.org/lbesson/bin/
@@ -364,7 +364,8 @@ TEX2PDF() {
 }
 complete -f -X '!*.@(tex|pdf)' -o plusdirs tex2pdf TEX2PDF
 
-alias bib2html='bibtex2html -a -charset utf-8 -linebreak'
+# A better and smaller bibtex2html command, with good options
+alias bib2html='bibtex2html -u -charset utf-8 -linebreak -debug'
 complete -f -X '!*.@(bib)' -o plusdirs bibtex2html bib2html
 
 # N'afficher que les processus lances par l'utilisateur courant dans htop.
@@ -978,7 +979,7 @@ complete -f -X '!*.@(pdf|djvu|PDF)' -o plusdirs e
 alias s='clear ; git status | less -r'
 alias wd='clear ; git wdiff'
 
-alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "^rupee.*$" | sed s/"^rupee"/""/ )${U}${white}." | tee -a /tmp/RoupiesCourse.log'
+# alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "^rupee.*$" | sed s/"^rupee"/""/ )${U}${white}." | tee -a /tmp/RoupiesCourse.log'
 alias brigthness='xrandr --output LVDS --brightness '
 
 alias FilesLog='find | tee find.log ; du | tee du.log ; dut | tee dut.log'
@@ -995,8 +996,14 @@ alias todo_message='for i in $(seq 1 1000); do figlet -w ${COLUMNS} ">  T O D O 
 alias timake='time make && alert'
 alias nhtaccess='nano .htaccess -Y sh'
 
+alias SHUTDOWN='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when shutdown." "[LOG] ${USER}@${HOSTNAME} : shutdown"; mail_tel.py "Automatically sent by the machine $HOSTNAME.crans.org when shutdown." "[LOG] ${USER}@${HOSTNAME} : shutdown"; sudo shutdown now'
+alias REBOOT='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when reboot." "[LOG] ${USER}@${HOSTNAME} : reboot"; mail_tel.py "Automatically sent by the machine $HOSTNAME.crans.org when reboot." "[LOG] ${USER}@${HOSTNAME} : reboot"; sudo reboot now'
+alias VEILLE='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when fall asleep." "[LOG] ${USER}@${HOSTNAME} : going sleep"; GoingSleep.sh'
+alias LOCK_NO_SLEEP='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when going locked (but not asleep)." "[LOG] ${USER}@${HOSTNAME} : going locked"; GoingSleep.sh no'
+alias Mail_LOG_save='mail.py "Automatically sent by the machine $HOSTNAME.crans.org when saving." "[LOG] ${USER}@${HOSTNAME} : save"'
+
 ##############################################################################
-# (c) 2011-2015 Lilian BESSON
+# (c) 2011-2016 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
 # On Bitbucket:   https://bitbucket.org/lbesson/bin/
 #
