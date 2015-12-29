@@ -1,9 +1,8 @@
 #!/bin/bash
 #	.bashrc for GNU Bash v4+
-#	(c) 2011-2015 Lilian BESSON
+#	(c) 2011-2016 Lilian BESSON
 #	Cr@ns: http://perso.crans.org/besson
 #	On Bitbucket:	https://bitbucket.org/lbesson/home/
-# ENS de Cachan:  http://www.dptinfo.ens-cachan.fr/~lbesson
 #
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
@@ -18,7 +17,7 @@
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
 # HISTCONTROL=ignoredups  #:ignorespace
-HISTCONTROL=ignoreboth  # FIXME this try comes from https://github.com/tmux-plugins/tmux-resurrect
+HISTCONTROL=ignoreboth  # XXX this try comes from https://github.com/tmux-plugins/tmux-resurrect
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -76,7 +75,6 @@ fi
 # different answers to 'who am i'......
 # I have not found a 'universal' method yet
 #-------------------------------------------------------------
-
 function get_xserver ()
 {
     case $TERM in
@@ -115,8 +113,7 @@ shopt -u mailwarn
 unset MAILCHECK       # I don't want my shell to warn me of incoming mail
 
 export TIMEFORMAT=$'\nreal %3R\tuser %3U\tsys %3S\tpcpu %P\n'
-export HISTIGNORE="&:bg:fg:h"
-##export HISTIGNORE="&:bg:fg:ll:h:l:ls:la"
+export HISTIGNORE="&:bg:fg"
 
 #-------------------------------------------------------------
 
@@ -131,7 +128,7 @@ unset color_prompt force_color_prompt
 case "$TERM" in
 xterm*|rxvt*|screen*)
 #     PS1="\[\e[27;24;23;06;2m\]\[\e]0;${debian_chroot:+($debian_chroot)}(\d -- \t)<\u@\h:[\w]> {\sv\v}\a\]$PS1"
-# FIXME le premier marche pas dans les tty[1-6]
+# XXX le premier marche pas dans les tty[1-6]
      PS1="\[\e]0;${debian_chroot:+($debian_chroot)}(\d -- \t)<\u@\h:[\w]> {\sv\v}\a\]$PS1"
     ;;
 *)
@@ -142,7 +139,7 @@ esac
 PS2=${PS1%'> '}'>and?> '
 
 # Man pages
-export MANPATH=$MANPATH:/usr/share/man:/usr/local/man:"$HOME"/.local/python3/share/man/:"$HOME"/.local/ocaml4/man/
+export MANPATH=$MANPATH:/usr/share/man:/usr/local/man
 
 export PAGER=less
 export EDITOR=/bin/nano
@@ -203,6 +200,7 @@ white="${escp}01;37m"
 # To erase the current line. (not print '\n' but ERASE trully).
 export ERASE_LINE="\r\033[K"
 
+# More colors !
 [ -f "$HOME/.color.sh" ] && . "$HOME/.color.sh"
 
 # Old PS1
@@ -243,12 +241,6 @@ export RLWRAP_HOME="$HOME"
 alias Mail_LOG_in='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when log-in.\n\nLast:`last`\n\nWho:`/usr/bin/w`\n\nDate:`date`\n" "[LOG] `who|tail -n1` : login."'
 alias Mail_LOG_out='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when log-out.\n\nLast:`last`\n\nWho:`/usr/bin/w`\n\nDate:`date`\n" "[LOG] `who|tail -n1` : logout."'
 
-alias SHUTDOWN='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when shutdown." "[LOG] ${USER}@${HOSTNAME} : shutdown"; mail_tel.py "Automatically sent by the machine $HOSTNAME.crans.org when shutdown." "[LOG] ${USER}@${HOSTNAME} : shutdown"; sudo shutdown now'
-alias REBOOT='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when reboot." "[LOG] ${USER}@${HOSTNAME} : reboot"; mail_tel.py "Automatically sent by the machine $HOSTNAME.crans.org when reboot." "[LOG] ${USER}@${HOSTNAME} : reboot"; sudo reboot now'
-alias VEILLE='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when fall asleep." "[LOG] ${USER}@${HOSTNAME} : going sleep"; GoingSleep.sh'
-alias LOCK_NO_SLEEP='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when going locked (but not asleep)." "[LOG] ${USER}@${HOSTNAME} : going locked"; GoingSleep.sh no'
-alias Mail_LOG_save='mail.py "Automatically sent by the machine $HOSTNAME.crans.org when saving." "[LOG] ${USER}@${HOSTNAME} : save"'
-
 case "`/usr/bin/who|tail -n1|grep -v tty[1-7]`" in
    pts/*)
        # Send an email only if connecting from a remote computer.
@@ -261,10 +253,6 @@ case "`/usr/bin/who|tail -n1|grep -v tty[1-7]`" in
 esac
 
 export COLORTERM=gnome-terminal
-
-## Autorize colors in less
-#alias less='less -r'
-##less(){ ( /usr/bin/lesspipe "$@" | less -r ) || echo -e "${red}Error with less on $@"; }
 
 ## +----------------------+
 ## | Generation du prompt |
@@ -358,37 +346,6 @@ else
     unset date
 fi
 
-# If this is an xterm print a colored home symbol
-#case "$TERM" in
-#*dumb*)
-#    echo -e "${red}Connexion SSH : log envoye :) En cas d'urgence +33628412257 ou Lilian.BESSON[@]live.fr,[@]ens-cachan.fr,[@]crans.org. ([@] = @)"
-#    ;;
-#xterm*|rxvt*|linux*|screen*)
-#    if [ $((COLUMNS > 171 )) = "1" -a "$TERM" = xterm ]; then
-#	if [ -x /usr/bin/figlet ]; then
-#         echo -e "${green}`figlet \"$USER @ $HOSTNAME\" -t -f big -k -c`${white}"
-#        else
-#         echo -e "${green}.:/ $USER @ $HOSTNAME \\:.${white}"
-#        fi
-#    elif [ $(locale charmap) != UTF-8 ]; then
-#    	echo -e " Bienvenue, ${blue}${USER}${white}@${cyan}${HOSTNAME}${white}. Console: ${blue}${COLUMNS}${white}x${green}${LINES}${white}."
-#    else
-#        echo -e "nothing to say yet TODO FIXME :(" >> /tmp/bashrc.log
-#    fi
-#    ;;
-#*)
-#    echo -e " Bienvenue, ${blue}${USER}${white}@${cyan}${HOSTNAME}${white}. Console: ${blue}${COLUMNS}${white}x${green}${LINES}${white}."
-#    if [ ! "X$?" = "X0" ]; then
-#	if [ -x /usr/bin/figlet ]; then
-#         echo -e "${green}`figlet \"$USER @ $HOSTNAME\" -t -f big -k -c`${white}"
-#        else
-#         echo -e "${green}.:/ $USER @ $HOSTNAME \\:.${white}"
-#        fi
-#    fi
-#    echo -e "${white} "`date "+Nous sommes le ${blue}%A %d${yellow} %b${white}, et il est ${red}%H${white}h:${green}%M${white}m:${yellow}%S${white}s."`
-#    ;;
-#esac
-
 # OPAM configuration. TOO SLOW !!!
 #if [ -d /home/lilian/.opam/ ]; then
 #  # echo "OPAM init..."
@@ -428,12 +385,10 @@ function _exit()        # function to run upon exit of shell
  # Determine from where the user was connected.
  case "`/usr/bin/who|tail -n1|grep -o \"\(tty[1-7]\|pts/[0-9]*\)\"`" in
  pts/*)
-  # randquote
   # Mail_LOG_out
   echo -e "Automatically sent by the machine $HOSTNAME.crans.org when log-out.\n\nLast:`last`\n\nWho:`/usr/bin/w`\n\nDate:`date`\n" "[LOG] `who|tail -n1` : logout." >> "$HOME"/.pts.log
   ;;
  tty7*)
-  # randquote
   notify-send "${USER}@${HOSTNAME} : logout" "Last command : `history | tail -n 1`."
   echo -e "${USER}@${HOSTNAME} : logout" "Last command : `history | tail -n 1`." >> "$HOME"/.tty7.log
   echo -e "Automatically sent by the machine $HOSTNAME.crans.org when log-out.\n\nLast:`last`\n\nWho:`/usr/bin/w`\n\nDate:`date`\n" "[LOG] `who|tail -n1` : logout." >> "$HOME"/.tty7.log
@@ -450,19 +405,20 @@ trap _exit EXIT
 
 # Message of the Day
 if [ -f "$HOME/motd" ]; then
-  [ "X`cat $HOME/motd`" = "X" ] && echo -e "No motd :(" > "$HOME/motd"
+    [ "X`cat $HOME/motd`" = "X" ] && echo -e "No motd :(" > "$HOME/motd"
   echo -e " ${white}${u}Message du jour${U} (from ${black}$HOME/motd${white}):${blue}`cat $HOME/motd`${white}"
 else
-  [ -x /usr/local/bin/tpal ] && (echo -e " ${yellow}Random color art palette .....${reset}" ; tpal art) || echo -e "tpal is not in your \$PATH :("
+    [ -x /usr/local/bin/tpal ] && (echo -e " ${yellow}Random color art palette .....${reset}" ; tpal art) || echo -e "tpal is not in your \$PATH :("
 fi
 
+# export BYOBU_NO_TITLE=yes
+
 ##############################################################################
-# (c) 2011-2015 Lilian BESSON
+# (c) 2011-2016 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
 # On Bitbucket: https://bitbucket.org/lbesson/home/
-# ENS de Cachan:  http://www.dptinfo.ens-cachan.fr/~lbesson
 #
 # Put a blank line after
 #  to autorize echo "newentry" >> "$HOME"/.bashrc
 
-# export BYOBU_NO_TITLE=yes
+
