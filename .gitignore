@@ -1,3 +1,6 @@
+# Ignore file types
+*.json
+
 # Examples
 git-crypt
 camlmix
