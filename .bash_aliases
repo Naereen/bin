@@ -88,30 +88,7 @@ alias nano='xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { GNU Nano 2.4.2 (/bin/n
 alias nano.last='xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { GNU Nano 2.4.2 (nano.last) }" ; /home/lilian/bin/nano.last --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds'
 
 alias MAKE="/usr/bin/make -w"
-
-# Un meilleur make, qui remonte dans le dossier jusqu'à trouver un bon Makefile
-mymake() {
-    old="$(pwd)/"
-    xtitle "make $@ - (in ${old})"
-    echo -e "Looking for a valid ${magenta}Makefile${white} from ${blue}${old}${white} :"
-    c=""
-    while [ ! -f "${old}${c}Makefile" ]; do
-        echo -e "${red}${old}${c}Makefile${white} is not there, going up ..."
-        c="../${c}"
-        cd "$c"
-        [ "$(pwd)" = "/" ] && break
-    done
-    if [ -f "${old}${c}Makefile" ]; then
-        echo -e "${green}${old}${c}Makefile${white} is there, I'm using it :"
-        /usr/bin/make -w --file="${old}${c}Makefile" "$@"
-        cd "$old"
-    else
-        cd "$old"
-        echo -e "${red}${old}${c}Makefile${white} is not there and I'm in '/'... I cannot go up anymore"
-        return 2
-    fi
-}
-alias make='mymake'
+alias make='mymake.sh'
 
 # Ajout de securite sur la commande 'rm' :
 alias delete='echo -e "Supression avec une seule confirmation ?"; /bin/rm -I'
