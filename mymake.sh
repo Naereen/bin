@@ -49,15 +49,16 @@ c=""
 while [ ! -f "${old}${c}Makefile" ]; do
     echo -e "${red}${old}${c}Makefile${white} is not there, going up ..."
     c="../${c}"
-    cd "$c"
+    cd "${c}"
     [ "$(pwd)" = "/" ] && break
 done
 if [ -f "${old}${c}Makefile" ]; then
     echo -e "${green}${old}${c}Makefile${white} is there, I'm using it :"
-    /usr/bin/make -w --file="${old}${c}Makefile" "$@"
-    cd "$old"
+    time /usr/bin/make -w --file="${old}${c}Makefile" "$@" && \
+        notify-send --icon=build "mymake.sh" "make '$@', done in the folder '${old}${c}'."
+    cd "${old}"
 else
-    cd "$old"
+    cd "${old}"
     echo -e "${red}${old}${c}Makefile${white} is not there and I'm in '/'... I cannot go up anymore"
     return 2
 fi
