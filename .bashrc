@@ -185,7 +185,7 @@ fi
 
 # Placez vos fichiers de bash-completion custom dans "$HOME"/.bash_completion.d/
 # ils seront charges par la ligne suivante
-[ -d "$HOME"/.bash_completion.d/ ] && for f in "$HOME"/.bash_completion.d/*; do source $f; done
+[ -d "$HOME"/.bash_completion.d/ ] && for f in "$HOME"/.bash_completion.d/*.bash_completion; do source $f; done
 
 # Colors
 escp="\033["
