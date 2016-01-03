@@ -31,7 +31,7 @@ while [ -n "$1" ]; do
     shift
 done
 
-#test if the directory is a git
+# Test if the directory is a git
 git branch &> /dev/null || exit 3
 
 echo -e "$(basename $0): do statistics on this git repository."
