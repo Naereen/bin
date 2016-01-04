@@ -2,12 +2,12 @@
 # By: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Date: 05-11-2014
-# Web: http://besson.qc.to/bin/latex2png
+# Web: http://perso.crans.org/besson/bin/latex2png
 # Web2: http://lbesson.bitbucket.org/latex2png.html
 #
 # latex2png, a small script to quickly produce a PNG image of a LaTeX formula, thanks to a webservice.
 #
-# Licence: [GPLv3](http://besson.qc.to/LICENCE.html)
+# Licence: [GPLv3](http://perso.crans.org/besson/LICENCE.html)
 #
 version='0.1'
 
@@ -28,7 +28,7 @@ do
             echo -e "    ${yellow}-v${white}           to print just the version of latex2png (and quit)."
             echo -e ""
             echo -e "latex2png v$version : Copyrights: (c) Lilian Besson 2011-2014."
-            echo -e "Released under the term of the GPL v3 Licence (more details on http://besson.qc.to/LICENSE.html)."
+            echo -e "Released under the term of the GPL v3 Licence (more details on http://perso.crans.org/besson/LICENSE.html)."
             echo -e "In particular, latex2png is provided WITHOUT ANY WARANTY."
             exit 0
             ;;

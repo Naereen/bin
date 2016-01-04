@@ -1,7 +1,7 @@
 #!/usr/bin/env /bin/bash
 ################################## INFO #####################################
-# A bash completion file (http://besson.qc.to/bin/PDFCompress.bash_completion)
-# for PDFCompress (http://besson.qc.to/bin/PDFCompress)
+# A bash completion file (http://perso.crans.org/besson/bin/PDFCompress.bash_completion)
+# for PDFCompress (http://perso.crans.org/besson/bin/PDFCompress)
 #
 # Copyright (C) 2013 Lilian BESSON (lbesson at ens-cachan dot fr)
 #
@@ -17,7 +17,7 @@
 #
 #     You should have received a copy of the GNU General Public License
 #     along with this program. If not, see <http://www.gnu.org/licenses/>,
-#     or <http://besson.qc.to/LICENSE>.
+#     or <http://perso.crans.org/besson/LICENSE>.
 ##############################################################################
 
 version="0.3"

@@ -4,8 +4,8 @@
 # Version:  1
 # Date:   24-04-14
 #
-# A bash completion file (http://besson.qc.to/bin/git-crypt.bash_completion)
-# for git-crypt (http://besson.qc.to/git-crypt)
+# A bash completion file (http://perso.crans.org/besson/bin/git-crypt.bash_completion)
+# for git-crypt (http://perso.crans.org/besson/git-crypt)
 #
 
 contain(){

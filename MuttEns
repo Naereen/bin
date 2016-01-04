@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Script by Lilian Besson
-# http://besson.qc.to/
+# http://perso.crans.org/besson/
 
 xtitle "(`date`<$USER@$HOSTNAME>:[`pwd`]> { Mutt 1.5.21 } : for ens-cachan.fr"
 

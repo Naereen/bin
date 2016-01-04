@@ -4,8 +4,8 @@
 # __email__ = 'Lilian.BESSON[AT]ens-cachan[DOT]fr'
 # __date__ = '18-10-2013'
 #
-# A bash completion file (http://besson.qc.to/bin/series.sh.bash_completion)
-# for series.sh (http://besson.qc.to/bin/series.sh)
+# A bash completion file (http://perso.crans.org/besson/bin/series.sh.bash_completion)
+# for series.sh (http://perso.crans.org/besson/bin/series.sh)
 #
 version='0.3.2'
 
