@@ -8,7 +8,7 @@
 # from https://fr.wikiquote.org/wiki/*
 #
 # Find the more recent version here 
-# http://besson.qc.to/bin/quotes.sh
+# http://perso.crans.org/besson/bin/quotes.sh
 #
 version='0.1'
 
@@ -17,7 +17,7 @@ version='0.1'
 # fr -> https://fr.wikiquote.org/wiki/
 LANG='fr'
 
-# If possible, use .color.sh (http://besson.qc.to/bin/.color.sh)
+# If possible, use .color.sh (http://perso.crans.org/besson/bin/.color.sh)
 [ -f ~/.color.sh ] && . ~/.color.sh
 
 #

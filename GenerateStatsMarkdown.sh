@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Web version: http://besson.qc.to/bin/GenerateStatsMarkdown.sh
+# Web version: http://perso.crans.org/besson/bin/GenerateStatsMarkdown.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/GenerateStatsMarkdown.sh
 # Date: 28-08-2013
 #
@@ -30,7 +30,7 @@ case "$1" in
 		echo -e "${green}${BIN}${white} --help | [options]\n Creates a minimalistic statistics HTML report, to ${dest}.\n It uses http://lbo.k.vu/md/ (StrapDown.js) to improve the awesomeness of this mini munin clone."
 		echo -e "\nOptions:\n 1:\t${yellow}--help${white}\tto print this help,\n 1:\t${yellow}cron${white}\tto change logging behaviour (only if launched by cron),\n 1,2:\t${yellow}theme${white}\t ${neg}united${Neg}, ${neg}bootstrap${Neg} or ${neg}cyborg${Neg} (${cyan}Default and best is ${neg}united${Neg}${white}.)\n\n"
 		#  the list 'amelia', 'cerulean', 'cosmo', 'custom', 'cyborg', 'darkly', 'flatly', 'journal', 'lumen', 'readable', 'shamrock', 'simplex', 'slate', 'spacelab', 'spruce', 'superhero', 'united', 'yeti' (${cyan}Default and best is 'united', 'cyborg' is cool too.
-		echo -e "$BIN v$version : Copyleft: (c) Lilian Besson 2014.\nReleased under the term of the GPL v3 Licence (more details on http://besson.qc.to/LICENSE.html).\nIn particular, $BIN is provided WITHOUT ANY WARANTY."
+		echo -e "$BIN v$version : Copyleft: (c) Lilian Besson 2014.\nReleased under the term of the GPL v3 Licence (more details on http://perso.crans.org/besson/LICENSE.html).\nIn particular, $BIN is provided WITHOUT ANY WARANTY."
 		exit 0
 		;;
 	*)
@@ -84,7 +84,7 @@ echo -e "</pre>\n\n## Série en cours (\`head -n 1 \"${HOME}\"/current\`)\n> <pr
 head -n 1 "${HOME}"/current >> "$dest"
 
 # Footer
-echo -e "</pre>\n\n***\n\n##### Mis-à-jour régulièrement via *cron*, avec [GenerateStatsMarkdown.sh](http://besson.qc.to/bin/GenerateStatsMarkdown.sh) v${version}, un script Bash écrit par et pour [Lilian Besson](http://besson.qc.to/)." >> "$dest"
+echo -e "</pre>\n\n***\n\n##### Mis-à-jour régulièrement via *cron*, avec [GenerateStatsMarkdown.sh](http://perso.crans.org/besson/bin/GenerateStatsMarkdown.sh) v${version}, un script Bash écrit par et pour [Lilian Besson](http://perso.crans.org/besson/)." >> "$dest"
 
 ## FIXME add http://www.dptinfo.ens-cachan.fr/~lbesson/ before _static/
 echo -e "\n</xmp><script type=\"text/javascript\" src=\"_static/md/strapdown.min.js?src=GSM.sh?beacon\"></script>\n<img alt=\"GA|Analytics\" style=\"visibility: hidden; display: none;\" src=\"https://ga-beacon.appspot.com/UA-38514290-1/stats.html/theme_${theme}/?pixel\"/>\n</body></html>" >> "$dest"

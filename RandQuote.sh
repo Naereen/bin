@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Web version: http://besson.qc.to/bin/RandQuote.sh
+# Web version: http://perso.crans.org/besson/bin/RandQuote.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/RandQuote.sh
 # Date: 10-03-2013
 #
 # A small script to do send one random quote, by email, every single day !
-# Requires: .quotes.txt (http://besson.qc.to/bin/.quotes.txt)
+# Requires: .quotes.txt (http://perso.crans.org/besson/bin/.quotes.txt)
 
 sleeptime="${1:-0s}"
 

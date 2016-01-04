@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Web version: http://besson.qc.to/bin/SMSRandQuote.sh
+# Web version: http://perso.crans.org/besson/bin/SMSRandQuote.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/SMSRandQuote.sh
 # Date: 28-12-2013
 #
 # A small script to do send one random quote, by SMS. Can easily be automatized,
 # with crontab for example. My computer is sending to myself a random quote every week ;)
 #
-# Requires: .quotes.txt (http://besson.qc.to/bin/.quotes.txt)
-# Requires: FreeSMS.py (http://besson.qc.to/bin/FreeSMS.py)
+# Requires: .quotes.txt (http://perso.crans.org/besson/bin/.quotes.txt)
+# Requires: FreeSMS.py (http://perso.crans.org/besson/bin/FreeSMS.py)
 
 echo -e "${yellow}.: Lilian Besson presents :."
 echo -e "${cyan}SMSRandQuote.sh, v1.0${reset}"

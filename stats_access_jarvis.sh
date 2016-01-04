@@ -2,7 +2,7 @@
 #
 # Display IP addresses of every access to jarvis.crans.org with nginx
 
-[ -x ~/.color.sh ] && . ~/.color.sh ## http://besson.qc.to/bin/.color.sh
+[ -x ~/.color.sh ] && . ~/.color.sh ## http://perso.crans.org/besson/bin/.color.sh
 
 LOG="/var/log/nginx/access.log"
 USER="besson"

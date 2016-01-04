@@ -10,9 +10,9 @@
 # More informations on autotex here: https://bitbucket.org/lbesson/bin/src/master/autotex
 #
 # Example of a LaTeX2e template to use with autonomize.sh :
-# (http://besson.qc.to/publis/latex/template_minimalist.tex)
+# (http://perso.crans.org/besson/publis/latex/template_minimalist.tex)
 #
-# Licence: [GPLv3](http://besson.qc.to/LICENCE.html)
+# Licence: [GPLv3](http://perso.crans.org/besson/LICENCE.html)
 #
 version='0.4'
 
@@ -48,7 +48,7 @@ for arg in "$@"; do
             echo -e "    ${yellow}-a|-noaction${white}   do nothing (just showing what will be done ?). FIXME"
             echo -e ""
             echo -e "autonomize.sh v$version : Copyrights: (c) Lilian Besson 2011-2014."
-            echo -e "Released under the term of the GPL v3 Licence (more details on http://besson.qc.to/LICENSE.html)."
+            echo -e "Released under the term of the GPL v3 Licence (more details on http://perso.crans.org/besson/LICENSE.html)."
             echo -e "In particular, autonomize.sh is provided WITHOUT ANY WARANTY."
             exit 0
             ;;

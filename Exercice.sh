@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Web version: http://besson.qc.to/bin/Exercice.sh
+# Web version: http://perso.crans.org/besson/bin/Exercice.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/Exercice.sh
 # Date: 10-03-2013
 #

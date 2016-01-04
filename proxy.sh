@@ -1,6 +1,6 @@
 #!/usr/bin/env /bin/bash
 # (C) Lilian BESSON
-# http://besson.qc.to/bin/proxy.sh
+# http://perso.crans.org/besson/bin/proxy.sh
 
 # The domain to connect with
 dom="${1:-ssh2.crans.org}"

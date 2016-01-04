@@ -147,5 +147,5 @@ ${blue}OPTIONS${white}:\n\
 ${blue}COPYRIGHTS${white}:\n\
 ===========\n\
 	 ${red}Lilian Besson (C) 01-12-2013${white}\n\
-		${green}http://besson.qc.to/bin/changemotd.sh"
+		${green}http://perso.crans.org/besson/bin/changemotd.sh"
 esac

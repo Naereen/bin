@@ -1,7 +1,7 @@
 #!/usr/bin/env /bin/bash
 
 # By Lilian BESSON
-# http://besson.qc.to/bin/GoingSleep_noDisplay.sh
+# http://perso.crans.org/besson/bin/GoingSleep_noDisplay.sh
 
 # A try
 [ -f ~/.color.sh ] && . ~/.color.sh

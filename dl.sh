@@ -12,7 +12,7 @@
 # Exemple: pour dumper les PDFs de dynamaths, j'ai fait:
 # $ dl.sh http://agreg-cachan.fr/analyse/ compress
 
-# Utilise http://besson.qc.to/bin/.color.sh si possible.
+# Utilise http://perso.crans.org/besson/bin/.color.sh si possible.
 [ -f "$HOME/.color.sh" ] && . "$HOME/.color.sh"
 
 #wget "$1" -O /tmp/dl.html

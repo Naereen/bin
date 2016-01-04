@@ -1,6 +1,6 @@
 #!/bin/sh
 # By Lilian BESSON
-# http://besson.qc.to/bin/ARANDR_resolution_auto.sh
+# http://perso.crans.org/besson/bin/ARANDR_resolution_auto.sh
 # A simple try to automatize the resizement of my screens.
 
 if [ "$DISPLAY" = "" ]

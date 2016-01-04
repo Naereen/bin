@@ -1,7 +1,7 @@
 #!/usr/bin/env /bin/bash
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Web version: http://besson.qc.to/bin/caml2htmlAuto.sh
+# Web version: http://perso.crans.org/besson/bin/caml2htmlAuto.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/caml2htmlAuto.sh
 # Date: 11-05-2013
 #

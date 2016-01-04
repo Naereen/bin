@@ -3,15 +3,15 @@
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Date: 05-13-2015
-# Web version: http://besson.qc.to/bin/generatejplayer.sh
+# Web version: http://perso.crans.org/besson/bin/generatejplayer.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/generatejplayer.sh
 #
 # Auto generate an 'index.html' page to show and play music with jplayer.
 # Also generate a 'index.htm' page, which works on Windows by fetching the CSS and JS online (http://perso.crans.org/besson/_static/) and not locally (http://0.0.0.0/).
 #
-# A demo is here : http://besson.qc.to/generatejplayer.sh
-# Last version is here : http://besson.qc.to/bin/generatejplayer.sh
-# with stylesheets and templates is here : http://besson.qc.to/bin/generatejplayer/
+# A demo is here : http://perso.crans.org/besson/generatejplayer.sh
+# Last version is here : http://perso.crans.org/besson/bin/generatejplayer.sh
+# with stylesheets and templates is here : http://perso.crans.org/besson/bin/generatejplayer/
 #
 version='1.8'
 
