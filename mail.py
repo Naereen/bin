@@ -1,7 +1,7 @@
 #!/usr/bin/env /usr/bin/python
 #-*- coding: utf-8 -*-
 # (C) Lilian BESSON, 2013
-# http://besson.qc.to/bin/mail.py
+# http://perso.crans.org/besson/bin/mail.py
 
 import subprocess
 def notify(msg, submsg="mail.py : auto mailer (with notify-send)"):

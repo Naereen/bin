@@ -2,16 +2,16 @@
 #-*- coding: utf-8 -*-
 """
 A simple python implementation of Gravatar Image requests.
-Take a look to the latest version at http://besson.qc.to/bin/gravatar.py
+Take a look to the latest version at http://perso.crans.org/besson/bin/gravatar.py
 
 .. warning:: Copyright 2013 - Lilian Besson."""
-__author__ = 'Lilian Besson <http://besson.qc.to/>'
+__author__ = 'Lilian Besson <http://perso.crans.org/besson/>'
 
 # import code for encoding urls and generating md5 hashes
 import urllib, hashlib
 
 # Set the default picture
-#default = "http://besson.qc.to/.besson.jpg"
+#default = "http://perso.crans.org/besson/.besson.jpg"
 default = "retro"
 
 size = 256

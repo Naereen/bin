@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Web version: http://besson.qc.to/bin/dump_dD.py
+# Web version: http://perso.crans.org/besson/bin/dump_dD.py
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/dump_dD.py
 # Date: 24-07-2013
 #

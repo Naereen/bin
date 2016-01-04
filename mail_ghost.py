@@ -1,7 +1,7 @@
 #!/usr/bin/env /usr/bin/python
 #-*- coding: utf-8 -*-
 # (C) Lilian BESSON, 2014
-# http://besson.qc.to/bin/mail_ghost.py
+# http://perso.crans.org/besson/bin/mail_ghost.py
 
 defaultaddress="jarvisATcransDOTorg".replace("AT","@").replace("DOT",".")
 # Import sys to use arg of the script
@@ -30,7 +30,7 @@ def send_me_an_email(message, subj="[LOG] no object", me=defaultaddress,
     """
     msg = MIMEText("%s" % (message+(signature % me)).replace("\n",'\n'), _charset="utf-8")
     # The order is "important", to act like a real mail client !
-    msg['User-Agent'] = "smtplib.text/plain with python 2.7.6 on jarvis.crans.org (with http://besson.qc.to/bin/mail_ghost.py)"
+    msg['User-Agent'] = "smtplib.text/plain with python 2.7.6 on jarvis.crans.org (with http://perso.crans.org/besson/bin/mail_ghost.py)"
     # Identity
     msg['From'] = my_identity+" <"+me+">"
     msg['Reply-To'] = me
