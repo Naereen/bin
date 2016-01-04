@@ -33,15 +33,15 @@ ECHO="echo -e"
 # If editing the meta data, change them to say that the PDF have been modified.
 # in fact, it is the default behavior :)
 ## FIXME: if using '{' or '/' in $creator, warning when using sed ...
-creator="LaTeX, compressed with http://besson.qc.to/bin/PDFCompress v$version -- a script by Lilian BESSON (C) 2013-2015"
+creator="LaTeX, compressed with http://perso.crans.org/besson/bin/PDFCompress v$version -- a script by Lilian BESSON (C) 2013-2015"
 creator="`$ECHO \"$creator\" | tr { _`"
 
-# If possible, use .color.sh (http://besson.qc.to/bin/.color.sh or http://lbesson.qc.to/bin/.color.sh)
+# If possible, use .color.sh (http://perso.crans.org/besson/bin/.color.sh or http://lperso.crans.org/besson/bin/.color.sh)
 if [ -f "$HOME/.color.sh" ]; then
  . "$HOME/.color.sh"
 else
   $ECHO "\033[01;31m WARNING: ~/.color.sh have not been found...\033[01;37m" > /dev/stderr
-  $ECHO "\033[01;33m INFO: 1) You can download it on http://besson.qc.to/bin/.color.sh or http://lbesson.qc.to/bin/.color.sh \033[01;37m" > /dev/stderr
+  $ECHO "\033[01;33m INFO: 1) You can download it on http://perso.crans.org/besson/bin/.color.sh or http://lperso.crans.org/besson/bin/.color.sh \033[01;37m" > /dev/stderr
   $ECHO "\033[01;33m INFO: 2) Then move it to "$"HOME/.color.sh (for example with 'move .color.sh ~/.color.sh' ...) \033[01;37m" > /dev/stderr
   $ECHO "\033[01;33m INFO: 3) And finally, make it executable : 'chmod +x ~/.color.sh' . Now you can have colors in $BIN :) \033[01;37m" > /dev/stderr
 fi
@@ -117,7 +117,7 @@ do
    $ECHO "    ${yellow}-v|--verbose$white	 increase verbosity of gs (quiet by default, option '-q')."
    $ECHO ""
    $ECHO "$BIN v$version : Copyrights: (c) Lilian Besson 2011-2014."
-   $ECHO "Released under the term of the GPL v3 Licence (more details on http://besson.qc.to/LICENSE.html)."
+   $ECHO "Released under the term of the GPL v3 Licence (more details on http://perso.crans.org/besson/LICENSE.html)."
    $ECHO "In particular, $BIN is provided WITHOUT ANY WARANTY."
    exit 0
   ;;
