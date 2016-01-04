@@ -1,7 +1,7 @@
 #!/usr/bin/env /usr/bin/python
 #-*- coding: utf-8 -*-
 # (C) Lilian BESSON, 2014
-# http://besson.qc.to/bin/mail_html.py
+# http://perso.crans.org/besson/bin/mail_html.py
 defaultaddress="jarvisATcransDOTorg".replace("AT","@").replace("DOT",".")
 # Import sys to use arg of the script
 import sys
@@ -33,7 +33,7 @@ def send_me_an_email(message, subj="[LOG] no object", me=defaultaddress,
     # Change "Content-Type" to "text/html"
     msg['Content-Transfer-Encoding'] = "utf-8"
     msg['Content-Type'] = "text/html"
-    msg['User-Agent'] = "smtplib.text/html with python 2.7.3 on jarvis.crans.org (with http://besson.qc.to/bin/mail_html.py)"
+    msg['User-Agent'] = "smtplib.text/html with python 2.7.3 on jarvis.crans.org (with http://perso.crans.org/besson/bin/mail_html.py)"
     # Identity
     msg['From'] = my_identity+" <"+me+">"
     msg['Reply-To'] = me
