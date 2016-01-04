@@ -53,7 +53,7 @@ ${blue}OPTIONS${white}:\n\
 ${blue}COPYRIGHTS${white}:\n\
 ===========\n\
 	${red}Lilian BESSON (C) 23-04-2013${white}\n\
-	${green}http://besson.qc.to/bin/svg2others.sh${white}"
+	${green}http://perso.crans.org/besson/bin/svg2others.sh${white}"
 		exit 0
 		;;
 	*)

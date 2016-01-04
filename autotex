@@ -4,7 +4,7 @@
 # Date: 05-11-2015
 #
 # autotex, a small wrapper around the input of pdflatex.
-# (http://besson.qc.to/bin/autotex)
+# (http://perso.crans.org/besson/bin/autotex)
 #
 # autotex is designed to allow you to have excellent looking PDF
 # even for minimal LaTeX file (1 line or more, but no painful \begin{document} or package imports)
@@ -25,7 +25,7 @@
 # and ~/template.en.tex to be used with English TeX files (*.en.tex), which is the default.
 #
 # Example of a LaTeX2e template to use with autotex :
-# (http://besson.qc.to/publis/latex/template.tex) (and .fr.tex and .en.tex)
+# (http://perso.crans.org/besson/publis/latex/template.tex) (and .fr.tex and .en.tex)
 #
 version='2.2'
 NOANSI='false'
@@ -39,7 +39,7 @@ pdflatex="pdflatex"
 case "$1" in
     batchmode|nonstopmode|scrollmode|errorstopmode )
         echo -e "${magenta}Using \$1 as an option to pass to pdflatex : -interaction=${1}." | tee -a /tmp/autotex.log
-        # Automatically, my color wrapper [pdflatex](http://besson.qc.to/bin/pdflatex) uses "-synctex=1 -file-line-error"
+        # Automatically, my color wrapper [pdflatex](http://perso.crans.org/besson/bin/pdflatex) uses "-synctex=1 -file-line-error"
         pdflatex="${pdflatex} -interaction=${1}"
 		shift
 		;;

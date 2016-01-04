@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # (C) Lilian BESSON, 2014
 # A command line Google Analytics client, to be included in other script
-# Latest version of http://besson.qc.to/bin/gacli.sh
+# Latest version of http://perso.crans.org/besson/bin/gacli.sh
 #
 script="${1}"
 shift

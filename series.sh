@@ -7,13 +7,13 @@
 # A first try to automatize the selection of the "next" episode in your current TV serie.
 #
 # Requires VLC 2.0+.
-# vrun is not yet included nor required (http://besson.qc.to/bin/vrun)
+# vrun is not yet included nor required (http://perso.crans.org/besson/bin/vrun)
 #
-# A bash completion file is available (http://besson.qc.to/bin/series.sh.bash_completion)
+# A bash completion file is available (http://perso.crans.org/besson/bin/series.sh.bash_completion)
 #
 version='0.6'
 
-# If possible, use ~/.color.sh (http://besson.qc.to/bin/.color.sh)
+# If possible, use ~/.color.sh (http://perso.crans.org/besson/bin/.color.sh)
 [ -f ~/.color.sh ] && ( . ~/.color.sh ; clear )
 
 previous="no"

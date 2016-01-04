@@ -10,7 +10,7 @@
 #
 # Online: https://bitbucket.org/lbesson/bin/src/master/photosmagic.sh
 #
-# Licence: [GPLv3](http://besson.qc.to/LICENCE.html)
+# Licence: [GPLv3](http://perso.crans.org/besson/LICENCE.html)
 version='0.4'
 
 log=/tmp/$(basename $0).log

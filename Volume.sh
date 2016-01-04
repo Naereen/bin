@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # By Lilian BESSON
-# http://besson.qc.to/bin/Volume.sh
+# http://perso.crans.org/besson/bin/Volume.sh
 
 # A bash script to control amixer volume through the command line.
 
@@ -54,7 +54,7 @@ ${blue}COMMAND${white}:\n\
 ${blue}COPYRIGHTS${white}:\n\
 ===========\n\
 	${red}Lilian BESSON (C) 11-01-2013${white}\n\
-	Check out the last version online : ${green}http://besson.qc.to/bin/Volume.sh${white}"
+	Check out the last version online : ${green}http://perso.crans.org/besson/bin/Volume.sh${white}"
 		exit 0
 		;;
 	value*)

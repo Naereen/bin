@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # (C) Lilian BESSON, 2013
 # A client to the web service javascript-minifier.com
-# Latest version of http://besson.qc.to/bin/jsminifier.sh
+# Latest version of http://perso.crans.org/besson/bin/jsminifier.sh
 #
 clear
 

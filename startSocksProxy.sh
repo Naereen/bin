@@ -1,6 +1,6 @@
 #!/usr/bin/env /bin/bash
 # (C) Lilian BESSON
-# http://besson.qc.to/bin/startSocksProxy.sh
+# http://perso.crans.org/besson/bin/startSocksProxy.sh
 
 # Sources: http://blog.uggy.org/post/2006/04/22/87-tsock-pour-tout-rendre-compatible-socks
 # and: http://blog.uggy.org/post/2006/04/22/86-tunnel-ssh-avec-l-option-d

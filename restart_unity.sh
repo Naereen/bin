@@ -1,9 +1,9 @@
 #!/bin/bash
 # Un script pour redémarrer lightdm (en cas de bug du serveur X).
 # Copyrights (C) Lilian BESSON 2013
-# http://besson.qc.to/bin/restart_unity.sh
+# http://perso.crans.org/besson/bin/restart_unity.sh
 # publié sous les termes de la Licence Publique GNU (GPL) version 3
-# http://besson.qc.to/LICENSE.html
+# http://perso.crans.org/besson/LICENSE.html
 
 echo "Redémarrer lightdm ?"
 read -p '(oui/Non)' reponse

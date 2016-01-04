@@ -24,7 +24,7 @@
 version='1.1'
 #LANG='en'
 
-# If possible, use .color.sh (http://besson.qc.to/bin/.color.sh)
+# If possible, use .color.sh (http://perso.crans.org/besson/bin/.color.sh)
 [ -f ~/.color.sh ] && ( . ~/.color.sh ; clear )
 
 GREP="grep --color=never --line-buffered"
@@ -52,7 +52,7 @@ do
    $ECHO "    ${yellow}--verbose$white	 increase verbosity (not yet implemented)."
    $ECHO ""
    $ECHO "$BIN v$version : Copyrights: (c) Lilian Besson 2011-2013."
-   $ECHO "Released under the term of the GPL v3 Licence (more details on http://besson.qc.to/LICENSE.html)."
+   $ECHO "Released under the term of the GPL v3 Licence (more details on http://perso.crans.org/besson/LICENSE.html)."
    $ECHO "In particular, $BIN is provided WITHOUT ANY WARANTY."
    exit 0
   ;;
@@ -71,7 +71,7 @@ done
 ########################## Copyrights and options ##############################
 $ECHO "${green}$BIN v$version : Copyright (C) 2013 Lilian BESSON"
 $ECHO "This is free software, and you are welcome to redistribute it under certain conditions."
-$ECHO "This program comes with ABSOLUTELY NO WARRANTY; for details see http://besson.qc.to/LICENSE ${white}"
+$ECHO "This program comes with ABSOLUTELY NO WARRANTY; for details see http://perso.crans.org/besson/LICENSE ${white}"
 
 $ECHO "${yellow}.: Lilian BESSON presents :.$white$reset"
 $ECHO "Automatic gift shuffle, v${version}.$white$reset"

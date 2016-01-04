@@ -80,5 +80,5 @@ echo -e "\ntree_html.sh: YES, a list of HTML files (from depth=1 to depth=${dept
 ls -larth .files_*.html .dirs_*.html .all_*.html 2>/dev/null
 
 echo -e "\ntree_html.sh v$version : (C) Lilian Besson 2015."
-# echo -e "Released under the term of the GPL v3 Licence (more details on http://besson.qc.to/LICENSE.html)."
+# echo -e "Released under the term of the GPL v3 Licence (more details on http://perso.crans.org/besson/LICENSE.html)."
 # echo -e "In particular, tree_html.sh is provided WITHOUT ANY WARANTY."

@@ -35,7 +35,7 @@ version='0.1'
 wdir="/tmp/gif2mp4/frames/"
 wbackup="/tmp/gif2mp4/backup/"
 
-# If possible, use ~/.color.sh (http://besson.qc.to/bin/.color.sh)
+# If possible, use ~/.color.sh (http://perso.crans.org/besson/bin/.color.sh)
 [ -f ~/.color.sh ] && ( . ~/.color.sh ; clear )
 
 gif2mp4f (){

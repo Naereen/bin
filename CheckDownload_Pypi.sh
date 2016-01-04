@@ -2,7 +2,7 @@
 # __author__='Lilian Besson'
 # __email__='lilian DOT besson AT normale DOT fr'
 # __date__='monday 08/07/2013 at 14h:56m:39s '
-# __webaddress__='http://besson.qc.to/bin/CheckDownload_Pypi.sh'
+# __webaddress__='http://perso.crans.org/besson/bin/CheckDownload_Pypi.sh'
 # __license__='GPL v3'
 #
 # A simple script to count the number of downloads for a PyPi package

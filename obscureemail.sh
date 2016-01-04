@@ -8,7 +8,7 @@
 #
 version='2.1b'
 
-# If possible, use .color.sh (http://besson.qc.to/bin/.color.sh)
+# If possible, use .color.sh (http://perso.crans.org/besson/bin/.color.sh)
 [ -f ~/.color.sh ] && ( . ~/.color.sh ; clear )
 
 GREP="grep --color=always --line-buffered"

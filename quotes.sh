@@ -10,7 +10,7 @@
 # By default, it uses https://fr.wikiquote.org/wiki/Kaamelott/
 #
 # Find the most recent version here 
-# http://besson.qc.to/publis/bin/quotes.sh
+# http://perso.crans.org/besson/publis/bin/quotes.sh
 #
 version='0.1'
 
@@ -19,7 +19,7 @@ LANG='en'
 # fr -> https://fr.wikiquote.org/wiki/
 LANG='fr'
 
-# If possible, use .color.sh (http://besson.qc.to/publis/bin/.color.sh)
+# If possible, use .color.sh (http://perso.crans.org/besson/publis/bin/.color.sh)
 ##[ -f ~/.color.sh ] && ( . ~/.color.sh ; clear )
 [ -f ~/.color.sh ] && . ~/.color.sh
 
@@ -147,7 +147,7 @@ for file in "$@"; do
   # Removing useless lines
   #
   grep -v "<p><br /></p>" "$outpure" > "$outpure"~
-  echo -e "<!-- Produce by a script made by Lilian BESSON, http://besson.qc.to/bin/quotes.sh -->" > "$outpure"
+  echo -e "<!-- Produce by a script made by Lilian BESSON, http://perso.crans.org/besson/bin/quotes.sh -->" > "$outpure"
   cat "$outpure"~ >> "$outpure"
   
   #

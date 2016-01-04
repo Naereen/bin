@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Web version: http://besson.qc.to/bin/GenerateStatsHTML.sh
+# Web version: http://perso.crans.org/besson/bin/GenerateStatsHTML.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/GenerateStatsHTML.sh
 # Date: 26-03-2013
 #
 # A small script to create a minimalistic HTML status page for my machine,
-# available with zamok proxying at http://besson.qc.to/stats.html (private ONLY)
+# available with zamok proxying at http://perso.crans.org/besson/stats.html (private ONLY)
 # or locally at http://127.0.0.1/stats.html
 #
 # FIXME: zamok proxying not yet available
@@ -54,8 +54,8 @@ free >> "$dest"
 # pstree -U >> "$dest"
 
 # Footer
-echo -e "</pre><br><hr><footer><small>Généré régulièrement via cron avec <a href=\"http://besson.qc.to/bin/GenerateStatsHTML.sh\">GenerateStatsHTML.sh</a>, un script Bash écrit par <a href=\"http://besson.qc.to/\">Lilian Besson</a>.</small></footer>" >> "$dest"
-echo -e "<script async type=\"text/javascript\" src=\"http://besson.qc.to/_static/ga.js?s=AddGA.sh\"></script><img style=\"visibility: hidden; display: none;\" src=\"https://ga-beacon.appspot.com/UA-38514290-1/stats.html?pixel\"/></body></html>"  >> "$dest"
+echo -e "</pre><br><hr><footer><small>Généré régulièrement via cron avec <a href=\"http://perso.crans.org/besson/bin/GenerateStatsHTML.sh\">GenerateStatsHTML.sh</a>, un script Bash écrit par <a href=\"http://perso.crans.org/besson/\">Lilian Besson</a>.</small></footer>" >> "$dest"
+echo -e "<script async type=\"text/javascript\" src=\"http://perso.crans.org/besson/_static/ga.js?s=AddGA.sh\"></script><img style=\"visibility: hidden; display: none;\" src=\"https://ga-beacon.appspot.com/UA-38514290-1/stats.html?pixel\"/></body></html>"  >> "$dest"
 
 # Notify the user
 if [ "X$1" = "Xcron" ]; then

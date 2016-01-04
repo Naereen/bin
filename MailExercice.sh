@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Web version: http://besson.qc.to/bin/MailExercice.sh
+# Web version: http://perso.crans.org/besson/bin/MailExercice.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/MailExercice.sh
 # Date: 22-03-2013
 #
 # A small script to do send one random Maths Exercice, by email, every single day !
-# Requires: Exercice.sh (http://besson.qc.to/bin/Exercice.sh)
+# Requires: Exercice.sh (http://perso.crans.org/besson/bin/Exercice.sh)
 #
 # Options (order matters):
 #	cron	to act as if launched with cron
 # 	html	to send an HTML email instead of plain text,
 #
 # FIXED: use mail_html.py rather than mutt, gpg-agent is not available when launched with gnome-schedule
-# Requires: Exercice.sh (http://besson.qc.to/bin/mail_html.py)
+# Requires: Exercice.sh (http://perso.crans.org/besson/bin/mail_html.py)
 #
 echo -e "${clear}${yellow}.: Lilian Besson presents :."
 echo -e "${cyan}Random Maths Exercice, v1.2${reset}"
@@ -67,7 +67,7 @@ SendExercice() {
 	## HTML (print a nice notification, rather than sending an email)
 		echo -e "<big>Exercice aléatoire du jour</big> <small><a href=\"http://mp.cpgedupuydelome.fr/mesexos.php?numExo=${numexo}\">(plus de détails ici)</a></small>\n<big><tt>" > "/tmp/${numexo}.zenity.html"
 		cat "/tmp/${numexo}.txt" | grep -v "^$" >> "/tmp/${numexo}.zenity.html"
-		echo -e "</tt></big>\n\nVous avez 3 minutes pour le résoudre, après quoi il sera envoyé par courriel\n<small>-- \nAffiché via <tt>zenity --text</tt> et du <a href=\"https://developer.gnome.org/pygtk/stable/pango-markup-language.html\">balisage pango</a> sur <a href=\"http://jarvis.crans.org\">jarvis</a> avec <a href=\"http://besson.qc.to/bin/MailExercice.sh\">MailExercice.sh</a> (script open-source)</small>\n" >> "/tmp/${numexo}.zenity.html"
+		echo -e "</tt></big>\n\nVous avez 3 minutes pour le résoudre, après quoi il sera envoyé par courriel\n<small>-- \nAffiché via <tt>zenity --text</tt> et du <a href=\"https://developer.gnome.org/pygtk/stable/pango-markup-language.html\">balisage pango</a> sur <a href=\"http://jarvis.crans.org\">jarvis</a> avec <a href=\"http://perso.crans.org/besson/bin/MailExercice.sh\">MailExercice.sh</a> (script open-source)</small>\n" >> "/tmp/${numexo}.zenity.html"
 		echo -e "<small><a href=\"https://bitbucket.org/lbesson/bin/issues/new\">Soumettre un bug ?</a></small>" >> "/tmp/${numexo}.zenity.html"
 
 	## Fake a google analytics call
@@ -90,7 +90,7 @@ SendExercice() {
 		## HTML (send a nice email)
 			echo -e "<h1>Exercice aléatoire du jour</h1><small><a href=\"http://mp.cpgedupuydelome.fr/mesexos.php?numExo=${numexo}\">(plus de détails ici)</a></small><br><pre style=\"font: large;\">" > "/tmp/${numexo}.mail.html"
 			cat "/tmp/${numexo}.txt" | grep -v "^$" >> "/tmp/${numexo}.mail.html"
-			echo -e "</pre><br>-- <br>Envoyé par <a href=\"http://jarvis.crans.org\">jarvis</a> avec <a href=\"http://besson.qc.to/bin/MailExercice.sh\">MailExercice.sh</a> (script open-source)<br>" >> "/tmp/${numexo}.mail.html"
+			echo -e "</pre><br>-- <br>Envoyé par <a href=\"http://jarvis.crans.org\">jarvis</a> avec <a href=\"http://perso.crans.org/besson/bin/MailExercice.sh\">MailExercice.sh</a> (script open-source)<br>" >> "/tmp/${numexo}.mail.html"
 			## echo -e "<br><img alt=\"GA\" src=\"https://ga-beacon.appspot.com/UA-38514290-15/exo/${numexo}/$(date '+%d-%m-%Y')\" />" >> "/tmp/${numexo}.mail.html"
 			echo -e "<small><a href=\"https://bitbucket.org/lbesson/bin/issues/new\">Soumettre un bug ?</a></small>" >> "/tmp/${numexo}.mail.html"
 			echo -e "<br><img style=\"display: none; vibility: hidden;\" src=\"https://ga-beacon.appspot.com/UA-38514290-15/exo/${numexo}/$(date '+%d-%m-%Y')?pixel\" />" >> "/tmp/${numexo}.mail.html"
@@ -101,7 +101,7 @@ SendExercice() {
 		## PlainText
 			echo -e "Exercice aléatoire du jour:\n(plus de détails ici : http://mp.cpgedupuydelome.fr/mesexos.php?numExo=${numexo})" > "/tmp/${numexo}.mail.txt"
 			cat "/tmp/${numexo}.txt" >> "/tmp/${numexo}.mail.txt"
-			echo -e "-- \nEnvoyé par jarvis avec MailExercice.sh\n(Script open-source: http://besson.qc.to/bin/MailExercice.sh)" >> "/tmp/${numexo}.mail.txt"
+			echo -e "-- \nEnvoyé par jarvis avec MailExercice.sh\n(Script open-source: http://perso.crans.org/besson/bin/MailExercice.sh)" >> "/tmp/${numexo}.mail.txt"
 
 		SendEmail "/tmp/${numexo}.mail.txt" "$@"
 	fi

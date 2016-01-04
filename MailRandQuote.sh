@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Web version: http://besson.qc.to/bin/MailRandQuote.sh
+# Web version: http://perso.crans.org/besson/bin/MailRandQuote.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/MailRandQuote.sh
 # Date: 10-03-2013
 #
 # A small script to do send one random quote, by email. Can easily be automatized,
 # with gnome-schedule for example. My computer is sending a random quote every hour ;)
 #
-# Requires: .quotes.txt (http://besson.qc.to/bin/.quotes.txt)
-# Requires: mail_html.py (http://besson.qc.to/bin/mail_html.py)
+# Requires: .quotes.txt (http://perso.crans.org/besson/bin/.quotes.txt)
+# Requires: mail_html.py (http://perso.crans.org/besson/bin/mail_html.py)
 
 echo -e "${clear}${yellow}.: Lilian Besson presents :."
 echo -e "${cyan}MailRandQuote.sh, v1.0${reset}"

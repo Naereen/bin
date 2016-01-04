@@ -1,7 +1,7 @@
 #!/usr/bin/env /bin/bash
 
 # By Lilian BESSON
-# http://besson.qc.to/bin/Battery.sh
+# http://perso.crans.org/besson/bin/Battery.sh
 
 # A bash script to access /etc/acpi (battery info) through the command line.
 
@@ -134,7 +134,7 @@ ${blue}COMMAND${white}:\n\
 	${yellow}notify${white}		Print and notify informations about the Main volume (value, percentage, gain, on/off),\n\
 ===========\n\
 	${red}Lilian BESSON (C) 26-09-2013${white}\n\
-	 ${green}http://besson.qc.to/bin/Battery.sh${white}"
+	 ${green}http://perso.crans.org/besson/bin/Battery.sh${white}"
 		exit 0
 		;;
 	value*)
