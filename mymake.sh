@@ -34,10 +34,10 @@ for i in "$@"; do
 done
 
 # Copyrights
-echo -e "${green}$0 v${version} : copyright (C) 2016 Lilian BESSON"
-echo -e "You can find it online (https://bitbucket.org/lbesson/bin/src/master/mymake.sh)"
-echo -e "This is free software, and you are welcome to redistribute it under certain conditions."
-echo -e "This program comes with ABSOLUTELY NO WARRANTY; for details see http://lbesson.mit-license.org${white}"
+echo -e "${black}$0 v${version} : copyright (C) 2016 Lilian BESSON" >/dev/stderr
+echo -e "You can find it online (https://bitbucket.org/lbesson/bin/src/master/mymake.sh)" >/dev/stderr
+echo -e "This is free software, and you are welcome to redistribute it under certain conditions." >/dev/stderr
+echo -e "This program comes with ABSOLUTELY NO WARRANTY; for details see http://lbesson.mit-license.org${white}" >/dev/stderr
 [ "X${JUSTVERSION}" = "Xtrue" ] && exit 1
 
 
@@ -54,8 +54,11 @@ while [ ! -f "${old}${c}Makefile" ]; do
 done
 if [ -f "${old}${c}Makefile" ]; then
     echo -e "${green}${old}${c}Makefile${white} is there, I'm using it :"
-    time /usr/bin/make -w --file="${old}${c}Makefile" "$@" && \
-        notify-send --icon=build "mymake.sh" "make '$@', done in the folder '${old}${c}'."
+    echo -e time /usr/bin/make -w --file="${old}${c}Makefile" $@
+    echo -e "notify-send --icon=make 'mymake.sh' \"make '$*', done in the folder '${old}${c}.\""
+    # read  # DEBUG
+    time /usr/bin/make -w --file="${old}${c}Makefile" $@ && \
+        notify-send --icon=make 'mymake.sh' "make '$*', done in the folder '${old}${c}."
     cd "${old}"
 else
     cd "${old}"
