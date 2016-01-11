@@ -287,7 +287,7 @@ LessColor() { pygmentize -f $CAT_COLOR -g "$@" | less -r; }
 # Un meilleur 'scp'. Ne fonctionne pas avec tous les serveurs, car la cible **doit** avoir rsync aussi.
 # NOTE: fonctionne aussi en local (et donne un avancement et propose une compression, meme en local).
 alias rsync='/usr/bin/rsync --verbose --times --perms --compress --human-readable --progress --archive'
-# Deprecated: use http://perso.crans.org/besson/bin/CP instead (with colours!)
+# Deprecated: use http://besson.qc.to/bin/CP instead (with colours!)
 
 DOCXtoPDF() { for i in $@; do echo -e "$i ----[abiword]----> ${i%.docx}.pdf"; abiword "$i" --to="${i%.docx}.pdf"; echo -e "$?"; done }
 
@@ -661,7 +661,7 @@ alias Status='clear; git status'
 alias Commit='clear; git commit -m'
 alias Add='git add'
 alias Aggressive='git gc --aggressive'
-alias Sync='clear; echo -e "Synchronizing (git push, gc, send_zamok, send_dpt)..."; git push; git gc --aggressive; make send_zamok; make send_dpt; alert'
+alias Sync='clear; echo -e "Synchronizing (git push, gc, send_zamok, send_dpt)..."; git push; git gc --aggressive; make send_zamok; alert'
 
 # For gmusicbrowser
 # alias GetUri="vrun status | grep file | sed s/'( new input: '/''/ | sed s/' )'/''/"
