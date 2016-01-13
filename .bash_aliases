@@ -846,7 +846,7 @@ Currents() {
             dir="$(cat "$i")"
             echo -e "\n$u$black~/$(basename "$i")$U$white\t ---> \t$blue${dir}$white"
             serie="$(basename "${dir}")"
-            cu=$( find "${dir}" -type f -iname current'*' 2>/dev/null || echo -e "Disque Dur Externe ['${u}/media/Disque Dur - Naereen/${U}']: ${red}pas branché${white}." >/dev/stderr)
+            cu=$( find "${dir}" -type f -iname current'*' 2>/dev/null || echo -e "Disque Dur Externe ['${u}/media/lilian/Disque Dur - Naereen/${U}']: ${red}pas branché${white}." >/dev/stderr)
             cu2="$(echo "$(basename "$cu")" | tr A-Z a-z)"
             cu2=${cu2#current_}
             # echo -e "sSSeEE  ---> $u$cu2$U"

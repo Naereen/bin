@@ -42,7 +42,7 @@ for i in "$@"; do
    echo -e "${u}Options:${U}"
    echo -e "    ${yellow}next$white	play the next one."
    echo -e "    ${yellow}previous$white	play the previous one."
-   echo -e "    ${yellow}last$white play the last one (default)."
+   echo -e "    ${yellow}last$white	play the last one (default)."
    echo -e "    ${yellow}list$white	shows the location and number of the current episodes for your TV shows."
    echo -e ""
    echo -e "Copyrights: (c) Lilian Besson 2011-2015."
@@ -146,7 +146,7 @@ for cu in ${currents:-$dflt}; do
                 dir="$(cat "$i")"
                 echo -e "\n$u$black~/$(basename "$i")$U$white\t ---> \t$blue${dir}$white"
                 serie="$(basename "${dir}")"
-                cu=$( find "${dir}" -type f -iname current'*' 2>/dev/null || echo -e "Disque Dur Externe ['${u}/media/Disque Dur - Naereen/${U}']: ${red}pas branché${white}." >/dev/stderr)
+                cu=$( find "${dir}" -type f -iname current'*' 2>/dev/null || echo -e "Disque Dur Externe ['${u}/media/lilian/Disque Dur - Naereen/${U}']: ${red}pas branché${white}." >/dev/stderr)
                 cu2="$(echo "$(basename "$cu")" | tr A-Z a-z)"
                 cu2=${cu2#current_}
                 # echo -e "sSSeEE  ---> $u$cu2$U"
