@@ -661,7 +661,7 @@ alias Status='clear; git status'
 alias Commit='clear; git commit -m'
 alias Add='git add'
 alias Aggressive='git gc --aggressive'
-alias Sync='clear; echo -e "Synchronizing (git push, gc, send_zamok, send_dpt)..."; git push; git gc --aggressive; make send_zamok; alert'
+alias Sync='clear; echo -e "Synchronizing (git push, gc, send_zamok)..."; git push; git gc --aggressive; make send_zamok; alert'
 
 # For gmusicbrowser
 # alias GetUri="vrun status | grep file | sed s/'( new input: '/''/ | sed s/' )'/''/"
