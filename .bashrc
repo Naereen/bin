@@ -411,6 +411,9 @@ else
     [ -x /usr/local/bin/tpal ] && (echo -e " ${yellow}Random color art palette .....${reset}" ; tpal art) || echo -e "tpal is not in your \$PATH :("
 fi
 
+# https://github.com/nvbn/thefuck#manual-installation
+eval $(thefuck --alias)
+
 # export BYOBU_NO_TITLE=yes
 
 ##############################################################################
