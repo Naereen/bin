@@ -234,6 +234,8 @@ captureEcran() {  # now the Alt+$ shortcut does the same!
 alias manH='man -Helinks'
 alias Byobu='echo -e "You should rather use TMUX instead"; byobu -A -D -RR -fa -h 150000 -l -O -U'  # TMUX is better
 alias Byobu-tmux='byobu-tmux -2 -q -u'
+# http://unix.stackexchange.com/a/1098
+alias byobu='TERM=xterm-256color /usr/bin/byobu-tmux -2 -q -u'
 
 alias py2html='pyhtmlizer --stylesheet=http://perso.crans.org/besson/pyhtmlizer.css'
 complete -f -X '!*.@(py|py3)' -o plusdirs py2html
@@ -674,7 +676,8 @@ alias Play='gmusicbrowser -cmd Play'  # && clear ; tmp1=$(vrun get_title); tmp2=
 alias irc='screen irssi'
 
 # TMUX create a new session ONLY if no other session is already running
-alias TMUX='tmux -2 -q -u attach-session || tmux -2 -q -u'
+alias tmux='TERM=xterm-256color /usr/bin/tmux -2 -q -u'
+alias TMUX='/usr/bin/tmux -2 -q -u attach-session || /usr/bin/tmux -2 -q -u'
 
 # For GPG
 GpgSign() { gpg --armor --detach-sign --yes --no-batch --use-agent "$@"; }
