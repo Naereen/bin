@@ -85,10 +85,10 @@ echo -e "</pre>\n\n## Stats <a href='https://wakatime.com/dashboard'>WakaTime</a
 # wakatime.js -w >> "$dest"
 mywakatime -w >> "$dest"
 
-echo -e "</pre>\n\n## <a href='https://naereen.github.io/selfspy-vis/'>Ratio clicks/keystrokes</a> (\`selfstats --human-readable --ratios\`)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## <a href='http://jarvis/selfvis.html'>Ratio clicks/keystrokes</a> (\`selfstats --human-readable --ratios\`)\n> <pre>" >> "$dest"
 selfstats --human-readable --ratios | sed '/^$/d' >> "$dest"
 
-echo -e "</pre>\n\n## <a href='http://jarvis/publis/selfspy-vis/README.md'>Stats</a> <a href='https://github.com/gurgeh/selfspy#example-statistics'>selfspy</a> (\`selfstats --human-readable --pactive\`)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## <a href='http://jarvis/selfvis.html'>Stats</a> <a href='https://github.com/gurgeh/selfspy#example-statistics'>selfspy</a> (\`selfstats --human-readable --pactive\`)\n> <pre>" >> "$dest"
 selfstats --human-readable --pactive | sed '/^$/d' >> "$dest"
 
 # Footer
