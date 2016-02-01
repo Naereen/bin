@@ -976,6 +976,9 @@ alias todo_message='for i in $(seq 1 1000); do figlet -w ${COLUMNS} ">  T O D O 
 alias timake='time make && alert'
 alias nhtaccess='nano .htaccess -Y sh'
 
+alias selfspy='rm -vi ~/.selfspy/selfspy.pid.lock ; /usr/local/bin/selfspy'
+alias selfvis='cd ~/Public/ ; echo -e "Generating selfvis graphs..." ; selfvis.py ; cd -'
+
 alias SHUTDOWN='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when shutdown." "[LOG] ${USER}@${HOSTNAME} : shutdown"; mail_tel.py "Automatically sent by the machine $HOSTNAME.crans.org when shutdown." "[LOG] ${USER}@${HOSTNAME} : shutdown"; sudo shutdown now'
 alias REBOOT='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when reboot." "[LOG] ${USER}@${HOSTNAME} : reboot"; mail_tel.py "Automatically sent by the machine $HOSTNAME.crans.org when reboot." "[LOG] ${USER}@${HOSTNAME} : reboot"; sudo reboot now'
 alias VEILLE='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when fall asleep." "[LOG] ${USER}@${HOSTNAME} : going sleep"; GoingSleep.sh'
