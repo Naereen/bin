@@ -1,4 +1,4 @@
-#!/usr/bin/env /bin/bash
+#!/bin/bash
 # Just remove the "Graph this data and manage this system at https://landscape.canonical.com/"
 # line from landscape-sysinfo
 #

@@ -46,7 +46,7 @@ echo -e "${black}This program comes with ABSOLUTELY NO WARRANTY; for details see
 
 # The function
 old="$(pwd)/"
-xtitle "make $@ - (in ${old})"
+xtitle "make $* - (in ${old})"
 echo -e "Looking for a valid ${magenta}Makefile${white} from ${blue}${old}${white} :"
 c=""
 while [ ! -f "${old}${c}Makefile" ]; do
@@ -59,10 +59,10 @@ done
 # New using it to execute make
 if [ -f "${old}${c}Makefile" ]; then
     echo -e "${green}${old}${c}Makefile${white} is there, I'm using it :"
-    echo -e "Calling... ${black}'" time /usr/bin/make -w --file="${old}${c}Makefile" $@ "'${white}..."
+    echo -e "Calling... ${black}'" time /usr/bin/make -w --file="${old}${c}Makefile" "$@" "'${white}..."
     echo -e "Then if success calling... ${black}'" notify-send --icon=make 'mymake.sh' "\"make '$*', done in the folder '${old}${c}.\"" "'${white}..."
     # read  # DEBUG
-    time "${MAKEPATH}" -w --file="${old}${c}Makefile" $@ && \
+    time "${MAKEPATH}" -w --file="${old}${c}Makefile" "$@" && \
         notify-send --icon=make 'mymake.sh' "make '$*', done in the folder '${old}${c}."
     cd "${old}"
 else

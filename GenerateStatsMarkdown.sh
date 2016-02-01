@@ -60,7 +60,7 @@ echo -e "</pre>\n\n***\n\n## [Utilisateurs connectés](lns_munin/localdomain/loc
 w -h >> "$dest"
 
 echo -e "</pre>\n\n## Adresse(s) IP\n> <pre>" >> "$dest"
-echo ${MY_IP:-"Not connected"} >> "$dest"
+echo "${MY_IP:-"Not connected"}" >> "$dest"
 
 echo -e "</pre>\n\n## [Statut NGinx](lns_munin/localdomain/localhost.localdomain/index.html#nginx) (\`nginx_status.sh\`)\n> <pre>" >> "$dest"
 /home/lilian/bin/nginx_status.sh >> "$dest"
