@@ -267,7 +267,7 @@ log="/tmp/strapdown2pdf.log"
 # And finally treat every arguments.
 if [ "$quiet" = "true" ]; then
 	echo -e "On "$(date)", strapdown2pdf is running on quiet mode." > "${log}"
-	echo -e "On quiet mode, arguments were '$@'." &>> "${log}"
+	echo -e "On quiet mode, arguments were '$*'." &>> "${log}"
 	StrapDown2PDF "${1}" &>> "${log}"
 	shift
 	for finput in "$@"; do

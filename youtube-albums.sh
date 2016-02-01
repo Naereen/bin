@@ -102,7 +102,7 @@ dlalbums() {
 
 #######
 # Start
-echo -e "${0} have been called with the arguments (after processing the options) : ${blue}$@${white}." | tee -a /tmp/youtube-playlist.log
+echo -e "${0} have been called with the arguments (after processing the options) : ${blue}$*${white}." | tee -a /tmp/youtube-playlist.log
 
 for i in "$@"; do
     echo -e "Calling the function ${magenta}'dlalbums'${white} for the argument ${u}'${i}'${U} (on pwd = $(pwd))..." | tee -a /tmp/youtube-playlist.log

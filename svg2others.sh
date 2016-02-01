@@ -37,8 +37,7 @@ else
 fi
 
 # Argument testing
-for arg in $@
-do
+for arg in "$@"; do
 	case "$arg" in
 	-h*|-?|--h*|--?*)
 		echo -e "${red}svg2others.sh [OPTIONS] image1.svg [images.svg]${white}\n\n\
@@ -66,14 +65,14 @@ svg2others(){
 	if [ "$source.svg" = "$1" ] && [ -f "$source.svg" ]
 	then
 		echo -e "${green} The file $1 ${blue}seems${white} to be a valid .svg image file."
-		
+
 		if [ ! -f "$source.pdf" ]; then
 		 rsvg-convert -f pdf -o "$source.pdf" "$source.svg" && \
 		 echo -e "${green}   $source.pdf ${blue}created${white}...."
 		else
 		 echo -e "${red} the $source.pdf output is already there..."
 		fi
-		
+
 		if [ ! -f "$source.png" ]; then
 		 rsvg-convert -f png "$source.svg" "$source.png" && \
 		 echo -e "${green}   $source.png ${blue}created${white}...."

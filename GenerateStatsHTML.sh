@@ -38,7 +38,7 @@ echo -e "<small>(Normalement, juste <tt>lilian</tt> !)</small><pre>" >> "$dest"
 w -h >> "$dest"
 
 echo -e "</pre><h3>Adresses IP</h3><pre>" >> "$dest"
-echo ${MY_IP:-"Not connected"} >> "$dest"
+echo "${MY_IP:-"Not connected"}" >> "$dest"
 
 echo -e "</pre><h3>Durée d'activité (<tt>uptime</tt>)</h3><pre>" >> "$dest"
 uptime >> "$dest"

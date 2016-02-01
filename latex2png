@@ -46,8 +46,8 @@ LatexFormula() {
     latex="${@//+/}"
     latex="${@// /+}"
     wget --quiet 'http://s0.wp.com/latex.php?bg=ffffff&fg=1c1c1c&s=0&zoom=10&latex='"${latex}" -O "${out}" \
-    || wget --quiet 'http://numberempire.com/equation.render?'"${@// /%20}" -O "${out}"
-    display -title "Image for the LaTeX formula: '${@//\\/\\\\}'   (thanks to the script latex2png)" "${out}"
+    || wget --quiet 'http://numberempire.com/equation.render?'"${*// /%20}" -O "${out}"
+    display -title "Image for the LaTeX formula: '${*//\\/\\\\}'   (thanks to the script latex2png)" "${out}"
     echo -e "The image has been produced, to ${out}, for the LaTeX formula."
     echo -e ""
     echo -e "Now you can use this image on Facebook or Twitter."
