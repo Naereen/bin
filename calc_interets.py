@@ -37,6 +37,7 @@ except:
                'PEL': 2000.09
             }
 
+
 type_comptes = list(comptes.keys())
 
 
@@ -75,8 +76,8 @@ def main(comptes, taux=taux2015):
         figManager.frame.Maximize(True)
     except:
         figManager.window.showMaximized()
-    print("Sauvegarde de ce graphique vers '/home/lilian/Public/argent_2015.png' en cours...")
-    plt.savefig('/home/lilian/Public/argent_2015.png')
+    print("Sauvegarde de ce graphique vers '/home/lilian/Public/argent_2016.png' en cours...")
+    plt.savefig('/home/lilian/Public/argent_2016.png')
     plt.show()
     # plt.close('all')
 
