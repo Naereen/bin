@@ -2,7 +2,7 @@
 # -*- coding: utf-8; mode: python -*-
 """ Petit script Python pour afficher des graphiques de ses comptes et calculer des intérêts.
 
-- *Date:* Wednesday 30 December 2015, 9:42:00.
+- *Date:* 03 February 2016.
 - *Author:* Lilian Besson, (C) 2015-16.
 - *Licence:* MIT Licence (http://lbesson.mit-license.org).
 """
@@ -20,21 +20,19 @@ except ImportError:
 
 taux2015 = {'CCP': 0, 'LA': 0.75, 'LEP': 1.25, 'LJ': 1.75, 'PEA': 0, 'PEL': 2.1}
 
-# FIXME change this, or read it from a file
-# FIXME make this script public if possible
 try:
     print("Lecture des comptes via le fichier '/home/lilian/comptes.pickle'...")
     with open("/home/lilian/comptes.pickle") as f:
         comptes = pickle.load(f)
 except:
-    print("Echec de la lecture. FIXME trouve une autre solution.")
+    print("Echec de la lecture.")
     comptes = {
-               'CCP': 2000.65,
-               'LA': 2000,
-               'LEP': 2000,
-               'LJ': 2000.25,
-               'PEA': 2000,
-               'PEL': 2000.09
+               'CCP': 2000.00,
+               'LA': 2000.00,
+               'LEP': 2000.00,
+               'LJ': 2000.00,
+               'PEA': 2000.00,
+               'PEL': 2000.00
             }
 
 
