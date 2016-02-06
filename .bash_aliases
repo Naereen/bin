@@ -10,7 +10,7 @@ LS_ECHO() {
     printf " ${blue}${u} Listing${reset} \$*..."
     sleep 0.5
     printf "${el}..."
-    for i in $*; do
+    for i in "$@"; do
         printf "${green}$i${reset}..."
         sleep 0.05
         printf "${el}..."
@@ -98,7 +98,7 @@ alias _cd_old='cd'
 CD() {
     p="$(pwd)"
     p2="$(pwd -P)"
-    if [ "X$*" = "X" ]
+    if [ "X$@" = "X" ]
     then
         args="$HOME"
     else
@@ -125,11 +125,11 @@ alias ssh='/usr/bin/ssh -X -C'
 
 # Des commandes auxquelles on rajoute des messages inutiles :
 mkdir() {
-    echo -e "Le système va essayer de créer le dossier $@..."
+    echo -e "Le système va essayer de créer le dossier $*..."
     /bin/mkdir -p "$@"
 }
 
-# Une commande *geek* pour afficher une video en ASCII ... en console !
+# Une commande geek pour afficher une video en ASCII ... en console !
 alias VideoAscii='mplayer -vo caca'
 
 # Pour convertir des fichiers textes :
@@ -156,10 +156,10 @@ alias mocaml_noANSI='rlwrap -t dumb --file=/home/lilian/keyword_mocaml_rlwrap.tx
 
 # Interpréter les fichiers. Bien mieux que 'ocaml file1.ml file2.ml'.
 iocaml() {
-    for i in $@; do
-        cat "$i" >> /tmp/iocaml.ml
+    for i in "$@"; do
+        cat "${i}" >> /tmp/iocaml.ml
         echo -e "(** OCaml on ${i}:1:1 *)" >> /tmp/iocaml.log
-        /usr/bin/ocaml graphics.cma < "$i" 2>&1 | tee -a /tmp/iocaml.log | sed s{//toplevel//{"$i"{ | pygmentize -l ocaml -P encoding=$(file -b --mime-encoding "$i")
+        /usr/bin/ocaml graphics.cma < "${i}" 2>&1 | tee -a /tmp/iocaml.log | sed s_//toplevel//_"${i}"_ | pygmentize -l ocaml -P encoding="$(file -b --mime-encoding "${i}")"
     done
 }
 # Reference for this is https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
@@ -202,7 +202,7 @@ complete -f -X '!*.@(gif|GIF|jp?(e)g|pn[gm]|PN[GM]|ico|ICO)' -o plusdirs voirIma
 
 xtitle() {
     echo -e "${reset}Setting title to $@..." >> /tmp/xtitle.log
-    echo -e "${cyan}Setting title to ${white}${u}$@${U}...${reset}${white}"
+    echo -e "${cyan}Setting title to ${white}${u}$*${U}...${reset}${white}"
     if [ -x /usr/bin/xtitle ]; then
        /usr/bin/xtitle "$@"
     fi
@@ -248,9 +248,9 @@ alias cacademoTerminal='OLDDISPLAY=$DISPLAY; DISPLAY=""; cacademo; DISPLAY=$OLDD
 alias cacafireTerminal='OLDDISPLAY=$DISPLAY; DISPLAY=""; cacafire; DISPLAY=$OLDDISPLAY'
 
 lessColor() {
-    for i in $*; do
-        pygmentize -P encoding=$(file -b --mime-encoding "$i") -f $CAT_COLOR -g "$i" | less -r || \
-        echo -e "${red}[ERROR]${yellow} LessColor failed to read $u$i$U ...${white}" > /dev/stderr
+    for i in "$@"; do
+        pygmentize -P encoding="$(file -b --mime-encoding "${i}")" -f $CAT_COLOR -g "${i}" | less -r || \
+        echo -e "${ERROR} LessColor failed to read ${u}${i}${U} ...${white}" > /dev/stderr
     done
 }
 
@@ -261,13 +261,13 @@ alias SoundDown='echo -e KeyStrPress XF86AudioLowerVolume KeyStrRelease XF86Audi
 alias RaiseSound='echo -e KeyStrPress XF86AudioRaiseVolume KeyStrRelease XF86AudioRaiseVolume | xmacroplay $DISPLAY > /dev/null >& /dev/null'
 alias LowerSound='echo -e KeyStrPress XF86AudioLowerVolume KeyStrRelease XF86AudioLowerVolume | xmacroplay $DISPLAY > /dev/null >& /dev/null'
 
-# Variable utiles pour faire des scp et des rsync **facilement**
+# Variable utiles pour faire des scp et des rsync facilement
 export SDPT='lbesson@ssh.dptinfo.ens-cachan.fr'
 export SZAM='besson@zamok.crans.org'
 export Sdpt='lbesson@ssh.dptinfo.ens-cachan.fr:~/public_html/'
 export Szam='besson@zamok.crans.org:~/www/'
 export toprint="${Szam}dl/.p/toprint/"
-export Sjarvis='~/Public/'
+export Sjarvis=~/"Public/"
 
 # Un outil pour les messages du jour
 alias motd='changemotd.sh --print'
@@ -286,27 +286,27 @@ SMSmotd() {
 
 LessColor() { pygmentize -f $CAT_COLOR -g "$@" | less -r; }
 
-# Un meilleur 'scp'. Ne fonctionne pas avec tous les serveurs, car la cible **doit** avoir rsync aussi.
+# Un meilleur 'scp'. Ne fonctionne pas avec tous les serveurs, car la cible doit avoir rsync aussi.
 # NOTE: fonctionne aussi en local (et donne un avancement et propose une compression, meme en local).
 alias rsync='/usr/bin/rsync --verbose --times --perms --compress --human-readable --progress --archive'
 # Deprecated: use http://besson.qc.to/bin/CP instead (with colours!)
 
-DOCXtoPDF() { for i in $@; do echo -e "$i ----[abiword]----> ${i%.docx}.pdf"; abiword "$i" --to="${i%.docx}.pdf"; echo -e "$?"; done }
+DOCXtoPDF() { for i in "$@"; do echo -e "${i} ----[abiword]----> ${i%.docx}.pdf"; abiword "${i}" --to="${i%.docx}.pdf"; echo -e "$?"; done }
 
 # Netoyer les fichiers temporaires (sauvegarde, python, ou emacs)
-alias rmPyc='rm -f *.py[co] && echo "Local Python compiled files (*.pyc and *.pyo) have been deleted..."'
-alias rmt='rm -fv *~ .*~ *.py[co] \#*\#'
+alias rmPyc='rm -f ./*.py[co] && echo "Local Python compiled files (*.pyc and *.pyo) have been deleted..."'
+alias rmt='rm -fv ./*~ ./.*~ ./*.py[co] ./\#*\#'
 
 rmTilde() {
     if [ X"$1" != X"" ]; then
-        for i in $@; do
-            #d="$(basename \"$i\")" # ? inutile ?
+        for i in "$@"; do
+            # d="$(basename \"$i\")" # ? inutile ?
             d="$i"
-            rm -vf "$d"/*~ "$d"/.*~ "$d"/*.py[co] \#*\#
+            rm -vI "$d"/*~ "$d"/.*~ "$d"/*.py[co] ./\#*\#
         done
         echo "Fichiers temporaires (*~ .*~) bien supprimes."
     else
-        rm -vf *~ .*~ *.py[co] \#*\# && echo "Fichiers temporaires (*~ .*~) bien supprimes."
+        rm -vI ./*~ ./.*~ ./*.py[co] ./\#*\# && echo "Fichiers temporaires (*~ .*~) bien supprimes."
     fi
 }
 
@@ -316,7 +316,7 @@ alias rm~="rmTilde *"
 # Netoyer les fichiers temporaires crees par LaTeX (pdflatex et hevea)
 rmLaTeX() {
     echo -e "# ${blue}rmLaTeX:${white}"
-    for i in *.tex; do
+    for i in ./*.tex; do
         echo -e "# For the file ${yellow}${u}$i${U}${white}:"
         for j in "${i%tex}dvi" "${i%tex}htoc" "${i%tex}frompdf[0-9]*.png" "${i%tex}bbl" "${i%tex}blg" "${i%tex}brf" "${i%tex}tms" "${i%tex}tid" "${i%tex}lg" "${i%tex}idv" "${i%tex}vrb" "${i%tex}toc" "${i%tex}snm" "${i%tex}nav" "${i%tex}htmp" "${i%tex}synctex.gz" "${i%tex}synctex.gz(busy)" "${i%tex}aux" "${i%tex}fdb_latexmk" "${i%tex}fls" "${i%tex}log" "${i%tex}tmp" "${i%tex}idx" "${i%tex}aux" "${i%tex}out" "${i%tex}haux" "${i%tex}hidx"; do
             mv -vf "$j" /tmp/ 2>/dev/null
@@ -341,7 +341,7 @@ TEX2PDF() {
         PDFCompress "${i%tex}pdf"
     done
 }
-complete -f -X '!*.@(tex|pdf)' -o plusdirs tex2pdf TEX2PDF
+complete -f -X '!*.@(tex|pdf)' -o plusdirs tex2pdf TEX2PDF qpdf
 
 # A better and smaller bibtex2html command, with good options
 alias bib2html='bibtex2html -u -charset utf-8 -linebreak -debug'
@@ -380,7 +380,7 @@ alias EffacePresenceAPPLE='find -type d -name *Apple* -exec rm -vrI {} \;'
 alias LS_PATH='ls ${PATH//:/ }'
 
 LOG_Colored() {
-    $@ 2> /tmp/LOG_Colored.log
+    "$@" 2> /tmp/LOG_Colored.log
     printf "${reset}${el}\a"
     catColor /tmp/LOG_Colored.log
 }
@@ -432,10 +432,10 @@ GrepBalises() {
         fi
     done
     if [ "X$notfound" = "X" ]; then
-        echo -e "${white}GrepBalises >>> ${green} Done${white}. (on files $@)."
+        echo -e "${white}GrepBalises >>> ${green} Done${white}. (on files $*)."
     else
-        echo -e "${white}GrepBalises >>> ${red} Balises $notfound not found :("
-        echo -e "${white}GrepBalises >>> Done. (on files $@)."
+        echo -e "${white}GrepBalises >>> ${red} Balises ${notfound} not found :("
+        echo -e "${white}GrepBalises >>> Done. (on files $*)."
     fi
 }
 
@@ -457,7 +457,7 @@ export LESS=' -r -F -B -i -J -w -W -~ -K -d -w -W -m -X -u -r'
 # File & strings related functions:
 
 # Find a file with a pattern in name:
-ff() { find . -type f -iname '*'$@'*' -ls ; }
+ff() { find . -type f -iname '*'"$@"'*' -ls ; }
 
 # Find a file with pattern $1 in name and Execute $2 on it:
 fe() { find . -type f -iname '*'"$1"'*' -exec "${2:-file}" {} \;  ; }
@@ -482,18 +482,18 @@ Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
         local SMSO=$(tput smso)
         local RMSO=$(tput rmso)
         find . -type f -name "${2:-*}" -print0 |
-        xargs -0 grep -sn ${case} "$1" 2>&- | \
+        xargs -0 grep -sn "${case}" "$1" 2>&- | \
         sed "s/$1/${SMSO}\0${RMSO}/gI" | more
 }
 
 lowercase() {  # move filenames to lowercase
     for file ; do
-        filename=${file##*/}
+        filename="${file##*/}"
         case "$filename" in
             */*) dirname==${file%/*} ;;
             *) dirname=.;;
         esac
-        nf=$(echo $filename | tr A-Z a-z)
+        nf="$(echo $filename | tr '[:upper:]' '[:lower:]')"
         newname="${dirname}/${nf}"
         if [ "$nf" != "$filename" ]; then
             mv "$file" "$newname"
@@ -506,20 +506,20 @@ lowercase() {  # move filenames to lowercase
 
 capitalize() {  # move filenames to Capitalize
     for file ; do
-        filename=${file##*/}
+        filename="${file##*/}"
         case "$filename" in
             */*) dirname==${file%/*} ;;
             *) dirname=.;;
         esac
-        premierelettre=${filename:0:1}
-        pl=$(echo $premierelettre | tr a-z A-Z)
-        nf=${pl}${filename:1}
+        premierelettre="${filename:0:1}"
+        pl="$(echo $premierelettre | tr '[:lower:]' '[:upper:]')"
+        nf="${pl}${filename:1}"
         newname="${dirname}/${nf}"
         if [ "$nf" != "$filename" ]; then
             mv "$file" "$newname"
-            echo "lowercase: $file --> $newname"
+            echo "capitalize: $file --> $newname"
         else
-            echo "lowercase: $file not changed."
+            echo "capitalize: $file not changed."
         fi
     done
 }
@@ -531,9 +531,9 @@ swap() {        # swap 2 filenames around
     mv $TMPFILE "$2"
 }
 
-my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,bsdtime,command ; }
+my_ps() { ps "$@" -u "$USER" -o pid,%cpu,%mem,bsdtime,command ; }
 
-pp() { my_ps f | awk '!/awk/ && $0~var' var=${1:-".*"} ; }
+pp() { my_ps f | awk '!/awk/ && $0~var' var="${1:-".*"}" ; }
 
 my_ip() {  # get IP adresses
     MY_IP=$(/sbin/ifconfig | awk '/inet adr:/ { print $2 } ' | sed -e s/addr://)
@@ -578,10 +578,11 @@ mutt-ens(){
     [ -f yes ] && rm -f yes
 }
 
-# Supprimer les meta-donnees des images jpeg et png
-alias CleanPicturesR='echo "Erasing EXIF infos...." && exiftool -v2 -recurse -fast -overwrite_original_in_place -all= * | tee "exiftool__$$_$(date "+%H_%M_%S")".log && echo "All EXIF infos have been erased :)"'
-alias CleanPictures='echo "Erasing EXIF infos...." && exiftool -v2 -fast -overwrite_original_in_place -all= * | tee "exiftool__$$_$(date "+%H_%M_%S")".log && echo "All EXIF infos have been erased :)"'
-alias CleanPNG='echo "Cleaning and compressing PNG images..." && exiftool -v2 -fast -overwrite_original_in_place -all= *.png && advpng -z -2 *.png && M'
+# Supprimer les meta-données des images JPEG et PNG, et PDF
+alias CleanPicturesR='echo "Erasing EXIF infos...." && exiftool -v2 -recurse -fast -overwrite_original_in_place -all= ./* | tee "exiftool__$$_$(date "+%H_%M_%S")".log && echo "All EXIF infos have been erased :)"'
+alias CleanPictures='echo "Erasing EXIF infos...." && exiftool -v2 -fast -overwrite_original_in_place -all= ./* | tee "exiftool__$$_$(date "+%H_%M_%S")".log && echo "All EXIF infos have been erased :)"'
+alias CleanPNG='echo "Cleaning and compressing PNG images..." && exiftool -v2 -fast -overwrite_original_in_place -all= ./*.png && advpng -z -2 ./*.png && M'
+alias CleanPDF='echo "Cleaning and compressing PDF images..." && exiftool -v2 -fast -overwrite_original_in_place -all= ./*.pdf && PDFCompress --no-keep ./*.pdf && M'
 
 ## A less for PDF files (useless)
 lessPDF() {
@@ -632,7 +633,7 @@ LatexFormula() {
 }
 
 alias CheckHomePage_crans='wget -q http://perso.crans.org/besson -O - | grep "Mis.*jour"'
-alias CheckHomePage_dpt='wget -q http://www.dptinfo.ens-cachan.fr/~lbesson -O - | grep "Mis.*jour"'
+# alias CheckHomePage_dpt='wget -q http://www.dptinfo.ens-cachan.fr/~lbesson -O - | grep "Mis.*jour"'
 alias CheckHomePage_jarvis='wget -q http://jarvis -O - | grep "Mis.*jour"'
 
 alias GenP="base64 < /dev/urandom | tr -d +/ | head -c 18; echo"
@@ -666,7 +667,7 @@ alias Aggressive='git gc --aggressive'
 alias Sync='clear; echo -e "Synchronizing (git push, gc, send_zamok)..."; git push; git gc --aggressive; make send_zamok; alert'
 
 # For gmusicbrowser
-# alias GetUri="vrun status | grep file | sed s/'( new input: '/''/ | sed s/' )'/''/"
+alias Get_vrun_Uri="vrun status | grep file | sed s/'( new input: '/''/ | sed s/' )'/''/"
 alias Next='gmusicbrowser -cmd NextSong'  # && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (→) Playing${white}: $neg$tmp1$Neg"'
 alias Prev='gmusicbrowser -cmd PrevSong'  # && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (←) Playing${white}: $neg$tmp1$Neg"'
 alias Pause='gmusicbrowser -cmd PlayPause'  # && clear ; tmp1=$(vrun get_title); tmp2=$(vrun status|head -n1); echo -e "$u$tmp2$reset${white}\n${green} (:) Was Playing${white}: $neg$tmp1$Neg"'
@@ -680,8 +681,8 @@ alias tmux='TERM=xterm-256color /usr/bin/tmux -2 -q -u'
 alias TMUX='/usr/bin/tmux -2 -q -u attach-session || /usr/bin/tmux -2 -q -u'
 
 # For GPG
-GpgSign() { gpg --armor --detach-sign --yes --no-batch --use-agent "$@"; }
-GpgVerify() { gpg --verify --no-batch --use-agent "$@"; }
+GpgSign()    { gpg --armor --detach-sign --yes --no-batch --use-agent "$@"; }
+GpgVerify()  { gpg --verify --no-batch --use-agent "$@"; }
 GpgEncrypt() { gpg --encrypt --yes --no-batch --use-agent -r "$EMAIL" "$@"; }
 GpgDecrypt() { gpg --decrypt --yes --no-batch --use-agent "$@"; }
 
@@ -827,7 +828,7 @@ Munin_Start() {
         sudo service munin-node restart
     fi
     echo -e "${red} PIDs or command line of ${cyan}${u}munin${U}${reset} :"
-    echo "$(ps aux |grep "[a-z/]*perl.*munin[a-z-]*$")"
+    ps aux | grep "[a-z/]*perl.*munin[a-z-]*$"
 }
 
 # Shortcut : long command &>$null& is shorten that &>/dev/null& :)
@@ -850,13 +851,14 @@ Currents() {
             echo -e "\n$u$black~/$(basename "$i")$U$white\t ---> \t$blue${dir}$white"
             serie="$(basename "${dir}")"
             cu=$( find "${dir}" -type f -iname current'*' 2>/dev/null || echo -e "Disque Dur Externe ['${u}/media/lilian/Disque Dur - Naereen/${U}']: ${red}pas branché${white}." >/dev/stderr)
-            cu2="$(echo "$(basename "$cu")" | tr A-Z a-z)"
-            cu2=${cu2#current_}
+            cu2="$(echo "$(basename "$cu")" | tr '[:upper:]' '[:lower:]')"
+            cu2="${cu2#current_}"
             # echo -e "sSSeEE  ---> $u$cu2$U"
-            d=${cu2#s}; d=${d%e[0-9]*}
+            d="${cu2#s}"
+            d="${d%e[0-9]*}"
             # echo -e "Season :  $d"
-            e=${cu2#s[0-9]*e}
-            e=${e#0*}
+            e="${cu2#s[0-9]*e}"
+            e="${e#0*}"
             if [[ "${d}${e}" != "" ]]; then
                 echo -e "For « ${u}${cyan}${serie}${white}${U} », the last watched episode is ${Black}${red}Season ${d:-?}${white}, ${magenta}Episode ${e:-?}${Default}${white}."
             fi
@@ -872,6 +874,7 @@ firefox() { ( /usr/bin/firefox "$@" || /usr/bin/elinks "$@" ) &> /dev/null & }
 vlc() { /usr/bin/vlc --random "$@" &> /dev/null & }
 linphone() { /usr/bin/linphone "$@" &> /dev/null & }
 libreoffice() { ( /usr/bin/libreoffice "$@" || /usr/bin/abiword "$@" ) &> /dev/null & }
+
 butterfly() {  # From pip install butterfly
     butterfly.server.py --logging=none --unsecure &> /dev/null &
     echo -e "Butterfly running... Open your browser at http://127.0.0.1:57575/ to use the Butterfly terminal in your browser"
@@ -879,9 +882,10 @@ butterfly() {  # From pip install butterfly
 
 # Better .rst → .html and .md → .html (simpler)
 alias rst2html='rst2html -v -t --no-generator -l fr --cloak-email-addresses '
-complete -f -X '!*.@(rst|txt|rST)' -o plusdirs rst2html rst2latex rst2man rst2odt rst2odt_prepstyles rst2pdf rst2pseudoxml rst2s5 rst2xetex rst2xml rst2pdf 
+complete -f -X '!*.@(rst|txt|rST)' -o plusdirs rst2html rst2latex rst2man rst2odt rst2odt_prepstyles rst2pdf rst2pseudoxml rst2s5 rst2xetex rst2xml rst2pdf
+
 alias markdown='python -m markdown -e utf8 -v '
-complete -f -X '!*.@(md|mdown|markdown|mkdown|txt)' -o plusdirs markdown markdown2 markdown_py
+complete -f -X '!*.@(md|mdown|markdown|mkdown|txt)' -o plusdirs markdown markdown2 markdown_py markdown.py
 
 alias bd='. bd -s'
 
@@ -915,7 +919,7 @@ alias ETTelephoneMaison='linphone -c 0492202627@crans.org'
 Appeler() {
     echo -e linphone -c "$1"@crans.org
     echo -e "Confirmez-vous l'appel au numéro $1 ?"
-    read &&  linphone -c "$1"@crans.org
+    read && linphone -c "$1"@crans.org
 }
 
 PROXY () {
@@ -942,7 +946,6 @@ pdfinfo() { for i in "$@"; do echo -e "\n${green}# For '${red}${u}$i${U}${white}
 complete -f -X '!*.pdf' -o plusdirs pdfinfo pdftk pdfgrep pdftohtml pdftotext
 
 f() { echo -e "Opening args '$@' in firefox..."; firefox "$@" || alert; }
-
 b() { echo -e "Executing args '$@' with bpython..."; bpython "$@" || alert; }
 # Default to Python 3
 i2() { echo -e "Executing args '$@' with ipython2..."; ipython2 --pylab "$@" || alert; }
