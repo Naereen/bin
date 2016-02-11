@@ -1,7 +1,7 @@
-#!/usr/bin/env /bin/bash
+#!/bin/bash
 ################################## INFO #####################################
 # A GNU Bash script to automatically TRY to compress PDF files in the current directory.
-# Copyright (C) 2013-2015 Lilian BESSON (lbesson at ens-cachan dot fr)
+# Copyright (C) 2013-2016 Lilian BESSON (lbesson at ens-cachan dot fr)
 #
 # Find the latest version on http://perso.crans.org/besson/bin/PDFCompress
 #
@@ -27,23 +27,23 @@ version="1.5"
 ##LANG="en"
 
 GREP="grep --color=always --line-buffered"
-BIN=`basename "$0"`
+BIN=$(basename "$0")
 ECHO="echo -e"
 
 # If editing the meta data, change them to say that the PDF have been modified.
 # in fact, it is the default behavior :)
 ## FIXME: if using '{' or '/' in $creator, warning when using sed ...
-creator="LaTeX, compressed with http://perso.crans.org/besson/bin/PDFCompress v$version -- a script by Lilian BESSON (C) 2013-2015"
-creator="`$ECHO \"$creator\" | tr { _`"
+creator="Compressed with http://perso.crans.org/besson/bin/PDFCompress v$version -- a script by Lilian BESSON (C) 2013-2016"
+creator="$($ECHO \"$creator\" | tr '{' '_')"
 
 # If possible, use .color.sh (http://perso.crans.org/besson/bin/.color.sh or http://lperso.crans.org/besson/bin/.color.sh)
 if [ -f "$HOME/.color.sh" ]; then
- . "$HOME/.color.sh"
+    . "$HOME/.color.sh"
 else
-  $ECHO "\033[01;31m WARNING: ~/.color.sh have not been found...\033[01;37m" > /dev/stderr
-  $ECHO "\033[01;33m INFO: 1) You can download it on http://perso.crans.org/besson/bin/.color.sh or http://lperso.crans.org/besson/bin/.color.sh \033[01;37m" > /dev/stderr
-  $ECHO "\033[01;33m INFO: 2) Then move it to "$"HOME/.color.sh (for example with 'move .color.sh ~/.color.sh' ...) \033[01;37m" > /dev/stderr
-  $ECHO "\033[01;33m INFO: 3) And finally, make it executable : 'chmod +x ~/.color.sh' . Now you can have colors in $BIN :) \033[01;37m" > /dev/stderr
+    $ECHO "\033[01;31m WARNING: ~/.color.sh have not been found...\033[01;37m" > /dev/stderr
+    $ECHO "\033[01;33m INFO: 1) You can download it on http://perso.crans.org/besson/bin/.color.sh or http://lperso.crans.org/besson/bin/.color.sh \033[01;37m" > /dev/stderr
+    $ECHO "\033[01;33m INFO: 2) Then move it to "$"HOME/.color.sh (for example with 'move .color.sh ~/.color.sh' ...) \033[01;37m" > /dev/stderr
+    $ECHO "\033[01;33m INFO: 3) And finally, make it executable : 'chmod +x ~/.color.sh' . Now you can have colors in $BIN :) \033[01;37m" > /dev/stderr
 fi
 
 # Default quality. FIXME: in fact, does not change very much the result....
@@ -75,7 +75,7 @@ PKILL="echo"
 
 
 ########################## Copyrights and options ##############################
-$ECHO "${green}$BIN v$version : Copyright (C) 2013-2015 Lilian BESSON"
+$ECHO "${green}$BIN v$version : Copyright (C) 2013-2016 Lilian BESSON"
 $ECHO "This is free software, and you are welcome to redistribute it under certain conditions."
 $ECHO "This program comes with ABSOLUTELY NO WARRANTY; for details see http://perso.crans.org/besson/LICENSE ${white}"
 
@@ -227,7 +227,7 @@ fi
 
 
 ###################### Print infos about the parameters ########################
-$ECHO
+$ECHO ""
 $ECHO "${cyan} Using quality=$white$quality$cyan. See $BIN --help to get a list of different possible parameters.${white}"
 
 [ "$keep" = "true" ] && $ECHO "${cyan} Trying to keep all meta datas...${white}"
@@ -270,8 +270,8 @@ PDFCompress ()
 
     for i in "$@"; do
      # Make it work with file containing dirnames
-     fichier="`basename $i`"
-     dossier="`dirname $i`"
+     fichier="$(basename "$i")"
+     dossier="$(dirname "$i")"
      fichier="${fichier%.pdf}.pdf"
      pdosser="`pwd`/${dossier}"
 
@@ -281,7 +281,7 @@ PDFCompress ()
 
       if [ -f "$i" ] || [ -f "${i%.pdf}.pdf" ]; then
        $ECHO "${white}${Black}For $u$i$U${reset}:\
-        `pdfinfo \"$i\" 2>&1 | GREP_COLOR="01;33" $GREP -m1 "\(Title\|Error\)" `${reset}${white}."
+        $(pdfinfo \"$i\" 2>&1 | GREP_COLOR="01;33" $GREP -m1 "\(Title\|Error\)" )${reset}${white}."
        pdfinfo "$i" &>/dev/null
        if [ "X$?" = "X0" ]; then
           [ ! -f "${i%.pdf}.pdf" ] && $ECHO "${red}Warning${yellow}: file $i seems to be a valid PDF file but has not a .pdf file extension${white}" > /dev/stderr
@@ -304,19 +304,19 @@ PDFCompress ()
     # Print the comparaison between size at the end.
     log1="/tmp/PDFCompress_before.log"
     log2="/tmp/PDFCompress_after.log"
-    du -kh $arg > "$log1"
+    du -kh "$arg" > "$log1"
 
     $ECHO "${white}Compressing $arg ...${white}";
-    [ "`/bin/ls \"$argt\" 2>/dev/null`" != "" ] && /bin/mv -f -v "$argt" /tmp/;
+    [ "$(/bin/ls \"$argt\" 2>/dev/null)" != "" ] && /bin/mv -f -v "$argt" /tmp/;
 
     for i in $arg; do
         $ECHO "${blue}For the file ${green}$i${white}...";
 
         # Make it work with file containing dirnames
-        fichier="`basename $i`"
-        dossier="`dirname $i`"
+        fichier="$(basename "$i")"
+        dossier="$(dirname "$i")"
         fichier="${fichier%.pdf}.pdf"
-        pdosser="`pwd`/${dossier}"
+        pdosser="$(pwd)/${dossier}"
 
         meta="/tmp/${fichier}.meta"
 
@@ -324,7 +324,7 @@ PDFCompress ()
          [ -f "$meta" ] && rm -fv "$meta"
          ( pdftk "$i" dump_data output "$meta" \
             && $ECHO "$green meta data for $i well written to $meta :)$reset$white" \
-            && line=`cat "$meta" | grep -n Creator | grep -o -m1 ^[0-9]*` \
+            && line=$(cat "$meta" | grep -n Creator | grep -o -m1 ^[0-9]*) \
             && (
                  cat "$meta" | sed $((line+1))s{InfoValue:.*{"InfoValue: $creator"{ > "$meta"~ \
                ) \
@@ -410,7 +410,7 @@ PDFCompress ()
     done;
     /bin/rm -v -f gs_*
 
-    du -kh $arg > "$log2"
+    du -kh "$arg" > "$log2"
 
     $ECHO "${blue}Difference between sizes before compression and after compression :${reset}${white}"
     diff --side-by-side "$log1" "$log2"
