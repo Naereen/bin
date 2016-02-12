@@ -281,7 +281,7 @@ PDFCompress ()
 
       if [ -f "$i" ] || [ -f "${i%.pdf}.pdf" ]; then
        $ECHO "${white}${Black}For $u$i$U${reset}:\
-        $(pdfinfo \"$i\" 2>&1 | GREP_COLOR="01;33" $GREP -m1 "\(Title\|Error\)" )${reset}${white}."
+        $(pdfinfo "$i" 2>&1 | GREP_COLOR="01;33" $GREP -m1 "\(Title\|Error\)" )${reset}${white}."
        pdfinfo "$i" &>/dev/null
        if [ "X$?" = "X0" ]; then
           [ ! -f "${i%.pdf}.pdf" ] && $ECHO "${red}Warning${yellow}: file $i seems to be a valid PDF file but has not a .pdf file extension${white}" > /dev/stderr
