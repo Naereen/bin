@@ -406,13 +406,14 @@ trap _exit EXIT
 # Message of the Day
 if [ -f "$HOME/motd" ]; then
     [ "X`cat $HOME/motd`" = "X" ] && echo -e "No motd :(" > "$HOME/motd"
-  echo -e " ${white}${u}Message du jour${U} (from ${black}$HOME/motd${white}):${blue}`cat $HOME/motd`${white}"
-else
-    [ -x /usr/local/bin/tpal ] && (echo -e " ${yellow}Random color art palette .....${reset}" ; tpal art) || echo -e "tpal is not in your \$PATH :("
+    echo -e " ${white}${u}Message du jour${U} (from ${black}$HOME/motd${white}):${blue}`cat $HOME/motd`${white}"
 fi
+#else
+#    [ -x /usr/local/bin/tpal ] && (echo -e " ${yellow}Random color art palette .....${reset}" ; tpal art) || echo -e "tpal is not in your \$PATH :("
+#fi
 
 # https://github.com/nvbn/thefuck#manual-installation
-eval $(thefuck --alias)
+# eval $(thefuck --alias)
 
 # export BYOBU_NO_TITLE=yes
 
