@@ -34,7 +34,7 @@ ECHO="echo -e"
 # in fact, it is the default behavior :)
 ## FIXME: if using '{' or '/' in $creator, warning when using sed ...
 creator="Compressed with http://perso.crans.org/besson/bin/PDFCompress v$version -- a script by Lilian BESSON (C) 2013-2016"
-creator="$($ECHO \"$creator\" | tr '{' '_')"
+creator="$($ECHO "$creator" | tr '{' '_')"
 
 # If possible, use .color.sh (http://perso.crans.org/besson/bin/.color.sh or http://lperso.crans.org/besson/bin/.color.sh)
 if [ -f "$HOME/.color.sh" ]; then
@@ -307,7 +307,7 @@ PDFCompress ()
     du -kh "$arg" > "$log1"
 
     $ECHO "${white}Compressing $arg ...${white}";
-    [ "$(/bin/ls \"$argt\" 2>/dev/null)" != "" ] && /bin/mv -f -v "$argt" /tmp/;
+    [ "$(/bin/ls "$argt" 2>/dev/null)" != "" ] && /bin/mv -f -v "$argt" /tmp/;
 
     for i in $arg; do
         $ECHO "${blue}For the file ${green}$i${white}...";
