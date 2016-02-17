@@ -25,8 +25,8 @@ shopt -s histappend
 shopt -s cmdhist
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=100000
-HISTFILESIZE=500000
+HISTSIZE=1000000
+HISTFILESIZE=5000000
 # Memoriser le timestamp d'execution de la commande
 export HISTTIMEFORMAT='%F %T - '
 
