@@ -913,8 +913,12 @@ alias himym-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Mult
 alias dropbox='( /usr/bin/dropbox start ; alert ) &>/dev/null&'
 
 # Put your laptop in Suspend (veille)
-alias veille='date >> /tmp/veille.log ; ( gnome-session-quit --power-off || xfce4-session-logout || (Lock ; gksudo pm-suspend) )'
-alias veille2='date >> /tmp/veille.log ; Lock ; dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend' # does not work
+alias veille='date >> /tmp/veille.log ; ( gnome-session-quit --power-off || xfce4-session-logout || systemctl suspend || (Lock ; gksudo pm-suspend) )'
+alias reboot.systemctl='date >> /tmp/veille.log ; systemctl reboot'
+alias poweroff.systemctl='date >> /tmp/veille.log ; systemctl poweroff'
+alias suspend.systemctl='date >> /tmp/veille.log ; systemctl suspend'
+alias veille2='date >> /tmp/veille.log ; ( gnome-session-quit --power-off || xfce4-session-logout || (Lock ; gksudo pm-suspend) )'
+alias veille3='date >> /tmp/veille.log ; Lock ; dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend' # does not work
 alias veillesudo='sudo dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend' # works
 
 # With Linphone
