@@ -550,7 +550,7 @@ ii() {   # get current host related info
     echo -e "\n${blue}Machine stats :${reset}${white} " ; uptime
     echo -e "\n${blue}Memory stats :${reset}${white} " ; free
     my_ip 2>&- ;
-    echo -e "\n${blue}Local IP Address :${reset}${white}" ; echo ${MY_IP:-"Not connected"}
+    echo -e "\n${blue}Local IP Address :${reset}${white}" ; echo "${MY_IP:-"Not connected"}"
 }
 
 # For Python (2.7)
@@ -559,7 +559,11 @@ export PYTHONSTARTUP="$HOME/.pythonrc"
 #export PYTHONOPTIMIZE= # no optimization.
 #export PYTHONVERBOSE=  # no verbose adds.
 # export PYTHONPATH="/usr/local/lib/python2.7/":"/usr/local/lib/python2.7/dist-packages/":"/usr/lib/python2.7/":"/usr/lib/python2.7/dist-packages"
-# For PyLint
+
+# Avoid a painful bug, as explained here http://stackoverflow.com/a/230780/5889533, see https://docs.python.org/2/using/cmdline.html#envvar-PYTHONUNBUFFERED
+export PYTHONUNBUFFERED="yes"
+
+# For PyLint (see http://docs.pylint.org/)
 export PYLINTHOME="$HOME"
 
 # Three different mutt (useless):
