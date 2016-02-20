@@ -3,15 +3,14 @@
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Web version: http://perso.crans.org/besson/bin/GenerateStatsMarkdown.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/GenerateStatsMarkdown.sh
-# Date: 01-02-2016
+# Date: 20-02-2016
 #
-# A small script to create a minimalistic Markdown status page for my machine,
-# available ocally at http://0.0.0.0/stats.html
+# A small script to create a minimalistic Markdown status page for my machine, available locally at http://0.0.0.0/stats.html
 #
 # Hack: this markdown page is using http://lbo.k.vu/md/ (StrapDown.js) to be a good-looking HTML page !
 #
 BIN=GenerateStatsMarkdown
-version=1.5
+version=1.6
 
 # StrapDownJS nice themes : cyborg united
 theme="${2:-united}"
@@ -68,7 +67,7 @@ echo -e "</pre>\n\n## [Statut NGinx](lns_munin/localdomain/localhost.localdomain
 echo -e "</pre>\n\n## [Durée d'activité](lns_munin/localdomain/localhost.localdomain/uptime.html) (\`uptime\`)\n> <pre>" >> "$dest"
 uptime >> "$dest"
 
-echo -e "\n\n***\n\n## [Disques](lns_munin/localdomain/localhost.localdomain/df.html) (\`df -h -T -l -t ext3 -t ext4 -t fuseblk\`)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n***\n\n## [Disques](lns_munin/localdomain/localhost.localdomain/df.html) (\`df -h -T -l -t ext3 -t ext4 -t fuseblk\`)\n> <pre>" >> "$dest"
 df -h -T -l -t ext3 -t ext4 -t fuseblk >> "$dest"
 
 echo -e "</pre>\n\n## [Mémoire RAM et swap](lns_munin/localdomain/localhost.localdomain/memory.html) (\`free -h\`)\n> <pre>" >> "$dest"
@@ -81,26 +80,33 @@ echo -e "</pre>\n\n## Série en cours (\`head -n 1 \"${HOME}\"/current\`)\n> <pr
 head -n 1 "${HOME}"/current >> "$dest"
 
 # Stats
-echo -e "</pre>\n\n## Stats <a href='https://wakatime.com/dashboard'>WakaTime</a> (\`mywakatime -w\`)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## Stats <a href='https://wakatime.com/dashboard'>WakaTime</a> (\`mywakatime -w\`)\n" >> "$dest"
 # wakatime.js -w >> "$dest"
-mywakatime -w >> "$dest"
+#mywakatime -w >> "$dest"
+echo -e "\n<figure><embed width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/5d1ec603-73b0-44b9-b61e-5eeda2490e51.svg'></embed></figure>" >> "$dest"
+echo -e "\n<figure><embed width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/9f6c0b0b-6806-4afa-9a4e-651ee6201be0.svg'></embed></figure>" >> "$dest"
 
-echo -e "</pre>\n\n## <a href='http://jarvis/selfvis.html'>Ratio clicks/keystrokes</a> (\`selfstats --human-readable --ratios\`)\n> <pre>" >> "$dest"
+
+echo -e "\n\n## <a href='http://jarvis/selfvis.html'>Ratio clicks/keystrokes</a> (\`selfstats --human-readable --ratios\`)\n> <pre>" >> "$dest"
 selfstats --human-readable --ratios | sed '/^$/d' >> "$dest"
 
-echo -e "</pre>\n\n## <a href='http://jarvis/selfvis.html'>Stats</a> <a href='https://github.com/gurgeh/selfspy#example-statistics'>selfspy</a> (\`selfstats --human-readable --pactive\`)\n> <pre>" >> "$dest"
-selfstats --human-readable --pactive | sed '/^$/d' >> "$dest"
+echo -e "</pre>\n\n## <a href='http://jarvis/selfvis.html'>Summary of clicks</a> (\`selfstats --human-readable --clicks\`)\n> <pre>" >> "$dest"
+selfstats --human-readable --clicks | sed '/^$/d' >> "$dest"
+
+echo -e "</pre>\n\n## <a href='http://jarvis/selfvis.html'>Stats</a> <a href='https://github.com/gurgeh/selfspy#example-statistics'>selfspy</a> (\`selfstats --min-keys 10 --back 1w --human-readable --pactive\`)\n> <pre>" >> "$dest"
+selfstats --min-keys 10 --back 1w --human-readable --pactive | sed '/^$/d' >> "$dest"
 
 # Footer
 echo -e "</pre>\n\n***\n\n##### Mis-à-jour régulièrement via *cron*, avec [GenerateStatsMarkdown.sh](http://perso.crans.org/besson/bin/GenerateStatsMarkdown.sh) v${version}, un script Bash écrit par et pour [Lilian Besson](http://perso.crans.org/besson/)." >> "$dest"
 
 # XXX add http://www.dptinfo.ens-cachan.fr/~lbesson/ before _static/
-echo -e "\n</xmp><script type=\"text/javascript\" src=\"_static/md/strapdown.min.js?src=GSM.sh?beacon\"></script>\n<img alt=\"GA|Analytics\" style=\"visibility: hidden; display: none;\" src=\"https://ga-beacon.appspot.com/UA-38514290-1/stats.html/theme_${theme}/?pixel\"/>\n</body></html>" >> "$dest"
+echo -e "\n</xmp><script type=\"text/javascript\" src=\"_static/md/strapdown.min.js?src=GSM.sh?beacon\"></script>\n<noscript><img alt=\"GA|Analytics\" style=\"visibility: hidden; display: none;\" src=\"https://ga-beacon.appspot.com/UA-38514290-1/stats.html/theme_${theme}/?pixel\"/></noscript>\n</body></html>" >> "$dest"
+
 
 # Notify the user
 if [ "X$1" = "Xcron" ]; then
-	echo -e "${blue}Tâche lancée via gnome-schedule.${white}"
-	notify-send "GenerateStatsMarkdown.sh" "Fichier de statistiques bien généré ($dest).\n<small>(Tâche lancée via gnome-schedule)</small>"
+	echo -e "${blue}Tâche lancée via gnome-schedule ou cron ou crontab.${white}"
+	notify-send "GenerateStatsMarkdown.sh" "Fichier de statistiques bien généré ($dest).\n<small>(Tâche lancée via gnome-schedule ou cron ou crontab)</small>"
 else
 	notify-send "GenerateStatsMarkdown.sh" "Fichier de statistiques bien généré ($dest)."
 fi
