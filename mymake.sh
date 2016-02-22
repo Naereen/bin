@@ -38,9 +38,9 @@ done
 
 # Copyrights
 echo -e "${cyan}$(basename "$0") v${version} : copyright (C) 2016 Lilian Besson${white}" >/dev/stderr
-echo -e "${black}You can find it online (https://bitbucket.org/lbesson/bin/src/master/mymake.sh)${white}" >/dev/stderr
-echo -e "${black}This is free software, and you are welcome to redistribute it under certain conditions.${white}" >/dev/stderr
-echo -e "${black}This program comes with ABSOLUTELY NO WARRANTY; for details see http://lbesson.mit-license.org${white}" >/dev/stderr
+echo -e "  ${black}You can find it online (https://bitbucket.org/lbesson/bin/src/master/mymake.sh)${white}" >/dev/stderr
+echo -e "  ${black}This is free software, and you are welcome to redistribute it under certain conditions.${white}" >/dev/stderr
+echo -e "  ${black}This program comes with ABSOLUTELY NO WARRANTY; for details see http://lbesson.mit-license.org${white}" >/dev/stderr
 [ "X${JUSTVERSION}" = "Xtrue" ] && exit 1
 
 
