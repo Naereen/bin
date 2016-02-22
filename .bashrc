@@ -32,8 +32,8 @@ export HISTTIMEFORMAT='%F %T - '
 
 # Hack pour que $COLUMNS contienne le nombre de colonne du terminal
 # Sinon, le prompt kikoo risque de deborder/etre trop court
-COLUMNS=$(tput cols)
-LINES=$(tput lines)
+COLUMNS="$(tput cols)"
+LINES="$(tput lines)"
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -62,21 +62,18 @@ if [ -n "$force_color_prompt" ]; then
 	# We have color support; assume it's compliant with Ecma-48
 	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
 	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+	   color_prompt=yes
     else
-	color_prompt=
+	   color_prompt=
     fi
 fi
 
-#-------------------------------------------------------------
 # Automatic setting of $DISPLAY (if not set already)
 # This works for linux - your mileage may vary....
 # The problem is that different types of terminals give
 # different answers to 'who am i'......
 # I have not found a 'universal' method yet
-#-------------------------------------------------------------
-function get_xserver ()
-{
+function get_xserver () {
     case $TERM in
         xterm )
             XSERVER=$(who am i | awk '{print $NF}' | tr -d ')''(' )
@@ -105,17 +102,12 @@ fi
 
 export DISPLAY
 
-#---------------
-# Some settings
-#---------------
 # Disable options:
 shopt -u mailwarn
 unset MAILCHECK       # I don't want my shell to warn me of incoming mail
 
 export TIMEFORMAT=$'\nreal %3R\tuser %3U\tsys %3S\tpcpu %P\n'
 export HISTIGNORE="&:bg:fg"
-
-#-------------------------------------------------------------
 
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$> '
@@ -143,8 +135,9 @@ export MANPATH=$MANPATH:/usr/share/man:/usr/local/man
 
 export PAGER=less
 export EDITOR=/bin/nano
-## export VISUAL=/usr/bin/gedit
-export VISUAL=/bin/nano
+# export VISUAL=/usr/bin/gedit
+# export VISUAL=/bin/nano
+export VISUAL=/usr/bin/subl
 export BROWSER=/usr/bin/firefox
 
 # enable color support of ls and also add handy aliases
@@ -185,18 +178,22 @@ fi
 
 # Placez vos fichiers de bash-completion custom dans "$HOME"/.bash_completion.d/
 # ils seront charges par la ligne suivante
-[ -d "$HOME"/.bash_completion.d/ ] && for f in "$HOME"/.bash_completion.d/*.bash_completion; do source $f; done
+if [ -d "$HOME"/.bash_completion.d/ ]; then
+    for f in "$HOME"/.bash_completion.d/*.bash_completion; do
+        source "$f"
+    done
+fi
 
 # Colors
-escp="\033["
-black="${escp}01;30m"
-red="${escp}01;31m"
-green="${escp}01;32m"
-yellow="${escp}01;33m"
-blue="${escp}01;34m"
-magenta="${escp}01;35m"
-cyan="${escp}01;36m"
-white="${escp}01;37m"
+export escp="\033["
+export black="${escp}01;30m"
+export red="${escp}01;31m"
+export green="${escp}01;32m"
+export yellow="${escp}01;33m"
+export blue="${escp}01;34m"
+export magenta="${escp}01;35m"
+export cyan="${escp}01;36m"
+export white="${escp}01;37m"
 # To erase the current line. (not print '\n' but ERASE trully).
 export ERASE_LINE="\r\033[K"
 
@@ -217,37 +214,35 @@ PROMPT_COMMAND='ANSWER=$?; if [ $ANSWER = 0 ]; then PS1="${PS1OLD%> }\[\e[01;37m
 #PROMPT_COMMAND="$PROMPT_COMMAND; printf \"\033]0; .: ($(date))<${USER}@$(hostname)>:[$(pwd)] ($(__ip_address t)) - ${PKG} :. \007\""
 
 # Add to the $PATH
-#:"$HOME"/.gnome2/nautilus-scripts/
 export PATH="$HOME/bin/":$PATH:"$HOME/.local/bin/":"$HOME"/.ConkyWizardTheme/scripts/:"$HOME/bin/"
 # Add "$HOME"/bin if needed (but only if needed, having one directory twice in $PATH is durty!
 
 export RLWRAP_HOME="$HOME"
 
-####################################################################
 # Better gpg agent and stuffs ?
-#export GPG_TTY=$(tty)
-#if [ -f "${HOME}/.gpg-agent-info" ]; then
-# . "${HOME}/.gpg-agent-info"
-# export GPG_AGENT_INFO
-# export SSH_AUTH_SOCK
-#fi
+export GPG_TTY=$(tty)
+if [ -f "${HOME}/.gpg-agent-info" ]; then
+    . "${HOME}/.gpg-agent-info"
+    export GPG_AGENT_INFO
+    export SSH_AUTH_SOCK
+fi
 
 # Be sure $HOSTNAME and $USER are well set
-[ X"$HOSTNAME" = X ] && export HOSTNAME=`hostname`
-[ X"$USER" = X ] && export USER=`whoami`
+[ X"$HOSTNAME" = X ] && export HOSTNAME=$(hostname)
+[ X"$USER" = X ] && export USER=$(whoami)
 
 ####################################################################
 # automatic emails
-alias Mail_LOG_in='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when log-in.\n\nLast:`last`\n\nWho:`/usr/bin/w`\n\nDate:`date`\n" "[LOG] `who|tail -n1` : login."'
-alias Mail_LOG_out='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when log-out.\n\nLast:`last`\n\nWho:`/usr/bin/w`\n\nDate:`date`\n" "[LOG] `who|tail -n1` : logout."'
+alias Mail_LOG_in='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when log-in.\n\nLast:$(last)\n\nWho:$(/usr/bin/w)\n\nDate:$(date)\n" "[LOG] $(who|tail -n1) : login."'
+alias Mail_LOG_out='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when log-out.\n\nLast:$(last)\n\nWho:$(/usr/bin/w)\n\nDate:$(date)\n" "[LOG] $(who|tail -n1) : logout."'
 
-case "`/usr/bin/who|tail -n1|grep -v tty[1-7]`" in
+case "$(/usr/bin/who|tail -n1|grep -v tty[1-7])" in
    pts/*)
        # Send an email only if connecting from a remote computer.
        # Mail_LOG_in
    ;;
    tty[1-6]*)
-       # Change color of terminal ?
+       # Change color of terminal, not sure it does something
        setterm -foreground green -bold -store
    ;;
 esac
@@ -259,19 +254,16 @@ export COLORTERM=gnome-terminal
 ## +----------------------+
 
 # Generation de la ligne de "-"
-function gen_minus_line
-{
+function gen_minus_line() {
     local i
     MINUS_LINE=""
     SAVE_COLUMNS=$COLUMNS
     for ((i = COLUMNS-23; i>0; i--)); do
-	MINUS_LINE=$MINUS_CHAR$MINUS_LINE
+    	MINUS_LINE=$MINUS_CHAR$MINUS_LINE
     done
 }
-
 # Generation du prompt apres chaque commande
-function prompt_command
-{
+function prompt_command(){
     # Attention aux hacks pour que la couleur (et sa taille)
     #  soient evaluees au moment de l'affichage du prompt
     local pwd cyan violet jaune rouge vert bleu ERR DATE PROMPT DIR POST_DIR
@@ -304,27 +296,24 @@ function prompt_command
     PROMPT="${rouge}\u${vert}@${bleu}\h ${vert}\$ ${nocolor}"
     PS1=$TITLE${cyan}$MINUS_CHAR$DATE$MINUS_CHAR$DIR$MINUS_CHAR$VCS_info${cyan}$POST_DIR$ERR'\n'$PROMPT
 }
-
 # On change le titre de la fenetre dynamiquement si on est sous X
 if [[ $TERM = "xterm" ]]; then
     TITLE='\[\e];\u@\h:\w\a\]'
 else
     TITLE=''
 fi
-
 ## On regenere le prompt apres chaque commande
 #PROMPT_COMMAND=prompt_command
 
 # +-------------------+
 # | Messages au debut |
 # +-------------------+
-
 if [[ $(uname) == Linux && ( $(locale charmap) == UTF-8) ]]; then
     # && $TERM != screen
     MINUS_CHAR=─
     gen_minus_line
-    datecolored="${reset} Bienvenue, ${blue}${USER}${white}@${cyan}${HOSTNAME}${reset}. Date: ${magenta}`/bin/date +\"%R, %A %d %B %Y\"`${reset}. Console: ${blue}${COLUMNS}${reset}x${green}${LINES}${reset}."
-    datenotcolored=" Bienvenue, ${USER}@${HOSTNAME}. Date: `/bin/date +\"%R, %A %d %B %Y\"`. Console: ${COLUMNS}x${LINES}."
+    datecolored="${reset} Bienvenue, ${blue}${USER}${white}@${cyan}${HOSTNAME}${reset}. Date: ${magenta}$(/bin/date +"%R, %A %d %B %Y")${reset}. Console: ${blue}${COLUMNS}${reset}x${green}${LINES}${reset}."
+    datenotcolored=" Bienvenue, ${USER}@${HOSTNAME}. Date: $(/bin/date +"%R, %A %d %B %Y"). Console: ${COLUMNS}x${LINES}."
     redate=${datenotcolored//ê/e}
     redate=${redate//û/u}
     redate=${redate//é/e}
@@ -346,21 +335,12 @@ else
     unset date
 fi
 
-# OPAM configuration. TOO SLOW !!!
-#if [ -d /home/lilian/.opam/ ]; then
-#  # echo "OPAM init..."
-#  . /home/lilian/.opam/opam-init/init.sh > /dev/null 2> /dev/null || true
-#  # echo -e "${el}"
-#fi
-
 # Disable the ctrl+s / ctrl+q shortcuts (freeze, unfreeze the terminal)
 stty -ixon
 
-##############################################################################
 # GPG Security, adapt the $GPGKEY to be the defaut Key you use (for mutt for example, or pypi)
 export GPGKEY=C108F8A0
 export DEBFULLNAME='Lilian Besson'
-# Mail
 DEBEMAIL=lbesson_@_ens-cachan.fr
 export DEBEMAIL="${DEBEMAIL//_@_/@}"
 EMAIL=besson_@_crans.org
@@ -371,51 +351,42 @@ export PYTHONSTARTUP="$HOME/.pythonrc"
 # Random quotes
 export quotes="$HOME/.quotes.txt"
 
-function _exit()        # function to run upon exit of shell
-{
- # Print a last message.
- if [ -f "$quotes" ]; then
-  qu="$(shuf "$quotes" | head -n1)"
-  echo -e "${reset}${i}${Bblack}${cyan}${qu:-"Je reviendrais..."}${reset}"
-  # echo -e " ${white}${u}Random quote of the day${U} (from ${black}${quotes}${white}):\n ${blue}${qu}${white}"
- else
-  qu=""
-  printf "\a${ERASE_LINE}${Bblack}${u}${blink} \"En revoir, et merci bien pour le poisson !\" -- H2G2${reset}\n"
- fi
- # Determine from where the user was connected.
- case "`/usr/bin/who|tail -n1|grep -o \"\(tty[1-7]\|pts/[0-9]*\)\"`" in
- pts/*)
-  # Mail_LOG_out
-  echo -e "Automatically sent by the machine $HOSTNAME.crans.org when log-out.\n\nLast:`last`\n\nWho:`/usr/bin/w`\n\nDate:`date`\n" "[LOG] `who|tail -n1` : logout." >> "$HOME"/.pts.log
-  ;;
- tty7*)
-  notify-send "${USER}@${HOSTNAME} : logout" "Last command : `history | tail -n 1`."
-  echo -e "${USER}@${HOSTNAME} : logout" "Last command : `history | tail -n 1`." >> "$HOME"/.tty7.log
-  echo -e "Automatically sent by the machine $HOSTNAME.crans.org when log-out.\n\nLast:`last`\n\nWho:`/usr/bin/w`\n\nDate:`date`\n" "[LOG] `who|tail -n1` : logout." >> "$HOME"/.tty7.log
-  ;;
- tty[1-6]*)
-  Mail_LOG_out
-  echo -e "${USER}@${HOSTNAME} : logout" "Last command : `history | tail -n 1`." >> "$HOME"/.tty123456.log
-  echo -e "Automatically sent by the machine $HOSTNAME.crans.org when log-out.\n\nLast:`last`\n\nWho:`/usr/bin/w`\n\nDate:`date`\n" "[LOG] `who|tail -n1` : logout." >> "$HOME"/.tty123456.log
-  ;;
- esac
+# function to run upon exit of shell
+function _exit(){
+    # Print a last message.
+    if [ -f "$quotes" ]; then
+        qu="$(shuf "$quotes" | head -n1)"
+        echo -e "${reset}${i}${Bblack}${cyan}${qu:-"Je reviendrais..."}${reset}"
+    else
+        qu=""
+        printf "\a${ERASE_LINE}${Bblack}${u}${blink} \"En revoir, et merci bien pour le poisson !\" -- H2G2${reset}\n"
+    fi
+    # Determine from where the user was connected.
+    case "$(/usr/bin/who|tail -n1|grep -o "\(tty[1-7]\|pts/[0-9]*\)")" in
+    pts/*)
+        # Mail_LOG_out
+        echo -e "Automatically sent by the machine $HOSTNAME.crans.org when log-out.\n\nLast:$(last)\n\nWho:$(/usr/bin/w)\n\nDate:$(date)\n" "[LOG] $(who|tail -n1) : logout." >> "$HOME"/.pts.log
+        ;;
+    tty7*)
+        notify-send "${USER}@${HOSTNAME} : logout" "Last command : $(history | tail -n 1)."
+        echo -e "${USER}@${HOSTNAME} : logout" "Last command : $(history | tail -n 1)." >> "$HOME"/.tty7.log
+        echo -e "Automatically sent by the machine $HOSTNAME.crans.org when log-out.\n\nLast:$(last)\n\nWho:$(/usr/bin/w)\n\nDate:$(date)\n" "[LOG] $(who|tail -n1) : logout." >> "$HOME"/.tty7.log
+        ;;
+    tty[1-6]*)
+        Mail_LOG_out
+        echo -e "${USER}@${HOSTNAME} : logout" "Last command : $(history | tail -n 1)." >> "$HOME"/.tty123456.log
+        echo -e "Automatically sent by the machine $HOSTNAME.crans.org when log-out.\n\nLast:$(last)\n\nWho:$(/usr/bin/w)\n\nDate:$(date)\n" "[LOG] $(who|tail -n1) : logout." >> "$HOME"/.tty123456.log
+        ;;
+    esac
 }
 # Register the function.
 trap _exit EXIT
 
 # Message of the Day
 if [ -f "$HOME/motd" ]; then
-    [ "X`cat $HOME/motd`" = "X" ] && echo -e "No motd :(" > "$HOME/motd"
-    echo -e " ${white}${u}Message du jour${U} (from ${black}$HOME/motd${white}):${blue}`cat $HOME/motd`${white}"
+    [ "X$(cat "$HOME/motd")" = "X" ] && echo -e "No motd :(" > "$HOME/motd"
+    echo -e " ${white}${u}Message du jour${U} (from ${black}$HOME/motd${white}):${blue}$(cat "$HOME/motd")${white}"
 fi
-#else
-#    [ -x /usr/local/bin/tpal ] && (echo -e " ${yellow}Random color art palette .....${reset}" ; tpal art) || echo -e "tpal is not in your \$PATH :("
-#fi
-
-# https://github.com/nvbn/thefuck#manual-installation
-# eval $(thefuck --alias)
-
-# export BYOBU_NO_TITLE=yes
 
 ##############################################################################
 # (c) 2011-2016 Lilian BESSON
@@ -424,5 +395,4 @@ fi
 #
 # Put a blank line after
 #  to autorize echo "newentry" >> "$HOME"/.bashrc
-
 
