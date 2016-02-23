@@ -1,10 +1,13 @@
+# Privates
+.htaccess
+
 # Temp and backups
 *~
 	
 # Ignore file types
 *.json
 
-# Examples
+# Examples scripts
 git-crypt
 camlmix
 nano.last
