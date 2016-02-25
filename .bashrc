@@ -365,7 +365,8 @@ function _exit(){
     case "$(/usr/bin/who|tail -n1|grep -o "\(tty[1-7]\|pts/[0-9]*\)")" in
     pts/*)
         # Mail_LOG_out
-        echo -e "Automatically sent by the machine $HOSTNAME.crans.org when log-out.\n\nLast:$(last)\n\nWho:$(/usr/bin/w)\n\nDate:$(date)\n" "[LOG] $(who|tail -n1) : logout." >> "$HOME"/.pts.log
+        # echo -e "Automatically sent by the machine $HOSTNAME.crans.org when log-out.\n\nLast:$(last)\n\nWho:$(/usr/bin/w)\n\nDate:$(date)\n" "[LOG] $(who|tail -n1) : logout." >> "$HOME"/.pts.log
+        echo -e "Logging out... Date: $(date). Who:\n$(/usr/bin/w)" >> "$HOME"/.pts.log
         ;;
     tty7*)
         notify-send "${USER}@${HOSTNAME} : logout" "Last command : $(history | tail -n 1)."
