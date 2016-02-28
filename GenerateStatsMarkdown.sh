@@ -73,8 +73,8 @@ df -h -T -l -t ext3 -t ext4 -t fuseblk >> "$dest"
 echo -e "</pre>\n\n## [Mémoire RAM et swap](lns_munin/localdomain/localhost.localdomain/memory.html) (\`free -h\`)\n> <pre>" >> "$dest"
 free -h >> "$dest"
 
-echo -e "</pre>\n\n## Message du jour (\`cat \"${HOME}\"/motd | tail -n +2\`)\n> <pre>" >> "$dest"
-cat "${HOME}"/motd | tail -n +2 >> "$dest"
+echo -e "</pre>\n\n## Message du jour (\`cat \"${HOME}\"/motd | grep -v '^$'\`)\n> <pre>" >> "$dest"
+cat "${HOME}"/motd | grep -v '^$' >> "$dest"
 
 echo -e "</pre>\n\n## Série en cours (\`head -n 1 \"${HOME}\"/current\`)\n> <pre>" >> "$dest"
 head -n 1 "${HOME}"/current >> "$dest"
