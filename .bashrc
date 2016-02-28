@@ -135,9 +135,8 @@ export MANPATH=$MANPATH:/usr/share/man:/usr/local/man
 
 export PAGER=less
 export EDITOR=/bin/nano
-# export VISUAL=/usr/bin/gedit
-# export VISUAL=/bin/nano
-export VISUAL=/usr/bin/subl
+export VISUAL=/bin/nano
+# export VISUAL=/usr/bin/subl
 export BROWSER=/usr/bin/firefox
 
 # enable color support of ls and also add handy aliases
