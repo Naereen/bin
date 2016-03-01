@@ -388,6 +388,8 @@ if [ -f "$HOME/motd" ]; then
     echo -e " ${white}${u}Message du jour${U} (from ${black}$HOME/motd${white}):${blue}$(cat "$HOME/motd")${white}"
 fi
 
+eval $(gpg-agent --daemon) || echo "Failed to connect to gpg-agent daemon ('eval \$(gpg-agent --daemon')"
+
 ##############################################################################
 # (c) 2011-2016 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
