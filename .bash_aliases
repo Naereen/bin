@@ -970,7 +970,7 @@ pti3() { echo -e "Executing args '$@' with ptipython3..."; ptipython3 "$@" || al
 e() { echo -e "Opening args '$@' in evince..."; evince "$@" || alert; }
 complete -f -X '!*.@(pdf|djvu|PDF)' -o plusdirs e
 
-alias m='mymake.sh'
+alias m='clear ; time mymake.sh'
 alias s='clear ; git status | less -r'
 alias wd='clear ; git wdiff'
 
