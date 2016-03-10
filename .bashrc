@@ -398,3 +398,6 @@ eval $(gpg-agent --daemon) || echo "Failed to connect to gpg-agent daemon ('eval
 # Put a blank line after
 #  to autorize echo "newentry" >> "$HOME"/.bashrc
 
+# Added by https://github.com/sd65/MiniVim
+stty -ixon
+
