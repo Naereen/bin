@@ -77,7 +77,7 @@ dlplaylist() {
     echo -e "Now, I am in the directory ${blue}`pwd`${white}, and this is good."
 
     # Start downloading !
-    echo -e "OK, so I can start the downloading command I showed you : (${magenta}[Enter]${white} to see)"
+    echo -e "OK, so I can start the downloading command I showed you : (${magenta}[Enter]${white} if OK)"
     for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" "${out}"  | sed s/'watch?v='// | uniq); do
         time youtube-dl --no-overwrites --retries 60 --continue -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w -- "$j" || echo "$j" >> tofetch_youtube-dl.url
     done
