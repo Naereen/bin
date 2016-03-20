@@ -8,6 +8,8 @@ echo "\nDate: $(date)\n /etc/cron.monthly/apt-xapian-index has been launched (fr
 	| tee -a /tmp/crontab.log \
 	| tee -a /tmp/apt-xapian-index.log
 
+exit 1
+
 CMD=/usr/sbin/update-apt-xapian-index
 
 # ionice should not be called in a virtual environment
