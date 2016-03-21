@@ -914,7 +914,7 @@ alias Tor='~/.local/tor-browser_fr/start-tor-browser'
 #alias himym='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" >/dev/null 2>/dev/null &'
 ##alias himym-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" >/dev/null 2>/dev/null &'
 
-alias dropbox='( /usr/bin/dropbox start ; alert ) &>/dev/null&'
+alias dropbox.start='( /usr/bin/dropbox start ; alert ) &>/dev/null&'
 
 # Put your laptop in Suspend (veille)
 alias veille='date >> /tmp/veille.log ; ( gnome-session-quit --power-off || xfce4-session-logout || systemctl suspend || (Lock ; gksudo pm-suspend) )'
