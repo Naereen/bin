@@ -175,10 +175,15 @@ else
     echo -e "No /etc/bash_completion file ..."
 fi
 
-# Placez vos fichiers de bash-completion custom dans "$HOME"/.bash_completion.d/
+# Placez vos fichiers de bash-completion custom dans "$HOME"/bin/.bash_completion.d/
 # ils seront charges par la ligne suivante
-if [ -d "$HOME"/.bash_completion.d/ ]; then
-    for f in "$HOME"/.bash_completion.d/*.bash_completion; do
+# if [ -d "$HOME"/.bash_completion.d/ ]; then
+#     for f in "$HOME"/.bash_completion.d/*.bash_completion; do
+#         source "$f"
+#     done
+# fi
+if [ -d "$HOME"/bin/.bash_completion.d/ ]; then
+    for f in "$HOME"/bin/.bash_completion.d/*.bash_completion; do
         source "$f"
     done
 fi
