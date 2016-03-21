@@ -238,7 +238,7 @@ alias Byobu-tmux='byobu-tmux -2 -q -u'
 alias byobu='TERM=xterm-256color /usr/bin/byobu-tmux -2 -q -u'
 
 alias py2html='pyhtmlizer --stylesheet=http://perso.crans.org/besson/pyhtmlizer.css'
-complete -f -X '!*.@(py|py3)' -o plusdirs py2html
+complete -f -X '!*.@(py|py3)' -o plusdirs py2html pylint flake8 pep8
 
 # Ecrans de veilles
 alias MatrixVeille='cmatrix -b -f -s -u 9'
