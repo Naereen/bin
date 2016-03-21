@@ -211,12 +211,12 @@ xtitle() {
 # Autre outils pratiques
 Regler_son() {
     xtitle "($(date)<$USER@$HOSTNAME> { AlsaMixer v1.0.25 }" || true
-    clear; alsamixer; clear
+    clear ; alsamixer; clear
 }
 
 Wavemon() {
     xtitle "($(date)<$USER@$HOSTNAME> { Wavemon v0.7.6 }" || true
-    clear; wavemon; clear
+    clear ; wavemon; clear
 }
 t() {
     xtitle "($(date)<$USER@$HOSTNAME> { htop 1.0.3 }" || true
@@ -392,7 +392,7 @@ LOG_Colored() {
 alias GitChanged='clear ; git status | grep --color=always "\(modified\|modifié\)" | less -r'
 alias GitDeleted='clear ; git status | grep --color=always "\(deleted\|supprimé\)" | less -r'
 alias GitAdded='clear ; git status | grep --color=always "\(added\|nouveau\)" | less -r'
-alias GitSize='clear; echo -e "\n ==> ${white}Ce dépôt git « ${green}$(basename $(pwd))${white} » pèse ${red}$(git count-objects -v -H | grep "size-pack" | sed s/"size-pack: "//)${white} sur ${u}https://BitBucket.org/lbesson/$(basename $(pwd))${U}${white}."'
+alias GitSize='clear ; echo -e "\n ==> ${white}Ce dépôt git « ${green}$(basename $(pwd))${white} » pèse ${red}$(git count-objects -v -H | grep "size-pack" | sed s/"size-pack: "//)${white} sur ${u}https://BitBucket.org/lbesson/$(basename $(pwd))${U}${white}."'
 
 # Run all test embedded in docstring, in the module $1
 alias DocTest='python -m doctest -v'
@@ -665,13 +665,13 @@ ViewHTML() {
 alias MacAddress='ifconfig | grep "HWaddr [0-9a-f:]*"'
 
 # For Git
-alias Push='clear; git push && git gc'
-alias Pull='clear; git gc && git pull && git gc'
-alias Status='clear; git status'
-alias Commit='clear; git commit -m'
+alias Push='clear ; git push && git gc'
+alias Pull='clear ; git gc && git pull && git gc && git-blame-last-commit.sh'
+alias Status='clear ; git status'
+alias Commit='clear ; git commit -m'
 alias Add='git add'
 alias Aggressive='git gc --aggressive'
-alias Sync='clear; echo -e "Synchronizing (git push, gc, send_zamok)..."; git push; git gc --aggressive; make send_zamok; alert'
+alias Sync='clear ; echo -e "Synchronizing (git push, gc, send_zamok)..."; git push; git gc --aggressive; make send_zamok; alert'
 
 # For gmusicbrowser
 alias Get_vrun_Uri="vrun status | grep file | sed s/'( new input: '/''/ | sed s/' )'/''/"
@@ -972,6 +972,7 @@ complete -f -X '!*.@(pdf|djvu|PDF)' -o plusdirs e
 
 alias m='clear ; time mymake.sh'
 alias s='clear ; git status | less -r'
+alias g='git'
 alias wd='clear ; git wdiff'
 
 # alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "^rupee.*$" | sed s/"^rupee"/""/ )${U}${white}." | tee -a /tmp/RoupiesCourse.log'
