@@ -14,9 +14,9 @@ val_c = [ And(1 <= Q[i], Q[i] <= 8) for i in range(8) ]
 col_c = [ Distinct(Q) ]
 
 # Diagonal constraint
-diag_c = [ If(i == j, 
-              True, 
-              And(Q[i] - Q[j] != i - j, Q[i] - Q[j] != j - i)) 
+diag_c = [ If(i == j,
+              True,
+              And(Q[i] - Q[j] != i - j, Q[i] - Q[j] != j - i))
            for i in range(8) for j in range(i) ]
 
 solve(val_c + col_c + diag_c)

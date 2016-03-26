@@ -16,7 +16,7 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -35,7 +35,7 @@
 # * 		v0.1   *
 # *	25/05/12       *
 # **********************
-# 
+#
 ###################################################################
 
 
@@ -71,7 +71,7 @@ def error_dialog(parent, msg):
                                msg)
     dialog.run()
     dialog.destroy()
-    
+
 
 ######################################################################
 ##### remove all markers
@@ -150,38 +150,38 @@ def draw_page_cb(operation, context, page_nr, compositor):
 ##### Action callbacks
 def numbers_toggled_cb(action, sourceview):
     sourceview.set_show_line_numbers(action.get_active())
-    
+
 
 def marks_toggled_cb(action, sourceview):
     sourceview.set_show_line_marks(action.get_active())
-    
+
 
 def margin_toggled_cb(action, sourceview):
     sourceview.set_show_right_margin(action.get_active())
-    
+
 
 def auto_indent_toggled_cb(action, sourceview):
     sourceview.set_auto_indent(action.get_active())
-    
+
 
 def insert_spaces_toggled_cb(action, sourceview):
     sourceview.set_insert_spaces_instead_of_tabs(action.get_active())
-    
+
 
 def tabs_toggled_cb(action, action2, sourceview):
     sourceview.set_tab_width(action.get_current_value())
-    
+
 
 def new_view_cb(action, sourceview):
     window = create_view_window(sourceview.get_buffer(), sourceview)
     window.set_default_size(683, 700)
     window.show()
-    
+
 
 def print_cb(action, sourceview):
     window = sourceview.get_toplevel()
     buffer = sourceview.get_buffer()
-    
+
     compositor = gtksourceview2.print_compositor_new_from_view(sourceview)
     compositor.set_wrap_mode(gtk.WRAP_CHAR)
     compositor.set_highlight_syntax(True)
@@ -191,12 +191,12 @@ def print_cb(action, sourceview):
     compositor.set_footer_format(True, '%T', filename, 'Page %N/%Q')
     compositor.set_print_header(True)
     compositor.set_print_footer(True)
-    
+
     print_op = gtk.PrintOperation()
     print_op.connect("begin-print", begin_print_cb, compositor)
     print_op.connect("draw-page", draw_page_cb, compositor)
     res = print_op.run(gtk.PRINT_OPERATION_ACTION_PRINT_DIALOG, window)
-     
+
     if res == gtk.PRINT_OPERATION_RESULT_ERROR:
         error_dialog(window, "Une erreur est survenue lors de l'impression du fichier :\n\n" + filename)
     elif res == gtk.PRINT_OPERATION_RESULT_APPLY:
@@ -234,7 +234,7 @@ def update_cursor_position(buffer, view):
             col += 1
         start.forward_char()
     pos_label.set_text('[Caractère: %d, Ligne: %d, Colonne: %d]' % (nchars, row, col+1))
-    
+
 
 def move_cursor_cb (buffer, cursoriter, mark, view):
     update_cursor_position(buffer, view)
@@ -277,7 +277,7 @@ def button_press_cb(view, ev):
         else:
             # no marker found, create one
             buffer.create_source_mark(None, mark_category, line_start)
-    
+
     return False
 
 
@@ -360,7 +360,7 @@ buffer_ui_description = """
 </ui>
 """
 
-    
+
 ######################################################################
 ##### create view window
 def create_view_window(buffer, sourceview=None):
@@ -444,14 +444,14 @@ def create_view_window(buffer, sourceview=None):
     vbox.show_all()
 
     return window
-    
-    
+
+
 ######################################################################
 ##### create main window
 def create_main_window(buffer):
     window = create_view_window(buffer)
     ui_manager = window.get_data('ui_manager')
-    
+
     # buffer action group
     action_group = gtk.ActionGroup('BufferActions')
     action_group.add_actions(buffer_actions, buffer)
@@ -496,7 +496,7 @@ def main(args):
     	sys.exit("Aucun argument")
 #    	exec
         open_file(buffer, args[0])
-        
+
     # create first window
     window = create_main_window(buffer)
     window.set_default_size(683, 700)
@@ -505,7 +505,7 @@ def main(args):
 
     # main loop
     gtk.main()
-    
+
 
 if __name__ == '__main__':
     if '--debug' in sys.argv:

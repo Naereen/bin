@@ -102,7 +102,7 @@ class GeditTerminal(Gtk.Box):
             'copy-clipboard': [Gdk.KEY_C, Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK, self.copy_clipboard],
             'paste-clipboard': [Gdk.KEY_V, Gdk.ModifierType.CONTROL_MASK | Gdk.ModifierType.SHIFT_MASK, self.paste_clipboard]
         }
-        
+
         for name in self._accels:
             path = self._accel_base + '/' + name
             accel = Gtk.AccelMap.lookup_entry(path)
@@ -244,7 +244,7 @@ class GeditTerminal(Gtk.Box):
         #MenuItem => separator
         item = Gtk.SeparatorMenuItem()
         menu.append(item)
-        
+
         #MenuItem => About
         item = Gtk.ImageMenuItem.new_from_stock("gtk-about", None)
         item.connect("activate", lambda menu_item: self.show_about_dialog())

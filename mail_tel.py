@@ -9,7 +9,7 @@ import smtplib
 from email.mime.text import MIMEText
 
 signature="""\n
--- 
+--
 %s
 """
 
@@ -18,7 +18,7 @@ def send_me_an_email(message, subj="[LOG] no object", me="jarvisATcransDOTorg".r
 	The content of the email is [message], the subject is [subj].
 	The sender is [me], not necessary a valid sender for the SMTP.
 	The mail will be sent to [you].
-	
+
 	Auto configure with SMTP server on localhost in the cr@ns server (http://www.crans.org)
 
 	(c) Lilian Besson, 2012-2013.
