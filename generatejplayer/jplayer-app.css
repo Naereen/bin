@@ -78,7 +78,7 @@ body {
 img {
   max-width: 100%;
   text-align: center;
-  padding: 0; 
+  padding: 0;
   width: 300px;
   height: auto;
   max-width: 100%; }
@@ -109,7 +109,7 @@ img {
   background-image: -o-linear-gradient(#f7f8f9, #cfd5dd);
   background-image: -ms-linear-gradient(#f7f8f9, #cfd5dd);
   background-image: linear-gradient(#f7f8f9, #cfd5dd); }
-  
+
   .tabbar p {
     font-size: 95%;
     color: black;

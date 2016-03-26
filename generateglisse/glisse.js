@@ -257,10 +257,10 @@
 
                     var img = $('<img/>',{src: pictureUrl}).appendTo(plugin.els['content']);
                     plugin.els['content'].css({ backgroundImage: 'url("'+pictureUrl+'")'});
-                    
+
                     img.load(function() {
                         img.remove();
-                        
+
                         if($.inArray(pictureUrl, cache) === -1)
                             spinner(false);
 

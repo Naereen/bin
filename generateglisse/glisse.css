@@ -11,8 +11,8 @@
     background-color:rgba(0,0,0,.75);
 }
     #glisse-overlay.loading #glisse-spinner {opacity:1;} /* Display spinner */
-    
-/* Glisse: Overlay content */    
+
+/* Glisse: Overlay content */
 /* Glisse: Overlay content */
 #glisse-overlay-content {
     position: fixed;
@@ -60,7 +60,7 @@
 /* Glisse: Controls bar */
 /* Wrapper */
 #glisse-controls {}
-    
+
     /* Prev/Next button */
     .glisse-next a, .glisse-prev a{
         -webkit-transition:all 100ms ease;
