@@ -7,7 +7,7 @@
 # Rename every picture in a directory based on the name of directory (not recursive).
 #
 # Note: Will ask confirmation before doing it.
-# 
+#
 # Example: rename_dirname.sh pdf
 # Example: rename_dirname.sh JPG
 #  will rename each PDF or JPEG file in the current dir.

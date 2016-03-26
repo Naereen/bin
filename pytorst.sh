@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 #	This script is designed to be used with makePydoc, update__date__ and pylint.
-#	The reference page for this software is : 
+#	The reference page for this software is :
 #	https://sites.google.com/site/naereencorp/liste-des-projets/makepydoc
 #
 #	__author__='Lilian BESSON'
@@ -99,7 +99,7 @@ underline(){
 
 py2rst(){
 	module="${1%.py}"
-	
+
 	if [ "$module.py" = "$1" ] && [ -f "$module.py" ]
 	then
 		echo -e "${green} The file $1 ${blue}seems${white} to be a valid .py Python module file."

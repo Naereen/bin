@@ -26,7 +26,7 @@ echo " * Ce fichier .mli a ete genere automatiquement par '.ocamli.sh'"
 echo " *   A partir des fichiers .ml suivants : $*"
 echo " *)"
 
-echo "(*" > $destination 
+echo "(*" > $destination
 echo " * Ce fichier .mli a ete genere automatiquement par '.ocamli.sh'" >> $destination
 echo " *   A partir des fichiers .ml suivants : $*" >> $destination
 echo " *)" >> $destination
@@ -37,7 +37,7 @@ do
 	echo "(* Signature du fichier '$fileml' *)"
 	echo "(* *)"
 	ocamlc -i "$fileml"
-	
+
 	echo "(* *)" >> $destination
 	echo "(* Signature du fichier '$fileml' *)" >> $destination
 	echo "(* *)" >> $destination

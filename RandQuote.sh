@@ -17,8 +17,8 @@ sleep "$sleeptime"
 
 quotes="$HOME/.quotes.txt"
 
-randquote () 
-{ 
+randquote ()
+{
     if [ -f "$quotes" ]; then
 	echo -e "$quotes is there" >> /tmp/randquote.log;
         shuf "$quotes" | head -n 1;

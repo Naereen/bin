@@ -167,7 +167,7 @@ for (( i = 0; i < n; i++ )); do
 	#$ECHO "${magenta}$add2${white} is also called ${black}$name2${white}"
 
 	#$ECHO "${black}$name1${white} will find a gift for ${black}$name2${white}"
-	
+
 	# Send the mail with its content on $template
 	tmadd2=`tempfile`
 	cat "$template" \

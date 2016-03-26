@@ -10,7 +10,7 @@
 # or locally at http://127.0.0.1/stats.html
 #
 # FIXME: zamok proxying not yet available
-# 
+#
 echo -e "${yellow}.: Lilian Besson presents :."
 echo -e "${cyan}GenerateStatsHTML, v0.1${reset}"
 

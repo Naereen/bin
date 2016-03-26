@@ -20,6 +20,6 @@ echo -e "${cyan}Searching on ${white}${url}..." >/dev/stderr
 # Emails
 echo -e "${yellow}Printing email addresses...${default}${reset}" >/dev/stderr
 #wget --quiet "$url" -O - | grep -o "&lt;".*@.*"&gt;" | uniq | sort | sed s/'&lt;'/''/ | sed s/'&gt;'/''/
-wget --quiet "$url" -O - | grep -o "&lt;".*@.*"&gt;" | uniq | sort | sed s/'&lt;'/''/ | sed s/'&gt;'/''/ | grep --color=always @ 
+wget --quiet "$url" -O - | grep -o "&lt;".*@.*"&gt;" | uniq | sort | sed s/'&lt;'/''/ | sed s/'&gt;'/''/ | grep --color=always @
 
 # DONE

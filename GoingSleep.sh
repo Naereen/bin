@@ -4,7 +4,7 @@
 # http://perso.crans.org/besson/bin/GoingSleep.sh
 
 # A try
-[ -f ~/.color.sh ] && . ~/.color.sh 
+[ -f ~/.color.sh ] && . ~/.color.sh
 
 user=$USER
 notify-send -i "~/.link.ico" "Locked" "The current session is going asleep... (launched by $user using $0 $*)."

@@ -87,7 +87,7 @@ makenew_dialog() {
 }
 
 ######################
-### Print the old one 
+### Print the old one
 printold() {
 	echo -e " Votre message du jour ${green}courant${white} est :"
 	echo -e "${blue}`cat $HOME/motd`${white}"
@@ -107,7 +107,7 @@ notifyold() {
 }
 
 #######################
-### Erase the old one 
+### Erase the old one
 eraseold() {
 	echo -e "$*" > $HOME/motd
 }
