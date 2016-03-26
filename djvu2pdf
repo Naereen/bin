@@ -1,7 +1,7 @@
 #!/usr/bin/env /bin/bash
 # (c) Christoph Sieghart <sigi@0x2a.at> 2007 - 2011
 # Modified by Lilian Besson <lilian dot besson AT ens-cachan dot fr> 04-2014
-# Last version http://perso.crans.org/besson/bin/djvu2pdf 
+# Last version http://perso.crans.org/besson/bin/djvu2pdf
 
 VERSION=1.0
 

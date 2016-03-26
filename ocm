@@ -17,7 +17,7 @@ ocaml="/usr/bin/ocaml graphics.cma"
 
 # Pager à utiliser (peut être less, nano, pygmentize, emacs, vi ou ...)
 visual="nano -v -Y ocaml"
-# visual="pygmentize -l ocaml" 
+# visual="pygmentize -l ocaml"
 # visual="less -r"
 
 # Destination (à changer si conflit)
