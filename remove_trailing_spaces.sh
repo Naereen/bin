@@ -41,6 +41,7 @@ for i in "$@"; do
 done
 
 # Copyrights and options
+clear
 echo -e "${green}$0 v${version} : copyright (C) 2016 Lilian Besson"
 echo -e "You can find it online (https://bitbucket.org/lbesson/bin/src/master/remove_trailing_spaces.sh)"
 echo -e "This is free software, and you are welcome to redistribute it under certain conditions."
@@ -50,19 +51,21 @@ echo -e "This program comes with ABSOLUTELY NO WARRANTY; for details see http://
 # Reference http://stackoverflow.com/a/149081/5889533
 echo -e "${red}Listing all the files I will work on:${white} ..."
 if [ X"$*" = "X" ]; then
-    find . -type f -print -not -iwholename '*.git*'
-
-    echo -e "Do you agree?"
+    echo -e "${magenta}Using files given in ${red}./${white} ..."
+    find ./* -type f -print -not -iwholename '.git/*'
+    #
+    echo -e "\n${green}Do you agree?${white}"
     echo -e "[Enter to continue]"
     read
-    find . -type f -print0 -not -iwholename '*.git*' | xargs -0 perl -pi.backup -e 's/[ \t]+$//'
+    find ./* -type f -print0 -not -iwholename '.git/*' | xargs -0 perl -pi.backup -e 's/[ \t]+$//'
 else
-    echo -e "Using files given in argument: '$*' ..."
-    find "$@" -type f -print -not -iwholename '*.git*'
-    echo -e "Do you agree?"
+    echo -e "${magenta}Using files given in argument: '$*' ...${white}"
+    find "$@" -type f -print -not -iwholename '.git/*'
+    #
+    echo -e "\n${green}Do you agree?${white}"
     echo -e "[Enter to continue]"
     read
-    find "$@" -type f -print0 -not -iwholename '*.git*' | xargs -0 perl -pi.backup -e 's/[ \t]+$//'
+    find "$@" -type f -print0 -not -iwholename '.git/*' | xargs -0 perl -pi.backup -e 's/[ \t]+$//'
 fi
 
 echo -e "Done. A backup file is available for each files with a '.backup' extension. Remove them or move them to /tmp/ ..."
