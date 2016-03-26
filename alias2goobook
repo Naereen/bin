@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Exporter une liste d'alias crée par mutt vers les contacts gmail en utilisant goobook.
-# La syntaxe de mutt est du type: alias nom prenom 
+# La syntaxe de mutt est du type: alias nom prenom
 # La syntaxe de goobook est du type: "nom prenom" "adresse@email.truc"
 
 # A modifier en fonction de vos reglages

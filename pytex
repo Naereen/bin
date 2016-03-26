@@ -52,22 +52,22 @@ Options :
 
 """
 
-        
+
 #       La couleur dans laquelle sont écrits les textes.
 ColTexte = 33
-# C'est peut-être encore un peu tricher 
+# C'est peut-être encore un peu tricher
 utilisateur=subprocess.getoutput("whoami")
 HOME=subprocess.getoutput("echo $HOME")
 PYTHONPATH=subprocess.getoutput("echo $PYTHONPATH")
 
 
 def ecrire(texte,couleur):
-    # Noir 30 40, Rouge 31 41, Vert 32 42, Jaune 33 43, Bleu 34 44, Magenta 35 45, Cyan 36 46, Blanc 37 47, 
+    # Noir 30 40, Rouge 31 41, Vert 32 42, Jaune 33 43, Bleu 34 44, Magenta 35 45, Cyan 36 46, Blanc 37 47,
     # la police: 0->rien,  1->gras, 4->souligné, 5->clignotant, 7->inversée
     print("\033[0;"+str(couleur)+";40m"+texte+"\033[0;47;40m")
 
 class Compil(object):
-    def __init__(self):     
+    def __init__(self):
         self.simple=1
         self.tout=0
         self.lotex=0
@@ -114,13 +114,13 @@ class Traitement(object):
     r"""
     self.original_file : the original file, written by hand
     self.intermediate_code() : LaTeXparser.CodeLaTeX object containing the same as original_file but with
-                    removed \input that are not in the list. 
+                    removed \input that are not in the list.
                     This does not has to be written in a real file.
-    self.pytex_file : all the remaining \input are explicitly performed. 
+    self.pytex_file : all the remaining \input are explicitly performed.
                 (the bibliography/index still have to be created by bibtex/makeindex)
                 This file still contains the comments.
                 This is the one to be usually compiled.
-    self.source_file : the file with everything explicit including the bibliography and the index.   
+    self.source_file : the file with everything explicit including the bibliography and the index.
                 The comments are removed.
                 This is for Arxiv.
     """
@@ -204,7 +204,7 @@ class Traitement(object):
         label_dict={}
 
         print("Working on future references ...")
-        for occ in labels : 
+        for occ in labels :
             label = occ.arguments[0]
             ref_dict[label]=[]
 
@@ -259,7 +259,7 @@ class Traitement(object):
                             print(result.filename,":",result.linenumber)
                             print(result.string.replace(lab,"\033[0;33;40m"+lab+"\033[0;47;40m"))
 
-                            star.remove(result.filename)    
+                            star.remove(result.filename)
                             star.insert(0,result.filename)  # Thus the next time we begin with this file.
 
                             # Not test if result.filename is already in concerned_files.
@@ -314,7 +314,7 @@ class Traitement(object):
     def bibliographie(self):
         """
         Return the bbl file that corresponds to the principal file
-        
+
         We take as basis the pytex filename because the bibliorgaphy is created (via bibtex) when we
         compile that one.
         """
@@ -329,7 +329,7 @@ class Traitement(object):
         """
         If the file extension is .py, interpret it as a module and we extract the relevant informations.
         module.plugin_list  : a list of functions that will be applied to the LaTeX code before to give it to LaTeX
-        module.original_file 
+        module.original_file
         module.ok_filenames_list
         """
         FichierReq = self.NomVersChemin(nom)
@@ -340,7 +340,7 @@ class Traitement(object):
             # Before Python3 :   (december 15, 2014)
             #module = __import__(os.path.basename(FichierReq))
             module=importlib.import_module(os.path.basename(FichierReq.replace('.py','')))
-            
+
 
             self.myRequest = module.myRequest
 
@@ -438,7 +438,7 @@ def ProduceIntermediateCode(medicament):
 
 def ProducePytexCode(medicament):
     """
-    See the docstring of Traitement 
+    See the docstring of Traitement
     return an object LaTeXparser.CodeLaTeX because it has to be passed to plugins.
     """
     # The plugin has to do itself the work to apply inputs if he wants to.
@@ -478,7 +478,7 @@ def RunMe(medicament):
             x = LaTeXparser.FileToCodeLog(medicament.log_filename,stop_on_first=True)
             on = x.rerun_to_get_cross_references(stop_on_first=True)
     if not medicament.Sortie.nocompilation and not medicament.Compil.verif :
-        verif_grep(medicament)  
+        verif_grep(medicament)
     if medicament.Sortie.nocompilation :
         print("Le fichier qui ne fut pas compilé est",medicament.pytex_filename)
     else :

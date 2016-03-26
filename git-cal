@@ -405,7 +405,7 @@ sub configure {
 		$key =~ s/calendar\.//;
 		$config{$key} = $value;
 	    }
-	    local @ARGV = (map  { ( "-$_" => $config{$_} ) } 
+	    local @ARGV = (map  { ( "-$_" => $config{$_} ) }
 			   grep { exists $config{$_}       } @wanted);
 	    GetOptions(
 		'period=n'  => $period,
@@ -498,7 +498,7 @@ Print this message.
 
 =head2 USING GIT CONFIG
 
-git-cal uses the git config tool to store configuration on disk.  Similar keys are used to 
+git-cal uses the git config tool to store configuration on disk.  Similar keys are used to
 those listed above with the notable exception being the bundling of ascii, ansi and unicode
 into a "format" key. Examples of the three supported keys are below.
 

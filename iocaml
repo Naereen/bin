@@ -20,7 +20,7 @@ ocaml="/usr/local/bin/ocaml graphics.cma"
 
 # Pager à utiliser (peut être less, nano, pygmentize, emacs, vi ou ...)
 visual="/home/lilian/.local/bin/NANO -v -Y ocaml"
-# visual="pygmentize -l ocaml" 
+# visual="pygmentize -l ocaml"
 # visual="less -r"
 
 # Destinations (à changer si conflit)

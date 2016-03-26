@@ -6,7 +6,7 @@ declare -i pieces    # number of pieces present on board
 declare -i score=0   # score variable
 declare -i flag_skip # flag that prevents doing more than one operation on
                      # single field in one step
-declare -i moves     # stores number of possible moves to determine if player lost 
+declare -i moves     # stores number of possible moves to determine if player lost
                      # the game
 declare ESC=$'\e'    # escape byte
 declare header="Bash 2048 v1.1 (https://github.com/mydzor/bash2048)"
@@ -125,7 +125,7 @@ function generate_piece {
 #         $2 - recipient piece, this will hold result if moving or joining
 #         $3 - originator piece, after moving or joining this will be left empty
 #         $4 - direction of push, can be either "up", "down", "left" or "right"
-#         $5 - if anything is passed, do not perform the push, only update number 
+#         $5 - if anything is passed, do not perform the push, only update number
 #              of valid moves
 #         $board - original state of the game board
 # outputs:
@@ -151,7 +151,7 @@ function push_pieces {
       let "second=$1*$board_size+(index_max-$2-$3)"
       ;;
   esac
-  let ${board[$first]} || { 
+  let ${board[$first]} || {
     let ${board[$second]} && {
       if test -z $5; then
         board[$first]=${board[$second]}
@@ -166,7 +166,7 @@ function push_pieces {
     return
   }
   let ${board[$second]} && let flag_skip=1
-  let "${board[$first]}==${board[second]}" && { 
+  let "${board[$first]}==${board[second]}" && {
     if test -z $5; then
       let board[$first]*=2
       let "board[$first]==$target" && end_game 1
@@ -190,7 +190,7 @@ function apply_push {
       for k in $(_seq 1 $increment_max); do
         let flag_skip && break
         push_pieces $i $j $k $1 $2
-      done 
+      done
     done
   done
 }
@@ -259,15 +259,15 @@ function reload_game {
 
 function end_game {
   # count game duration
-  end_time=$(date +%s) 
+  end_time=$(date +%s)
   let total_time=end_time-start_time
-  
+
   print_board
   printf "Your score: $score\n"
-  
-  printf "This game lasted " 
+
+  printf "This game lasted "
   date -u -d @${total_time} +%T
-  
+
   stty echo
   let $1 && {
     printf "Congratulations you have achieved $target\n"
@@ -309,13 +309,13 @@ while getopts "b:t:l:rh" opt; do
     b ) board_size="$OPTARG"
       let '(board_size>=3)&(board_size<=9)' || {
         printf "Invalid board size, please choose size between 3 and 9\n"
-        exit -1 
+        exit -1
       };;
     t ) target="$OPTARG"
       printf "obase=2;$target\n" | bc | grep -e '^1[^1]*$'
       let $? && {
         printf "Invalid target, has to be power of two\n"
-        exit -1 
+        exit -1
       };;
     r ) reload_flag="1";;
     h ) help $0
