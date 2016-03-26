@@ -15,7 +15,7 @@
 
 # You should have received a copy of the GNU General Public License
 # along with pastebox.py.  If not, see <http://www.gnu.org/licenses/>.
-  
+
 import sys, urllib.request, urllib.parse, urllib.error, getopt
 
 URL = 'http://p.boxnet.eu/'

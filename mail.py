@@ -7,7 +7,7 @@ import subprocess
 def notify(msg, submsg="mail.py : auto mailer (with notify-send)"):
  ''' Notification using subprocess and notify-send.
  Also print the informations directly to the screen.
- 
+
  Fails simply if notify-send is not found.'''
  try:
   subprocess.Popen(['notify-send', msg, submsg])
@@ -23,7 +23,7 @@ import smtplib
 from email.mime.text import MIMEText
 
 signature="""\n
--- 
+--
 %s
 ###	Auto-sent by [mail.py], a simple Python 2.6 script.
 ###	Auto configure with SMTP server on localhost in the cr@ns server.
@@ -35,7 +35,7 @@ def send_me_an_email(message, subj="[LOG] no object", me="jarvisATcransDOTorg".r
 	The content of the email is [message], the subject is [subj].
 	The sender is [me], not necessary a valid sender for the SMTP.
 	The mail will be sent to [you].
-	
+
 	Auto configure with SMTP server on localhost in the cr@ns server (http://www.crans.org)
 
 	(c) Lilian Besson, 2012-2013.
