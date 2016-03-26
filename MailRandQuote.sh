@@ -17,8 +17,8 @@ echo -e "${cyan}MailRandQuote.sh, v1.0${reset}"
 quotes="${quotes:-$HOME/.quotes.txt}"
 echo -e "${black}Using $quotes to look for quotes.${reset}"
 
-randquote () 
-{ 
+randquote ()
+{
     if [ -f "$quotes" ]; then
         shuf "$quotes" | head -n 1;
     else

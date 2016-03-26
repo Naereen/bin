@@ -7,7 +7,7 @@
 # A first try to automatically create a quotes.txt with all Kaamelott citations
 # from https://fr.wikiquote.org/wiki/*
 #
-# Find the more recent version here 
+# Find the more recent version here
 # http://perso.crans.org/besson/bin/quotes.sh
 #
 version='0.1'

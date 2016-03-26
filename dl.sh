@@ -51,7 +51,7 @@ do
  i=${i%\"}
  $ECHO "i=$i"
  $READ
- 
+
  url="$i"
  url=`$ECHO "$i" | grep -o "/wiki/[^\"]*pdf"`
  #url=${url%\"}
@@ -64,7 +64,7 @@ do
  # url=http://minerve.bretagne.ens-cachan.fr/images/${url}
  $ECHO "url=$url"
  $READ
- 
+
  # Tente de trouver un nom de destination
  dest0=`$ECHO "$i" | grep -o ">.*</a>" | tr ' ' _`
  # dest0=`basename "$i"`
@@ -76,8 +76,8 @@ do
  dest0=${dest0%</a>}
  dest0=${dest0%.pdf}.pdf
  $ECHO "dest0=$dest0"
- $READ 
- 
+ $READ
+
  # Converti les caractère spéciaux en _ (au cas par cas, à adapter)
  dest0="${dest0//%20/_}"
  dest0="${dest0//_-_/_}"
@@ -86,7 +86,7 @@ do
  dest0="${dest0//%C3%A9/é}"
  dest="${dest0//%29/__}"
  $ECHO "dest=$dest"
- 
+
  #$READ
  if [ -f "$dest" ]; then
   $ECHO "File $u$dest$U is already there."
@@ -114,4 +114,4 @@ done
 
 exit 0
 
-#PDFCompress *.pdf 
+#PDFCompress *.pdf

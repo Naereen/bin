@@ -9,7 +9,7 @@
 #
 # By default, it uses https://fr.wikiquote.org/wiki/Kaamelott/
 #
-# Find the most recent version here 
+# Find the most recent version here
 # http://perso.crans.org/besson/publis/bin/quotes.sh
 #
 version='0.1'
@@ -113,16 +113,16 @@ for file in "$@"; do
 
   wget "$WGET_VERBOSITY" -t 5 "$url" -O "$out"
 
-  if [ "$?" != "0" ]; then  
+  if [ "$?" != "0" ]; then
 #   echo -e "${red}Error: continuing with the next file${white}"
    echo -e "${red}Error: wget failed to get the file ${magenta}${u}${url}${U}${white}."
 #   continue
    exit 2
   fi
- 
+
   outpure="${out%.html}.pure.html"
   echo -e "Searching for citations, writing the to ${black}$outpure${white}."
-  
+
   #
   # Keeping only useful part of the header
   #
@@ -142,14 +142,14 @@ for file in "$@"; do
 #  nend=`grep -n "<div id=\"interProject\"" "$outpure"~ | grep -o ^[0-9]*`
 #  cat "$outpure"~ | head -q -n $((nend - 3)) >> "$outpure"
 # FIXME
-  
+
   #
   # Removing useless lines
   #
   grep -v "<p><br /></p>" "$outpure" > "$outpure"~
   echo -e "<!-- Produce by a script made by Lilian BESSON, http://perso.crans.org/besson/bin/quotes.sh -->" > "$outpure"
   cat "$outpure"~ >> "$outpure"
-  
+
   #
   # List of line number of citation (-1 +6)
   #
@@ -162,7 +162,7 @@ for file in "$@"; do
   # Now select one or all or one random citation
   #
   echo -e "Options: random=$random, first=$first, all=$all."
-  	
+
   [ "$random" = "yes" ] && ( echo -e "${blue} Shuffling citations...${white}" ; shuf "$lines" -o "$lines" )
   [ "$first" = "yes" ] && ( tail -n 1 "$lines" > "$lines"~ ; echo -e "${blue} Keeping only the first citation...${white}" ; mv -f "$lines"~ "$lines" )
   [ "$number" != "1" ] && ( cat "$lines" | sed -n "$number",+0p > "$lines"~ ; mv -f "$lines"~ "$lines" )

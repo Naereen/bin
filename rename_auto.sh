@@ -110,7 +110,7 @@ for fichierencours in *.$extensiondesfichiers
 do
 	((n += 1))
 	reponse="n"
-	echo -e "$n : J'ai trouvé le fichier <[ $fichierencours ]> qui correspond au pattern demandé." 
+	echo -e "$n : J'ai trouvé le fichier <[ $fichierencours ]> qui correspond au pattern demandé."
 	if [ "$controle_un_a_un" = "-i" ]
 	then
 		read -p 'Je le renomme ? (O/n)' -t 4 reponse
@@ -120,7 +120,7 @@ do
 		fi
 	else
 		fichierencours="${fichierencours%$morceauAEnlever}$morceauARemettre"
-	echo -e "$n : J'ai supprimer le morceau $morceauAEnlever demandé, et j'ai : <[ $fichierencours ]>." 
+	echo -e "$n : J'ai supprimer le morceau $morceauAEnlever demandé, et j'ai : <[ $fichierencours ]>."
 		mv -u -v "$fichierencours" "$chainedebase - $n.$extensiondesfichiers"
 	fi
 done

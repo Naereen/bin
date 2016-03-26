@@ -14,7 +14,7 @@
 # NOTE: ssh.dptinfo.ens-cachan.fr version
 #
 # FIXME: zamok proxying not yet available
-# 
+#
 BIN=GenerateStatsMarkdown
 version=1.0
 

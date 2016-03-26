@@ -14,7 +14,7 @@ datef=$(basename `pwd -P`)
 
 echo -e "${reset}notes.sh: working in $u$black$datef$reset"
 echo -e "I found \n${red}`ls ${datef}*e ${datef}*pdf ${datef}*svg ${datef}*asc *~ 2>/dev/null`${white}"
-rm -vf ${datef}*e ${datef}*pdf ${datef}*svg ${datef}*asc *~ 
+rm -vf ${datef}*e ${datef}*pdf ${datef}*svg ${datef}*asc *~
 
 gpg --armor --detach-sign --yes --no-batch --use-agent "${datef}_notes.csv"
 

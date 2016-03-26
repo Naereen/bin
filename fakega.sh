@@ -54,7 +54,7 @@ fi
 ## time find . "$@" -exec curl --compressed -s -w "{} ('%{url_effective}')\n" "https://ga-beacon.appspot.com/$key/${h}${c}/{}" -o /dev/null \; 2>&1 \
 ## time find . "$@" -exec curl -s "https://ga-beacon.appspot.com/$key/${h}${c}/{}" -o /dev/null \; \
 
-#time 
+#time
 find . "$@" -exec wget -nv "https://ga-beacon.appspot.com/$key/${h}${c}/{}" -O /dev/null \;
 # \
 # && echo -e "DONE :)"
