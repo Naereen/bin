@@ -131,7 +131,8 @@ esac
 PS2=${PS1%'> '}'>and?> '
 
 # Man pages
-export MANPATH=$MANPATH:/usr/share/man:/usr/local/man
+# export MANPATH=$MANPATH:/usr/share/man:/usr/local/man
+export MANPATH=~/.local/man/:"$MANPATH":~/.local/man/
 
 export PAGER=less
 export EDITOR=/bin/nano
