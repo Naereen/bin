@@ -1,10 +1,10 @@
-# Privates
+# Privates documents
 .htaccess
 
 # Temp and backups
 *~
 	
-# Ignore file types
+# Ignored file types
 *.json
 
 # Examples scripts

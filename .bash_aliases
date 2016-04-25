@@ -79,7 +79,7 @@ alias path='echo -e ${PATH//:/\\n}'
 # Commande dut : 'du' Trie. dush : total du dossier courant.
 alias dut='/usr/bin/du -kx | egrep -v "\./.+/" | sort -n'
 alias dush='/usr/bin/du -sh'
-alias du='/usr/bin/du -kh'
+alias du='/usr/bin/du -khc'
 alias df='/bin/df -h -l -t ext3 -t ext4 -t fuseblk -t vfat'
 alias free='/usr/bin/free -h'
 
