@@ -219,7 +219,7 @@ PROMPT_COMMAND='ANSWER=$?; if [ $ANSWER = 0 ]; then PS1="${PS1OLD%> }\[\e[01;37m
 #PROMPT_COMMAND="$PROMPT_COMMAND; printf \"\033]0; .: ($(date))<${USER}@$(hostname)>:[$(pwd)] ($(__ip_address t)) - ${PKG} :. \007\""
 
 # Add to the $PATH
-export PATH="$HOME/bin/":$PATH:"$HOME/.local/bin/":"$HOME"/.ConkyWizardTheme/scripts/:"$HOME/bin/"
+export PATH="$HOME/bin/":"$HOME/.local/bin/":$PATH:"$HOME"/.ConkyWizardTheme/scripts/:"$HOME/bin/"
 # Add "$HOME"/bin if needed (but only if needed, having one directory twice in $PATH is durty!
 
 export RLWRAP_HOME="$HOME"
