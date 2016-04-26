@@ -2,7 +2,7 @@
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Website: https://bitbucket.org/lbesson/bin/src/master/AddGA.sh
-# Date: 26-11-2013
+# Date: 26-04-2016
 #
 # A small script to add a one-pixel beacon image to a HTML/PHP file
 #
@@ -21,6 +21,7 @@ if [ X"$1" = "X-f" ]; then
 else
 	force=no
 fi
+
 key="$1"
 c="$2"
 c="${c#/}"
@@ -37,7 +38,8 @@ if [ X"$force" != "Xyes" ] && (grep --color=always "\(https://ga-beacon.appspot.
 else
 	cat "${f}" \
 	 | sed s%"<img alt=\"GA|Analytics\" style=\"visibility: hidden; display: none;\" src=\"https://ga-beacon.appspot.com/$key/${c}/${f}?pixel\"/>"%""% \
-	 | sed s%"</body>"%"\n<script type=\"text/javascript\" src=\"http://perso.crans.org/besson/_static/ga.js\"></script>\n<img alt=\"GA|Analytics\" style=\"visibility:hidden;display:none;\" src=\"https://ga-beacon.appspot.com/$key/${c}/${f}?pixel\"/>\n</body>"% \
+	 | sed s%"<noscript><img alt=\"GA|Analytics\" style=\"visibility: hidden; display: none;\" src=\"https://ga-beacon.appspot.com/$key/${c}/${f}?pixel\"/></noscript>"%""% \
+	 | sed s%"</body>"%"\n<script type=\"text/javascript\" src=\"http://perso.crans.org/besson/_static/ga.js\"></script>\n<noscript><img alt=\"GA|Analytics\" style=\"visibility:hidden;display:none;\" src=\"https://ga-beacon.appspot.com/$key/${c}/${f}?pixel\"/></noscript>\n</body>"% \
 	 > "${f}"~
 	diff "${f}" "${f}~"
 	#read
