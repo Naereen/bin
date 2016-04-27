@@ -981,7 +981,6 @@ alias brigthness='xrandr --output LVDS --brightness '
 alias FilesLog='find | tee find.log ; du | tee du.log ; dut | tee dut.log'
 alias mario='vba --fullscreen --filter-lq2x ~/Public/rom/gba/pyrio.gba'
 
-alias update_codecivil='p="$(pwd)"; cd /home/lilian/france.code-civil ; git pull && cd "${p}"'
 alias sudo='sudo -H'  # flag to remove warning in 'sudo pip install [..]' and 'sudo pip3 install [..]'
 
 alias impressive='impressive.py --nologo --clock --tracking --transtime 0'
