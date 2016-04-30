@@ -41,10 +41,16 @@ except ImportError:
     print("Optional dependancy (ANSIColors) is not available, using regular print function.")
     print("  You can install it with : 'pip install ANSIColors-balises' (or sudo pip)...")
 
-from sys import exit, argv
+from sys import exit, argv, version_info
 from json import dumps
-from urllib import urlencode
-from urllib2 import urlopen, HTTPError
+
+if version_info < (3, 0):
+	from urllib import urlencode
+	from urllib2 import urlopen, HTTPError
+else:
+	from urllib3.request import urlencode
+	from urllib.request import urlopen
+	from urllib.error import HTTPError
 
 # Use base64 to not keep plaintext files of the number, username and password in your home
 from base64 import b64decode
