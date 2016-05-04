@@ -668,9 +668,11 @@ alias Push='clear ; git push && git gc'
 alias Pull='clear ; git gc && git pull && git gc && git-blame-last-commit.sh'
 alias Status='clear ; git status'
 alias Commit='clear ; git commit -m'
-alias c='clear ; git commit -m'  # Experimental
+# Experimental
+alias c='clear ; git commit -m'
 alias Add='git add'
-alias a='git add'  # Experimental, as I don't use autotex that much these days...
+# Experimental, as I don't use autotex that much these days...
+alias a='git add'
 alias Aggressive='git gc --aggressive'
 alias Sync='clear ; echo -e "Synchronizing (git push, gc, send_zamok)..."; git push; git gc --aggressive; make send_zamok; alert'
 
