@@ -598,14 +598,13 @@ lessPDF() {
     done
 }
 
-# FIXME ?
 eval "$(/bin/lesspipe)"
 # Man visual
 Man() { yelp "man:$@" ; }
 
 #  Le script suivant permet de decompresser un large eventail de types de fichiers compresses. Il vous suffira juste de taper quel que soit le type d'archive :
 extract() {
-    echo -e "$reset${neg}Extracting $1...$reset"
+    echo -e "${reset}${neg}Extracting $1...${reset}"
     if [ -f "$1" ] ; then
         case "$1" in
             *.tar.bz2)   tar xvjf "$1"    ;;
@@ -669,7 +668,9 @@ alias Push='clear ; git push && git gc'
 alias Pull='clear ; git gc && git pull && git gc && git-blame-last-commit.sh'
 alias Status='clear ; git status'
 alias Commit='clear ; git commit -m'
+alias c='clear ; git commit -m'  # Experimental
 alias Add='git add'
+alias a='git add'  # Experimental, as I don't use autotex that much these days...
 alias Aggressive='git gc --aggressive'
 alias Sync='clear ; echo -e "Synchronizing (git push, gc, send_zamok)..."; git push; git gc --aggressive; make send_zamok; alert'
 
@@ -949,7 +950,7 @@ PROXY () {
 
 # Short shortcuts with hand-written Bash completions
 complete -f -X '!*.@(html|md|mdown|markdown|mkdown|txt)' -o plusdirs strapdown2pdf strapdown2html.py
-alias a='autotex'
+alias ax='autotex'
 complete -f -X '!*.@(tex|pdf)' -o plusdirs a autotex
 alias p='PDFCompress'
 complete -f -X '!*.pdf' -o plusdirs p
@@ -972,16 +973,54 @@ complete -f -X '!*.@(pdf|djvu|PDF)' -o plusdirs e
 
 alias m='clear ; time mymake.sh'
 alias s='clear ; git status | less -r'
-alias g='git'
+alias g='git'  # Experimental
 alias wd='clear ; git wdiff'
 
-# alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "^rupee.*$" | sed s/"^rupee"/""/ )${U}${white}." | tee -a /tmp/RoupiesCourse.log'
+#  Le script suivant permet de decompresser un large eventail de types de fichiers compresses. Il vous suffira juste de taper quel que soit le type d'archive :
+o() {
+    if [ X"$1" == X"--help" ] || [ X"$1" == X"-h" ] || [ X"$1" == X"-?" ] || [ X"$1" == X"" ]; then
+        echo -e "Use the alias o to open any file : o FILE1 [FILE2 [...]], or directory. mimeopen is used by default if my hand-made rules fail."
+    else
+        echo -e "${reset}Opening ${neg}${@}${Neg}...${reset}"
+        for i in "$@"; do
+            printf -- "- ${reset}For ${u}${i}${U}...${reset}"
+            if [ -f "$i" ] ; then
+                case "$(echo "$i" | tr '[:upper:]' '[:lower:]')" in
+                    *.png|*.jpg|*.jpeg)
+                        printf " using ${magenta}eog${reset} (alias ${cyan}eog${reset}) ... "
+                        eog "$i";;
+                    *.pdf)
+                        printf " using ${magenta}evince${reset} (alias ${cyan}e${reset}) ... "
+                        e "$i";;
+                    *.mp3|*.ogg|*.mp4|*.avi|*.mkv)
+                        printf " using ${magenta}mplayer${reset} ... "
+                        mplayer "$i";;
+                    *.html|*.svg|*.htm|*.php)
+                        printf " using ${magenta}firefox${reset} (alias ${cyan}f${reset}) ... "
+                        f "$i";;
+                    *.txt|*.md|*.rst|*.py|*.ml|*.m|*.sh|*.tex|*.sty|*.log|.bash*|Makefile)
+                        printf " using ${magenta}subl${reset} ... "
+                        subl "$i";;
+                    *)
+                        printf " using ${red}mimeopen${reset} (${red}default${reset}) ... "
+                        mimeopen "$i";;
+                esac
+            else
+                echo "'$i' seems to not be a valid file, sorry."
+            fi
+        done;
+        echo -e "${reset}Done opening ${black}${@}${reset}...${reset}"
+    fi
+}
+
+alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "^rupee.*$" | sed s/"^rupee"/""/ )${U}${white}." | tee -a /tmp/RoupiesCourse.log'
 alias brigthness='xrandr --output LVDS --brightness '
 
 alias FilesLog='find | tee find.log ; du | tee du.log ; dut | tee dut.log'
 alias mario='vba --fullscreen --filter-lq2x ~/Public/rom/gba/pyrio.gba'
 
-alias sudo='sudo -H'  # flag to remove warning in 'sudo pip install [..]' and 'sudo pip3 install [..]'
+# flag to remove warning in 'sudo pip install [..]' and 'sudo pip3 install [..]'
+alias sudo='sudo -H'
 
 alias impressive='impressive.py --nologo --clock --tracking --transtime 0'
 alias slides='impressive'
