@@ -25,7 +25,7 @@ _series(){
   # cur  : désigne la chaine de caractère actuelle pour le dernier mot de la ligne de commande
   first="${COMP_WORDS[1]}"
   cur="${COMP_WORDS[argc]}"
-  opts="next previous last help"
+  opts="next previous last list help"
 
   # les options possibles pour notre auto-complétion
   if [ $argc -eq 1 ]; then
