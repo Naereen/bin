@@ -23,7 +23,7 @@
 # Good advice: in a git repository, compress before storing => a real improvement !
 ##############################################################################
 
-version="1.5"
+version="1.5.1"
 ##LANG="en"
 
 GREP="grep --color=always --line-buffered"
@@ -36,14 +36,14 @@ ECHO="echo -e"
 creator="Compressed with http://perso.crans.org/besson/bin/PDFCompress v$version -- a script by Lilian BESSON (C) 2013-2016"
 creator="$($ECHO "$creator" | tr '{' '_')"
 
-# If possible, use .color.sh (http://perso.crans.org/besson/bin/.color.sh or http://lperso.crans.org/besson/bin/.color.sh)
+# If possible, use .color.sh (http://perso.crans.org/besson/bin/.color.sh or https://bitbucket.org/lbesson/bin/src/master/.color.sh)
 if [ -f "$HOME/.color.sh" ]; then
     . "$HOME/.color.sh"
 else
     $ECHO "\033[01;31m WARNING: ~/.color.sh have not been found...\033[01;37m" > /dev/stderr
-    $ECHO "\033[01;33m INFO: 1) You can download it on http://perso.crans.org/besson/bin/.color.sh or http://lperso.crans.org/besson/bin/.color.sh \033[01;37m" > /dev/stderr
-    $ECHO "\033[01;33m INFO: 2) Then move it to "$"HOME/.color.sh (for example with 'move .color.sh ~/.color.sh' ...) \033[01;37m" > /dev/stderr
-    $ECHO "\033[01;33m INFO: 3) And finally, make it executable : 'chmod +x ~/.color.sh' . Now you can have colors in $BIN :) \033[01;37m" > /dev/stderr
+    $ECHO "\033[01;33m INFO: 1) You can download it on http://perso.crans.org/besson/bin/.color.sh or https://bitbucket.org/lbesson/bin/src/master/.color.sh \033[01;37m" > /dev/stderr
+    $ECHO "\033[01;33m INFO: 2) Then move it to "$"HOME/.color.sh (for example with 'mv .color.sh ~/.color.sh' ...) \033[01;37m" > /dev/stderr
+    $ECHO "\033[01;33m INFO: 3) And finally, make it executable: 'chmod +x ~/.color.sh' . Now you can have colors in $BIN :) \033[01;37m" > /dev/stderr
 fi
 
 # Default quality. FIXME: in fact, does not change very much the result....
