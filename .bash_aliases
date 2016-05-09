@@ -44,36 +44,40 @@ l() {
 lnc() {
     arg="$(history | tail -n1 | sed s/'^.*l '/''/)"
     if [[ X"$@" = X ]]; then
-        echo -e "Contenu du dossier $reset${u}$(pwd)$U$white ${magenta}[option -hCF]$white"
+        echo -e "Contenu du dossier $(pwd) [option -hCF]"
     else
-        echo -e "Liste des fichiers pour $reset$u$arg$U$white ${magenta}[option -hCF]$white"
+        echo -e "Liste des fichiers pour $arg [option -hCF]"
     fi
     /bin/ls --color=never -hCF "$@"
 }
 
-alias lD='find . -maxdepth 1 -type d' # To print directory
-alias ll='/bin/ls --color=auto -larth' # all in the current dir
-alias lsnocolor='/bin/ls --color=no'  # lnc is better
-alias lt='/bin/ls --color=auto -lSrha' # print all, sorted by size
-alias ltime='/bin/ls --color=auto --time-style=+%D | grep $(date +%D)'
-alias lx='/bin/ls --color=auto -lXB' # sort by extension
-alias lk='/bin/ls --color=auto -lSr' # sort by size
-alias lc='/bin/ls --color=auto -lcr' # sort by change time
-alias lu='/bin/ls --color=auto -lur' # sort by access time
-alias lr='/bin/ls --color=auto -lR' # recursive ls
-alias lm='/bin/ls --color=auto -al | less' # pipe through 'more'
-
-alias tree='tree -Csuh' # nice alternative to 'ls'
+alias lD='find . -maxdepth 1 -type d | sort'  # To print directory
+alias ll='/bin/ls --color=auto -larth'        # all in the current dir
+alias lsnocolor='/bin/ls --color=no'          # the lnc function is better
+alias lt='/bin/ls --color=auto -lSrha'        # print all, sorted by size
+alias lx='/bin/ls --color=auto -lXB'          # sort by extension
+alias lk='/bin/ls --color=auto -lSr'          # sort by size
+alias lc='/bin/ls --color=auto -lcr'          # sort by change time
+alias lu='/bin/ls --color=auto -lur'          # sort by access time
+alias lr='/bin/ls --color=auto -lR'           # recursive ls
+alias lm='/bin/ls --color=auto -al | less'    # pipe through 'more'
+alias tree='tree -Csuh'                       # nice alternative to 'ls'
 
 # Shortcuts on cp
 alias cp='/bin/cp -iv'
 alias h='history'
 alias which='type -all'
 alias ..='cd ..'
+alias .1='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../..'
+alias .2='cd ../..'
 alias .....='cd ../../..'
+alias .3='cd ../../..'
 alias ......='cd ../../../..'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
+alias .6='cd ../../../../../..'
 alias path='echo -e ${PATH//:/\\n}'
 
 # Commande dut : 'du' Trie. dush : total du dossier courant.
