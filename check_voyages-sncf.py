@@ -1,6 +1,8 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8; mode: python -*-
-""" Experimental Python 3.4 script to check if a train ticket on www.voyages-sncf.com is available or not.
+""" EXPERIMENTAL Python 3.4 script to check if a train ticket on www.voyages-sncf.com is available or not.
+
+WARNING: this script is only here to play and experiment with it, and demonstrate what robobrowser can do, NOT to be ran really.
 
 Requirement:
 - RoboBrowser, http://robobrowser.readthedocs.io, pip install robobrowser
