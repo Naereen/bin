@@ -31,7 +31,8 @@ if [ "$cherche" != "" ]; then
     subj="${minicontent} (admissibilité pour l'agrégation de ${matiere2}) ${flag}"
 
     # L'envoyer
-    mail_ghost.py "${content}" "$(echo $subj)" && notify-send "Jarvis Mail Daemon : Admissibilité" "${content}"
+    # mail_ghost.py "${content}" "$(echo $subj)" && notify-send "Jarvis Mail Daemon : Admissibilité" "${content}"
+    FreeSMS.py "${content}" "$(echo $subj)" && notify-send "Jarvis Mail Daemon : Admissibilité" "${content}"
 else
     content="$(echo -e "Les résultats d'${state2} pour l'agrégation de ${matiere2} ne sont pas encore sortis !\n\nJ'ai fouillé sur publinetce2.education.fr pour trouver : \nRien :( ...\n\nAu fait, je ne saurais être tenu responsable d'une quelconque information erronée envoyée par ce script (https://bitbucket.org/lbesson/bin/src/master/admissibilite.sh). \n\nCordialement;")"
     echo -e "Content: $content"
