@@ -1,15 +1,12 @@
-#!/usr/bin/env python2.7
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+# -*- coding: utf-8; mode: python -*-
 """
 A simple (beta) Python tool to plot graphics from Wikipédia statistics.
 
-.. warning:: Copyleft 2013 - Lilian Besson.
-.. warning:: License GPLv3.
-.. sidebar:: Last version?
-
-   Take a look to the latest version at https://bitbucket.org/lbesson/bin/src/master/wikistats.py
-
----
+- Date: 02-06-2016
+- Author: Lilian Besson, (C) 2016.
+- Online: https://bitbucket.org/lbesson/bin/src/master/wikistats.py
+- Licence: GPLv3.
 
 Examples
 --------
@@ -21,28 +18,30 @@ Will produce a graphic of visiting statistics for the page https://fr.wikipedia.
 
 ------
 
-.. note::
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-   This program is free software: you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
+wikistats.py is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-   wikistats.py is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License v3 along with wikistats.py.
-   If not, see <http://perso.crans.org/besson/LICENSE.html>.
+You should have received a copy of the GNU General Public License v3 along with wikistats.py.
+If not, see <http://perso.crans.org/besson/LICENSE.html>.
 """
 
 
+from __future__ import print_function  # Python 2/3 compatibility !
+
 # Pour détecter le langage par défault
 import os
+import sys
 
 # Default values
 language_default = os.getenv("LANG")[0:2]
+
 
 def lang_to_text(lang, exception=False):
     """ lang_to_text(lang, exception=False) -> str
@@ -101,9 +100,7 @@ Example:
     outfile = template_output.format(page=page, language=language)
 
     try:
-        stderr.write ("\nWarning: The destination file '{outfile}' was already present in the current directory, now it is in {newfile}.\n".format(
-                outfile=outfile,
-                newfile=distutils.file_util.copy_file(outfile, "/tmp/")[0]))
+        stderr.write("\nWarning: The destination file '{outfile}' was already present in the current directory, now it is in {newfile}.\n".format(outfile=outfile, newfile=distutils.file_util.copy_file(outfile, "/tmp/")[0]))
     except distutils.file_util.DistutilsFileError:
         stderr.write("Perfect, apparently the destination file '{outfile}' is not there.\n".format(outfile=outfile))
 
@@ -115,7 +112,7 @@ Example:
 def outfile_to_json(outfile_name):
     """ outfile_to_json(outfile_name) -> dir
 
-Try to dump and return the content of the file @outfile.
+    Try to dump and return the content of the file @outfile.
     """
     outfile = open(outfile_name)
     # To convert the content of this file in a Python dictionnary.
@@ -131,9 +128,9 @@ Try to dump and return the content of the file @outfile.
 def plot_stats_from_json(json_obj, graphic_name=None, graphic_name_template="{title}.{lang}.{ext}", ext="all", title=None):
     """ plot_stats_from_json(json_obj, graphic_name=None, graphic_name_template="{title}.{lang}.{ext}", ext="png") -> None
 
-Plot a couple of PNG/SVG/PDF statistics.
+    Plot a couple of PNG/SVG/PDF statistics.
 
-.. warning:: Beta !
+    .. warning:: Beta !
     """
     assert(ext in ["png", "svg", "pdf", "all"])
 
@@ -153,22 +150,20 @@ Plot a couple of PNG/SVG/PDF statistics.
         today = datetime.date.today()
         year, month, day = today.year, today.month, today.day
     except ImportError:
-        year, month, day = "2014", "12", "02"
+        year, month, day = "2016", "01", "01"
 
-#    stats = {}
+    # stats = {}
     data = []
 
     # We sort the keys by increasing dates
-    for year_month_day in sorted(views, key=lambda s: s[-5:-3]+s[-2:]):
-#        newkey = year_month_day[-5:-3] + "-" + year_month_day[-2:]
-#        stats[newkey] = views[year_month_day]
+    for year_month_day in sorted(views, key=lambda s: s[-5:-3] + s[-2:]):
+        # newkey = year_month_day[-5:-3] + "-" + year_month_day[-2:]
+        # stats[newkey] = views[year_month_day]
         data.append([year_month_day, views[year_month_day]])
-#        print "On {year}, the {date} the page \"{title}\" (lang={lang}) had {number} visitor{plural}.".format(date=newkey, number=stats[newkey],
-#                        title=title, lang=lang, year=year,
-#                        plural=("s" if stats[newkey]>1 else "") )
+        # print("On {year}, the {date} the page \"{title}\" (lang={lang}) had {number} visitor{plural}.".format(date=newkey, number=stats[newkey], title=title, lang=lang, year=year, plural=("s" if stats[newkey]>1 else "")))
 
     # Now make a graphic thanks to this data
-    print "A graphic will be produced to the file \"{graphic_name}\" (with the type \"{ext}\").".format(graphic_name=graphic_name, ext=ext)
+    print("A graphic will be produced to the file \"{graphic_name}\" (with the type \"{ext}\").".format(graphic_name=graphic_name, ext=ext))
 
     # We use numpy for the data manipulation and pylab for plotting (à la Matlab).
     import numpy
@@ -177,19 +172,19 @@ Plot a couple of PNG/SVG/PDF statistics.
     try:
         data = numpy.array(data)
     except:  # durty, almost impossible !
-        print "Unable to convert data to a numpy array. Exiting now..."
+        print("Unable to convert data to a numpy array. Exiting now...")
         exit()
 
     # Just the numbers
     numbers = data[::, 1].astype(numpy.int)
     nbnumbers = numpy.size(numbers)
 
-    print "The page \"{title}\", with language {lang}, has been ranked {rank}th on the {month}th month of {year}, for a total of {total} views.".format(title=title, lang=lang_to_text(lang, exception=True), rank=rank, month=month, year=year, total=sum(numbers))
+    print("The page \"{title}\", with language {lang}, has been ranked {rank}th on the {month}th month of {year}, for a total of {total} views.".format(title=title, lang=lang_to_text(lang, exception=True), rank=rank, month=month, year=year, total=sum(numbers)))
 
-#    # Sort decreasingly (bad idea here)
-#    ind = numpy.argsort(numbers)
-#    data = data[ind]
-#    numbers = numbers[ind]
+    # # Sort decreasingly (bad idea here)
+    # ind = numpy.argsort(numbers)
+    # data = data[ind]
+    # numbers = numbers[ind]
 
     # Graph options
     pylab.xlabel("Dates from the last 30 days (at the {today})".format(today=datetime.date.today()))
@@ -202,17 +197,16 @@ Plot a couple of PNG/SVG/PDF statistics.
     pylab.title(u".: Visiting statistics for the Wikipedia page '{title}' {lang_name} :.\n (Data from http://stats.grok.se, Python script by Lilian Besson (C) 2014) ".format(title=title, lang_name=lang_name))
 
     # X axis
-    pylab.xlim(1, nbnumbers+1)
-    pylab.xticks(range(nbnumbers+1), [ s[-2:] for s in data[:,0] ]
-, rotation=70)
+    pylab.xlim(1, nbnumbers + 1)
+    pylab.xticks(range(nbnumbers + 1), [s[-2:] for s in data[:, 0]], rotation=70)
     # Y axis
-    pylab.ylim(numbers.min()*0.95, numbers.max()*1.05)
+    pylab.ylim(numbers.min() * 0.95, numbers.max() * 1.05)
 
     pylab.grid(True, alpha=0.4)
 
-#   # Compute (and plot) an (invisible) histogram
-#   # xvalues, bins, patches = pylab.hist(numbers, range(nbnumbers+1), alpha=0.0)
-    bins = numpy.arange(start=1, stop=nbnumbers+1)
+    # Compute (and plot) an (invisible) histogram
+    # xvalues, bins, patches = pylab.hist(numbers, range(nbnumbers+1), alpha=0.0)
+    bins = numpy.arange(start=1, stop=nbnumbers + 1)
 
     # We keep the days with visitors
     idc = numbers >= 0
@@ -227,12 +221,12 @@ Plot a couple of PNG/SVG/PDF statistics.
         graphic_name = "{title}.{lang}.".format(title=title, lang=lang)
         for ext in ["png", "svg", "pdf"]:
             pylab.savefig(graphic_name + ext, format=ext, dpi=600)
-            print "Ploting the statistics on an histogram on the file \"{graphic_name}\".".format(graphic_name=graphic_name + ext)
+            print("Ploting the statistics on an histogram on the file \"{graphic_name}\".".format(graphic_name=graphic_name + ext))
             pylab.draw()
     # Otherwise use only the one given by the user
     else:
         pylab.savefig(graphic_name, format=ext, dpi=400)
-        print "Ploting the statistics on an histogram on the file \"{graphic_name}\".".format(graphic_name=graphic_name)
+        print("Ploting the statistics on an histogram on the file \"{graphic_name}\".".format(graphic_name=graphic_name))
         pylab.draw()
     pylab.clf()
 
@@ -242,11 +236,11 @@ Plot a couple of PNG/SVG/PDF statistics.
 def main(argv):
     """ main(argv) -> None
 
-Main function. Use the arguments of the command line."""
+    Main function. Use the arguments of the command line."""
 
-#    print "argv: ", argv
+    # print("argv: ", argv)
     if "-h" in argv or "--help" in argv:
-        print "wikistats.py --help|-h | page [language_code]"
+        print("wikistats.py --help|-h | page [language_code]")
         return 1
 
     language = argv[1] if len(argv) > 1 else language_default
@@ -260,7 +254,4 @@ Main function. Use the arguments of the command line."""
 
 
 if __name__ == "__main__":
-    from doctest import testmod
-#    testmod(verbose=False)
-    import sys
     sys.exit(int(main(sys.argv[1:])))
