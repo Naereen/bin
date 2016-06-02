@@ -1,17 +1,22 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8; mode: python -*-
 """ A script to automatically plot notes for corrected written exams.
 
 (C) Lilian BESSON ~ Janvier 2014
 """
 
-__version__	= '1.0'
+from __future__ import print_function  # Python 2/3 compatibility !
 
-from ANSIColors import printc
+try:
+    from ANSIColors import printc
+except ImportError:
+    def printc(a):
+        print(a)
+
 import sys
-import csv as csv	#: To read .csv files
-import numpy as np	#: To compute and use math tools
-import pylab        #: To plot
+import csv as csv  #: To read .csv files
+import numpy as np  #: To compute and use math tools
+import pylab  #: To plot
 
 #: Read the datas
 csv_file = sys.argv[1]
@@ -25,12 +30,12 @@ header = csv_file_object.next()
 
 data = []
 for row in csv_file_object:
-    data.append(row) # adding each row to the data variable
+    data.append(row)  # adding each row to the data variable
 #: Then convert from a list to an array
 data = np.array(data)
 
 #: Just the notes
-notes = data[::,1].astype(np.float)
+notes = data[::, 1].astype(np.float)
 nbnotes = np.size(notes)
 
 #: Sort decreasingly
@@ -45,9 +50,9 @@ noteMax = 20
 # I want now to produce annex files
 f = file(csv_name + "table", 'w')
 f.write("%% Notes from '%s'" % f.name)
-for i in xrange(nbnotes):
-	f.write("\n%s & %g/%i \\\\" % (data[i,0], notes[i], noteMax) )
-	printc("I wrote <blue>'%s & %g/%i \\\\'<white> in <u>%s<U>..." % (data[i,0], notes[i], noteMax, f.name))
+for i in range(nbnotes):
+    f.write("\n%s & %g/%i \\\\" % (data[i, 0], notes[i], noteMax))
+    printc("I wrote <blue>'%s & %g/%i \\\\'<white> in <u>%s<U>..." % (data[i, 0], notes[i], noteMax, f.name))
 
 minimale = np.min(notes)
 f = file(csv_name + "minimale", 'w')
@@ -94,12 +99,12 @@ pylab.ylabel(u"Nombre d'élève(s) ayant eu cette note")
 pylab.title(u"Répartition des notes dans la classe")
 
 pylab.xlim(0, noteMax)
-pylab.xticks( np.arange(noteMax + 1) )
+pylab.xticks(np.arange(noteMax + 1))
 
-xvalues, bins, patches = pylab.hist(notes, np.arange(noteMax + 1), range=(0.,20.), facecolor='blue', alpha=0.0)
+xvalues, bins, patches = pylab.hist(notes, np.arange(noteMax + 1), range=(0., 20.), facecolor='blue', alpha=0.0)
 
 pylab.ylim(0, xvalues.max() + 1)
-pylab.yticks( np.arange(xvalues.max() + 1) )
+pylab.yticks(np.arange(xvalues.max() + 1))
 
 pylab.grid(True, alpha=0.3)
 
@@ -107,7 +112,7 @@ pylab.grid(True, alpha=0.3)
 idc = xvalues > 0
 pylab.plot(bins[:-1][idc], xvalues[idc], 'g*--', linewidth=.5, markersize=18)
 
-pylab.xticks( bins[:-1][idc] )
+pylab.xticks(bins[:-1][idc])
 
 # Tweak spacing to prevent clipping of ylabel
 pylab.subplots_adjust(left=0.15)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """ Convert some Markdown/StrapDown.js files to a single, simple HTML (.html) file,
 which looks as a StrapDown.js powered page, but is autonomous and *does not* require JavaScript at all.
@@ -8,7 +8,7 @@ I tried to do it as (durtily) well as possible (and I included a couple of nice 
 Features:
 - include a link to SquirtFr (http://lbesson.bitbucket.org/squirt/),
 - include the bootstrap theme, cf. http://bootswatch.com/united for all the possibilities,
-- support UTF-8 (FIXME: try with another encoding?),
+- support UTF-8 (TODO try with another encoding?),
 - quick and pretty, even if the script is really DURTY...
 
 Links:
@@ -20,6 +20,7 @@ Copyright: 2015, Lilian Besson.
 License: GPLv3.
 """
 
+from __future__ import print_function  # Python 2/3 compatibility !
 import sys
 import codecs
 import markdown
@@ -60,8 +61,8 @@ try:
         from markdown.extensions import Extension
 
         urlfinder = re.compile(r'((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+(:[0-9]+)?|'
-                           r'(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:/[\+~%/\.\w\-_]*)?\??'
-                           r'(?:[\-\+=&;%@\.\w_]*)#?(?:[\.!/\\\w]*))?)')
+                               r'(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:/[\+~%/\.\w\-_]*)?\??'
+                               r'(?:[\-\+=&;%@\.\w_]*)#?(?:[\.!/\\\w]*))?)')
 
         class URLify(Preprocessor):
             def run(self, lines):
@@ -93,7 +94,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
     printc("<green>Starting main, with:<white>")
     # FIXME printc does not handle UTF-8 correctly ! AAAH!
     print("path='{path}', outfile='{outfile}'.".format(path=path, outfile=outfile))
-    print "And the title is:", title
+    print("And the title is:", title)
     fullpath = os.path.join(path, outfile)
 
     printc("<magenta>The output file will be <white>'<u>{fullpath}<U>'.".format(fullpath=fullpath))
@@ -187,7 +188,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
                     markdown_text = openinputfile.read()
                     printc(" I just read from that file.")
                     if beta:
-                        print markdown_text  # yes this works, useless now
+                        print(markdown_text)  # yes this works, useless now
 
                     # Let try to convert this text to HTML from Markdown
                     try:
@@ -196,7 +197,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
                             only_xmp_tag = SoupStrainer("xmp")
                             html = BeautifulSoup(markdown_text, "html.parser", parse_only=only_xmp_tag, from_encoding="utf-8")
                             if beta:
-                                print " BTW, this html read with Beautiful soup has the encoding,", html.original_encoding
+                                print(" BTW, this html read with Beautiful soup has the encoding,", html.original_encoding)
                             x = html.xmp
                             printc(" <black>BeautifulSoup<white> was used to read the input file as an HTML file, and reading its first xmp tag.")
                             # new_markdown_text = unicode(x.prettify("utf-8"), encoding="utf-8")
@@ -204,8 +205,8 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
                             printc(" I found the xmp tag and its content. Printing it:")
                             # OMG this is so durty ! FIXME do better?
                             if beta:
-                                print type(new_markdown_text)
-                                print new_markdown_text
+                                print(type(new_markdown_text))
+                                print(new_markdown_text)
                             printc(" Now lets replaced '<xmp>' --> '' and '</xmp>' --> ''. Lets go!")
                             markdown_text = new_markdown_text.replace('<xmp>', '').replace('</xmp>', '')
                             printc(" Yeah, I replaced '<xmp>' --> '' and '</xmp>' --> ''. I did it!")
@@ -234,7 +235,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
                         # Alright, let us convert this MD text to HTML
                         printc(" Let convert the content I read to HTML with markdown.markdown.")
                         if beta:
-                            print markdown_text
+                            print(markdown_text)
                         # FIXME: use markdown.markdownFromFile instead (simpler ?)
                         markdown_text = markdown_text.replace('&gt; ', '> ')
                         # Cf. https://pythonhosted.org/Markdown/reference.html#markdownFromFile
@@ -368,8 +369,8 @@ License: GPLv3.""")
                     # OMG, so bad! Only for Linux! FIXME
                     import distutils.file_util  # Mais quel débile !
                     # distutils.file_util.copy_file(out, '/tmp/')
-                    distutils.file_util.copy_file(out+'~', '/tmp/')
-                    distutils.file_util.move_file(out, out+'~')
+                    distutils.file_util.copy_file(out + '~', '/tmp/')
+                    distutils.file_util.move_file(out, out + '~')
                 else:
                     out = out.replace('.html', '__new.html')
                 if len(out) > 100:
