@@ -9,6 +9,7 @@ The selected color is returned (printed) on the consol.
 - Online: https://bitbucket.org/lbesson/bin/
 - Licence: MIT Licence (http://lbesson.mit-license.org).
 """
+
 from __future__ import print_function  # Python 2/3 compatibility !
 
 from gi.repository import Gtk
