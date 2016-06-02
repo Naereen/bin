@@ -1,16 +1,17 @@
 #!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8; mode: python -*-
 """
-A simple python implementation of Gravatar Image requests.
-Take a look to the latest version at http://perso.crans.org/besson/bin/gravatar.py
+A simple python implementation of Gravatar Image requests (using their API).
 
-.. warning:: Copyright 2013 - Lilian Besson.
+- Author: Lilian Besson, (C) 2013.
+- Online: https://bitbucket.org/lbesson/bin/src/master/gravatar.py
+- Licence: MIT Licence (http://lbesson.mit-license.org).
 """
+
+from __future__ import print_function  # Python 2/3 compatibility !
 # import code for encoding urls and generating md5 hashes
 import urllib
 import hashlib
-
-__author__ = 'Lilian Besson <http://perso.crans.org/besson/>'
 
 # Set the default picture
 # default = "http://perso.crans.org/besson/.besson.jpg"
@@ -24,10 +25,10 @@ def gravatar(email, default=default, size=size, secure=secure):
     """
     gravatar(email, default=default, size=size, secure=secure) -> string"
 
-Return the URL of the gravatar picture associated with @email.
-@default: default picture to use if not available. Default is %s.
-@size: format to use (pixel x pixel). Default is %i.
-@secure: if true, the returned URL use https://secure.gravatar.com instead of http://www.gravatar.com. Default is %s."
+    Return the URL of the gravatar picture associated with @email.
+    @default: default picture to use if not available. Default is %s.
+    @size: format to use (pixel x pixel). Default is %i.
+    @secure: if true, the returned URL use https://secure.gravatar.com instead of http://www.gravatar.com. Default is %s."
     """ % (default, size, secure)
     if secure:
         gravatar_url = "https://secure.gravatar.com/avatar/" + hashlib.md5(email.lower()).hexdigest() + "?r=pg&"

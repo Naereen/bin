@@ -1,24 +1,28 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# Author: Lilian BESSON
-# Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Web version: http://perso.crans.org/besson/bin/dump_dD.py
-# Web version (2): https://bitbucket.org/lbesson/bin/src/master/dump_dD.py
-# Date: 24-07-2013
-#
-# A small script to dump all Maths Exercice LaTeX sources from some website.
-# Eavily dependant on the website being used.
-#
+"""
+A small script to dump all Maths Exercice LaTeX sources from some website.
+Eavily dependant on the website being used.
 
-# Doc: http://www.crummy.com/software/BeautifulSoup/bs3/documentation.html#Printing%20a%20Document
-# And an example: http://mp.cpgedupuydelome.fr/mesexos.php?idTeX=1485
+Doc: http://www.crummy.com/software/BeautifulSoup/bs3/documentation.html#Printing%20a%20Document
+And an example: http://mp.cpgedupuydelome.fr/mesexos.php?idTeX=1485
 
+- Author: Lilian BESSON
+- Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
+- Web version: http://perso.crans.org/besson/bin/dump_dD.py
+- Web version (2): https://bitbucket.org/lbesson/bin/src/master/dump_dD.py
+- Date: 24-07-2013
+"""
+
+from __future__ import print_function  # Python 2/3 compatibility !
 import sys
 
 try:
     from ANSIColors import printc
 except:
-    def printc(a): print(a)
+    def printc(a):
+        """ Placeholder. Install ANSIColors-balises. """
+        print(a)
 
 printc("<yellow>.: Lilian Besson presents :.")
 printc("<cyan>Maths exercice LaTeX sources dumper, v0.1<reset>")
@@ -31,9 +35,9 @@ printc("<cyan>Maths exercice LaTeX sources dumper, v0.1<reset>")
 # from random import randint
 # numexo  = randint(1, nbExos)  # FIXME !
 
-numexo  = int(sys.argv[1]) if len(sys.argv)>1 else 1485
+numexo = int(sys.argv[1]) if len(sys.argv) > 1 else 1485
 
-chapter = str(sys.argv[2]) if len(sys.argv)>2 else ""
+chapter = str(sys.argv[2]) if len(sys.argv) > 2 else ""
 
 urlToGo = "http://mp.cpgedupuydelome.fr/mesexos.php?idTeX=%i" % numexo
 
@@ -53,7 +57,7 @@ parsed_html = BeautifulSoup(html, fromEncoding='utf-8')
 printc("<black>Encodage original : %s<white>\n\n" % parsed_html.originalEncoding)
 
 # On cherche la section <section id="contenu">..</section>
-contenu = parsed_html.body.find('section', attrs={'id':'contenu'})
+contenu = parsed_html.body.find('section', attrs={'id': 'contenu'})
 
 # Et on prend le contenu de la première <textarea> !
 codeTeX = contenu.findAll('textarea', limit=1)[0].renderContents()
