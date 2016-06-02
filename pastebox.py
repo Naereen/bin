@@ -1,24 +1,33 @@
-#!/usr/bin/python3
+#! python3
+# -*- coding: utf-8; mode: python -*-
 
-# PasteBox script for http://p.boxnet.eu/api/
-# Copyright (C) 2011 <sinuc at boxnet dot eu>
+"""
+PasteBox script for http://p.boxnet.eu/api/
+Copyright (C) 2011 <sinuc at boxnet dot eu>
 
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-# pastebox.py is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+pastebox.py is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-# You should have received a copy of the GNU General Public License
-# along with pastebox.py.  If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with pastebox.py.  If not, see <http://www.gnu.org/licenses/>.
+"""
 
-import sys, urllib.request, urllib.parse, urllib.error, getopt
+from __future__ import print_function  # Python 2/3 compatibility !
+import sys
+import urllib.request
+import urllib.parse
+import urllib.error
+import getopt
 
 URL = 'http://p.boxnet.eu/'
+
 
 class PasteBox:
     def __init__(self):
@@ -37,16 +46,16 @@ class PasteBox:
             VALUES['authhash'] = self.authhash
 
         data = urllib.parse.urlencode(VALUES)
-        req = urllib.request.Request('%sapi/'%URL, data)
+        req = urllib.request.Request('%sapi/' % URL, data)
         response = urllib.request.urlopen(req)
         page = response.read()
-        return '%s%s'%(URL, page.decode('utf-8').replace('\n', ''))
+        return '%s%s' % (URL, page.decode('utf-8').replace('\n', ''))
 
     def read(self, pasteid):
         if not self.authhash:
-            url = '%s%s/download'%(URL, pasteid)
+            url = '%s%s/download' % (URL, pasteid)
         else:
-            url = '%s%s/%s/download'%(URL, pasteid, self.authhash)
+            url = '%s%s/%s/download' % (URL, pasteid, self.authhash)
         req = urllib.request.Request(url)
         try:
             res = urllib.request.urlopen(req)
@@ -55,7 +64,7 @@ class PasteBox:
         return res
 
     def stdout(self, pasteid):
-        print("reading %s.."%pasteid)
+        print("reading %s.." % pasteid)
         response = self.read(pasteid)
         if response:
             for i in response.readlines():
@@ -64,29 +73,34 @@ class PasteBox:
             print("Paste does not exist")
 
     def download(self, pasteid):
-        print("downloading %s.."%pasteid)
+        print("downloading %s.." % pasteid)
         response = self.read(pasteid)
         if response:
-            x = open('pastebox_%s.txt'%pasteid, 'w')
+            x = open('pastebox_%s.txt' % pasteid, 'w')
             for line in response.readlines():
                 x.write(line.decode('utf-8'))
             x.close()
-            print('stored as: pastebox_%s.txt'%pasteid)
+            print('stored as: pastebox_%s.txt' % pasteid)
         else:
             print("Paste does not exist")
 
+
 def usage():
-    print("Usage: pastebox.py <option> <pasteid|file> ..")
-    print("Options:")
-    print("--authhash=<authhash>   authentication hash for additional protection ([a-z0-9])")
-    print("--ttl=<ttl>             time to live in seconds")
-    print("-s|--stdout             print paste to stdout")
-    print("-d|--download           download and store to file")
-    print("")
-    print("Usage examples:")
-    print("lspci|pastebox.py        Upload input by piping")
-    print("pastebox.py foo.c bar.h  Upload several files")
-    print("pastebox.py --authhash=foo -s 1234  Print Paste to stdout using authhash")
+    print("""
+    Usage: pastebox.py <option> <pasteid|file> ..
+
+    Options:
+    --authhash=<authhash>   authentication hash for additional protection ([a-z0-9])
+    --ttl=<ttl>             time to live in seconds
+    -s|--stdout             print paste to stdout
+    -d|--download           download and store to file
+
+    Usage examples:
+    lspci|pastebox.py        Upload input by piping
+    pastebox.py foo.c bar.h  Upload several files
+    pastebox.py --authhash=foo -s 1234  Print Paste to stdout using authhash
+    """)
+
 
 def main(argv):
     try:
@@ -132,9 +146,9 @@ def main(argv):
     if not opts and args:
         for file in args:
             try:
-                print("%s: %s"%(file, paste.create(''.join(open(file, 'r').readlines()))))
+                print("%s: %s" % (file, paste.create(''.join(open(file, 'r').readlines()))))
             except IOError:
-                print("skipping %s: file doesn't exist"%file)
+                print("skipping %s: file does not exist" % file)
 
     if not sys.stdin.isatty():
         paste = paste.create(' '.join(sys.stdin.readlines()))

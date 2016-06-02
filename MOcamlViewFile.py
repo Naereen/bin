@@ -1,68 +1,62 @@
 #!/usr/bin/env python
-#-*- encoding=utf-8 -*-
+# -*- coding: utf-8; mode: python -*-
 #
 # [SNIPPET_NAME: GtkSourceView Example]
 # [SNIPPET_CATEGORIES: PyGTK, PyGTKSourceView]
 # [SNIPPET_DESCRIPTION: Demonstrates using Actions with a gtk.Action and gtk.AccelGroup]
-#
-# This script shows the use of pygtksourceview module, the python wrapper
-# of gtksourceview C library.
-# It has been directly translated from test-widget.c
-# and modified to use gtksourceview2
-#
-# Copyright (C) 2004 - Iñigo Serna <inigoserna@telefonica.net>
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-#
-###################################################################
-# Modified by Lilian Besson (<lilian.besson[AT]ens-cachan.fr>)
-#  For Naereen Corp. (c) MOcaml Project
-#
-# **********************
-# * MOcaml FileViewer  *
-# * 		v0.1   *
-# *	25/05/12       *
-# **********************
-#
-###################################################################
 
+"""
+This script shows the use of pygtksourceview module, the python wrapper
+of gtksourceview C library.
+It has been directly translated from test-widget.c
+and modified to use gtksourceview2
 
-import os, os.path
+Copyright (C) 2004 - Inigo Serna <inigoserna@telefonica.net>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+- Date: 25/05/12
+- Author: Lilian Besson, (C) 2012.
+- Online: https://bitbucket.org/lbesson/bin/
+"""
+
+##################################################################
+from __future__ import print_function  # Python 2/3 compatibility !
+
+import os
+import os.path
 import sys
 import pygtk
-pygtk.require ('2.0')
+pygtk.require('2.0')
 
 import gtk
-if gtk.pygtk_version < (2,10,0):
-    print "PyGtk 2.10 ou supérieur est requis pour cet exemple"
+if gtk.pygtk_version < (2, 10, 0):
+    print("PyGtk 2.10 ou supÃ©rieur est requis pour cet exemple")
     raise SystemExit
 
 import gtksourceview2
 import pango
 
 
-######################################################################
-##### global vars
+# global vars
 windows = []    # this list contains all view windows
 MARK_CATEGORY_1 = 'one'
 MARK_CATEGORY_2 = 'two'
 DATADIR = '/usr/share'
 
 
-######################################################################
-##### error dialog
 def error_dialog(parent, msg):
     dialog = gtk.MessageDialog(parent,
                                gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -73,15 +67,11 @@ def error_dialog(parent, msg):
     dialog.destroy()
 
 
-######################################################################
-##### remove all markers
 def remove_all_marks(buffer):
     begin, end = buffer.get_bounds()
     buffer.remove_source_marks(begin, end)
 
 
-######################################################################
-##### load file
 def load_file(buffer, path):
     buffer.begin_not_undoable_action()
     try:
@@ -97,22 +87,23 @@ def load_file(buffer, path):
     return True
 
 
-######################################################################
-##### buffer creation
+# buffer creation
 def open_file(buffer, filename):
     # get the new language for the file mimetype
     manager = buffer.get_data('languages-manager')
 
     # essai pour charger un style particulier
-#	gtk-source-style-scheme-manager-get-default
-    manager2 = buffer.get_data('styles-scheme-manager')
-#    print manager2
-    stylescheme=buffer.get_style_scheme() # un autre si possible
-    # stylescheme = manager2.get_scheme("naereen")
-    ## A modifier si on veut un autre
-    print stylescheme
-#    print buffer
-#    stylescheme = manager.get_style_scheme("Naereen")
+    # gtk-source-style-scheme-manager-get-default
+    try:
+        stylescheme = buffer.get_style_scheme()  # un autre si possible
+    except:
+        # XXX A modifier si on veut un autre
+        manager2 = buffer.get_data('styles-scheme-manager')
+        print(manager2)
+        stylescheme = manager2.get_scheme("naereen")
+    print(stylescheme)
+    # print(buffer)
+    # stylescheme = manager.get_style_scheme("Naereen")
     buffer.set_style_scheme(stylescheme)
 
     if os.path.isabs(filename):
@@ -125,16 +116,15 @@ def open_file(buffer, filename):
         buffer.set_highlight_syntax(True)
         buffer.set_language(language)
     else:
-        print 'Aucune description de langage trouvée pour le fichier "%s"' % filename
+        print('Aucune description de langage trouvÃ© pour le fichier "%s"' % filename)
         buffer.set_highlight_syntax(False)
 
     remove_all_marks(buffer)
-    load_file(buffer, path) # TODO: check return
+    load_file(buffer, path)  # TODO: check return
     return True
 
 
-######################################################################
-##### Printing callbacks
+# Printing callbacks
 def begin_print_cb(operation, context, compositor):
     while not compositor.paginate(context):
         pass
@@ -146,8 +136,7 @@ def draw_page_cb(operation, context, page_nr, compositor):
     compositor.draw_page(context, page_nr)
 
 
-######################################################################
-##### Action callbacks
+# Action callbacks
 def numbers_toggled_cb(action, sourceview):
     sourceview.set_show_line_numbers(action.get_active())
 
@@ -186,7 +175,7 @@ def print_cb(action, sourceview):
     compositor.set_wrap_mode(gtk.WRAP_CHAR)
     compositor.set_highlight_syntax(True)
     compositor.set_print_line_numbers(5)
-    compositor.set_header_format(False, 'Imprimé dans %A', None, '%F')
+    compositor.set_header_format(False, 'ImprimÃ© dans %A', None, '%F')
     filename = buffer.get_data('filename')
     compositor.set_footer_format(True, '%T', filename, 'Page %N/%Q')
     compositor.set_print_header(True)
@@ -200,16 +189,15 @@ def print_cb(action, sourceview):
     if res == gtk.PRINT_OPERATION_RESULT_ERROR:
         error_dialog(window, "Une erreur est survenue lors de l'impression du fichier :\n\n" + filename)
     elif res == gtk.PRINT_OPERATION_RESULT_APPLY:
-        print 'Le fichier suivant a bien été imprimé: "%s"' % filename
+        print('Le fichier suivant a bien Ã©tÃ© imprimÃ© "%s"' % filename)
 
 
-######################################################################
-##### Buffer action callbacks
+# Buffer action callbacks
 def open_file_cb(action, buffer):
     chooser = gtk.FileChooserDialog('Ouvrir un fichier ...', None,
                                     gtk.FILE_CHOOSER_ACTION_OPEN,
                                     (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                    gtk.STOCK_OPEN, gtk.RESPONSE_OK))
+                                     gtk.STOCK_OPEN, gtk.RESPONSE_OK))
     response = chooser.run()
     if response == gtk.RESPONSE_OK:
         filename = chooser.get_filename()
@@ -233,10 +221,10 @@ def update_cursor_position(buffer, view):
         else:
             col += 1
         start.forward_char()
-    pos_label.set_text('[Caractère: %d, Ligne: %d, Colonne: %d]' % (nchars, row, col+1))
+    pos_label.set_text('[CaractÃ¨re: %d, Ligne: %d, Colonne: %d]' % (nchars, row, col + 1))
 
 
-def move_cursor_cb (buffer, cursoriter, mark, view):
+def move_cursor_cb(buffer, cursoriter, mark, view):
     update_cursor_position(buffer, view)
 
 
@@ -281,8 +269,7 @@ def button_press_cb(view, ev):
     return False
 
 
-######################################################################
-##### Actions & UI definition
+# Actions & UI definition
 buffer_actions = [
     ('Open', gtk.STOCK_OPEN, '_Ouvre', '<control>O', 'Ouvre un fichier', open_file_cb),
     ('Quit', gtk.STOCK_QUIT, '_Quitte', '<control>Q', 'Quitte l\'application', gtk.main_quit)
@@ -297,11 +284,11 @@ view_actions = [
 ]
 
 toggle_actions = [
-    ('ShowNumbers', None, 'Montre les numéros de _lignes', None, 'Toggle visibility of line numbers in the left margin', numbers_toggled_cb, False),
+    ('ShowNumbers', None, 'Montre les numÃ©ros de _lignes', None, 'Toggle visibility of line numbers in the left margin', numbers_toggled_cb, False),
     ('ShowMarkers', None, 'Montre les _Marqueurs', None, 'Toggle visibility of markers in the left margin', marks_toggled_cb, False),
     ('ShowMargin', None, 'Montre les M_arges', None, 'Toggle visibility of right margin indicator', margin_toggled_cb, False),
     ('AutoIndent', None, 'Activer l\'_auto-indentation', None, 'Toggle automatic auto indentation of text', auto_indent_toggled_cb, False),
-    ('InsertSpaces', None, 'Insérer des e_spaces au lieu des tabulations', None, 'Whether to insert space characters when inserting tabulations', insert_spaces_toggled_cb, False)
+    ('InsertSpaces', None, 'InsÃ©rer des e_spaces au lieu des tabulations', None, 'Whether to insert space characters when inserting tabulations', insert_spaces_toggled_cb, False)
 ]
 
 radio_actions = [
@@ -361,14 +348,12 @@ buffer_ui_description = """
 """
 
 
-######################################################################
-##### create view window
 def create_view_window(buffer, sourceview=None):
     # window
     window = gtk.Window(gtk.WINDOW_TOPLEVEL)
     window.set_border_width(0)
     window.set_title('MOcaml FileViewer [Naereen test]')
-    windows.append(window) # this list contains all view windows
+    windows.append(window)  # this list contains all view windows
 
     # view
     view = gtksourceview2.View(buffer)
@@ -433,21 +418,19 @@ def create_view_window(buffer, sourceview=None):
     if pixbuf:
         view.set_mark_category_pixbuf(MARK_CATEGORY_1, pixbuf)
     else:
-        print 'could not load marker 1 image.  Spurious messages might get triggered'
+        print('could not load marker 1 image.  Spurious messages might get triggered')
     pixbuf = gtk.gdk.pixbuf_new_from_file(os.path.join(DATADIR,
                                                        'pixmaps/apple-red.png'))
     if pixbuf:
         view.set_mark_category_pixbuf(MARK_CATEGORY_2, pixbuf)
     else:
-        print 'could not load marker 2 image.  Spurious messages might get triggered'
+        print('could not load marker 2 image.  Spurious messages might get triggered')
 
     vbox.show_all()
 
     return window
 
 
-######################################################################
-##### create main window
 def create_main_window(buffer):
     window = create_view_window(buffer)
     ui_manager = window.get_data('ui_manager')
@@ -479,8 +462,6 @@ def create_main_window(buffer):
     return window
 
 
-######################################################################
-##### main
 def main(args):
     # create buffer
     lm = gtksourceview2.LanguageManager()
@@ -493,14 +474,13 @@ def main(args):
     if len(args) >= 2:
         open_file(buffer, args[1])
     else:
-    	sys.exit("Aucun argument")
-#    	exec
+        sys.exit("Aucun argument")
         open_file(buffer, args[0])
 
     # create first window
     window = create_main_window(buffer)
     window.set_default_size(683, 700)
-#    window.set_icon_from_file("/home/lilian/.mocaml/.mocamlViewFile.jpg")
+    # window.set_icon_from_file("/home/lilian/.mocaml/.mocamlViewFile.jpg")
     window.show()
 
     # main loop
@@ -513,4 +493,3 @@ if __name__ == '__main__':
         pdb.run('main(sys.argv)')
     else:
         main(sys.argv)
-
