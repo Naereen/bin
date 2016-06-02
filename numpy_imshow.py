@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8; mode: python -*-
 #
 # Terminal visualization of 2D numpy arrays
 # Copyright (c) 2009  Nicolas P. Rougier
@@ -17,10 +17,12 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 # ------------------------------------------------------------------------------
 """
-    Terminal visualization of 2D numpy arrays
-    Using extended color capability of terminal (256 colors), the termimshow function
-    renders a 2D numpy array within terminal.
+Terminal visualization of 2D numpy arrays
+Using extended color capability of terminal (256 colors), the termimshow function
+renders a 2D numpy array within terminal.
 """
+
+from __future__ import print_function, division  # Python 2/3 compatibility !
 
 import sys
 import numpy as np
@@ -40,8 +42,8 @@ class ColorMap:
 
     def __init__(self, colors, name=None):
         self.colors = colors
-        self.min    = 0
-        self.max    = 1
+        self.min = 0
+        self.max = 1
         if name:
             self.name = name
         else:
@@ -63,20 +65,20 @@ class ColorMap:
             return self.colors[0][1]
         elif value > self.max:
             return self.colors[-1][1]
-        value = (value-self.min)/(self.max-self.min)
+        value = (value - self.min) / (self.max - self.min)
         sup_color = self.colors[0]
         inf_color = self.colors[-1]
-        for i in range(len(self.colors)-1):
-            if value < self.colors[i+1][0]:
+        for i in range(len(self.colors) - 1):
+            if value < self.colors[i + 1][0]:
                 inf_color = self.colors[i]
-                sup_color = self.colors[i+1]
+                sup_color = self.colors[i + 1]
                 break
-        r = (value-inf_color[0]) / (sup_color[0] - inf_color[0])
+        r = (value - inf_color[0]) / (sup_color[0] - inf_color[0])
         if r < 0:
             r = -r
-        color = [sup_color[1][0]*r + inf_color[1][0]*(1-r),
-                 sup_color[1][1]*r + inf_color[1][1]*(1-r),
-                 sup_color[1][2]*r + inf_color[1][2]*(1-r)]
+        color = [sup_color[1][0] * r + inf_color[1][0] * (1 - r),
+                 sup_color[1][1] * r + inf_color[1][1] * (1 - r),
+                 sup_color[1][2] * r + inf_color[1][2] * (1 - r)]
         return color
 
 
@@ -86,6 +88,7 @@ CM_IceAndFire = ColorMap([(0.00, (0.0, 0.0, 1.0)),
                          (0.50, (1.0, 1.0, 1.0)),
                          (0.75, (1.0, 1.0, 0.0)),
                          (1.00, (1.0, 0.0, 0.0))], "Ice and Fire")
+# ==> GAME OF THRONES !
 
 CM_Ice = ColorMap([(0.00, (0.0, 0.0, 1.0)),
                    (0.50, (0.5, 0.5, 1.0)),
@@ -118,24 +121,24 @@ def termimshow(Z, vmin=None, vmax=None, cmap=CM_Hot, show_cmap=True):
     # Build initialization string that setup terminal colors
     init = ''
     for i in range(240):
-        v = cmap.min + (i/240.0) * (cmap.max - cmap.min)
+        v = cmap.min + (i / 240.0) * (cmap.max - cmap.min)
         r, g, b = cmap.color(v)
-        init += "\x1b]4;%d;rgb:%02x/%02x/%02x\x1b\\" % (16+i, int(r*255), int(g*255), int(b*255))
+        init += "\x1b]4;%d;rgb:%02x/%02x/%02x\x1b\\" % (16 + i, int(r * 255), int(g * 255), int(b * 255))
 
     # Build array data string
     data = ''
     for i in range(Z.shape[0]):
         for j in range(Z.shape[1]):
-            c = 16 + int(((Z[Z.shape[0]-i-1, j]-cmap.min) / (cmap.max-cmap.min))*239)
+            c = 16 + int(((Z[Z.shape[0] - i - 1, j] - cmap.min) / (cmap.max - cmap.min)) * 239)
             if (c < 16):
                 c = 16
             elif (c > 255):
                 c = 255
             data += "\x1b[48;5;%dm  " % c
-            u = cmap.max - (i/float(Z.shape[0]-1)) * ((cmap.max-cmap.min))
+            u = cmap.max - (i / float(Z.shape[0] - 1)) * ((cmap.max - cmap.min))
         if show_cmap:
             data += "\x1b[0m  "
-            data += "\x1b[48;5;%dm  " % (16 + (1-i/float(Z.shape[0]))*239)
+            data += "\x1b[48;5;%dm  " % (16 + (1 - i / float(Z.shape[0])) * 239)
             data += "\x1b[0m %+.2f" % u
         data += "\n"
 
@@ -150,7 +153,7 @@ if __name__ == '__main__':
     X, Y = np.meshgrid(x, y)
     # Example 1 :
     def func1(x, y):
-        return (1 - x/2 + x**5 + y**3) * np.exp(-x**2-y**2)
+        return (1 - x / 2 + x**5 + y**3) * np.exp(- x**2 - y**2)
     Z1 = np.array(func1(X, Y))
     print("Using color map : Hot.")
     termimshow(Z1, cmap=CM_Hot)
@@ -158,7 +161,7 @@ if __name__ == '__main__':
     clearScreen()
     # Example 2 :
     def func2(x, y):
-        return (1 - x/4 + x**4 + y**3) * np.exp(-x**2-y**2)
+        return (1 - x / 4 + x**4 + y**3) * np.exp(- x**2 - y**2)
     Z2 = np.array(func2(X, Y))
     print("Using color map : IceAndFire.")
     termimshow(Z2, cmap=CM_IceAndFire)
@@ -166,7 +169,7 @@ if __name__ == '__main__':
     clearScreen()
     # Example 3 :
     def func3(x, y):
-        return (1 - x/4 + x**2 + y**2) * np.exp(-x**2-y**2)
+        return (1 - x/4 + x**2 + y**2) * np.exp(- x**2 - y**2)
     Z3 = np.array(func3(X, Y))
     print("Using color map : Ice.")
     termimshow(Z3, cmap=CM_Ice)
@@ -174,7 +177,7 @@ if __name__ == '__main__':
     clearScreen()
     # Example 4 :
     def func4(x, y):
-        return (1 - x/4 + x**3 + y**1) * np.exp(-x**2-y**2)
+        return (1 - x / 4 + x**3 + y**1) * np.exp(- x**2 - y**2)
     Z4 = np.array(func4(X, Y))
     print("Using color map : Fire.")
     termimshow(Z4, cmap=CM_Fire)
@@ -182,7 +185,7 @@ if __name__ == '__main__':
     clearScreen()
     # Example 5 :
     def func5(x, y):
-        return (1 + 50*y**2) * np.exp(-x**2-y**2)
+        return (1 + 50 * y**2) * np.exp(- x**2 - y**2)
     Z5 = np.array(func5(X, Y))
     print("Using color map : Grey.")
     termimshow(Z5, cmap=CM_Grey)
