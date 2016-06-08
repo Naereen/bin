@@ -37,11 +37,11 @@ from __future__ import print_function  # Python 2/3 compatible
 
 try:
     try:
-        from ansicolortags import printc as print
+        from ansicolortags import printc
     except ImportError as e:
         print("Optional dependancy (ansicolortags) is not available, using regular print function.")
         print("  You can install it with : 'pip install ansicolortags' (or sudo pip)...")
-        from ANSIColors import printc as print
+        from ANSIColors import printc
 except ImportError:
     print("Optional dependancy (ANSIColors) is not available, using regular print function.")
     print("  You can install it with : 'pip install ANSIColors-balises' (or sudo pip)...")
@@ -79,7 +79,7 @@ def openSpecialFile(name):
     """ Open the hidden file '~/.smsapifreemobile_name.b64', read and decode (base64) and return its content.
     """
     assert name in ["number", "user", "password"], "Error: unknown or incorrect value for 'name' for the function openSpecialFile(name) ..."
-    print("<cyan>Opening the hidden file <white>'<u>~/.smsapifreemobile_{}.b64<U>'<cyan>, read and decode (base64) and return its content...<white>".format(name))
+    printc("<cyan>Opening the hidden file <white>'<u>~/.smsapifreemobile_{}.b64<U>'<cyan>, read and decode (base64) and return its content...<white>".format(name))
     try:
         # raise OSError  # DEBUG
         with open(expanduser('~/') + ".smsapifreemobile_" + name + ".b64") as f:
@@ -88,17 +88,17 @@ def openSpecialFile(name):
                 variable = variable[:-1]
             return variable
     except OSError:
-        print("<red>Error: unable to read the file '~/.smsapifreemobile_{}.b64' ...<white>".format(name))
-        print("<yellow>Please check that it is present, and if it not there, create it:<white>")
+        printc("<red>Error: unable to read the file '~/.smsapifreemobile_{}.b64' ...<white>".format(name))
+        printc("<yellow>Please check that it is present, and if it not there, create it:<white>")
         if name == "number":
             print("To create '~/.smsapifreemobile_number.b64', use your phone number (like '0612345678', not wiht +33), and execute this command line (in a terminal):")
-            print("<black>echo '0612345678' | base64 > '~/.smsapifreemobile_number.b64'<white>".format())
+            printc("<black>echo '0612345678' | base64 > '~/.smsapifreemobile_number.b64'<white>".format())
         elif name == "user":
             print("To create '~/.smsapifreemobile_user.b64', use your Free Mobile identifier (a 8 digit number, like '83123456'), and execute this command line (in a terminal):")
-            print("<black>echo '83123456' | base64 > '~/.smsapifreemobile_user.b64'<white>".format())
+            printc("<black>echo '83123456' | base64 > '~/.smsapifreemobile_user.b64'<white>".format())
         elif name == "password":
             print("To create '~/.smsapifreemobile_password.b64', go to this webpage, https://mobile.free.fr/moncompte/index.php?page=options&show=20 (after logging to your Free Mobile account), and copy the API key (a 14-caracters string on [a-zA-Z0-9]*, like 'H6ahkTABEADz5Z'), and execute this command line (in a terminal):")
-            print("<black>echo 'H6ahkTABEADz5Z' | base64 > '~/<white>smsapifreemobile_password.b64' ".format())
+            printc("<black>echo 'H6ahkTABEADz5Z' | base64 > '~/<white>smsapifreemobile_password.b64' ".format())
 
 
 #: Number (not necessary)
@@ -164,10 +164,10 @@ def send_sms(text="Empty!", secured=True):
 
     # FIXME find a way to secure this step better than the way it is right now.
 
-    print("\n<green>Your message is:<white>\n<yellow>" + text + "<white>")
+    printc("\n<green>Your message is:<white>\n<yellow>" + text + "<white>")
     dictQuery = {"user": user, "pass": password, "msg": text}
     url = "http" + ("s" if secured else "")
-    print("\nThe web-based query to the Free Mobile API (<u>{}://smsapi.free-mobile.fr/sendmsg?query<U>) will be based on:\n{}.".format(url, dumps(dictQuery, sort_keys=True, indent=4)))
+    printc("\nThe web-based query to the Free Mobile API (<u>{}://smsapi.free-mobile.fr/sendmsg?query<U>) will be based on:\n{}.".format(url, dumps(dictQuery, sort_keys=True, indent=4)))
 
     query = urlencode(dictQuery)
     url += "://smsapi.free-mobile.fr/sendmsg?{}".format(query)
@@ -188,7 +188,7 @@ def main(argv):
     """
     # Manual handing of the cli arguments
     if "-h" in argv or "--help" in argv:
-        print("""
+        printc("""
 <green>FreeSMS.py<white> --help|-h | -f file | body of the message
 
 A simple Python script to send a text message to a Free Mobile phone.
