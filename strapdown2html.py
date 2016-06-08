@@ -34,15 +34,21 @@ __version__ = "0.3.1"
 # TODO: improve conformity with StrapDown.js Markdown parser:
 # nested list for instance, generic source code printer etc.
 
-# Load ANSIColors (Cf. http://pythonhosted.org/ANSIColors-balises/)
 try:
-    from ANSIColors import printc
+    try:
+        # Load ansicolortags (Cf. http://ansicolortags.readthedocs.io/)
+        from ansicolortags import printc
+    except ImportError as e:
+        print("Optional dependancy (ansicolortags) is not available, using regular print function.")
+        print("  You can install it with : 'pip install ansicolortags' (or sudo pip)...")
+        # Load ANSIColors (Cf. http://pythonhosted.org/ANSIColors-balises/)
+        from ANSIColors import printc
 except ImportError:
-    print("ANSIColors.printc not available.")
+    print("Optional dependancy (ANSIColors) is not available, using regular print function.")
+    print("  You can install it with : 'pip install ANSIColors-balises' (or sudo pip)...")
 
-    def printc(*args):
-        """ Ersatz of ANSIColors.printc."""
-        print(args)
+    def printc(*a, **kw):
+        print(*a, **kw)
 
 # Load some Markdown extensions (Cf. https://pythonhosted.org/Markdown/extensions/index.html)
 try:
@@ -74,7 +80,7 @@ try:
 
         urlify_ext = URLifyExtension()
         # list_extensions.append(urlify_ext)
-        # FIXME improve that extension
+        # FIXME improve support for that extension
     except:
         printc(" <INFO> Failed to define the 'urlify' extension.<white>")
 except:

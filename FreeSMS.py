@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf8 -*-
 """
-A simple Python 2.7+ / 3.4+ script to send a text message to a Free Mobile phone.
+A simple Python 2.7+ / 3.1+ script to send a text message to a Free Mobile phone.
 
 - Copyleft 2014-16 Lilian Besson
 - License GPLv3.
@@ -36,7 +36,12 @@ Will send a test message to your mobile phone.
 from __future__ import print_function  # Python 2/3 compatible
 
 try:
-    from ANSIColors import printc as print
+    try:
+        from ansicolortags import printc as print
+    except ImportError as e:
+        print("Optional dependancy (ansicolortags) is not available, using regular print function.")
+        print("  You can install it with : 'pip install ansicolortags' (or sudo pip)...")
+        from ANSIColors import printc as print
 except ImportError:
     print("Optional dependancy (ANSIColors) is not available, using regular print function.")
     print("  You can install it with : 'pip install ANSIColors-balises' (or sudo pip)...")
@@ -45,12 +50,12 @@ from sys import exit, argv, version_info
 from json import dumps
 
 if version_info < (3, 0):
-	from urllib import urlencode
-	from urllib2 import urlopen, HTTPError
+    from urllib import urlencode
+    from urllib2 import urlopen, HTTPError
 else:
-	from urllib3.request import urlencode
-	from urllib.request import urlopen
-	from urllib.error import HTTPError
+    from urllib3.request import urlencode
+    from urllib.request import urlopen
+    from urllib.error import HTTPError
 
 # Use base64 to not keep plaintext files of the number, username and password in your home
 from base64 import b64decode
@@ -131,7 +136,7 @@ Please go on 'https://mobile.free.fr/moncompte/index.php?page=options&show=20' s
 
 
 def send_sms(text="Empty!", secured=True):
-    """Sens a free SMS to the user identified by [user], with [password].
+    """ Sens a free SMS to the user identified by [user], with [password].
 
     :user: Free Mobile id (of the form [0-9]{8}),
     :password: Service password (of the form [a-zA-Z0-9]{14}),
@@ -157,7 +162,7 @@ def send_sms(text="Empty!", secured=True):
     #     password = password[:-1]
     password = openSpecialFile("password")
 
-    #: FIXME find a way to secure this step better than the way it is right now.
+    # FIXME find a way to secure this step better than the way it is right now.
 
     print("\n<green>Your message is:<white>\n<yellow>" + text + "<white>")
     dictQuery = {"user": user, "pass": password, "msg": text}
@@ -179,9 +184,7 @@ def send_sms(text="Empty!", secured=True):
 
 
 def main(argv):
-    """ main(argv) -> None
-
-    Main function. Use the arguments of the command line (argv).
+    """ Main function. Use the arguments of the command line (argv).
     """
     # Manual handing of the cli arguments
     if "-h" in argv or "--help" in argv:
@@ -210,7 +213,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.<reset><white>
 
     if "-f" in argv:
         try:
-            with open(argv[argv.index("-f")+1], 'r') as filename:
+            with open(argv[argv.index("-f") + 1], 'r') as filename:
                 text = "".join(filename.readlines())[:-1]
         except Exception as e:
             print(e)
@@ -223,12 +226,12 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.<reset><white>
         else:
             text = """Test SMS sent from {machinename} with FreeSMS.py (the {date}).
 
-    (a Python 2.7 / 3.4 script by Lilian Besson, open source, you can find the code
+    (a Python 2.7+ / 3.1+ script by Lilian Besson, open source, you can find the code
     at https://bitbucket.org/lbesson/bin/src/master/FreeSMS.py
     or http://perso.crans.org/besson/bin/FreeSMS.py)
 
     For any issues, reach me by email at jarvis[at]crans[dot]org !"""
-            # XXX Check that this is working correctly!
+            # FIXED Check that this is working correctly!
             machinename = "jarvis.crans.org"  # Default name!
             try:
                 machinename = open("/etc/hostname").readline()[:-1]
