@@ -26,9 +26,18 @@ from __future__ import print_function, division  # Python 2/3 compatibility !
 
 import sys
 import numpy as np
+
 try:
-    from ANSIColors import clearScreen
-except:
+    try:
+        from ansicolortags import clearScreen
+    except ImportError as e:
+        print("Optional dependancy (ansicolortags) is not available, trying to import the old version (ANSIColors).")
+        print("  You can install it with : 'pip install ansicolortags' (or sudo pip)...")
+        from ANSIColors import clearScreen
+except ImportError:
+    print("Optional dependancy (ANSIColors) is not available, not using clearScreen().")
+    print("  You can install it with : 'pip install ANSIColors-balises' (or sudo pip)...")
+
     def clearScreen():
         pass
 
@@ -151,6 +160,7 @@ if __name__ == '__main__':
     x = np.arange(-3.0, 3.75, dx)
     y = np.arange(-3.0, 3.75, dy)
     X, Y = np.meshgrid(x, y)
+
     # Example 1 :
     def func1(x, y):
         return (1 - x / 2 + x**5 + y**3) * np.exp(- x**2 - y**2)
@@ -159,6 +169,7 @@ if __name__ == '__main__':
     termimshow(Z1, cmap=CM_Hot)
     print(raw_input("[Enter to continue]"))
     clearScreen()
+
     # Example 2 :
     def func2(x, y):
         return (1 - x / 4 + x**4 + y**3) * np.exp(- x**2 - y**2)
@@ -167,14 +178,16 @@ if __name__ == '__main__':
     termimshow(Z2, cmap=CM_IceAndFire)
     print(raw_input("[Enter to continue]"))
     clearScreen()
+
     # Example 3 :
     def func3(x, y):
-        return (1 - x/4 + x**2 + y**2) * np.exp(- x**2 - y**2)
+        return (1 - x / 4 + x**2 + y**2) * np.exp(- x**2 - y**2)
     Z3 = np.array(func3(X, Y))
     print("Using color map : Ice.")
     termimshow(Z3, cmap=CM_Ice)
     print(raw_input("[Enter to continue]"))
     clearScreen()
+
     # Example 4 :
     def func4(x, y):
         return (1 - x / 4 + x**3 + y**1) * np.exp(- x**2 - y**2)
@@ -183,6 +196,7 @@ if __name__ == '__main__':
     termimshow(Z4, cmap=CM_Fire)
     print(raw_input("[Enter to continue]"))
     clearScreen()
+
     # Example 5 :
     def func5(x, y):
         return (1 + 50 * y**2) * np.exp(- x**2 - y**2)

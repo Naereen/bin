@@ -8,10 +8,16 @@
 from __future__ import print_function  # Python 2/3 compatibility !
 
 try:
-    from ANSIColors import printc
+    try:
+        from ansicolortags import printc as print
+    except ImportError as e:
+        print("Optional dependancy (ansicolortags) is not available, using regular print function.")
+        print("  You can install it with : 'pip install ansicolortags' (or sudo pip)...")
+        from ANSIColors import printc as print
 except ImportError:
-    def printc(a):
-        print(a)
+    print("Optional dependancy (ANSIColors) is not available, using regular print function.")
+    print("  You can install it with : 'pip install ANSIColors-balises' (or sudo pip)...")
+
 
 import sys
 import csv as csv  #: To read .csv files
@@ -52,46 +58,46 @@ f = file(csv_name + "table", 'w')
 f.write("%% Notes from '%s'" % f.name)
 for i in range(nbnotes):
     f.write("\n%s & %g/%i \\\\" % (data[i, 0], notes[i], noteMax))
-    printc("I wrote <blue>'%s & %g/%i \\\\'<white> in <u>%s<U>..." % (data[i, 0], notes[i], noteMax, f.name))
+    print("I wrote <blue>'%s & %g/%i \\\\'<white> in <u>%s<U>..." % (data[i, 0], notes[i], noteMax, f.name))
 
 minimale = np.min(notes)
 f = file(csv_name + "minimale", 'w')
 f.write("%g/%i" % (minimale, noteMax))
-printc("I wrote the value of minimale (<cyan>%g<white>) to <u>%s<U>..." % (minimale, f.name))
+print("I wrote the value of minimale (<cyan>%g<white>) to <u>%s<U>..." % (minimale, f.name))
 
 argminimale = data[np.argmin(notes), 0]
 f = file(csv_name + "argminimale", 'w')
 f.write("%s" % argminimale)
-printc("I wrote the value of argminimale (<cyan>%s<white>) to <u>%s<U>..." % (argminimale, f.name))
+print("I wrote the value of argminimale (<cyan>%s<white>) to <u>%s<U>..." % (argminimale, f.name))
 
 maximale = np.max(notes)
 f = file(csv_name + "maximale", 'w')
 f.write("%g/%i" % (maximale, noteMax))
-printc("I wrote the value of maximale (<cyan>%g<white>) to <u>%s<U>..." % (maximale, f.name))
+print("I wrote the value of maximale (<cyan>%g<white>) to <u>%s<U>..." % (maximale, f.name))
 
 argmaximale = data[np.argmax(notes), 0]
 f = file(csv_name + "argmaximale", 'w')
 f.write("%s" % argmaximale)
-printc("I wrote the value of argmaximale (<cyan>%s<white>) to <u>%s<U>..." % (argmaximale, f.name))
+print("I wrote the value of argmaximale (<cyan>%s<white>) to <u>%s<U>..." % (argmaximale, f.name))
 
 moyenne = np.mean(notes)
 f = file(csv_name + "moyenne", 'w')
 f.write("%2.2g/%i" % (moyenne, noteMax))
-printc("I wrote the value of moyenne (<cyan>%2.2g<white>) to <u>%s<U>..." % (moyenne, f.name))
+print("I wrote the value of moyenne (<cyan>%2.2g<white>) to <u>%s<U>..." % (moyenne, f.name))
 
 ecarttype = np.std(notes)
 f = file(csv_name + "ecarttype", 'w')
 f.write("%2.2g" % ecarttype)
-printc("I wrote the value of ecarttype (<cyan>%2.2g<white>) to <u>%s<U>..." % (ecarttype, f.name))
+print("I wrote the value of ecarttype (<cyan>%2.2g<white>) to <u>%s<U>..." % (ecarttype, f.name))
 
 variance = np.var(notes)
 f = file(csv_name + "variance", 'w')
 f.write("%2.2g" % variance)
-printc("I wrote the value of variance (<cyan>%2.2g<white>) to <u>%s<U>..." % (variance, f.name))
+print("I wrote the value of variance (<cyan>%2.2g<white>) to <u>%s<U>..." % (variance, f.name))
 
 ###################################################################
 # I want now to plot some graphics about the datas, with matplotlib
-printc("\nPloting some graphics from <u>%s<U> (<neg><green>%i student(s)<Neg><white>)..." % (csv_name + "csv", nbnotes))
+print("\nPloting some graphics from <u>%s<U> (<neg><green>%i student(s)<Neg><white>)..." % (csv_name + "csv", nbnotes))
 
 #: Graph options
 pylab.xlabel(u"Notes (entre $0$ et $%i$)" % noteMax)
@@ -119,6 +125,6 @@ pylab.subplots_adjust(left=0.15)
 
 # pylab.show()
 pylab.savefig(csv_name + "pdf")
-printc("Ploting the grades repartition on an histogram: <u>" + csv_name + "pdf<U>")
+print("Ploting the grades repartition on an histogram: <u>" + csv_name + "pdf<U>")
 pylab.draw()
 pylab.clf()

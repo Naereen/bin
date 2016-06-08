@@ -18,20 +18,19 @@ from __future__ import print_function  # Python 2/3 compatibility !
 import sys
 
 try:
-    from ANSIColors import printc
-except:
-    def printc(a):
-        """ Placeholder. Install ANSIColors-balises. """
-        print(a)
+    from ansicolortags import printc as print
+except ImportError as e:
+    print("ansicolortags not available, using regular print.")
+    print("  You can install it with : 'pip install ansicolortags' (or sudo pip)...")
 
-printc("<yellow>.: Lilian Besson presents :.")
-printc("<cyan>Maths exercice LaTeX sources dumper, v0.1<reset>")
+print("<yellow>.: Lilian Besson presents :.")
+print("<cyan>Maths exercice LaTeX sources dumper, v0.1<reset>")
 
 # Quicker if you keep this value up-to-date here
 # nbExos=$(wget -O - --quiet "http://mp.cpgedupuydelome.fr/index.php" | html2text | grep Exercice | grep -o [0-9]*)
 # nbExos  = 3994
 
-# printc("<reset>Choix aléatoire parmi <neg>%i<Neg> exercices de maths (niveau MPSI et MP)..." % nbExos)
+# print("<reset>Choix aléatoire parmi <neg>%i<Neg> exercices de maths (niveau MPSI et MP)..." % nbExos)
 # from random import randint
 # numexo  = randint(1, nbExos)  # FIXME !
 
@@ -41,7 +40,7 @@ chapter = str(sys.argv[2]) if len(sys.argv) > 2 else ""
 
 urlToGo = "http://mp.cpgedupuydelome.fr/mesexos.php?idTeX=%i" % numexo
 
-printc("Numéro <magenta>%i<reset>. On va vers <u>\"%s\"<U><white>" % (numexo, urlToGo))
+print("Numéro <magenta>%i<reset>. On va vers <u>\"%s\"<U><white>" % (numexo, urlToGo))
 
 # On récupère la page (la partie la plus lente du coup)
 import urllib2
@@ -54,7 +53,7 @@ from BeautifulSoup import BeautifulSoup
 # On l'analyse
 parsed_html = BeautifulSoup(html, fromEncoding='utf-8')
 
-printc("<black>Encodage original : %s<white>\n\n" % parsed_html.originalEncoding)
+print("<black>Encodage original : %s<white>\n\n" % parsed_html.originalEncoding)
 
 # On cherche la section <section id="contenu">..</section>
 contenu = parsed_html.body.find('section', attrs={'id': 'contenu'})
@@ -73,19 +72,19 @@ codeTeX = codeTeX.replace("^ - ", "^{-}")
 
 # Là on galère pour afficher en UTF-8. Zut !
 # print( unicode( codeTeX ) )
-printc("<blue><u>Code LaTeX de cet exercice:<U><white>\n\n%s" % codeTeX)
+print("<blue><u>Code LaTeX de cet exercice:<U><white>\n\n%s" % codeTeX)
 
 # On créé un fichier TeX
 name = "ex_%i.fr.tex" % numexo
 out = open(name, mode="w")
 
 # On va écrire le code de l'exercice dedans
-printc("<green>On écrit dans %s !<white>" % out)
+print("<green>On écrit dans %s !<white>" % out)
 
 # Ajout de la possibilité de préciser le chapitre courant en train d'être construit.
 if chapter:
     chapter = chapter.replace("_", " ").replace("/", "")
-    printc("<magenta>Pour le chapitre '%s' :<white>" % chapter)
+    print("<magenta>Pour le chapitre '%s' :<white>" % chapter)
     out.write("%%%% -*- mode: latex; coding: utf-8 -*-\n%%%% Chapter : %s.\n%%%% Start of LaTeX code, for exercise #%i (from '%s'), in French (file '%s').\n\n" % (chapter, numexo, urlToGo, name))
 else:
     out.write("%%%% -*- mode: latex; coding: utf-8 -*-\n%%%% Start of LaTeX code, for exercise #%i (from '%s'), in French (file '%s').\n\n" % (numexo, urlToGo, name))
@@ -93,5 +92,5 @@ else:
 out.write(codeTeX)
 out.write("\n%%%% End of LaTeX code, for exercise #%i (from '%s'), in French (file '%s').\n" % (numexo, urlToGo, name))
 
-printc("<green>Succès :)")
+print("<green>Succès :)")
 # DONE !
