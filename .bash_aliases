@@ -298,21 +298,21 @@ alias rsync='/usr/bin/rsync --verbose --times --perms --compress --human-readabl
 DOCXtoPDF() { for i in "$@"; do echo -e "${i} ----[abiword]----> ${i%.docx}.pdf"; abiword "${i}" --to="${i%.docx}.pdf"; echo -e "$?"; done }
 
 # Netoyer les fichiers temporaires (sauvegarde, python, ou emacs)
-alias rmPyc='rm -vf ./*.py[co] && echo "Local Python compiled files (*.pyc and *.pyo) have been deleted..."'
-alias rmt='rm -vI ./*~ ./.*~ ./*.py[co] ./\#*\#'
+alias rmPyc='rm -vrI ./*.py[co] ./__pycache__/ && echo "Local Python compiled files (*.pyc and *.pyo) have been deleted..."'
+alias rmt='rm -vrI ./*~ ./.*~ ./*.py[co] ./__pycache__/ ./\#*\#'
 
 rmTilde() {
     if [ X"$1" != X"" ]; then
         for i in "$@"; do
             # d="$(basename \"$i\")" # ? inutile ?
             d="$i"
-            echo -e "rm -vI" "$d"/*~ "$d"/.*~ "$d"/*.py[co] "$d"/\#*\#
-            rm -vI "$d"/*~ "$d"/.*~ "$d"/*.py[co] "$d"/\#*\#
+            echo -e "rm -vrI" "$d"/*~ "$d"/.*~ "$d"/*.py[co] "$d"/__pycache__/ "$d"/\#*\#
+            rm -vrI "$d"/*~ "$d"/.*~ "$d"/*.py[co] "$d"/__pycache__/ "$d"/\#*\#
         done
         echo -e "Fichiers temporaires (*~ .*~) bien supprimes."
     else
-        echo -e "rm -vI" ./*~ ./.*~ ./*.py[co] ./\#*\#
-        rm -vI ./*~ ./.*~ ./*.py[co] ./\#*\# && \
+        echo -e "rm -vrI" ./*~ ./.*~ ./*.py[co] ./__pycache__/ ./\#*\#
+        rm -vrI ./*~ ./.*~ ./*.py[co] ./__pycache__/ ./\#*\# && \
             echo "Fichiers temporaires (*~ .*~) bien supprimes."
     fi
 }
