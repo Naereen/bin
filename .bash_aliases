@@ -977,12 +977,13 @@ pti3() { echo -e "Executing args '$@' with ptipython3..."; ptipython3 "$@" || al
 e() { echo -e "Opening args '$@' in evince..."; evince "$@" || alert; }
 complete -f -X '!*.@(pdf|djvu|PDF)' -o plusdirs e
 
+alias j='jupyter-notebook'
 alias m='clear ; time mymake.sh'
 alias s='clear ; git status | less -r'
 alias g='git'  # Experimental
 alias wd='clear ; git wdiff'
 
-#  Le script suivant permet de decompresser un large eventail de types de fichiers compresses. Il vous suffira juste de taper quel que soit le type d'archive :
+# Meta fonction experimentale pour ouvrir un fichier avec l'application appropriee.
 o() {
     if [ X"$1" == X"--help" ] || [ X"$1" == X"-h" ] || [ X"$1" == X"-?" ] || [ X"$1" == X"" ]; then
         echo -e "Use the alias o to open any file : o FILE1 [FILE2 [...]], or directory. mimeopen is used by default if my hand-made rules fail."
@@ -1019,7 +1020,9 @@ o() {
     fi
 }
 
-alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "^rupee.*$" | sed s/"^rupee"/""/ )${U}${white}." | tee -a /tmp/RoupiesCourse.log'
+alias RoupiesCourse='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in INR" | grep -o "₹.*$" )${U}${white}." | tee -a /tmp/RoupiesCourse.log'
+alias CHF_Course='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo -e "${white}Le ${cyan}$(date)${white}, 1€ donne ${red}${u}$(wa.sh "1 EUR in CHF" | grep -o "CHF[0-9.]*" | sed s/CHF// ) CHF${U}${white}." | tee -a /tmp/CHF_Course.log'
+
 alias brigthness='xrandr --output LVDS --brightness '
 
 alias FilesLog='find | tee find.log ; du | tee du.log ; dut | tee dut.log'
