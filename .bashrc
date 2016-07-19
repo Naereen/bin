@@ -209,7 +209,7 @@ export ERASE_LINE="\r\033[K"
 # https://github.com/API-PLUGIN-RESSOURCES/bash-wakatime
 # hook function to send wakatime a tick
 pre_prompt_command() {
-    (echo "$(date +"%Y-%m-%d %H:%M:%S") -- Sending '/usr/local/bin/wakatime --write --plugin \"bash-wakatime/0.1\" --entity-type app --project Terminal --entity \"$(echo $(fc -ln -0) | cut -d ' ' -f1)\" 2>&1 > /dev/null &' ..." >> /tmp/bash-wakatime.log ; /usr/local/bin/wakatime --write --plugin "bash-wakatime/0.1" --entity-type app --project Terminal --entity "$(echo $(fc -ln -0) | cut -d ' ' -f1)" 2>&1 > /dev/null &)
+    (echo "$(date +"%Y-%m-%d %H:%M:%S") -- Sending '/usr/local/bin/wakatime --write --plugin \"bash-wakatime/0.1\" --entity-type app --project Terminal --alternate-language Bash --entity \"$(echo $(fc -ln -0) | cut -d ' ' -f1)\" 2>&1 > /dev/null &' ..." >> /tmp/bash-wakatime.log ; /usr/local/bin/wakatime --write --plugin "bash-wakatime/0.1" --entity-type app --project Terminal --alternate-language Bash --entity "$(echo $(fc -ln -0) | cut -d ' ' -f1)" 2>&1 > /dev/null &)
 }
 
 # Old PS1
@@ -425,7 +425,4 @@ eval $(gpg-agent --daemon) || echo "Failed to connect to gpg-agent daemon ('eval
 #
 # Put a blank line after
 #  to autorize echo "newentry" >> "$HOME"/.bashrc
-
-# Added by https://github.com/sd65/MiniVim
-stty -ixon
 
