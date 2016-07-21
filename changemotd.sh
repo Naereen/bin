@@ -128,6 +128,10 @@ new*z*|-new*z*|--new*z*|-N*z*|--N*z*)
 	shift
 	makenew_zenity "$*"
 	;;
+edit|--edit)
+	nano ~/motd -Y rst
+	shift
+	;;
 notify*|-notify*|--notify**|-n*|--n*)
 	notifyold
 	;;
