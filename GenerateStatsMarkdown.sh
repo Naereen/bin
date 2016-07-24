@@ -89,17 +89,18 @@ echo -e "</pre>\n\n## Stats <a href='https://wakatime.com/dashboard'>WakaTime</a
 echo -e "\n<figure><embed width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/5d1ec603-73b0-44b9-b61e-5eeda2490e51.svg'></embed></figure>" >> "$dest"
 echo -e "\n<figure><embed width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/9f6c0b0b-6806-4afa-9a4e-651ee6201be0.svg'></embed></figure>" >> "$dest"
 
-type selfstats >/dev/null
-if [ "X$?" = "X0" ]; then
-	echo -e "\n\n## <a href='http://jarvis/selfvis.html'>Ratio clicks/keystrokes</a> (\`selfstats --human-readable --ratios\`)\n> <pre>" >> "$dest"
-	selfstats --human-readable --ratios | sed '/^$/d' >> "$dest"
-
-	echo -e "</pre>\n\n## <a href='http://jarvis/selfvis.html'>Summary of clicks</a> (\`selfstats --human-readable --clicks\`)\n> <pre>" >> "$dest"
-	selfstats --human-readable --clicks | sed '/^$/d' >> "$dest"
-
-	echo -e "</pre>\n\n## <a href='http://jarvis/selfvis.html'>Stats</a> <a href='https://github.com/gurgeh/selfspy#example-statistics'>selfspy</a> (\`selfstats --min-keys 10 --back 1w --human-readable --pactive\`)\n> <pre>" >> "$dest"
-	selfstats --min-keys 10 --back 1w --human-readable --pactive | sed '/^$/d' >> "$dest"
-fi
+# Optionnal Selfspy visualisation (selfstats, selfspy-vis, cf. https://github.com/Naereen/selfspy-vis))
+#type selfstats >/dev/null
+#if [ "X$?" = "X0" ]; then
+#	echo -e "\n\n## <a href='http://jarvis/selfvis.html'>Ratio clicks/keystrokes</a> (\`selfstats --human-readable --ratios\`)\n> <pre>" >> "$dest"
+#	selfstats --human-readable --ratios | sed '/^$/d' >> "$dest"
+#
+#	echo -e "</pre>\n\n## <a href='http://jarvis/selfvis.html'>Summary of clicks</a> (\`selfstats --human-readable --clicks\`)\n> <pre>" >> "$dest"
+#	selfstats --human-readable --clicks | sed '/^$/d' >> "$dest"
+#
+#	echo -e "</pre>\n\n## <a href='http://jarvis/selfvis.html'>Stats</a> <a href='https://github.com/gurgeh/selfspy#example-statistics'>selfspy</a> (\`selfstats --min-keys 10 --back 1w --human-readable --pactive\`)\n> <pre>" >> "$dest"
+#	selfstats --min-keys 10 --back 1w --human-readable --pactive | sed '/^$/d' >> "$dest"
+#fi
 
 # Footer
 echo -e "</pre>\n\n***\n\n##### Mis-à-jour régulièrement via *cron*, avec [GenerateStatsMarkdown.sh](http://perso.crans.org/besson/bin/GenerateStatsMarkdown.sh) v${version}, un script Bash écrit par et pour [Lilian Besson](http://perso.crans.org/besson/)." >> "$dest"
