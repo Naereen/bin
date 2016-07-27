@@ -943,6 +943,8 @@ Appeler() {
 PROXY () {
     case $1 in
         off)
+            echo -e "Opening 'about:preferences#advanced' in firefox, you should now disable the SOCKS v5 proxy ..."
+            /usr/bin/firefox "about:preferences#advanced"
             rm -vf /tmp/startSocksProxy.list && echo -e "${green}PROXY is off.${white}"
             ;;
         on)
