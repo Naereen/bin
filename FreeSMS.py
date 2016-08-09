@@ -38,13 +38,17 @@ from __future__ import print_function  # Python 2/3 compatible
 try:
     try:
         from ansicolortags import printc
-    except ImportError as e:
+    except ImportError:
         print("Optional dependancy (ansicolortags) is not available, using regular print function.")
         print("  You can install it with : 'pip install ansicolortags' (or sudo pip)...")
         from ANSIColors import printc
 except ImportError:
     print("Optional dependancy (ANSIColors) is not available, using regular print function.")
     print("  You can install it with : 'pip install ANSIColors-balises' (or sudo pip)...")
+
+    def printc(*a, **kw):
+        print(*a, **kw)
+
 
 from sys import exit, argv, version_info
 from json import dumps
