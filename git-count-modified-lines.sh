@@ -16,7 +16,7 @@ prefix="$(git rev-parse --show-prefix)"
 p="$(pwd)/"
 maingit="${p%$prefix}"
 
-cd "${maingit}" &>$null
+cd "${maingit}" &>/dev/null
 
 # Start
 echo -e "${yellow}${u}Modified files${U} in this git repository ...${white}"
@@ -40,5 +40,5 @@ for f in $files; do
     fi
 done
 
-cd "${p}" &>$null
+cd "${p}" &>/dev/null
 echo -e "${reset}${white}"
