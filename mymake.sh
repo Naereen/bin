@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON, (C) 2015-oo
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 11-08-2016.
+# Date: 12-08-2016.
 # Web: https://bitbucket.org/lbesson/bin/src/master/mymake.sh
 #
 # A top-recursive 'make' command.
@@ -14,8 +14,8 @@
 # DONE: Improved mymake.sh to keep looking recursively in the parent folder if a rule is not found in the current Makefile
 # https://bitbucket.org/lbesson/bin/issues/4/improve-mymakesh-to-keep-looking
 #
-version="0.4"
-returncode="0"
+version="0.5"
+returncode="0"  # If success, return 0
 
 # More details at http://redsymbol.net/articles/unofficial-bash-strict-mode/
 set -o pipefail
@@ -23,7 +23,6 @@ set -o pipefail
 . ~/.color.sh
 
 # options
-NOANSI='false'
 JUSTVERSION='false'
 JUSTBASHCOMPLETION='false'
 
@@ -39,7 +38,6 @@ MAKEPATH="${MAKEPATH:-/usr/bin/make}"
 for i in "$@"; do
     case "$i" in
         --noansi )
-            NOANSI='true'
             . ~/.nocolor.sh
             shift
         ;;
@@ -48,19 +46,17 @@ for i in "$@"; do
             shift
         ;;
         -npq )
-            #"${MAKEPATH}" "$@"
-            #exit $?
             JUSTBASHCOMPLETION='true'
         ;;
     esac
 done
 
 # Copyrights
-echo -e "${cyan}$(basename "$0") v${version} : copyright (C) 2016 Lilian Besson${white}" #>/dev/stderr
+echo -e "${cyan}$(basename "$0") v${version} : copyright (C) 2016 Lilian Besson${white}"
 if [ "X${JUSTVERSION}" = "Xtrue" ]; then
-    echo -e "  ${black}You can find it online (https://bitbucket.org/lbesson/bin/src/master/mymake.sh)${white}" #>/dev/stderr
-    echo -e "  ${black}This is free software, and you are welcome to redistribute it under certain conditions.${white}" #>/dev/stderr
-    echo -e "  ${black}This program comes with ABSOLUTELY NO WARRANTY; for details see http://lbesson.mit-license.org${white}" #>/dev/stderr
+    echo -e "  ${black}You can find it online (https://bitbucket.org/lbesson/bin/src/master/mymake.sh)${white}"
+    echo -e "  ${black}This is free software, and you are welcome to redistribute it under certain conditions.${white}"
+    echo -e "  ${black}This program comes with ABSOLUTELY NO WARRANTY; for details see http://lbesson.mit-license.org${white}"
     "${MAKEPATH}" --version
     exit 1
 fi
@@ -101,12 +97,12 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
         # Not with the returned error code of /usr/bin/make at least...
         grep 'make: \*\*\* No rule to make target' "${LOGFILE}" &>/dev/null
         if [[ "X$?" = "X0" ]]; then
-            echo -e "${red}Failed because there is no rule${white} to make the target '${yellow}$@${white}' in the current Makefile (${green}${nameofmakefile}${white}) ..."
+            echo -e "${red}Failed because there is no rule${white} to make the target '${yellow}$*${white}' in the current Makefile (${green}${nameofmakefile}${white}) ..."
             FailBecauseNoValidRule=true
             c="../${c}"
             cd "${c}"
             echo -e "${magenta}Going up in the parent folder...${white} Current directory: $(pwd)"
-            # [ "${PWD}" = "/" -o "${PWD}" = "${HOME}" ] && break  # DEBUG avoid infinite loops!
+            [ "${PWD}" = "/" -o "${PWD}" = "${HOME}" ] && break  # DEBUG avoid infinite loops!
         else
             # echo "The rule was found."
             cd "${old}"
