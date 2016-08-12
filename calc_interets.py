@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-# -*- coding: utf-8; mode: python -*-
+# -*- coding: utf-8 -*-
 """ Petit script Python pour afficher des graphiques de ses comptes et calculer des intérêts.
 
 - *Date:* 08 June 2016.
@@ -12,7 +12,11 @@ import matplotlib.pyplot as plt
 import pickle
 import time
 import sys
-
+# try:
+#     import codecs
+#     sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+# except Exception as e:
+#     print("Failed to force utf8 for stdout...")
 
 try:
     try:
@@ -57,7 +61,7 @@ def calc_interets(comptes, taux=taux2016):
     for k in type_comptes:
         print("Pour mon <blue>compte {:>3}<white>, avec <magenta>{:>10,.2f} €<white>, et un <cyan<taux à <u>{:>4,.2f}%<U><white> {} <green>intérêt ~= {:>6.2f} €<white>.".format(k.upper(), comptes[k], taux[k], '→', comptes[k] * taux[k] / 100.0))
     print("<green>Intérêt estimé pour 2016 : {:.2f} €.<white>".format(interet_fin_annee))
-    print("<red>Attention<white> : les vrais intérêts sont calculés toutes les quinzaine, mon estimation n'est pas précise.")
+    print("<red>Attention<white> : les vrais intérêts sont calculés toutes les quinzaines, mon estimation n'est pas précise !")
     return interet_fin_annee
 
 
@@ -67,17 +71,21 @@ def main(comptes, taux=taux2016):
     total = sum(round(comptes[k] * taux[k] / 100.0, 3) for k in type_comptes)
     print("Affichage d'un diagrame camembert en cours...")
     valeurs = list(comptes.values())
-    print("Valeurs du diagrame :<black>{}<white>".format(valeurs))
+    print("Valeurs du diagrame : <black>{}<white>".format(valeurs))
     etiquettes = [u'{} : {} € (à {}% $\\rightarrow$ {} €)'.format(k, comptes[k], taux[k], round(comptes[k] * taux[k] / 100.0, 2))
                   for k in type_comptes]
-    legendes = ['{} (taux {}%)'.format(k, taux[k])
+    legendes = [u'{} (taux {}%)'.format(k, taux[k])
                 for k in type_comptes]
-    print("Étiquettes du diagrame :<black>{}<white>".format(etiquettes))
+    print("Étiquettes du diagrame : <black>{}<white>".format(etiquettes))
     explode = [0.1] * len(valeurs)  # Explode the pie chart
     plt.pie(valeurs, labels=etiquettes, explode=explode, labeldistance=1.05, startangle=135)
     plt.legend(legendes, loc='lower right')
-    madate = time.strftime('%d %b %Y', time.localtime())
-    plt.title(u"État de mes comptes ({}). Intérêts totaux = {:.2f} €".format(madate, total))
+    mydate = time.strftime('%d %b %Y', time.localtime())
+    # FIXME FUCKING hack because python  apparently fails to handles utf-8 correctly...
+    mydate = mydate.replace('û', 'u').replace('é', 'e')
+    mytitle = u"Etat de mes comptes ({}). Interets totaux = {:.2f} euros".format(mydate, total)
+    print("Using title: <magenta>{}<white>".format(mytitle))
+    plt.title(mytitle)
     plt.axis('equal')
     # XXX Experimental https://stackoverflow.com/q/12439588/
     figManager = plt.get_current_fig_manager()
@@ -85,7 +93,8 @@ def main(comptes, taux=taux2016):
         figManager.frame.Maximize(True)
     except:
         figManager.window.showMaximized()
-    outfile = '/home/lilian/Public/argent_2016.png'
+    year = time.strftime('%Y', time.localtime())
+    outfile = '/home/lilian/Public/argent_{}.png'.format(year)
     print("Sauvegarde de ce graphique vers {} en cours...".format(outfile))
     plt.savefig(outfile)
     plt.show()
