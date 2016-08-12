@@ -980,7 +980,7 @@ e() { echo -e "Opening args '$@' in evince..."; evince "$@" || alert; }
 complete -f -X '!*.@(pdf|djvu|PDF)' -o plusdirs e
 
 alias j='jupyter-notebook'
-alias m='clear ; time mymake.sh'
+alias m='clear ; mymake.sh'
 alias s='clear ; git status | less -r'
 alias g='git'  # Experimental
 alias wd='clear ; git wdiff'
