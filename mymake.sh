@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON, (C) 2015-oo
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 12-08-2016.
+# Date: 13-08-2016.
 # Web: https://bitbucket.org/lbesson/bin/src/master/mymake.sh
 #
 # A top-recursive 'make' command, with two awesome behaviors.
@@ -12,8 +12,7 @@
 #
 # Licence: MIT Licence (http://lbesson.mit-license.org).
 #
-#
-version="0.7"
+version="0.8"
 returncode="0"  # If success, return 0
 
 # More details at http://redsymbol.net/articles/unofficial-bash-strict-mode/
@@ -55,7 +54,6 @@ fi
 LogFile="$(tempfile)"
 mv "${LogFile}" "${LogFile}_mymake.log"
 LogFile="${LogFile}_mymake.log"
-# echo -e "DEBUG LogFile = ${LogFile}"
 
 # Try to detect automatically the location of the make binary
 makePath="$(type make | awk ' { print $3 } ')"
@@ -74,25 +72,25 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
     xtitle "make $* - (in ${old})"
     echo -e "Looking for a valid ${magenta}Makefile${white} from ${blue}${old}${white} :"
     c=""
-    while [ ! -f "${old}${c}Makefile" ]; do
+    while [ ! -f "${old}${c}Makefile" ]; do  # No file
         echo -e "${red}${old}${c}Makefile${white} is not there, going up in the parent folder ... Current directory: $(pwd)"
         c="../${c}"
         cd ..  # FIXED We should just go up once.
         [ "$(pwd)" = "/" -o "$(pwd)" = "${HOME}" ] && break  # DEBUG avoid infinite loops!
     done
     # We found a valid Makefile or we already called 'break'...
-    NameOfMakefile="$(readlink -f "${old}${c}Makefile")"  # Find his real name
+    NameOfMakefile="$(readlink -f "${old}${c}Makefile")"  # Find his real name, e.g. simplies fake/bar/foo/../.. to fake/
 
     # Now using it to execute make
     if [ -f "${old}${c}Makefile" ]; then
         echo -e "${green}${NameOfMakefile}${white} is there, I'm using it :"
         echo -e "Calling... ${black}'" time /usr/bin/make -w --file="${NameOfMakefile}" "$@" "'${white}..."
         if [ "X${JustBashCompletion}" != "Xtrue" ]; then
-            # Use this trick '3>&1 1>&2 2>&3' from http://serverfault.com/a/63708
             time "${makePath}" -w --file="${NameOfMakefile}" "$@" \
                 3>&1 1>&2 2>&3 \
                 | tee "${LogFile}"
             # FIXED this pipe disabled color on stdout of programs that detect pipes (sphinx, my ansicolortags script, grep etc...)
+            # This trick '3>&1 1>&2 2>&3' swaps stdout and stderr: only stderr is piped to |tee so colors are still in stdout (from http://serverfault.com/a/63708)
         else
             time "${makePath}" -w --file="${NameOfMakefile}" "$@" \
                 2>&1 | tee "${LogFile}"
@@ -102,8 +100,8 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
         # XXX This is very specific, maybe there is a better way to detect it ?
         # Not with the returned error code of /usr/bin/make at least...
         grep 'make: \*\*\* No rule to make target' "${LogFile}" &>/dev/null
-        grepreturncode="$?"
-        if [[ "X${grepreturncode}" = "X0" ]]; then
+        grepReturnCode="$?"
+        if [[ "X${grepReturnCode}" = "X0" ]]; then
             echo -e "${red}Failed because there is no rule${white} to make the target '${yellow}$*${white}' in the current Makefile (${green}${NameOfMakefile}${white}) ..."
             [ "$(pwd)" = "/" -o "$(pwd)" = "${HOME}" ] && break  # avoid infinite loops!
             FailBecauseNoValidRule="true"
@@ -112,7 +110,7 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
             echo -e "${magenta}Going up in the parent folder...${white} Current directory: $(pwd)"
             # [ "$(dirname $(pwd))" = "/" ] && break  # DEBUG avoid infinite loops!
         else
-            # No notifications if make has been called by the bash auto-completion function (options '-npq -C'...) or if it failed because no rule
+            # No notifications if make was called by the bash auto-completion function (options '-npq -C'...) or if it failed because no rule
             if [ "X${JustBashCompletion}" != "Xtrue" ]; then
                 if [ "X${returncode}" = "X0" ]; then
                        notify-send --icon=terminal "$(basename "$0") v${version}" "make '$*' worked, in the folder '$(readlink -f "${old}${c}")' from '$(readlink -f "${OriginalPath}")' :-)"
