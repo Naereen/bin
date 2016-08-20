@@ -40,7 +40,7 @@ done
 if [ "X${JUSTHELP}" = "Xtrue" ]; then
     echo -e "\nUsage: git-count-modified-lines.sh"
 fi
-[ "X${JUSTVERSION}" = "Xtrue" ]; then
+if [ "X${JUSTVERSION}" = "Xtrue" ]; then
     echo -e "${green}$0 v${version} : copyright (C) 2016 Lilian Besson"
     echo -e "  You can find it online (https://bitbucket.org/lbesson/bin/src/master/git-count-modified-lines.sh)"
     echo -e "  This is free software, and you are welcome to redistribute it under certain conditions."

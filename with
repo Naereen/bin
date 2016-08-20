@@ -9,7 +9,7 @@
 # Opens an interactive shell instance that automatically prefixes all subsequent commands with program name
 #
 # Licence: MIT Licence (http://lbesson.mit-license.org).
-version="0.1"
+version="0.2"
 
 # Initialize history file
 touch /tmp/with_history
