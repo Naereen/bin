@@ -1,9 +1,52 @@
 #!/usr/bin/env bash
+# Author: Lilian BESSON, (C) 2016-oo
+# Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
+# Date: 10-08-2016.
+# Web: https://bitbucket.org/lbesson/bin/src/master/git-count-modified-lines.sh
+#
 # Minimalist script to print the number of new and deleted lines of every modified files in a git repository
 # It helps to know how big the changes are before commiting them...
 #
-# (C) Lilian BESSON
-# http://perso.crans.org/besson/bin/git-count-modified-lines.sh
+# Usage: git-count-modified-lines.sh
+#
+# Licence: MIT Licence (http://lbesson.mit-license.org).
+version="0.3"
+
+[ -f ~/.color.sh ] && . ~/.color.sh
+# Add here options
+NOANSI='false'
+JUSTVERSION='false'
+JUSTHELP='false'
+for i in "$@"; do
+    case "$i" in
+        --noansi )
+            NOANSI='true'
+            [ -f ~/.nocolor.sh ] && . ~/.nocolor.sh
+            shift
+            ;;
+        -v | --version )
+            JUSTVERSION='true'
+            shift
+            ;;
+        -h | --help | help )
+            JUSTVERSION='true'
+            JUSTHELP='true'
+            shift
+            ;;
+    esac
+done
+
+# Copyrights and options
+if [ "X${JUSTHELP}" = "Xtrue" ]; then
+    echo -e "\nUsage: git-count-modified-lines.sh"
+fi
+[ "X${JUSTVERSION}" = "Xtrue" ]; then
+    echo -e "${green}$0 v${version} : copyright (C) 2016 Lilian Besson"
+    echo -e "  You can find it online (https://bitbucket.org/lbesson/bin/src/master/git-count-modified-lines.sh)"
+    echo -e "  This is free software, and you are welcome to redistribute it under certain conditions."
+    echo -e "  This program comes with ABSOLUTELY NO WARRANTY; for details see http://lbesson.mit-license.org${white}"
+    exit 0
+fi
 
 # Are we in a git repo?
 git rev-parse --is-inside-work-tree &>/dev/null

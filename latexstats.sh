@@ -6,26 +6,31 @@
 #
 # Prints some statistics about the number of theorem, proofs etc in a LaTeX document.
 #
-# Usage: latexstats.sh
-#
-# Example: optionnal example for this script.
+# Usage: latexstats.sh [FILE.tex [FILE.tex [...]]]
+# If FILE is omitted, all the *.tex file at depth 1 are used
 #
 # Licence: MIT Licence (http://lbesson.mit-license.org).
 version="0.2"
 
-. ~/.color.sh
+[ -f ~/.color.sh ] && . ~/.color.sh
 # Add here options
 NOANSI='false'
 JUSTVERSION='false'
+JUSTHELP='false'
 for i in "$@"; do
     case "$i" in
         --noansi )
             NOANSI='true'
-            . ~/.nocolor.sh
+            [ -f ~/.nocolor.sh ] && . ~/.nocolor.sh
             shift
             ;;
-        --version )
+        -v | --version )
             JUSTVERSION='true'
+            shift
+            ;;
+        -h | --help | help )
+            JUSTVERSION='true'
+            JUSTHELP='true'
             shift
             ;;
     esac
@@ -37,6 +42,10 @@ echo -e "${green}$0 v${version} : copyright (C) 2016 Lilian Besson"
 echo -e "  You can find it online (https://bitbucket.org/lbesson/bin/src/master/latexstats.sh)"
 echo -e "  This is free software, and you are welcome to redistribute it under certain conditions."
 echo -e "  This program comes with ABSOLUTELY NO WARRANTY; for details see http://lbesson.mit-license.org${white}"
+if [ "X${JUSTHELP}" = "Xtrue" ]; then
+    echo -e "\nUsage: latexstats.sh [FILE.tex [FILE.tex [...]]]"
+    echo -e "If FILE is omitted, all the *.tex file at depth 1 are used"
+fi
 [ "X${JUSTVERSION}" = "Xtrue" ] && exit 0
 
 latexfile="${1}"
