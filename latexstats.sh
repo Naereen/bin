@@ -38,17 +38,17 @@ done
 
 # Copyrights and options
 clear
-echo -e "${green}$0 v${version} : copyright (C) 2016 Lilian Besson"
-echo -e "  You can find it online (https://bitbucket.org/lbesson/bin/src/master/latexstats.sh)"
-echo -e "  This is free software, and you are welcome to redistribute it under certain conditions."
-echo -e "  This program comes with ABSOLUTELY NO WARRANTY; for details see http://lbesson.mit-license.org${white}"
 if [ "X${JUSTHELP}" = "Xtrue" ]; then
     echo -e "\nUsage: latexstats.sh [FILE.tex [FILE.tex [...]]]"
     echo -e "If FILE is omitted, all the *.tex file at depth 1 are used"
 fi
-[ "X${JUSTVERSION}" = "Xtrue" ] && exit 0
-
-latexfile="${1}"
+if [ "X${JUSTVERSION}" = "Xtrue" ]; then
+    echo -e "${green}$0 v${version} : copyright (C) 2016 Lilian Besson"
+    echo -e "  You can find it online (https://bitbucket.org/lbesson/bin/src/master/what-did-i-do-yesterday.sh)"
+    echo -e "  This is free software, and you are welcome to redistribute it under certain conditions."
+    echo -e "  This program comes with ABSOLUTELY NO WARRANTY; for details see http://lbesson.mit-license.org${white}"
+    exit 0
+fi
 
 # Arrays
 declare -a environments
