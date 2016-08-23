@@ -984,6 +984,8 @@ alias m='clear ; mymake.sh'
 alias s='clear ; git status | less -r'
 alias g='git'  # Experimental
 alias wd='clear ; git wdiff'
+alias pdf='make pdf'
+alias clean='make clean'
 
 # Meta fonction experimentale pour ouvrir un fichier avec l'application appropriee.
 o() {
