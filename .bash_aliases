@@ -669,6 +669,7 @@ alias MacAddress='ifconfig | grep "HWaddr [0-9a-f:]*"'
 
 # For Git
 alias Push='clear ; git push && git gc'
+alias p='clear ; git push'
 alias Pull='clear ; git gc && git pull && git gc && git-blame-last-commit.sh'
 alias Status='clear ; git status'
 alias Commit='clear ; git commit -m'
@@ -960,8 +961,8 @@ PROXY () {
 complete -f -X '!*.@(html|md|mdown|markdown|mkdown|txt)' -o plusdirs strapdown2pdf strapdown2html.py
 alias ax='autotex'
 complete -f -X '!*.@(tex|pdf)' -o plusdirs a autotex
-alias p='PDFCompress'
-complete -f -X '!*.pdf' -o plusdirs p
+alias P='PDFCompress'
+complete -f -X '!*.pdf' -o plusdirs P
 pdfinfo() { for i in "$@"; do echo -e "\n${green}# For '${red}${u}$i${U}${white}':"; /usr/bin/pdfinfo "$i"; done }
 complete -f -X '!*.pdf' -o plusdirs pdfinfo pdftk pdfgrep pdftohtml pdftotext
 
