@@ -52,10 +52,10 @@ fi
 
 # Arrays
 declare -a environments
-environments=( defn theorem proof lemma proposition corollary remark warning example examples )
+environments=( defn theorem proof lemma proposition corollary remark warning example examples block exampleblock alertblock )
 echo -e "- There is ${yellow}${#environments[@]}${white} different environments that I am aware of.\n"
 declare -a envslabels
-envslabels=( def thm proof lem prop cor rmk warning ex ex )
+envslabels=( def thm proof lem prop cor rmk warning ex ex blk eblk ablk )
 
 declare -a parts
 parts=( section subsection subsubsection subsubsubsection paragraph )
