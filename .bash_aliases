@@ -92,13 +92,31 @@ alias nano='xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { GNU Nano 2.4.2 (/bin/n
 alias nano.last='xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { GNU Nano 2.4.2 (nano.last) }" ; /home/lilian/bin/nano.last --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds'
 
 alias MAKE="/usr/bin/make -w"
-alias make='mymake.sh'
+# alias make='mymake.sh'
+
+# XXX Experimental function that adds shortcuts :
+# If 'make foo' worked, then 'alias foo="make foo"' is added to the CURRENT bash session
+# I got the idea on Saturday 27-08-16 at Lausanne, and I find it pretty awesome
+make() {
+    mymake.sh "$@"
+    if [ X"$?" = X"0" -a X"${#@}" = X"1" -a X"${1:0:1}" != X"-" ]; then
+        # We only add an alias for make commands with one argument, to avoid capturing the options
+        alias -p | grep -o "^alias $1='make $1'$" &>/dev/null
+        if [ X"$?" = "X0" ]; then
+            echo -e "The previous make command ('${black}make ${1}${white}') ${green}worked${white}, but ${blue}${1}${white} has already been aliased : ${green}nothing to do :-)${white}..."
+        else
+            echo -e "The previous make command ('${black}make ${1}${white}') ${green}worked${white}, and ${blue}${1}${white} has not been aliased yet..."
+            alias $1="make $1"
+            echo -e "  '${blue}${1}${white}' is now registered as a ${yellow}new alias${white} for '${black}make ${1}${white}' ..."
+        fi
+    fi
+}
 
 # Ajout de securite sur la commande 'rm' :
 alias delete='echo -e "Supression avec une seule confirmation ?"; /bin/rm -I'
 alias rm='/bin/rm -vi'
 
-alias _cd_old='cd'
+alias _cd_old='cd'  # Does not work
 CD() {
     p="$(pwd)"
     p2="$(pwd -P)"
@@ -981,9 +999,9 @@ e() { echo -e "Opening args '$@' in evince..."; evince "$@" || alert; }
 complete -f -X '!*.@(pdf|djvu|PDF)' -o plusdirs e
 
 alias j='jupyter-notebook'
-alias m='clear ; mymake.sh'
+alias m='clear ; make'
 alias s='clear ; git status | less -r'
-alias g='git'  # Experimental
+alias g='git'
 alias wd='clear ; git wdiff'
 alias pdf='make pdf'
 alias clean='make clean'

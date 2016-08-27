@@ -126,5 +126,10 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
     fi
 done
 
+# if [ X"${returncode}" = "X0" ]; then
+#     echo -e "\n\nThe previous make command ('make $@') worked ..."
+#     alias $1="make $1"
+#     echo -e "DEBUG (from mymake.sh) Now '$1' is registered as a new alias for 'make $1' ..."
+# fi
 exit "${returncode}"
 # End of mymake.sh
