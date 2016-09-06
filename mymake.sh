@@ -18,7 +18,7 @@ returncode="0"  # If success, return 0
 # More details at http://redsymbol.net/articles/unofficial-bash-strict-mode/
 set -o pipefail
 # Use https://bitbucket.org/lbesson/bin/src/master/.color.sh to add colors in Bash scripts
-. ~/.color.sh
+[ -f ~/.color.sh ] && . ~/.color.sh
 
 # options
 JustVersion="false"
