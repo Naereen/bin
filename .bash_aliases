@@ -1071,6 +1071,8 @@ alias VEILLE='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.o
 alias LOCK_NO_SLEEP='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when going locked (but not asleep)." "[LOG] ${USER}@${HOSTNAME} : going locked"; GoingSleep.sh no'
 alias Mail_LOG_save='mail.py "Automatically sent by the machine $HOSTNAME.crans.org when saving." "[LOG] ${USER}@${HOSTNAME} : save"'
 
+export sublpath=~/.config/sublime-text-3/Packages/User/
+
 ##############################################################################
 # (c) 2011-2016 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
