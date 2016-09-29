@@ -44,15 +44,15 @@ if [ -f "$dest" ]; then
 fi
 
 # Header
-echo -e "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/><title>Stats pour jarvis.crans.org</title></head><body><xmp theme=\"${theme}\">" > "$dest"
-echo -e "# Informations systèmes pour *jarvis* ([jarvis.crans.org](http://jarvis.crans.org))" >> "$dest"
-echo -e "> #### Signaler *tout problème* à [jarvisATcransDOTorg](mailto:jarvisATcransDOTorg) ou via [bitbucket](https://bitbucket.org/lbesson/bin/issues/new).\n#### Données mises à jour le **$(date "+%c")**." >> "$dest"
-echo -e "> #### Consulter [*les rapports munin*](http://0.0.0.0/lns_munin/localdomain/localhost.localdomain/index.html) (plus complets) ?\n\n***\n" >> "$dest"
+echo -e "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/><title>Stats pour jarvis</title></head><body><xmp theme=\"${theme}\">" > "$dest"
+echo -e "# Informations systèmes pour [*jarvis*](http://0.0.0.0/)" >> "$dest"
+echo -e "> #### Signaler *tout problème* à [jarvis @ crans . org](mailto:jarvisATcransDOTorg) ou via [bitbucket](https://bitbucket.org/lbesson/bin/issues/new).\n#### Données mises à jour le **$(date "+%c")**." >> "$dest"
+echo -e "> #### Consulter [*les rapports munin*](http://0.0.0.0/lns_munin/localdomain/localhost.localdomain/index.html) (plus complets) ?\n\n***\n" >> "$dest"
 
 MY_IP=$(/sbin/ifconfig | awk '/inet adr:/ { print $2 } ' | sed -e s/addr://)
 
 echo -e "## Nom de machine et version du noyau (\`uname -a\`)\n> <pre>" >> "$dest"
-uname -a | sed s/"x86_64 x86_64 x86_64"/x86_64/ >> "$dest"
+uname -a | sed s/"x86_64 x86_64 x86_64"/"x86_64"/ >> "$dest"
 
 echo -e "</pre>\n\n## Informations générales (\`landscape-sysinfo | head --lines=-2 | grep -v \"^$\"\`)\n> <pre>" >> "$dest"
 landscape-sysinfo | head --lines=-3 | grep -v "^$" >> "$dest"
@@ -105,7 +105,7 @@ echo -e "\n<figure><embed width='680' type='image/svg+xml' src='https://wakatime
 # Footer
 echo -e "</pre>\n\n***\n\n##### Mis-à-jour régulièrement via *cron*, avec [GenerateStatsMarkdown.sh](http://perso.crans.org/besson/bin/GenerateStatsMarkdown.sh) v${version}, un script Bash écrit par et pour [Lilian Besson](http://perso.crans.org/besson/)." >> "$dest"
 
-# XXX add http://www.dptinfo.ens-cachan.fr/~lbesson/ before _static/
+# XXX add http://perso.crans.org/besson/ before _static/
 echo -e "\n</xmp><script type=\"text/javascript\" src=\"_static/md/strapdown.min.js?src=GSM.sh?beacon\"></script>\n<noscript><img alt=\"GA|Analytics\" style=\"visibility: hidden; display: none;\" src=\"https://ga-beacon.appspot.com/UA-38514290-1/stats.html/theme_${theme}/?pixel\"/></noscript>\n</body></html>" >> "$dest"
 
 
