@@ -3,14 +3,14 @@
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Web version: http://perso.crans.org/besson/bin/GenerateStatsMarkdown.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/GenerateStatsMarkdown.sh
-# Date: 29-04-2016
+# Date: 07-10-2016
 #
 # A small script to create a minimalistic Markdown status page for my machine, available locally at http://0.0.0.0/stats.html
 #
 # Hack: this markdown page is using http://lbo.k.vu/md/ (StrapDown.js) to be a good-looking HTML page !
 #
 BIN=GenerateStatsMarkdown
-version=1.7
+version=1.8
 
 # StrapDownJS nicest themes : united
 theme="${2:-united}"
@@ -44,51 +44,68 @@ if [ -f "$dest" ]; then
 fi
 
 # Header
-echo -e "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/><title>Stats pour jarvis</title></head><body><xmp theme=\"${theme}\">" > "$dest"
-echo -e "# Informations systèmes pour [*jarvis*](http://0.0.0.0/)" >> "$dest"
+hstn=$(hostname)
+echo -e "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/><title>Stats pour ${hstn}</title></head><body><xmp theme=\"${theme}\">" > "$dest"
+echo -e "# Informations systèmes pour [*${hstn}*](http://0.0.0.0/)" >> "$dest"
 echo -e "> #### Signaler *tout problème* à [jarvis @ crans . org](mailto:jarvisATcransDOTorg) ou via [bitbucket](https://bitbucket.org/lbesson/bin/issues/new).\n#### Données mises à jour le **$(date "+%c")**." >> "$dest"
-echo -e "> #### Consulter [*les rapports munin*](http://0.0.0.0/lns_munin/localdomain/localhost.localdomain/index.html) (plus complets) ?\n\n***\n" >> "$dest"
+echo -e "> #### Consulter [*les rapports munin*](http://0.0.0.0/lns_munin/localdomain/localhost.localdomain/index.html) (plus complets) ? [*les stats ulogme*](http://localhost:8124/index.html) ? [*les stats WakaTime*](https://wakatime.com/dashboard) ?" >> "$dest"
+echo -e "\n\n***\n" >> "$dest"
 
 MY_IP=$(/sbin/ifconfig | awk '/inet adr:/ { print $2 } ' | sed -e s/addr://)
 
-echo -e "## Nom de machine et version du noyau (\`uname -a\`)\n> <pre>" >> "$dest"
+echo -e "## Nom de machine et version du noyau\n> <pre>" >> "$dest"
 uname -a | sed s/"x86_64 x86_64 x86_64"/"x86_64"/ >> "$dest"
 
-echo -e "</pre>\n\n## Informations générales (\`landscape-sysinfo | head --lines=-2 | grep -v \"^$\"\`)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## Informations générales\n> <pre>" >> "$dest"
 landscape-sysinfo | head --lines=-3 | grep -v "^$" >> "$dest"
 
-echo -e "</pre>\n\n***\n\n## [Utilisateurs connectés](lns_munin/localdomain/localhost.localdomain/users.html) (\`w -h\`) *Normalement*, juste *lilian* !\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n***\n\n## [Utilisateurs connectés](lns_munin/localdomain/localhost.localdomain/users.html)\n- $(w -h | wc -l) utilisateurs, $(w -h | awk '{ print $1 }' | uniq | wc -l) utilisateurs différents...\n- *Normalement*, juste *lilian* ! Liste : $(w -h | awk '{ print $1 }' | uniq)\n> <pre>" >> "$dest"
 w -h >> "$dest"
 
-echo -e "</pre>\n\n## Adresse(s) IP\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## Adresse(s) IP locale(s)\n> <pre>" >> "$dest"
 echo "${MY_IP:-"Not connected"}" >> "$dest"
 
-echo -e "</pre>\n\n## [Statut NGinx](lns_munin/localdomain/localhost.localdomain/index.html#nginx) (\`nginx_status.sh\`)\n> <pre>" >> "$dest"
-# /home/lilian/bin/nginx_status.sh >> "$dest"
-nginx_status.sh >> "$dest"
+echo -e "</pre>\n\n## [Adresse IP externe](http://monip.org)\n> <pre>" >> "$dest"
+wget --tries=5 --quiet monip.org -O - | html2text -width 50 | grep -v "^$" >> "$dest"
 
-echo -e "</pre>\n\n## [Durée d'activité](lns_munin/localdomain/localhost.localdomain/uptime.html) (\`uptime\`)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## [Statut NGinx](lns_munin/localdomain/localhost.localdomain/index.html#nginx)\n> <pre>" >> "$dest"
+/home/lilian/bin/nginx_status.sh >> "$dest"
+# nginx_status.sh >> "$dest"
+
+echo -e "</pre>\n\n## [Durée d'activité](lns_munin/localdomain/localhost.localdomain/uptime.html) - $(uptime --pretty | sed s/'up '/''/)\n> <pre>" >> "$dest"
 uptime >> "$dest"
 
-echo -e "</pre>\n\n***\n\n## [Disques](lns_munin/localdomain/localhost.localdomain/df.html) (\`df -h -T -l -t ext3 -t ext4 -t fuseblk\`)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n***\n\n## [Disques locaux](lns_munin/localdomain/localhost.localdomain/df.html)\n> <pre>" >> "$dest"
 df -h -T -l -t ext3 -t ext4 -t fuseblk >> "$dest"
 
-echo -e "</pre>\n\n## [Mémoire RAM et swap](lns_munin/localdomain/localhost.localdomain/memory.html) (\`free -h\`)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## [Mémoire RAM et swap](lns_munin/localdomain/localhost.localdomain/memory.html)\n> <pre>" >> "$dest"
 free -h >> "$dest"
 
-echo -e "</pre>\n\n## Message du jour (\`cat \"${HOME}\"/motd | grep -v '^$'\`)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## Message du jour\n> <pre>" >> "$dest"
 cat "${HOME}"/motd | grep -v '^$' >> "$dest"
 
-echo -e "</pre>\n\n## Série en cours (\`head -n 1 \"${HOME}\"/current\`)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## Série en cours\n> <pre>" >> "$dest"
 head -n 1 "${HOME}"/current >> "$dest"
 
-# Stats
-echo -e "</pre>\n\n## Stats <a href='https://wakatime.com/dashboard'>WakaTime</a> (\`mywakatime -w\`)\n" >> "$dest"
+# Stats CUPS
+echo -e "</pre>\n\n## Documents imprimés aujourd'hui\n> <pre>" >> "$dest"
+wget --quiet 'http://127.0.0.1:631/jobs?which_jobs=completed' -O /tmp/cups_completed_jogs_log.html
+echo "- Nombre de documents : $(html2text -width 1000 /tmp/cups_completed_jogs_log.html | grep -B 1 "$(date "+%a %d %b %Y")" | grep -c completed | wc -l)" >> "$dest"
+echo "- Nombre de pages : $(html2text -width 1000 /tmp/cups_completed_jogs_log.html | grep -B 1 "$(date "+%a %d %b %Y")" | grep completed | awk ' { print $3 }' | grep -o "[0-9]*" | python -c 'import sys; print(sum(map(int, sys.stdin)))')" >> "$dest"
+
+# Stats ulogme
+echo -e "</pre>\n\n## Stats <a href='https://github.com/Naereen/ulogme/'>ulogme</a>\n" >> "$dest"
+echo -e "\n- [Overview](http://localhost:8124/overview.html)" >> "$dest"
+echo -e "\n- [Single-day view](http://localhost:8124/index.html)" >> "$dest"
+
+# Stats WakaTime
+echo -e "</pre>\n\n## Stats <a href='https://wakatime.com/dashboard'>WakaTime</a>\n" >> "$dest"
 # wakatime.js -w >> "$dest"
-#mywakatime -w >> "$dest"
+# mywakatime -w >> "$dest"
 echo -e "\n<figure><embed width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/5d1ec603-73b0-44b9-b61e-5eeda2490e51.svg'></embed></figure>" >> "$dest"
 echo -e "\n<figure><embed width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/9f6c0b0b-6806-4afa-9a4e-651ee6201be0.svg'></embed></figure>" >> "$dest"
 
+# XXX it was coasting to much
 # Optionnal Selfspy visualisation (selfstats, selfspy-vis, cf. https://github.com/Naereen/selfspy-vis))
 #type selfstats >/dev/null
 #if [ "X$?" = "X0" ]; then
