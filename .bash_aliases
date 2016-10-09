@@ -900,12 +900,21 @@ Currents() {
 
 alias UPDATE='( clear ; echo -e "You used the UPDATE alias: updating apt cache, upgrading, auto-removing and cleaning..."; sudo apt-get update ; sudo apt-get upgrade ; sudo apt-get autoremove ; sudo apt-get clean ; sudo apt-get autoclean ) || alert | tee /tmp/apt.log'
 
-# To avoid painfull &>$null& at the end of some commands
+# To avoid painfull &>$null& at the end of some commands that *should* be detached by default
 evince() { ( /usr/bin/evince "$@" || /usr/bin/firefox "$@" ) &> /dev/null & }
 eog() { ( /usr/bin/eog "$@" || /usr/bin/ristretto "$@" ) &> /dev/null & }
 firefox() { ( /usr/bin/firefox "$@" || /usr/bin/elinks "$@" ) &> /dev/null & }
-vlc() { /usr/bin/vlc --random "$@" &> /dev/null & }
-linphone() { /usr/bin/linphone "$@" &> /dev/null & }
+
+vlc() {
+	if $(type gmusicbrowser &>/dev/null); then
+		echo -e "${blue}Pausing GMusicBrowser (with the 'gmusicbrowser -cmd' CLI tool)...${white}"
+		pidof gmusicbrowser &>/dev/null && gmusicbrowser -cmd Pause || echo -e "${red}Warning: GMusicBrowser not playing.${white}"
+	fi
+	echo -e "${green}Playing the argument file '$@' to /usr/bin/vlc (with --random)${white}"
+	/usr/bin/vlc --random "$@" &> /dev/null &
+}
+
+# linphone() { /usr/bin/linphone "$@" &> /dev/null & }
 libreoffice() { ( /usr/bin/libreoffice "$@" || /usr/bin/abiword "$@" ) &> /dev/null & }
 
 butterfly() {  # From pip install butterfly
