@@ -105,7 +105,7 @@ echo -e "</pre>\n\n## Stats <a href='https://wakatime.com/dashboard'>WakaTime</a
 echo -e "\n<figure><embed width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/5d1ec603-73b0-44b9-b61e-5eeda2490e51.svg'></embed></figure>" >> "$dest"
 echo -e "\n<figure><embed width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/9f6c0b0b-6806-4afa-9a4e-651ee6201be0.svg'></embed></figure>" >> "$dest"
 
-# XXX it was coasting to much
+# XXX it was costing to much
 # Optionnal Selfspy visualisation (selfstats, selfspy-vis, cf. https://github.com/Naereen/selfspy-vis))
 #type selfstats >/dev/null
 #if [ "X$?" = "X0" ]; then
