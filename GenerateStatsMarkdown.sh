@@ -98,8 +98,18 @@ echo -e "</pre>\n\n## Stats <a href='https://github.com/Naereen/ulogme/'>ulogme<
 echo -e "\n- [Overview](http://localhost:8124/overview.html)" >> "$dest"
 echo -e "\n- [Single-day view](http://localhost:8124/index.html)" >> "$dest"
 
-# Stats WakaTime
-echo -e "</pre>\n\n## Stats <a href='https://wakatime.com/dashboard'>WakaTime</a>\n" >> "$dest"
+# Links to other self-statistics
+echo -e "\n\n## Autres statistiques\n" >> "$dest"
+echo -e "\n- [Suivi conso - Free Mobile](https://mobile.free.fr/moncompte/index.php?page=suiviconso)" >> "$dest"
+echo -e "\n- [Google Analytics](https://www.google.com/analytics/web/#home/a38514290w67185072p69122598/)" >> "$dest"
+
+# XXX Links to local self-statistics, need https://addons.mozilla.org/firefox/addon/281
+echo -e "\n\n## Statistiques locales\n" >> "$dest"
+echo -e "\n- <a href='resource://jid0-hynmqxa9zqgfjadreri4n2ahksi-at-jetpack/data/index.html' target='_blank'>Mind the Time</a>" >> "$dest"  # XXX resource:// link does not work from http(s?):// pages
+# echo -e "\n- <a href='file:///home/lilian/Public/stats.html' target='_blank'>Local version of this stats.html file</a>" >> "$dest"  # XXX file:// link does not work from http(s?):// pages
+
+# Stats WakaTime. FIXME do this more generally
+echo -e "\n\n## Stats <a href='https://wakatime.com/dashboard'>WakaTime</a>\n" >> "$dest"
 # wakatime.js -w >> "$dest"
 # mywakatime -w >> "$dest"
 echo -e "\n<figure><embed width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/5d1ec603-73b0-44b9-b61e-5eeda2490e51.svg'></embed></figure>" >> "$dest"
@@ -120,7 +130,11 @@ echo -e "\n<figure><embed width='680' type='image/svg+xml' src='https://wakatime
 #fi
 
 # Footer
-echo -e "</pre>\n\n***\n\n##### Mis-à-jour régulièrement via *cron*, avec [GenerateStatsMarkdown.sh](http://perso.crans.org/besson/bin/GenerateStatsMarkdown.sh) v${version}, un script Bash écrit par et pour [Lilian Besson](http://perso.crans.org/besson/)." >> "$dest"
+if [ "X$1" = "Xcron" ]; then
+	echo -e "</pre>\n\n***\n\n##### Mis-à-jour régulièrement via *cron*, avec [GenerateStatsMarkdown.sh](http://perso.crans.org/besson/bin/GenerateStatsMarkdown.sh) v${version}, un script Bash, [open-source](https://lbesson.mit-license.org/), écrit par et pour [Lilian Besson](http://perso.crans.org/besson/)." >> "$dest"
+else
+	echo -e "</pre>\n\n***\n\n##### Généré avec [GenerateStatsMarkdown.sh](http://perso.crans.org/besson/bin/GenerateStatsMarkdown.sh) v${version}, un script Bash, [open-source](https://lbesson.mit-license.org/), écrit par et pour [Lilian Besson](http://perso.crans.org/besson/)." >> "$dest"
+fi
 
 # XXX add http://perso.crans.org/besson/ before _static/
 echo -e "\n</xmp><script type=\"text/javascript\" src=\"_static/md/strapdown.min.js?src=GSM.sh?beacon\"></script>\n<noscript><img alt=\"GA|Analytics\" style=\"visibility: hidden; display: none;\" src=\"https://ga-beacon.appspot.com/UA-38514290-1/stats.html/theme_${theme}/?pixel\"/></noscript>\n</body></html>" >> "$dest"
