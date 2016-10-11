@@ -987,7 +987,7 @@ PROXY () {
 # Short shortcuts with hand-written Bash completions
 complete -f -X '!*.@(html|md|mdown|markdown|mkdown|txt)' -o plusdirs strapdown2pdf strapdown2html.py
 alias ax='autotex'
-complete -f -X '!*.@(tex|pdf)' -o plusdirs a autotex
+complete -f -X '!*.@(tex|pdf)' -o plusdirs autotex
 alias P='PDFCompress'
 complete -f -X '!*.pdf' -o plusdirs P
 pdfinfo() { for i in "$@"; do echo -e "\n${green}# For '${red}${u}$i${U}${white}':"; /usr/bin/pdfinfo "$i"; done }
