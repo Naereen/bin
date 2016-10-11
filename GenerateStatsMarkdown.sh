@@ -90,7 +90,7 @@ head -n 1 "${HOME}"/current >> "$dest"
 # Stats CUPS
 echo -e "</pre>\n\n## Documents imprimés aujourd'hui\n> <pre>" >> "$dest"
 wget --quiet 'http://127.0.0.1:631/jobs?which_jobs=completed' -O /tmp/cups_completed_jogs_log.html
-echo "- Nombre de documents : $(html2text -width 1000 /tmp/cups_completed_jogs_log.html | grep -B 1 "$(date "+%a %d %b %Y")" | grep -c completed | wc -l)" >> "$dest"
+echo "- Nombre de documents : $(html2text -width 1000 /tmp/cups_completed_jogs_log.html | grep -B 1 "$(date "+%a %d %b %Y")" | grep -c completed)" >> "$dest"
 echo "- Nombre de pages : $(html2text -width 1000 /tmp/cups_completed_jogs_log.html | grep -B 1 "$(date "+%a %d %b %Y")" | grep completed | awk ' { print $3 }' | grep -o "[0-9]*" | python -c 'import sys; print(sum(map(int, sys.stdin)))')" >> "$dest"
 
 # Stats ulogme
