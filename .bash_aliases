@@ -1082,6 +1082,8 @@ alias Mail_LOG_save='mail.py "Automatically sent by the machine $HOSTNAME.crans.
 
 export sublpath=~/.config/sublime-text-3/Packages/User/
 
+alias openvpn_enscachan='cd ~/.local/share/openvpn/ ; sudo openvpn --config 32.conf'
+
 ##############################################################################
 # (c) 2011-2016 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
