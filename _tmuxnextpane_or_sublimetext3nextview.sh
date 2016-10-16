@@ -5,7 +5,8 @@
 #
 
 # log=/tmp/$(basename ${0})_$$.log
-title=$(_getactivewindowname.sh)
+title=$(xdotool getwindowname $(xdotool getactivewindow))
+
 # echo "Interpretation 'b:9 + Release' on the window with title '${title}' ..." | tee -a ${log}  # DEBUG
 
 case $title in

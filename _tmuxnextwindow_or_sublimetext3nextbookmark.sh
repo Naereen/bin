@@ -5,7 +5,8 @@
 #
 
 # log=/tmp/$(basename ${0})_$$.log
-title=$(_getactivewindowname.sh)
+title=$(xdotool getwindowname $(xdotool getactivewindow))
+
 # echo "Interpretation 'b:8 + Release' on the window with title '${title}' ..." | tee -a ${log}  # DEBUG
 
 case $title in
@@ -16,6 +17,10 @@ case $title in
     *' - Sublime Text')
         # echo "Running 'subl --background --command next_bookmark' ..." | tee -a ${log}  # DEBUG
         subl --background --command next_bookmark
+    ;;
+    *' - Mozilla Firefox')
+       # echo "Doing 'xte 'keydown Alt_L' 'keydown Right' 'keyup Right' 'keyup Alt_L'' ..." | tee -a ${log}  # DEBUG
+       xte 'keydown Alt_L' 'keydown Right' 'keyup Right' 'keyup Alt_L'
     ;;
     *)
        # echo "Doing nothing ..." | tee -a ${log}  # DEBUG

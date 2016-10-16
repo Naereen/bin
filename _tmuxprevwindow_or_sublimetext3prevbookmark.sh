@@ -5,7 +5,8 @@
 #
 
 # log=/tmp/$(basename ${0})_$$.log
-title=$(_getactivewindowname.sh)
+title=$(xdotool getwindowname $(xdotool getactivewindow))
+
 # echo "Interpretation 'b:9 + Release' on the window with title '${title}' ..." | tee -a ${log}  # DEBUG
 
 case $title in
@@ -17,8 +18,13 @@ case $title in
         # echo "Running 'subl --background --command prev_bookmark' ..." | tee -a ${log}  # DEBUG
         subl --background --command prev_bookmark
     ;;
+    *' - Mozilla Firefox')
+       # echo "Doing 'xte 'keydown Alt_L' 'keydown Left' 'keyup Left' 'keyup Alt_L'' ..." | tee -a ${log}  # DEBUG
+       xte 'keydown Alt_L' 'keydown Left' 'keyup Left' 'keyup Alt_L'
+    ;;
     *)
        # echo "Doing nothing ..." | tee -a ${log}  # DEBUG
        # FIXME the key should still be sent to the running program!
+       # xte 'mousedown 8' 'mouseup 8'
     ;;
 esac
