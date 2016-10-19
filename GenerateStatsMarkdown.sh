@@ -47,7 +47,7 @@ fi
 hstn=$(hostname)
 echo -e "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/><title>Stats pour ${hstn}</title></head><body><xmp theme=\"${theme}\">" > "$dest"
 echo -e "# Informations systèmes pour [*${hstn}*](http://0.0.0.0/)" >> "$dest"
-echo -e "> #### Signaler *tout problème* à [jarvis @ crans . org](mailto:jarvisATcransDOTorg) ou via [bitbucket](https://bitbucket.org/lbesson/bin/issues/new).\n#### Données mises à jour le **$(date "+%c")**." >> "$dest"
+echo -e "> #### Signaler *tout problème* à [jarvis @ crans . org](mailto:jarvisATcransDOTorg) ou via [bitbucket](https://bitbucket.org/lbesson/bin/issues/new).\n> #### Données mises à jour le **$(date "+%c")**." >> "$dest"
 echo -e "> #### Consulter [*les rapports munin*](http://0.0.0.0/lns_munin/localdomain/localhost.localdomain/index.html) (plus complets) ? [*les stats ulogme*](http://localhost:8124/index.html) ? [*les stats WakaTime*](https://wakatime.com/dashboard) ?" >> "$dest"
 echo -e "\n\n***\n" >> "$dest"
 
