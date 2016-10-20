@@ -48,7 +48,7 @@ hstn=$(hostname)
 echo -e "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/><title>Stats pour ${hstn}</title></head><body><xmp theme=\"${theme}\">" > "$dest"
 echo -e "# Informations systèmes pour [*${hstn}*](http://0.0.0.0/)" >> "$dest"
 echo -e "> #### Signaler *tout problème* à [jarvis @ crans . org](mailto:jarvisATcransDOTorg) ou via [bitbucket](https://bitbucket.org/lbesson/bin/issues/new).\n> #### Données mises à jour le **$(date "+%c")**." >> "$dest"
-echo -e "> #### Consulter [*les rapports munin*](http://0.0.0.0/lns_munin/localdomain/localhost.localdomain/index.html) (plus complets) ? [*les stats ulogme*](http://localhost:8124/index.html) ? [*les stats WakaTime*](https://wakatime.com/dashboard) ?" >> "$dest"
+echo -e "> #### Consulter [*les rapports munin*](http://0.0.0.0/lns_munin/localdomain/localhost.localdomain/index.html) (plus complets) ? [*les stats uLogMe*](http://localhost:8124/index.html) ? [*les stats WakaTime*](https://wakatime.com/dashboard) ?" >> "$dest"
 echo -e "\n\n***\n" >> "$dest"
 
 MY_IP=$(/sbin/ifconfig | awk '/inet adr:/ { print $2 } ' | sed -e s/addr://)
@@ -59,7 +59,7 @@ uname -a | sed s/"x86_64 x86_64 x86_64"/"x86_64"/ >> "$dest"
 echo -e "</pre>\n\n## Informations générales\n> <pre>" >> "$dest"
 landscape-sysinfo | head --lines=-3 | grep -v "^$" >> "$dest"
 
-echo -e "</pre>\n\n***\n\n## [Utilisateurs connectés](lns_munin/localdomain/localhost.localdomain/users.html)\n- $(w -h | wc -l) utilisateurs, $(w -h | awk '{ print $1 }' | uniq | wc -l) utilisateurs différents...\n- *Normalement*, juste *lilian* ! Liste : $(w -h | awk '{ print $1 }' | uniq)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n***\n\n## [Utilisateurs connectés](munin/localdomain/localhost.localdomain/users.html)\n- $(w -h | wc -l) utilisateurs, $(w -h | awk '{ print $1 }' | uniq | wc -l) utilisateurs différents...\n- *Normalement*, juste *lilian* ! Liste : $(w -h | awk '{ print $1 }' | uniq)\n> <pre>" >> "$dest"
 w -h >> "$dest"
 
 echo -e "</pre>\n\n## Adresse(s) IP locale(s)\n> <pre>" >> "$dest"
@@ -68,17 +68,17 @@ echo "${MY_IP:-"Not connected"}" >> "$dest"
 echo -e "</pre>\n\n## [Adresse IP externe](http://monip.org)\n> <pre>" >> "$dest"
 wget --tries=5 --quiet monip.org -O - | html2text -width 50 | grep -v "^$" >> "$dest"
 
-echo -e "</pre>\n\n## [Statut NGinx](lns_munin/localdomain/localhost.localdomain/index.html#nginx)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## [Statut NGinx](munin/localdomain/localhost.localdomain/index.html#nginx)\n> <pre>" >> "$dest"
 /home/lilian/bin/nginx_status.sh >> "$dest"
 # nginx_status.sh >> "$dest"
 
-echo -e "</pre>\n\n## [Durée d'activité](lns_munin/localdomain/localhost.localdomain/uptime.html) - $(uptime --pretty | sed s/'up '/''/)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## [Durée d'activité](munin/localdomain/localhost.localdomain/uptime.html) - $(uptime --pretty | sed s/'up '/''/)\n> <pre>" >> "$dest"
 uptime >> "$dest"
 
-echo -e "</pre>\n\n***\n\n## [Disques locaux](lns_munin/localdomain/localhost.localdomain/df.html)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n***\n\n## [Disques locaux](munin/localdomain/localhost.localdomain/df.html)\n> <pre>" >> "$dest"
 df -h -T -l -t ext3 -t ext4 -t fuseblk >> "$dest"
 
-echo -e "</pre>\n\n## [Mémoire RAM et swap](lns_munin/localdomain/localhost.localdomain/memory.html)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## [Mémoire RAM et swap](munin/localdomain/localhost.localdomain/memory.html)\n> <pre>" >> "$dest"
 free -h >> "$dest"
 
 echo -e "</pre>\n\n## Message du jour\n> <pre>" >> "$dest"
@@ -88,13 +88,13 @@ echo -e "</pre>\n\n## Série en cours\n> <pre>" >> "$dest"
 head -n 1 "${HOME}"/current >> "$dest"
 
 # Stats CUPS
-echo -e "</pre>\n\n## Documents imprimés aujourd'hui\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## [Documents imprimés](munin/localdomain/localhost.localdomain/printed_docs.html) aujourd'hui\n> <pre>" >> "$dest"
 wget --quiet 'http://127.0.0.1:631/jobs?which_jobs=completed' -O /tmp/cups_completed_jogs_log.html
 echo "- Nombre de documents : $(html2text -width 1000 /tmp/cups_completed_jogs_log.html | grep -B 1 "$(date "+%a %d %b %Y")" | grep -c completed)" >> "$dest"
 echo "- Nombre de pages : $(html2text -width 1000 /tmp/cups_completed_jogs_log.html | grep -B 1 "$(date "+%a %d %b %Y")" | grep completed | awk ' { print $3 }' | grep -o "[0-9]*" | python -c 'import sys; print(sum(map(int, sys.stdin)))')" >> "$dest"
 
-# Stats ulogme
-echo -e "</pre>\n\n## Stats <a href='https://github.com/Naereen/ulogme/'>ulogme</a>\n" >> "$dest"
+# Stats uLogMe
+echo -e "</pre>\n\n## Stats <a href='https://github.com/Naereen/uLogMe/'>uLogMe</a>\n" >> "$dest"
 echo -e "\n- [Overview](http://localhost:8124/overview.html)" >> "$dest"
 echo -e "\n- [Single-day view](http://localhost:8124/index.html)" >> "$dest"
 
@@ -102,10 +102,13 @@ echo -e "\n- [Single-day view](http://localhost:8124/index.html)" >> "$dest"
 echo -e "\n\n## Autres statistiques\n" >> "$dest"
 echo -e "\n- [Suivi conso - Free Mobile](https://mobile.free.fr/moncompte/index.php?page=suiviconso)" >> "$dest"
 echo -e "\n- [Google Analytics](https://www.google.com/analytics/web/#home/a38514290w67185072p69122598/)" >> "$dest"
+echo -e "\n- [Google URL Shortener (goo.gl)](https://goo.gl/)" >> "$dest"
+echo -e "\n- [Bitbucket activity](https://bitbucket.org/lbesson/profile/repositories)" >> "$dest"
+echo -e "\n- [GitHub activity](https://github.com/Naereen?tab=activity)" >> "$dest"
 
 # XXX Links to local self-statistics, need https://addons.mozilla.org/firefox/addon/281
 echo -e "\n\n## Statistiques locales\n" >> "$dest"
-echo -e "\n- <a href='resource://jid0-hynmqxa9zqgfjadreri4n2ahksi-at-jetpack/data/index.html' target='_blank'>Mind the Time</a>" >> "$dest"  # XXX resource:// link does not work from http(s?):// pages
+echo -e "\n- <a href='resource://jid0-hynmqxa9zqgfjadreri4n2ahksi-at-jetpack/data/index.html' target='_blank'>Mind the Time</a> (Firefox browsing, local data)" >> "$dest"  # XXX resource:// link does not work from http(s?):// pages
 # echo -e "\n- <a href='file:///home/lilian/Public/stats.html' target='_blank'>Local version of this stats.html file</a>" >> "$dest"  # XXX file:// link does not work from http(s?):// pages
 
 # Stats WakaTime. FIXME do this more generally
