@@ -33,7 +33,36 @@ Will send a test message to your mobile phone.
    If not, see <http://perso.crans.org/besson/LICENSE.html>.
 """
 
-from __future__ import print_function  # Python 2/3 compatible
+from __future__ import print_function   # Python 2/3 compatible
+from __future__ import absolute_import  # Python 2/3 compatible
+
+import sys
+from os import getenv
+from json import dumps
+
+# Use base64 to not keep plaintext files of the number, username and password in your home
+from base64 import b64decode
+
+from time import strftime
+today = strftime("%H:%M:%S %Y-%m-%d")
+
+try:
+    from os.path import expanduser
+except ImportError:
+    print("Warning, os.path.expanduser is not available, trying to use getenv('USER') = {} ...".format(getenv("USER")))
+
+    def expanduser(s):
+        """ Try to simulate the os.path.expanduser function. """
+        return '/home/' + getenv("USER") + '/' + s
+
+if sys.version_info < (3, 0):
+    from urllib import urlencode
+    from urllib2 import urlopen, HTTPError
+else:
+    from urllib3.request import urlencode
+    from urllib.request import urlopen
+    from urllib.error import HTTPError
+
 
 try:
     try:
@@ -47,36 +76,12 @@ except ImportError:
     print("  You can install it with : 'pip install ANSIColors-balises' (or sudo pip)...")
 
     def printc(*a, **kw):
+        """ Fake function printc.
+
+        ansicolortags or ANSIColors are not installed...
+        Install ansicolortags from pypi (with 'pip install ansicolortags')
+        """
         print(*a, **kw)
-
-
-from sys import exit, argv, version_info
-from json import dumps
-
-if version_info < (3, 0):
-    from urllib import urlencode
-    from urllib2 import urlopen, HTTPError
-else:
-    from urllib3.request import urlencode
-    from urllib.request import urlopen
-    from urllib.error import HTTPError
-
-# Use base64 to not keep plaintext files of the number, username and password in your home
-from base64 import b64decode
-
-from os import getenv
-try:
-    from os.path import expanduser
-except ImportError:
-    print("Warning, os.path.expanduser is not available, trying to use getenv('USER') = {} ...".format(getenv("USER")))
-
-    def expanduser(s):
-        """ Try to simulate the os.path.expanduser function. """
-        return '/home/' + getenv("USER") + '/' + s
-
-
-from time import strftime
-today = strftime("%H:%M:%S %Y-%m-%d")
 
 
 def openSpecialFile(name):
@@ -112,10 +117,15 @@ def openSpecialFile(name):
 number = openSpecialFile("number")
 
 # Detect language
-try:
-    language = getenv("LANG")[0:2]
-except:
-    language = "fr"
+language = getenv("LANG")
+language = language[0:2] if language else "fr"
+
+
+# Maximum size that can be sent
+MAX_SIZE = 3 * 159
+STR_MAX_SIZE = "3*159"
+
+
 
 if language == "fr":
     errorcodes = {
@@ -125,7 +135,7 @@ if language == "fr":
 Allez sur 'https://mobile.free.fr/moncompte/index.php?page=options&show=20' svp""",
         500: "Erreur côté serveur. Veuillez réessayez ultérieurement.",
         1:   "Le SMS a été envoyé sur votre mobile ({number}).".format(number=number),
-        "toolong": "Attention : le message est trop long (+ de 3*160 caracters, soit plus de 3 SMS)."
+        "toolong": "<red>Attention<white> : le message est trop long (+ de <black>{}<white> caracters, soit plus de 3 SMS).".format(STR_MAX_SIZE)
     }
 else:
     errorcodes = {
@@ -135,7 +145,7 @@ else:
 Please go on 'https://mobile.free.fr/moncompte/index.php?page=options&show=20' svp""",
         500: "Error from the server side. Please try again later.",
         1:   "The SMS has been sent to your mobile ({number}).".format(number=number),
-        "toolong": "Warning: message is too long (more than 3*160 caracters, so more than 3 SMS)."
+        "toolong": "<red>Warning<white>: message is too long (more than <black>{}<white> caracters, so more than 3 SMS).".format(STR_MAX_SIZE)
     }
 
 
@@ -149,8 +159,17 @@ def send_sms(text="Empty!", secured=True):
 
     Returns a boolean and a status string.
     """
-    if len(text) >= 3*160:
-        print(errorcodes["toolong"])
+    # DONE split the text into smaller pieces if length is too big (automatically, or propose to do it ?)
+    if len(text) > MAX_SIZE:
+        printc(errorcodes["toolong"])
+        nb_sub_messages = len(text) / MAX_SIZE
+        printc("\n<red>Warning<white>: message will be split in <red>{} pieces<white> of size smaller than <black>{} characters<white>...".format(nb_sub_messages, MAX_SIZE))
+        printc("  <magenta>Note that new lines and other information can be lost!<white>")
+        for i, index in enumerate(range(0, len(text), MAX_SIZE)):
+            answer = send_sms(text[index: index + MAX_SIZE])
+            printc("For piece #{} of the message, the answer is:\n  <magenta>{}<white>...\n".format(i + 1, answer[1]))
+        return answer
+        # raise ValueError(errorcodes["toolong"])
 
     # Read number, user, password
 
@@ -188,9 +207,10 @@ def send_sms(text="Empty!", secured=True):
 
 
 def main(argv):
-    """ Main function. Use the arguments of the command line (argv).
+    """ Main function. Use the arguments of the command line (sys.argv).
     """
-    # Manual handing of the cli arguments
+    # FIXME use docopt to handle the command line arguments!
+    # Manual handing of the command line arguments
     if "-h" in argv or "--help" in argv:
         printc("""
 <green>FreeSMS.py<white> --help|-h | -f file | body of the message
@@ -253,4 +273,4 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.<reset><white>
 if __name__ == "__main__":
     # from doctest import testmod  # DEBUG ?
     # testmod(verbose=False)  # DEBUG ?
-    exit(int(main(argv[1:])))
+    sys.exit(int(main(sys.argv[1:])))
