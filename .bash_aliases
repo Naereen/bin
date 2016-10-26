@@ -910,7 +910,7 @@ vlc() {
 		echo -e "${blue}Pausing GMusicBrowser (with the 'gmusicbrowser -cmd' CLI tool)...${white}"
 		pidof gmusicbrowser &>/dev/null && gmusicbrowser -cmd Pause || echo -e "${red}Warning: GMusicBrowser not playing.${white}"
 	fi
-	echo -e "${green}Playing the argument file '$@' to /usr/bin/vlc (with --random)${white}"
+	echo -e "${green}Playing the argument file '$@' with /usr/bin/vlc (with --random)${white}"
 	/usr/bin/vlc --random "$@" &> /dev/null &
 }
 
