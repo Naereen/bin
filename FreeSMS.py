@@ -107,7 +107,7 @@ def openSpecialFile(name):
             printc("<black>echo '83123456' | base64 > '~/.smsapifreemobile_user.b64'<white>".format())
         elif name == "password":
             print("To create '~/.smsapifreemobile_password.b64', go to this webpage, https://mobile.free.fr/moncompte/index.php?page=options&show=20 (after logging to your Free Mobile account), and copy the API key (a 14-caracters string on [a-zA-Z0-9]*, like 'H6ahkTABEADz5Z'), and execute this command line (in a terminal):")
-            printc("<black>echo 'H6ahkTABEADz5Z' | base64 > '~/<white>smsapifreemobile_password.b64' ".format())
+            printc("<black>echo 'H6ahkTABEADz5Z' | base64 > '~/.smsapifreemobile_password.b64<white>' ".format())
 
 
 #: Number (not necessary)
