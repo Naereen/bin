@@ -208,9 +208,9 @@ export ERASE_LINE="\r\033[K"
 # wakatime for bash
 # https://github.com/API-PLUGIN-RESSOURCES/bash-wakatime
 # hook function to send wakatime a tick
-pre_prompt_command() {
-    (echo "$(date +"%Y-%m-%d %H:%M:%S") -- Sending '/usr/local/bin/wakatime --write --plugin \"bash-wakatime/0.1\" --entity-type app --project Terminal --alternate-language Bash --entity \"$(echo $(fc -ln -0) | cut -d ' ' -f1)\" 2>&1 > /dev/null &' ..." >> /tmp/bash-wakatime.log ; /usr/local/bin/wakatime --write --plugin "bash-wakatime/0.1" --entity-type app --project Terminal --alternate-language Bash --entity "$(echo $(fc -ln -0) | cut -d ' ' -f1)" 2>&1 > /dev/null &)
-}
+# pre_prompt_command() {
+#     (echo "$(date +"%Y-%m-%d %H:%M:%S") -- Sending '/usr/local/bin/wakatime --write --plugin \"bash-wakatime/0.1\" --entity-type app --project Terminal --alternate-language Bash --entity \"$(echo $(fc -ln -0) | cut -d ' ' -f1)\" 2>&1 > /dev/null &' ..." >> /tmp/bash-wakatime.log ; /usr/local/bin/wakatime --write --plugin "bash-wakatime/0.1" --entity-type app --project Terminal --alternate-language Bash --entity "$(echo $(fc -ln -0) | cut -d ' ' -f1)" 2>&1 > /dev/null &)
+# }
 
 # Old PS1
 PS1OLD="$PS1"
