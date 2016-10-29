@@ -229,8 +229,9 @@ ps1_prompt_command() {
 
 my_prompt_command() {
     ps1_prompt_command
-    pre_prompt_command
 }
+#    pre_prompt_command
+
 PROMPT_COMMAND=my_prompt_command
 
 ## Classic prompt command
