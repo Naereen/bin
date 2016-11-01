@@ -29,7 +29,7 @@ def check_iban(iban):
     i = int(''.join(l_to_c(l) for l in ib))
     check = (i % 97) == 1
     if check:
-        print("OK '%s'seems to be a valid IBAN number." % iban)
+        print("OK '%s' seems to be a valid IBAN number." % iban)
     else:
         print("[WARNING] NOT OK '%s' seems to NOT be a valid IBAN number!" % iban)
     return check
