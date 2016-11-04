@@ -397,7 +397,7 @@ alias CalendarRandQuote='google calendar add "$(randquote)"'
 # Gobby Server
 alias SOBBY='sobby -p 6522 --password 120193 --autosave-file=/home/lilian/.gobby.savefile --autosave-interval=10'
 # Via monip.org
-alias AdressIP='wget --tries=5 --quiet --output-document=/tmp/monip.org.html monip.org && html2text /tmp/monip.org.html' # | pygmentize -f terminal -g
+alias AdressIP='echo -e "# From http://monip.org/ :" ; wget --tries=5 -q -O - http://monip.org/ | html2text ; echo -e "\n# From http://ipinfo.io/ :" ; (type ipinfo.sh &>/dev/null && ipinfo.sh || curl http://ipinfo.io/) '
 
 # Efface les fichiers temporaires dus à un Mac qui a monté le disque
 alias EffacePresenceAPPLE='find -type d -name *Apple* -exec rm -vrI {} \;'
