@@ -1084,6 +1084,10 @@ export sublpath=~/.config/sublime-text-3/Packages/User/
 
 alias openvpn_enscachan='cd ~/.local/share/openvpn/ ; sudo openvpn --config 32.conf'
 
+# Experimental shortcuts, with ¹, ², è, à, @, ç, °, £, ^, ¨, ¤ etc. ?
+alias µ='cd /tmp/'
+alias ?='ExplainShell'
+
 ##############################################################################
 # (c) 2011-2016 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
