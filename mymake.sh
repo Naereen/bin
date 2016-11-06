@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON, (C) 2015-oo
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 13-08-2016.
+# Date: 06-11-2016.
 # Web: https://bitbucket.org/lbesson/bin/src/master/mymake.sh
 #
 # A top-recursive 'make' command, with two awesome behaviors.
@@ -12,7 +12,7 @@
 #
 # Licence: MIT Licence (http://lbesson.mit-license.org).
 #
-version="0.8"
+version="0.9"
 returncode="0"  # If success, return 0
 
 # More details at http://redsymbol.net/articles/unofficial-bash-strict-mode/
@@ -52,7 +52,7 @@ fi
 
 # Working variables
 LogFile="$(tempfile)"
-mv "${LogFile}" "${LogFile}_mymake.log"
+mv -f -- "${LogFile}" "${LogFile}_mymake.log"
 LogFile="${LogFile}_mymake.log"
 
 # Try to detect automatically the location of the make binary
@@ -69,14 +69,15 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
     FailBecauseNoValidRule="false"
     # Second loop: a long as there is no valid 'Makefile' file, go up
     old="$(pwd)/"
-    xtitle "make $* - (in ${old})"
+    xtitle "make $* - (in ${old})"  # set terminal title
     echo -e "Looking for a valid ${magenta}Makefile${white} from ${blue}${old}${white} :"
     c=""
     while [ ! -f "${old}${c}Makefile" ]; do  # No file
         echo -e "${red}${old}${c}Makefile${white} is not there, going up in the parent folder ... Current directory: $(pwd)"
         c="../${c}"
-        cd ..  # FIXED We should just go up once.
-        [ "$(pwd)" = "/" -o "$(pwd)" = "${HOME}" ] && break  # DEBUG avoid infinite loops!
+        cd ..
+        # DEBUG avoid infinite loops!
+        [ "$(pwd)" = "/" -o "$(pwd)" = "${HOME}" ] && break
     done
     # We found a valid Makefile or we already called 'break'...
     NameOfMakefile="$(readlink -f "${old}${c}Makefile")"  # Find his real name, e.g. simplies fake/bar/foo/../.. to fake/
@@ -90,7 +91,7 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
                 3>&1 1>&2 2>&3 \
                 | tee "${LogFile}"
             # FIXED this pipe disabled color on stdout of programs that detect pipes (sphinx, my ansicolortags script, grep etc...)
-            # This trick '3>&1 1>&2 2>&3' swaps stdout and stderr: only stderr is piped to |tee so colors are still in stdout (from http://serverfault.com/a/63708)
+            # This trick '3>&1 1>&2 2>&3' swaps stdout and stderr: only stderr is piped to |tee so colors are still in stdout (from https://serverfault.com/a/63708)
         else
             time "${makePath}" -w --file="${NameOfMakefile}" "$@" \
                 2>&1 | tee "${LogFile}"
@@ -113,9 +114,9 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
             # No notifications if make was called by the bash auto-completion function (options '-npq -C'...) or if it failed because no rule
             if [ "X${JustBashCompletion}" != "Xtrue" ]; then
                 if [ "X${returncode}" = "X0" ]; then
-                       notify-send --icon=terminal "$(basename "$0") v${version}" "make '$*' worked, in the folder '$(readlink -f "${old}${c}")' from '$(readlink -f "${OriginalPath}")' :-)"
+                       notify-send --icon=terminal "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>worked</b>, in the folder <i>'$(readlink -f "${old}${c}")'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> <b>:-)</b>"
                 else
-                   notify-send --icon=error "$(basename "$0") v${version}" "make '$*' failed ,in the folder '$(readlink -f "${old}${c}")' from '$(readlink -f "${OriginalPath}")' ..."
+                   notify-send --icon=error "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>failed</b>, in the folder <i>'$(readlink -f "${old}${c}")'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> ..."
                 fi
             fi
         fi
@@ -126,10 +127,5 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
     fi
 done
 
-# if [ X"${returncode}" = "X0" ]; then
-#     echo -e "\n\nThe previous make command ('make $@') worked ..."
-#     alias $1="make $1"
-#     echo -e "DEBUG (from mymake.sh) Now '$1' is registered as a new alias for 'make $1' ..."
-# fi
 exit "${returncode}"
 # End of mymake.sh
