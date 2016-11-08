@@ -87,13 +87,18 @@ log=/tmp/gif2mp4_$$.log
 echo -e "$0 have been called with the arguments (after processing the options) : ${blue}$@${white}." | tee -a "${log}"
 
 for i in "$@"; do
-    echo -e "Calling the function ${magenta}'gif2mp4f'${white} for the argument ${u}'${i}'${U} (on pwd = $(pwd))..." | tee -a "${log}"
-    gif2mp4f "$i" | tee -a "${log}"
+    # echo -e "Calling the function ${magenta}'gif2mp4f'${white} for the argument ${u}'${i}'${U} (on pwd = $(pwd))..." | tee -a "${log}"
+    # gif2mp4f "$i" | tee -a "${log}"
+    echo -e "Using ${magenta}'ffmpeg'${white} for the file ${u}'${i}'${U} (on pwd = $(pwd))..." | tee -a "${log}"
+    echo -e "${warning}This can take a while...${white}"
+    # http://unix.stackexchange.com/a/294892
+    echo ffmpeg -f gif -i "$i" -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${i%.gif}.mp4" | tee -a "${log}"
+    time ffmpeg -f gif -i "$i" -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" "${i%.gif}.mp4" | tee -a "${log}"
     echo -e "Done for ${magenta}'gif2mp4f'${white} on ${u}'${i}'${U}..." | tee -a "${log}"
 done
 
-echo -e "${red}Warning: Can I delete all the frames files?${white}"
-ls "${wdir}"frames*.png
-rm -rvI "${wdir}"frames*.png
+# echo -e "${red}Warning: Can I delete all the frames files?${white}"
+# ls "${wdir}"frames*.png
+# rm -rvI "${wdir}"frames*.png
 
 # End of gif2mp4.sh
