@@ -958,10 +958,11 @@ alias poweroff.systemctl='date >> /tmp/veille.log ; systemctl poweroff'
 alias suspend.systemctl='date >> /tmp/veille.log ; systemctl suspend'
 alias veille2='date >> /tmp/veille.log ; ( gnome-session-quit --power-off || xfce4-session-logout || (Lock ; gksudo pm-suspend) )'
 alias veille3='date >> /tmp/veille.log ; Lock ; dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend' # does not work
-alias veillesudo='sudo dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend' # works
+alias veillesudo='sudo dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend' # works
 
-# With Linphone
-alias ETTelephoneMaison='linphone -c 0492202627@crans.org'
+# With Linphone - it's not working anymore
+num="XX922026YY"; num="${num/XX/04}"; num="${num/YY/27}"
+alias ETTelephoneMaison='linphone -c ${num}@crans.org'
 Appeler() {
     echo -e linphone -c "$1"@crans.org
     echo -e "Confirmez-vous l'appel au numéro $1 ?"
@@ -971,8 +972,12 @@ Appeler() {
 PROXY () {
     case $1 in
         off)
-            echo -e "Opening 'about:preferences#advanced' in firefox, you should now disable the SOCKS v5 proxy ..."
-            /usr/bin/firefox "about:preferences#advanced"
+            if pidof firefox >/dev/null; then
+                echo -e "Opening 'about:preferences#advanced' in firefox, you should now disable the SOCKS v5 proxy ..."
+                /usr/bin/firefox "about:preferences#advanced"
+            else
+                echo -e "Firefox is not running, I won't open it, but you should go to 'about:preferences#advanced'"
+            fi
             rm -vf /tmp/startSocksProxy.list && echo -e "${green}PROXY is off.${white}"
             ;;
         on)
@@ -987,11 +992,11 @@ PROXY () {
 # Short shortcuts with hand-written Bash completions
 complete -f -X '!*.@(html|md|mdown|markdown|mkdown|txt)' -o plusdirs strapdown2pdf strapdown2html.py
 alias ax='autotex'
-complete -f -X '!*.@(tex|pdf)' -o plusdirs autotex
+complete -f -X '!*.@(tex|pdf|PDF)' -o plusdirs autotex
 alias P='PDFCompress'
-complete -f -X '!*.pdf' -o plusdirs P
+complete -f -X '!*.@(pdf|PDF)' -o plusdirs P
 pdfinfo() { for i in "$@"; do echo -e "\n${green}# For '${red}${u}$i${U}${white}':"; /usr/bin/pdfinfo "$i"; done }
-complete -f -X '!*.pdf' -o plusdirs pdfinfo pdftk pdfgrep pdftohtml pdftotext
+complete -f -X '!*.@(pdf|PDF)' -o plusdirs pdfinfo pdftk pdfgrep pdftohtml pdftotext
 
 f() { echo -e "Opening args '$@' in firefox..."; firefox "$@" || alert; }
 b() { echo -e "Executing args '$@' with bpython..."; bpython "$@" || alert; }
@@ -1005,15 +1010,15 @@ i3() { echo -e "Executing args '$@' with ipython3..."; ipython3 --pylab "$@" || 
 pti3() { echo -e "Executing args '$@' with ptipython3..."; ptipython3 "$@" || alert; }  # custom script
 
 e() { echo -e "Opening args '$@' in evince..."; evince "$@" || alert; }
-complete -f -X '!*.@(pdf|djvu|PDF)' -o plusdirs e
+complete -f -X '!*.@(pdf|djvu|PDF|DJVU)' -o plusdirs e
 
 alias j='jupyter-notebook'
 alias m='clear ; make'
 alias s='clear ; git status | less -r'
 alias g='git'
 alias wd='clear ; git wdiff'
-alias pdf='make pdf'
-alias clean='make clean'
+alias pdf='make pdf'        # special alias for Makefile-powered LaTeX projects
+alias clean='make clean'    # special alias for Makefile-powered LaTeX projects
 
 # Meta fonction experimentale pour ouvrir un fichier avec l'application appropriee.
 o() {
@@ -1070,6 +1075,7 @@ complete -f -X '!*.@(pdf|djvu|PDF|png|PNG|jpg|JPG|jpeg|JPEG)' -o plusdirs impres
 alias todo_message='for i in $(seq 1 1000); do figlet -w ${COLUMNS} ">  T O D O ,  T O D O ,  T O D O ,  T O D O ,  T O D O" | lolcat ; sleep 10s ; done'
 alias timake='time make && alert'
 alias nhtaccess='nano .htaccess -Y sh'
+alias ngitignore='nano .gitignore -Y sh'
 
 alias selfspy='rm -vi ~/.selfspy/selfspy.pid.lock ; /usr/local/bin/selfspy'
 alias selfvis='cd ~/Public/ ; echo -e "Generating selfvis graphs..." ; selfvis.py ; cd -'
@@ -1087,6 +1093,11 @@ alias openvpn_enscachan='cd ~/.local/share/openvpn/ ; sudo openvpn --config 32.c
 # Experimental shortcuts, with ¹, ², è, à, @, ç, °, £, ^, ¨, ¤ etc. ?
 alias µ='cd /tmp/'
 alias ?='ExplainShell'
+# ^ for Push (git push) and v for Pull (git pull), as it looks like and ↑ ↓
+alias ^='Push'
+alias ↑='Push'
+alias v='Pull'
+alias ↓='Pull'
 
 ##############################################################################
 # (c) 2011-2016 Lilian BESSON
