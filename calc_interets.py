@@ -1,9 +1,9 @@
-#! /usr/bin/env python
+#! /usr/bin/env python2
 # -*- coding: utf-8 -*-
 """ Petit script Python pour afficher des graphiques de ses comptes et calculer des intérêts.
 
-- *Date:* 08 June 2016.
-- *Author:* Lilian Besson, (C) 2015-16.
+- *Date:* 10 November 2016.
+- *Author:* Lilian Besson, © 16.
 - *Licence:* MIT Licence (http://lbesson.mit-license.org).
 """
 
@@ -33,6 +33,7 @@ except ImportError:
         print("  You can install it with : 'pip install ANSIColors-balises' (or sudo pip)...")
 
 
+# Valeurs EMPIRIQUES des taux d'intérêts.
 taux2016 = {'CCP': 0.00, 'LA': 0.75, 'LEP': 1.25, 'LJ': 1.75, 'PEA': 0.00, 'PEL': 2.10}
 
 print("<yellow>Calcul des intérêts, <white>script <u>calc_interets.py<U>:")
@@ -68,7 +69,8 @@ def calc_interets(comptes, taux=taux2016):
 def main(comptes, taux=taux2016):
     """ Affiche un diagramme camembert montrant la répartition de sa fortune.
     """
-    total = sum(round(comptes[k] * taux[k] / 100.0, 3) for k in type_comptes)
+    argenttotal = sum(comptes.values())
+    interets = sum(round(comptes[k] * taux[k] / 100.0, 3) for k in type_comptes)
     print("Affichage d'un diagrame camembert en cours...")
     valeurs = list(comptes.values())
     print("Valeurs du diagrame : <black>{}<white>".format(valeurs))
@@ -81,10 +83,11 @@ def main(comptes, taux=taux2016):
     plt.pie(valeurs, labels=etiquettes, explode=explode, labeldistance=1.05, startangle=135)
     plt.legend(legendes, loc='lower right')
     mydate = time.strftime('%d %b %Y', time.localtime())
-    # FIXME FUCKING hack because python  apparently fails to handles utf-8 correctly...
+    # FIXME FUCKING hack because Matplotlib apparently fails to handles utf-8 correctly here...
     mydate = mydate.replace('û', 'u').replace('é', 'e')
-    mytitle = u"Etat de mes comptes ({}). Interets totaux = {:.2f} euros".format(mydate, total)
+    mytitle = "Mes comptes (le {}). interets = {:.2f} -> Interets = {:.2f} euros ?".format(mydate, argenttotal, interets)
     print("Using title: <magenta>{}<white>".format(mytitle))
+    mytitle = u"Mes comptes (le {}). Total = {:.2f} $\\rightarrow$ intérêts = {:.2f} € ?".format(mydate, argenttotal, interets)
     plt.title(mytitle)
     plt.axis('equal')
     # XXX Experimental https://stackoverflow.com/q/12439588/
