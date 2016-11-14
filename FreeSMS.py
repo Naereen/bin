@@ -122,6 +122,7 @@ language = language[0:2] if language else "fr"
 
 
 # Maximum size that can be sent
+# XXX Reference: https://en.wikipedia.org/wiki/Short_Message_Service#Message_size
 MAX_SIZE = 3 * 159
 STR_MAX_SIZE = "3*159"
 
@@ -132,9 +133,9 @@ if language == "fr":
         400: "Un des paramètres obligatoires est manquant.",
         402: "Trop de SMS ont été envoyés en trop peu de temps.",
         403: """Le service n'est pas activé sur l'espace abonné, ou login / clé incorrect.
-Allez sur 'https://mobile.free.fr/moncompte/index.php?page=options&show=20' svp""",
+Allez sur '<black>https://mobile.free.fr/moncompte/index.php?page=options&show=20<white>' svp, et activez l'option correspondate.""",
         500: "Erreur côté serveur. Veuillez réessayez ultérieurement.",
-        1:   "Le SMS a été envoyé sur votre mobile ({number}).".format(number=number),
+        1:   "Le SMS a été envoyé sur votre mobile ({}).".format(number),
         "toolong": "<red>Attention<white> : le message est trop long (+ de <black>{}<white> caracters, soit plus de 3 SMS).".format(STR_MAX_SIZE)
     }
 else:
@@ -142,9 +143,9 @@ else:
         400: "One of the necessary parameter is missing.",
         402: "Too many SMSs has been sent in a short time (you might be a spammer!).",
         403: """Access denied: the service might not be activated on the online personnal space, or login/password is wrong.
-Please go on 'https://mobile.free.fr/moncompte/index.php?page=options&show=20' svp""",
+Please go on '<black>https://mobile.free.fr/moncompte/index.php?page=options&show=20<white>' please, and enable the corresponding option.""",
         500: "Error from the server side. Please try again later.",
-        1:   "The SMS has been sent to your mobile ({number}).".format(number=number),
+        1:   "The SMS has been sent to your mobile ({}).".format(number),
         "toolong": "<red>Warning<white>: message is too long (more than <black>{}<white> caracters, so more than 3 SMS).".format(STR_MAX_SIZE)
     }
 
@@ -209,7 +210,8 @@ def send_sms(text="Empty!", secured=True):
 def main(argv):
     """ Main function. Use the arguments of the command line (sys.argv).
     """
-    # FIXME use docopt to handle the command line arguments!
+    # FIXME use docopt to handle the command line arguments! Cf. http://docopt.org/
+    # FIXME can docopt handle a cli documentation with ansicolortags tags in it? Cf. http://ansicolortags.rtfd.io/
     # Manual handing of the command line arguments
     if "-h" in argv or "--help" in argv:
         printc("""
