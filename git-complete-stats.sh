@@ -35,7 +35,7 @@ done
 git branch &> /dev/null || exit 3
 
 echo -e "$(basename $0): do statistics on this git repository."
-echo -e "  From https://github.com/esc/git-stats/"
+echo -e "  From https://github.com/Naereen/git-stats/"
 echo -e "\nNumber of commits per author:"
 git --no-pager shortlog "${END_AND_BEGIN[@]}" -sn --all
 AUTHORS="$(git shortlog "${END_AND_BEGIN[@]}" -sn --all | cut -f2 | cut -f1 -d' ')"

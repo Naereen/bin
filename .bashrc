@@ -242,7 +242,7 @@ PROMPT_COMMAND=my_prompt_command
 #PROMPT_COMMAND="$PROMPT_COMMAND; printf \"\033]0; .: ($(date))<${USER}@$(hostname)>:[$(pwd)] ($(__ip_address t)) - ${PKG} :. \007\""
 
 # Add to the $PATH
-export PATH="$HOME/bin/":$PATH:"$HOME"/.ConkyWizardTheme/scripts/:"$HOME/bin/"
+export PATH="$HOME"/bin/:"$PATH":"$HOME"/.local/bin/:"$HOME"/.ConkyWizardTheme/scripts/
 # Add "$HOME"/bin if needed (but only if needed, having one directory twice in $PATH is durty!
 
 export RLWRAP_HOME="$HOME"
