@@ -468,7 +468,7 @@ GrepBalises() {
 #alias agrep='ack-grep -ri -H --sort-files'
 # Even better grep command, using ripgrep, cf. https://github.com/BurntSushi/ripgrep
 alias agrep='rg --color=auto'
-alias grep='rg --color=auto'   # XXX aggressive!
+#alias grep='rg --color=auto'   # XXX aggressive!
 
 # Other aliases, from http://abs.traduc.org/abs-5.3-fr/apk.html
 # tailoring 'less'
