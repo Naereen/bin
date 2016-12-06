@@ -3,6 +3,9 @@
 
 # Temp and backups
 *~
+
+# GPG signatures
+*.asc
 	
 # Ignored file types
 *.json
@@ -18,3 +21,6 @@ imagejs
 CorutilsViewer
 Marp
 ulogme*
+
+rg
+.bash_completion.d/rg.bash-completion
