@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # author: Lilian BESSON
 # email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# date: 19-10-2016
+# date: 07-12-2016
 # web: https://bitbucket.org/lbesson/bin/src/master/Smooth_Name.sh
 #
 # A small script to rename all files in a directory semi-automatically.
@@ -13,7 +13,7 @@
 #
 # Licence: GPL v3
 #
-version='1.4'
+version='1.5'
 LANG='fr'
 log=/tmp/$(basename "$0").log
 
@@ -53,8 +53,7 @@ for folder in ${allfolder}; do
     # TODO use ls -i to get the inode (unique identifier of the file)
     # Cf. http://www.softpanorama.org/Tools/Tips/renaming_files_with_special_characters.shtml
 
-    # find . -type f -exec ls -i {} \;  # DEBUG
-    allinode="$(find . -type f -exec ls -i {} \; | grep -o "^[0-9]* ./" | sed s_' ./'_''_)"
+    allinode="$(find ./"${folder}" -maxdepth 1 -type f -exec ls -i {} \; | grep -o "^[0-9]* ./" | sed s_' ./'_''_)"
 
 
     for INUM in ${allinode}; do
@@ -86,6 +85,5 @@ for folder in ${allfolder}; do
         fi
     done
 done
-
 
 # END
