@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # author: Lilian BESSON
 # email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# date: 05-11-2015
+# date: 07-12-2016
 # web: https://bitbucket.org/lbesson/bin/src/master/youtube-playlist.sh
 #
 # A small script to download every song from a YouTube playlist,
@@ -27,7 +27,7 @@
 #
 # Licence: GPL v3
 #
-version='1.1'
+version='1.2'
 LANG='fr'
 
 # Destination of the HTML file (a unique, to avoid conflict if running several instances of youtube-playlist.sh at the same time)
@@ -42,6 +42,7 @@ fi
 icon=$(ls -H /usr/share/icons/*/*/*/*music*svg 2>/dev/null|uniq|head -n1)
 
 dlplaylist() {
+    oldpwd="$(pwd)"
     echo -e "${white}Trying to download the playlist : '${blue}${1}${white}'..."
     # Try to download it according to the args passed to the script
     wget "${1}" -O "${out}" || wget "https://www.youtube.com/playlist?list=${1}" -O "${out}"
@@ -72,14 +73,16 @@ dlplaylist() {
     $READ || exit
     mkdir "${newdir}"
 
-    # « I'm going it ! »
+    # FIXED we should cd back to the original directory
     cd "${newdir}" || exit
     echo -e "Now, I am in the directory ${blue}`pwd`${white}, and this is good."
 
     # Start downloading !
     echo -e "OK, so I can start the downloading command I showed you : (${magenta}[Enter]${white} if OK)"
-    for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" "${out}"  | sed s/'watch?v='// | uniq); do
-        time youtube-dl --no-overwrites --retries 60 --continue -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w -- "$j" || echo "$j" >> tofetch_youtube-dl.url
+    # FIXED run this in parallel is a HUGE mess (consume too much RAM)
+    for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" "${out}"  | sed s/'watch?v='/''/ | uniq); do
+        time youtube-dl --no-overwrites --retries 5 --continue -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w -- "$j" \
+            || echo "$j" >> tofetch_youtube-dl.url
     done
 
     # Change the name of every songs
@@ -87,7 +90,8 @@ dlplaylist() {
     $READ || exit
     Smooth_Name.sh --batch --onlyfiles
 
-    echo -e "Bybye :)"
+    cd "${oldpwd}"
+    echo -e "Bye-bye :)"
 }
 # Enf of dlplaylist()
 
@@ -96,7 +100,7 @@ dlplaylist() {
 echo -e "${0} have been called with the arguments (after processing the options) : ${blue}$*${white}." | tee -a /tmp/youtube-playlist.log
 
 for i in "$@"; do
-    echo -e "Calling the function ${magenta}'dlplaylist'${white} for the argument ${u}'${i}'${U} (on pwd = $(pwd))..." | tee -a /tmp/youtube-playlist.log
+    echo -e "\n\nCalling the function ${magenta}'dlplaylist'${white} for the argument ${u}'${i}'${U} (on pwd = $(pwd))..." | tee -a /tmp/youtube-playlist.log
     dlplaylist "$i" && \
         notify-send --expire-time=3000 --icon=${icon} "youtube-playlist.sh" "Download of the YouTube playlist ${i} well done"
     echo -e "Done for ${magenta}'dlplaylist'${white} on ${u}'${i}'${U}..." | tee -a /tmp/youtube-playlist.log
