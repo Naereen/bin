@@ -177,15 +177,17 @@ alias mocaml='rlwrap -t dumb --file=/home/lilian/keyword_mocaml_rlwrap.txt --ren
 alias mocaml_noANSI='rlwrap -t dumb --file=/home/lilian/keyword_mocaml_rlwrap.txt --renice --remember -Acm -aPassword: -pGreen --break-chars "(){}[],+-=&^%$#@\"" --histsize 3000000 -H mocaml_history.ml ledit -x -u -l $COLUMNS -h mocaml_history.ml /home/lilian/.mocaml/launch_noANSI.sh'
 
 # Interpréter les fichiers. Bien mieux que 'ocaml file1.ml file2.ml'.
-iocaml() {
+ocamls() {
     for i in "$@"; do
         cat "${i}" >> /tmp/iocaml.ml
         echo -e "(** OCaml on ${i}:1:1 *)" >> /tmp/iocaml.log
         /usr/bin/ocaml graphics.cma < "${i}" 2>&1 | tee -a /tmp/iocaml.log | sed s_//toplevel//_"${i}"_ | pygmentize -l ocaml -P encoding="$(file -b --mime-encoding "${i}")"
     done
 }
+alias jupyter-iocaml="jupyter notebook --Session.key=''"
+
 # Reference for this is https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
-complete -f -X '!*.ml' -o plusdirs ocaml ocamlc ocamlopt leocaml leditocaml rlocaml mocaml mocaml_noANSI iocaml
+complete -f -X '!*.ml' -o plusdirs ocaml ocamlc ocamlopt leocaml leditocaml rlocaml mocaml mocaml_noANSI ocamls iocaml jupyter-iocaml
 
 ########################################################################
 # Outil pygmentize : permet une coloration syntaxique dans la console
