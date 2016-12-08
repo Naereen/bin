@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# author: Lilian BESSON
-# email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# date: 07-12-2016
-# web: https://bitbucket.org/lbesson/bin/src/master/Smooth_Name.sh
+# Author: Lilian BESSON
+# Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
+# Date: 07-12-2016
+# Web: https://bitbucket.org/lbesson/bin/src/master/Smooth_Name.sh
 #
 # A small script to rename all files in a directory semi-automatically.
 # The main purpose is to smooth filenames in order for generatejplayer to work more nicely.
