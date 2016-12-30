@@ -125,10 +125,10 @@ def main(comptes, taux=taux2016):
         etiquettes.append(u'{} : {} € (à {}% $\\rightarrow$ {} €)'.format(k, comptes[k], taux[k], round(comptes[k] * taux[k] / 100.0, 2)))
         legendes.append(u'{:6} (taux {:5}%)'.format(k, taux[k]))
     print("Étiquettes du diagrame : <black>{}<white>".format(etiquettes))
-    explode = [0.1] * len(valeurs)  # Explode the pie chart
+    explode = [0.05] * len(valeurs)  # Explode the pie chart
     colors = palette(len(valeurs))
 
-    plt.pie(valeurs, labels=etiquettes, explode=explode, colors=colors, labeldistance=1.03, startangle=135)
+    plt.pie(valeurs, labels=etiquettes, explode=explode, colors=colors, labeldistance=1.05, startangle=135)
     plt.legend(legendes, loc='lower right')
 
     mydate = time.strftime('%d %b %Y', time.localtime())
