@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON, (C) 2016-oo
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 22-02-2016.
+# Date: 13-12-2016.
 # Web: https://bitbucket.org/lbesson/bin/src/master/git-blame-last-commit.sh
 #
 # List the lines modified bthe last commit of a git repository.
@@ -9,7 +9,7 @@
 # Usage: git-blame-last-commit.sh [FILES]
 #
 # Licence: MIT Licence (http://lbesson.mit-license.org).
-version="0.2"
+version="0.3"
 
 # http://redsymbol.net/articles/unofficial-bash-strict-mode/
 # set -euo pipefail
@@ -47,18 +47,21 @@ commitid="$(git log|head -n1|less|sed 's/commit //'| sed -r "s:\x1B\[[0-9;]*[mK]
 
 # Show the blame, either for one file or all
 if [ "X$@" = "X" ]; then
-    echo -e "\n${red}No file was given, using all the files in the current directory:"
-    ls ./*.*
-    for i in ./*.*; do
-        echo -e "  - ${blue}For the file${white} '${u}${i}${U}':"
-        git blame "${i}" | grep --color=always "${commitid:0:8}" | less -r
-    done
+    echo -e "${red}No file was given${white}, using all the files in the current directory (depth 1):"
+    # for i in $(find . -maxdepth 1 -type f); do
+    #     output=$(git blame "${i}" 2>/dev/null | grep --color=always "${commitid:0:8}")
+    #     if [ "X$output" != "X" ]; then
+    #         echo -e "  - ${blue}For the file${white} '${u}${i}${U}':"
+    #         echo $output | less -r
+    #     fi
+    # done
+    # git blame $(find . -maxdepth 1 -type f) | grep --color=always "${commitid:0:8}" | less -r
 else
     git blame "$@" | grep --color=always "${commitid:0:8}" | less -r
 fi
 
 # This is better
-echo -e "\n\n${black}Using ${green}'git show HEAD'${black}:${white}"
+echo -e "\n${black}Using ${green}'git show HEAD'${black}:${white}"
 # git show HEAD | less -r
 git show HEAD
 
