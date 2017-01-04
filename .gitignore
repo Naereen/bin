@@ -3,6 +3,7 @@
 
 # Temp and backups
 *~
+*.pyc
 
 # GPG signatures
 *.asc
