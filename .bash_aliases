@@ -1,6 +1,6 @@
 #!/bin/bash
 # .bash_aliases for GNU Bash v4+
-# (c) 2011-2016 Lilian BESSON
+# (c) 2011-2017 Lilian BESSON
 # GPLv3 Licensed
 # Cr@ns: http://perso.crans.org/besson
 # On Bitbucket:   https://bitbucket.org/lbesson/bin/
@@ -1105,8 +1105,10 @@ alias ↑='Push'
 alias v='Pull'
 alias ↓='Pull'
 
+export PYTHONIOENCODING='UTF-8'
+
 ##############################################################################
-# (c) 2011-2016 Lilian BESSON
+# (c) 2011-2017 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
 # On Bitbucket:   https://bitbucket.org/lbesson/bin/
 #
