@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # author: Lilian BESSON
 # email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# date: 13-08-2016.
+# date: 05-01-2017.
 # web: https://bitbucket.org/lbesson/bin/src/master/rename_dirname.sh
 #
 # Rename every picture in a directory based on the name of directory (not recursive).
@@ -17,7 +17,7 @@
 
 ext="${1:-JPG}"
 
-smallext="$( echo "${ext}" | tr A-Z a-z )"
+smallext="$( echo "${ext}" | tr '[:upper:]' '[:lower:]' )"
 destext="${2:-$smallext}"
 
 echo -e "${yellow}rename_dirname.sh${white} working with the extension ${red}${ext}${white} and the destination extension ${red}${destext}${white}."
@@ -64,4 +64,5 @@ for myfile in $( find . -maxdepth 1 -iname '*'."${ext}" | sort ); do
 done
 
 echo -e "${green}Done :)${white}"
+
 # End of rename_dirname.sh
