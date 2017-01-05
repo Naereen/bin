@@ -3,7 +3,7 @@
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Web version: http://perso.crans.org/besson/bin/GenerateStatsMarkdown.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/GenerateStatsMarkdown.sh
-# Date: 07-10-2016
+# Date: 05-01-2017
 #
 # A small script to create a minimalistic Markdown status page for my machine, available locally at http://0.0.0.0/stats.html
 #
@@ -68,7 +68,10 @@ echo "${MY_IP:-"Not connected"}" >> "$dest"
 echo -e "</pre>\n\n## [Adresse IP externe](http://monip.org)\n> <pre>" >> "$dest"
 wget --tries=5 --quiet monip.org -O - | html2text -width 50 | grep -v "^$" >> "$dest"
 
-echo -e "</pre>\n\n## [Statut NGinx](munin/localdomain/localhost.localdomain/index.html#nginx)\n> <pre>" >> "$dest"
+echo -e "</pre>\n\n## [Météo (forecast.io)](https://forecast.io/)\n<figure>" >> "$dest"
+echo -e "<iframe height='380' width='1100' style='border:none;' frameborder='0' scrolling='no' src='https://forecast.io/'><a href='https://forecast.io/'>Go see the forecast.io website.</a> Your browser seems to not be able to display a iframe tag.</iframe></figure>" >> "$dest"
+
+echo -e "\n\n## [Statut NGinx](munin/localdomain/localhost.localdomain/index.html#nginx)\n> <pre>" >> "$dest"
 /home/lilian/bin/nginx_status.sh >> "$dest"
 # nginx_status.sh >> "$dest"
 
@@ -115,10 +118,10 @@ echo -e "\n- <a href='resource://jid0-hynmqxa9zqgfjadreri4n2ahksi-at-jetpack/dat
 echo -e "\n\n## Stats <a href='https://wakatime.com/dashboard'>WakaTime</a>\n" >> "$dest"
 # wakatime.js -w >> "$dest"
 # mywakatime -w >> "$dest"
-echo -e "\n<figure><embed width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/5d1ec603-73b0-44b9-b61e-5eeda2490e51.svg'></embed></figure>" >> "$dest"
-echo -e "\n<figure><embed width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/9f6c0b0b-6806-4afa-9a4e-651ee6201be0.svg'></embed></figure>" >> "$dest"
+echo -e "\n<figure><embed style='text_align:center;margin-left:auto;margin-right:auto;' width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/5d1ec603-73b0-44b9-b61e-5eeda2490e51.svg'></embed></figure>" >> "$dest"
+echo -e "\n<figure><embed style='text_align:center;margin-left:auto;margin-right:auto;' width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/9f6c0b0b-6806-4afa-9a4e-651ee6201be0.svg'></embed></figure>" >> "$dest"
 
-# XXX it was costing to much
+# XXX it was costing too much CPU time
 # Optionnal Selfspy visualisation (selfstats, selfspy-vis, cf. https://github.com/Naereen/selfspy-vis))
 #type selfstats >/dev/null
 #if [ "X$?" = "X0" ]; then
@@ -146,9 +149,9 @@ echo -e "\n</xmp><script type=\"text/javascript\" src=\"_static/md/strapdown.min
 # Notify the user
 if [ "X$1" = "Xcron" ]; then
 	echo -e "${blue}Tâche lancée via gnome-schedule ou cron ou crontab.${white}"
-	notify-send "GenerateStatsMarkdown.sh" "Fichier de statistiques bien généré ($dest).\n<small>(Tâche lancée via gnome-schedule ou cron ou crontab)</small>"
+	notify-send "GenerateStatsMarkdown.sh" "Fichier de statistiques bien généré (<i>$dest</i>).\n<small>(Tâche lancée via gnome-schedule ou cron ou crontab)</small>"
 else
-	notify-send "GenerateStatsMarkdown.sh" "Fichier de statistiques bien généré ($dest)."
+	notify-send "GenerateStatsMarkdown.sh" "Fichier de statistiques bien généré (<i>$dest</i>)."
 fi
 
 echo -e "${green}Done !${white} (date: $(date))"
