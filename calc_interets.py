@@ -38,11 +38,11 @@ except ImportError:
 
 # Valeurs EMPIRIQUES des taux d'intérêts.
 taux2016 = {'CCP': 0.00,
-            'LA': 0.75,
+            'LA': 0.58,
             'LEP': 1.25,
-            'LJ': 1.75,
+            'LJ': 1.71,
             'PEA': 0.00,
-            'PEL': 2.10,
+            'PEL': 2.25,
             'CCP2': 0.00,
             }
 
