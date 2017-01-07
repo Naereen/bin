@@ -3,7 +3,7 @@
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
 # Web version: http://perso.crans.org/besson/bin/GenerateStatsMarkdown.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/GenerateStatsMarkdown.sh
-# Date: 05-01-2017
+# Date: 07-01-2017
 #
 # A small script to create a minimalistic Markdown status page for my machine, available locally at http://0.0.0.0/stats.html
 #
@@ -44,7 +44,7 @@ if [ -f "$dest" ]; then
 fi
 
 # Header
-hstn=$(hostname)
+hstn="$(hostname)"
 echo -e "<!DOCTYPE html><html><head><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/><title>Stats pour ${hstn}</title></head><body><xmp theme=\"${theme}\">" > "$dest"
 echo -e "# Informations systèmes pour [*${hstn}*](http://0.0.0.0/)" >> "$dest"
 echo -e "> #### Signaler *tout problème* à [jarvis @ crans . org](mailto:jarvisATcransDOTorg) ou via [bitbucket](https://bitbucket.org/lbesson/bin/issues/new).\n> #### Données mises à jour le **$(date "+%c")**." >> "$dest"
@@ -67,13 +67,14 @@ echo "${MY_IP:-"Not connected"}" >> "$dest"
 
 echo -e "</pre>\n\n## [Adresse IP externe](http://monip.org)\n> <pre>" >> "$dest"
 wget --tries=5 --quiet monip.org -O - | html2text -width 50 | grep -v "^$" >> "$dest"
+echo -e "</pre>\n<pre>" >> "$dest"
+if type ipinfo.sh &>/dev/null; then ipinfo.sh | sed s/'^'/'- '/; else curl --silent ipinfo.io | python -m json.tool | grep -v "\(\{\|\}\)" | sed s/'"'//g | sed s/'^   '/'-'/; fi | sort >> "$dest"
 
 echo -e "</pre>\n\n## [Météo (forecast.io)](https://forecast.io/)\n<figure>" >> "$dest"
-echo -e "<iframe height='380' width='1100' style='border:none;' frameborder='0' scrolling='no' src='https://forecast.io/'><a href='https://forecast.io/'>Go see the forecast.io website.</a> Your browser seems to not be able to display a iframe tag.</iframe></figure>" >> "$dest"
+echo -e "<iframe height='400' width='100%' style='border:none;' frameborder='0' scrolling='no' src='https://forecast.io/'><a href='https://forecast.io/'>Go see the forecast.io website.</a> Your browser seems to not be able to display a iframe tag.</iframe></figure>" >> "$dest"
 
 echo -e "\n\n## [Statut NGinx](munin/localdomain/localhost.localdomain/index.html#nginx)\n> <pre>" >> "$dest"
-/home/lilian/bin/nginx_status.sh >> "$dest"
-# nginx_status.sh >> "$dest"
+if type nginx_status.sh &>/dev/null; then nginx_status.sh; fi >> "$dest"
 
 echo -e "</pre>\n\n## [Durée d'activité](munin/localdomain/localhost.localdomain/uptime.html) - $(uptime --pretty | sed s/'up '/''/)\n> <pre>" >> "$dest"
 uptime >> "$dest"
@@ -85,16 +86,16 @@ echo -e "</pre>\n\n## [Mémoire RAM et swap](munin/localdomain/localhost.localdo
 free -h >> "$dest"
 
 echo -e "</pre>\n\n## Message du jour\n> <pre>" >> "$dest"
-cat "${HOME}"/motd | grep -v '^$' >> "$dest"
+[ -f "${HOME}"/motd ] && cat "${HOME}"/motd | grep -v '^$' >> "$dest"
 
-echo -e "</pre>\n\n## Série en cours\n> <pre>" >> "$dest"
-head -n 1 "${HOME}"/current >> "$dest"
+echo -e "</pre>\n\n## Séries en cours\n> <pre>" >> "$dest"
+[ -f "${HOME}"/current ] && head -n 3 "${HOME}"/current >> "$dest"
 
 # Stats CUPS
 echo -e "</pre>\n\n## [Documents imprimés](munin/localdomain/localhost.localdomain/printed_docs.html) aujourd'hui\n> <pre>" >> "$dest"
 wget --quiet 'http://127.0.0.1:631/jobs?which_jobs=completed' -O /tmp/cups_completed_jogs_log.html
-echo "- Nombre de documents : $(html2text -width 1000 /tmp/cups_completed_jogs_log.html | grep -B 1 "$(date "+%a %d %b %Y")" | grep -c completed)" >> "$dest"
-echo "- Nombre de pages : $(html2text -width 1000 /tmp/cups_completed_jogs_log.html | grep -B 1 "$(date "+%a %d %b %Y")" | grep completed | awk ' { print $3 }' | grep -o "[0-9]*" | python -c 'import sys; print(sum(map(int, sys.stdin)))')" >> "$dest"
+echo "- Nombre de documents : $(html2text -width 1000 /tmp/cups_completed_jogs_log.html | grep -B 1 "$(date "+%a %d %b %Y")" | grep -c "completed")" >> "$dest"
+echo "- Nombre de pages : $(html2text -width 1000 /tmp/cups_completed_jogs_log.html | grep -B 1 "$(date "+%a %d %b %Y")" | grep "completed" | awk ' { print $3 }' | grep -o "[0-9]*" | python -c 'import sys; print(sum(map(int, sys.stdin)))')" >> "$dest"
 
 # Stats uLogMe
 echo -e "</pre>\n\n## Stats <a href='https://github.com/Naereen/uLogMe/'>uLogMe</a>\n" >> "$dest"
@@ -114,10 +115,10 @@ echo -e "\n\n## Statistiques locales\n" >> "$dest"
 echo -e "\n- <a href='resource://jid0-hynmqxa9zqgfjadreri4n2ahksi-at-jetpack/data/index.html' target='_blank'>Mind the Time</a> (Firefox browsing, local data)" >> "$dest"  # XXX resource:// link does not work from http(s?):// pages
 # echo -e "\n- <a href='file:///home/lilian/Public/stats.html' target='_blank'>Local version of this stats.html file</a>" >> "$dest"  # XXX file:// link does not work from http(s?):// pages
 
-# Stats WakaTime. FIXME do this more generally
+# Stats WakaTime.
 echo -e "\n\n## Stats <a href='https://wakatime.com/dashboard'>WakaTime</a>\n" >> "$dest"
-# wakatime.js -w >> "$dest"
-# mywakatime -w >> "$dest"
+# wakatime.js -w >> "$dest"  # DEBUG that's not working!
+# mywakatime -w >> "$dest"   # DEBUG that's not working!
 echo -e "\n<figure><embed style='text_align:center;margin-left:auto;margin-right:auto;' width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/5d1ec603-73b0-44b9-b61e-5eeda2490e51.svg'></embed></figure>" >> "$dest"
 echo -e "\n<figure><embed style='text_align:center;margin-left:auto;margin-right:auto;' width='680' type='image/svg+xml' src='https://wakatime.com/@lbesson/9f6c0b0b-6806-4afa-9a4e-651ee6201be0.svg'></embed></figure>" >> "$dest"
 
@@ -143,7 +144,7 @@ else
 fi
 
 # XXX add http://perso.crans.org/besson/ before _static/
-echo -e "\n</xmp><script type=\"text/javascript\" src=\"_static/md/strapdown.min.js?src=GSM.sh?beacon\"></script>\n<noscript><img alt=\"GA|Analytics\" style=\"visibility: hidden; display: none;\" src=\"https://ga-beacon.appspot.com/UA-38514290-1/stats.html/theme_${theme}/?pixel\"/></noscript>\n</body></html>" >> "$dest"
+echo -e "\n</xmp><script type=\"text/javascript\" src=\"_static/md/strapdown.min.js?src=GSM.sh\"></script>\n<noscript><img alt=\"GA|Analytics\" style=\"visibility: hidden; display: none;\" src=\"https://ga-beacon.appspot.com/UA-38514290-1/stats.html/theme_${theme}/?pixel\"/></noscript>\n</body></html>" >> "$dest"
 
 
 # Notify the user
