@@ -184,8 +184,8 @@ ocamls() {
         /usr/bin/ocaml graphics.cma < "${i}" 2>&1 | tee -a /tmp/iocaml.log | sed s_//toplevel//_"${i}"_ | pygmentize -l ocaml -P encoding="$(file -b --mime-encoding "${i}")"
     done
 }
-alias jupyter-iocaml="jupyter notebook --Session.key='b\"\"'"
 # TODO this requires https://github.com/andrewray/iocaml/#installation (and maybe some local hack to make it work)
+alias jupyter-iocaml='DYLD_LIBRARY_PATH=/home/lilian/.opam/4.02.3/lib/stublibs/ && eval $(opam config env) && jupyter notebook --Session.key="b\"\""'
 
 # Reference for this is https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
 complete -f -X '!*.ml' -o plusdirs ocaml ocamlc ocamlopt leocaml leditocaml rlocaml mocaml mocaml_noANSI ocamls iocaml jupyter-iocaml
