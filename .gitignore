@@ -22,6 +22,7 @@ imagejs
 CorutilsViewer
 Marp
 ulogme*
+alacritty
 
 rg
 .bash_completion.d/rg.bash-completion
