@@ -68,7 +68,7 @@ dlplaylist() {
     echo -e "Apparently, the playlist's title is : '${yellow}${title}${white}'. Are you OK with it ? (${magenta}[Enter]${white} if OK)."
     $READ || exit
 
-    newdir="$(smoothnameone.sh "$title")"
+    newdir="$(smoothnameone.sh "${title//\//__}")"
     echo -e "There I will try to make and use the (new) directory : '${blue}${newdir}${white}'. Are you OK with it ? (${magenta}[Enter]${white} if OK)."
     $READ || exit
     mkdir "${newdir}"
