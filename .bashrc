@@ -419,6 +419,9 @@ fi
 
 pidof gpg-agent>/dev/null || eval $(gpg-agent --daemon) || echo "Failed to connect to gpg-agent daemon ('eval \$(gpg-agent --daemon')"
 
+# https://docs.coala.io/en/latest/Users/Shell_Autocompletion.html
+eval "$(register-python-argcomplete /usr/local/bin/coala)"
+
 ##############################################################################
 # (c) 2011-2016 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
