@@ -293,6 +293,7 @@ export Sdpt='lbesson@ssh.dptinfo.ens-cachan.fr:~/public_html/'
 export Szam='besson@zamok.crans.org:~/www/'
 export toprint="${Szam}dl/.p/toprint/"
 export Sjarvis=~/"Public/"
+export Sw='lilian_besson@ws3:~/'
 
 # Un outil pour les messages du jour
 alias motd='changemotd.sh --print'
@@ -790,6 +791,8 @@ alias s22='sshtmux 03.dptinfo.ens-cachan.fr'
 alias s04='sshtmux 04.dptinfo.ens-cachan.fr'
 alias s05='sshtmux 05.dptinfo.ens-cachan.fr'
 alias s06='sshtmux 06.dptinfo.ens-cachan.fr'
+alias sshws3='sshtmux lilian_besson@ws3'
+alias sw='sshws3'
 
 # Navigateur en console
 alias elinks='/usr/bin/elinks -verbose 0'
