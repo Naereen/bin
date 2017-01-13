@@ -774,7 +774,7 @@ pstree() { /usr/bin/pstree -a -h -s -c -U "$@"; }
 sshtmux() {
     if [ "Z$TMUX" = "Z" ]; then
         echo -e "${blue}Using tmux on remote server.$white"
-        ( /usr/bin/ssh -X -C -t "$@" "tmux -2 -q -u attach-session || tmux -2 -q -u" ) || ( alert ; echo -e "${red}Error, connection to $@ closed." )
+        ( /usr/bin/ssh -X -C -t "$@" "tmux -2 -q -u attach-session || byobu || tmux -2 -q -u" ) || ( alert ; echo -e "${red}Error, connection to $@ closed." )
     else
         echo -e "${red}Not using tmux on remote server. Unset \$TMUX to force this.$white"
         /usr/bin/ssh -X -C -t "$@" || ( alert ; echo -e "${red}Error, connection to $@ closed." )
