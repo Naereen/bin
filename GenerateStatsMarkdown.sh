@@ -104,6 +104,7 @@ echo -e "\n- [Single-day view](http://localhost:8124/index.html)" >> "$dest"
 
 # Links to other self-statistics
 echo -e "\n\n## Autres statistiques\n" >> "$dest"
+echo -e "\n - [Monitoring Workstations SCEE](http://monitoring/)" >> "$dest"
 echo -e "\n- [Suivi conso - Free Mobile](https://mobile.free.fr/moncompte/index.php?page=suiviconso)" >> "$dest"
 echo -e "\n- [Google Analytics](https://www.google.com/analytics/web/#home/a38514290w67185072p69122598/)" >> "$dest"
 echo -e "\n- [Google URL Shortener (goo.gl)](https://goo.gl/)" >> "$dest"
