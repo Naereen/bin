@@ -388,7 +388,7 @@ alias TailleCourante='LS_ECHO -e "*"; echo -e "${el}Taille du repertoire ${u}cou
 alias VeilleEcranNoir='xset dpms force standby'
 alias VeilleEcranNoirContinue='watch --interval=1 "echo -e \"Screen is sleeping, Ctrl+C, ^C to cancel.\" ; xset dpms force standby"'
 
-alias IpAdresses='ifconfig | grep "inet adr:"'
+alias IpAdresses='ifconfig | grep "inet"'
 
 # Get Linux kernel versions and informations
 alias version='cat /proc/version'

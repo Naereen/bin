@@ -7,7 +7,8 @@ echo "OK to use the one from ownCloud? [Enter]"
 read || exit
 
 echo -e "Synchronizing ~/TODO.rst..."
-mv -vf ~/TODO.rst /tmp/ && ln ~/ownCloud/cloud.openmailbox.org/TODO.rst ~/
+mv -vf ~/TODO.rst /tmp/
+ln ~/ownCloud/cloud.openmailbox.org/TODO.rst ~/
 echo -e "Synchronization for ~/TODO.rst done."
 ls -larth ~/TODO.rst
 file ~/TODO.rst
