@@ -160,7 +160,7 @@ alias unix2win='recode l1..windows-1250'
 alias unix2dos='recode l1..dos/CR-LF'
 
 # Pour installer directement :
-alias Installer='echo -e "Recherche des paquets demandés... Veuillez rentrer votre mot de passe :"; sudo apt-get install'
+alias Installer='echo -e "Recherche des paquets demandés... Veuillez rentrer votre mot de passe :"; sudo apt install'
 
 # Pour prononcer un son :
 alias Prononcer='espeak -s 170 -v french --stdin'
@@ -907,7 +907,7 @@ Currents() {
     done
 }
 
-alias UPDATE='( clear ; echo -e "You used the UPDATE alias: updating apt cache, upgrading, auto-removing and cleaning..."; sudo apt-get update ; sudo apt-get upgrade ; sudo apt-get autoremove ; sudo apt-get clean ; sudo apt-get autoclean ) || alert | tee /tmp/apt.log'
+alias UPDATE='( clear ; echo -e "You used the UPDATE alias: updating apt cache, upgrading, auto-removing and cleaning..."; sudo apt update ; sudo apt upgrade ; sudo apt autoremove ; sudo apt clean ; sudo apt autoclean ) || alert | tee /tmp/apt.log'
 
 # To avoid painfull &>$null& at the end of some commands that *should* be detached by default
 evince() { ( /usr/bin/evince "$@" || /usr/bin/firefox "$@" ) &> /dev/null & }
