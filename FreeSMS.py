@@ -249,6 +249,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.<reset><white>
         if argv:
             # Text of the SMS
             text = " ".join(argv)
+            text = text.replace("\\n", "\n")
+            # Durty hack to have true new lines in the message
         else:
             text = """Test SMS sent from {machinename} with FreeSMS.py (the {date}).
 
