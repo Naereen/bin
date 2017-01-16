@@ -9,11 +9,14 @@
 # Usage: mymake.sh ARG1 ARG2 ...
 #   - A better make command, which goes up in the folder, until it finds a valid Makefile file.
 #   - Additionally, it keeps looking as long as no rule has been found.
+#   - An optional --FreeSMS option can be given, in which case a text message is sent when a job failed or succeed (like the notification)
+#   - If the file ~/.use_FreeSMS_for_mymake is present, the option is turned on by default
 #
 # Licence: MIT Licence (http://lbesson.mit-license.org).
 #
-version="0.9"
+version="1.0"
 returncode="0"  # If success, return 0
+datestarting="$(date "+%T the %D")"
 
 # More details at http://redsymbol.net/articles/unofficial-bash-strict-mode/
 set -o pipefail
@@ -23,6 +26,11 @@ set -o pipefail
 # options
 JustVersion="false"
 JustBashCompletion="false"
+Use_FreeSMS="false"
+if [ -f ~/.use_FreeSMS_for_mymake ]; then
+    echo -e "The file '${black}~/.use_FreeSMS_for_mymake${white}' has been found, turning on the option ${cyan}--FreeSMS${white} ..."
+    Use_FreeSMS="true"
+fi
 
 for i in "$@"; do
     case "$i" in
@@ -37,6 +45,10 @@ for i in "$@"; do
         -npq )
             JustBashCompletion="true"
         ;;
+        --FreeSMS )
+            Use_FreeSMS="true"
+            shift
+        ;;
     esac
 done
 
@@ -48,6 +60,16 @@ if [ "X${JustVersion}" = "Xtrue" ]; then
     echo -e "  ${black}This program comes with ABSOLUTELY NO WARRANTY; for details see http://lbesson.mit-license.org${white}"
     "${makePath}" --version
     exit 1
+fi
+
+# Do we need to turn down the FreeSMS plugin ?
+if [ "X${Use_FreeSMS}" = "Xtrue" ]; then
+    if type FreeSMS.py &>/dev/null; then
+        echo -e "${cyan}Option '--FreeSMS' was found, and the program 'FreeSMS.py' is present : OK ...${white}"
+    else
+        Use_FreeSMS="false"
+        echo -e "${red}Option '--FreeSMS' was found, but the program 'FreeSMS.py' is not present : I am disabling the FreeSMS option ...${white}"
+    fi
 fi
 
 # Working variables
@@ -97,6 +119,7 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
                 2>&1 | tee "${LogFile}"
         fi
         returncode="$?"
+        datefinished="$(date "+%T the %D")"
 
         # XXX This is very specific, maybe there is a better way to detect it ?
         # Not with the returned error code of /usr/bin/make at least...
@@ -114,9 +137,15 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
             # No notifications if make was called by the bash auto-completion function (options '-npq -C'...) or if it failed because no rule
             if [ "X${JustBashCompletion}" != "Xtrue" ]; then
                 if [ "X${returncode}" = "X0" ]; then
-                       notify-send --icon=terminal "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>worked</b>, in the folder <i>'$(readlink -f "${old}${c}")'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> <b>:-)</b>"
+                    notify-send --icon=terminal "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>worked</b>, in the folder <i>'$(readlink -f "${old}${c}")'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> <b>:-)</b>"
+                    if [ "X${Use_FreeSMS}" = "Xtrue" ]; then
+                        FreeSMS.py "[SUCCESS] make on '$*' *worked*, in the folder '$(readlink -f "${old}${c}")' :-)\\n\\n- Job started at '${datestarting}', finished at '${datefinished}'.\\n\\n- Sent by $(basename "$0") v${version}, using FreeSMS.py by Lilian Besson."
+                    fi
                 else
-                   notify-send --icon=error "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>failed</b>, in the folder <i>'$(readlink -f "${old}${c}")'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> ..."
+                    notify-send --icon=error "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>failed</b>, in the folder <i>'$(readlink -f "${old}${c}")'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> ..."
+                    if [ "X${Use_FreeSMS}" = "Xtrue" ]; then
+                        FreeSMS.py "[FAILURE] make on '$*' *failed*, in the folder '$(readlink -f "${old}${c}")' :-(\\n\\n- Job started at '${datestarting}', finished at '${datefinished}'.\\n\\n- Sent by $(basename "$0") v${version}, using FreeSMS.py by Lilian Besson."
+                    fi
                 fi
             fi
         fi
