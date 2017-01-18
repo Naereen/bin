@@ -123,8 +123,9 @@ language = language[0:2] if language else "fr"
 
 # Maximum size that can be sent
 # XXX Reference: https://en.wikipedia.org/wiki/Short_Message_Service#Message_size
-MAX_SIZE = 3 * 159
-STR_MAX_SIZE = "3*159"
+# "6 to 8 segment messages are the practical maximum"
+MAX_SIZE = 6 * 159
+STR_MAX_SIZE = "6*159"
 
 
 
@@ -164,7 +165,7 @@ def send_sms(text="Empty!", secured=True):
     if len(text) > MAX_SIZE:
         printc(errorcodes["toolong"])
         nb_sub_messages = len(text) / MAX_SIZE
-        printc("\n<red>Warning<white>: message will be split in <red>{} pieces<white> of size smaller than <black>{} characters<white>...".format(nb_sub_messages, MAX_SIZE))
+        printc("\n<red>Warning<white>: message will be split in <red>{} piece{}<white> of size smaller than <black>{} characters<white>...".format(nb_sub_messages + 1, 's' if nb_sub_messages > 0 else '', MAX_SIZE))
         printc("  <magenta>Note that new lines and other information can be lost!<white>")
         for i, index in enumerate(range(0, len(text), MAX_SIZE)):
             answer = send_sms(text[index: index + MAX_SIZE])
