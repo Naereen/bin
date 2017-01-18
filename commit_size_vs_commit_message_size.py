@@ -23,8 +23,8 @@ def read_groups(data):
             buf = []
 
 
-def main():
-    command = 'git log --shortstat --log-size --format=oneline --no-merges'.split()
+def main(url):
+    command = 'git log --no-color --shortstat --log-size --format=oneline --no-merges'.split()
     data = subprocess.check_output(command).split('\n')
 
 
@@ -57,7 +57,7 @@ def main():
     f.write('<img src="commit_size_vs_commit_message_size.png" usemap="#points"/>')
     f.write('<map name="points">')
     for x_pixel, y_pixel, msg, commit in zip(xs_pixels, ys_pixels, msgs, commits):
-        f.write('<area shape="circle" coords="%d,%d,5" href="https://bitbucket.org/lbesson/web-sphinx/commit/%s" title="%s">' % (x_pixel, img_height-y_pixel, commit, msg.replace('"', '')))
+        f.write('<area shape="circle" coords="%d,%d,5" href="https://%s/commit/%s" title="%s">' % (x_pixel, img_height-y_pixel, url, commit, msg.replace('"', '')))
     f.write('</map>')
     f.close()
 
@@ -65,6 +65,9 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main("bitbucket.org/lbesson/bin")
+    # main("bitbucket.org/lbesson/web-sphinx")
+    # main("bitbucket.org/lbesson/lbesson.bitbucket.org")
+    main("github.com/sphinx-doc/sphinx")
 
 # End of commit_size_vs_commit_message_size.py
