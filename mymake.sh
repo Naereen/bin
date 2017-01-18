@@ -16,7 +16,7 @@
 #
 version="1.0"
 returncode="0"  # If success, return 0
-datestarting="$(date "+%T the %D")"
+datestarting="$(date "+%T - %D")"
 
 # More details at http://redsymbol.net/articles/unofficial-bash-strict-mode/
 set -o pipefail
@@ -107,7 +107,7 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
     # Now using it to execute make
     if [ -f "${old}${c}Makefile" ]; then
         echo -e "${green}${NameOfMakefile}${white} is there, I'm using it :"
-        echo -e "Calling... ${black}'" time /usr/bin/make -w --file="${NameOfMakefile}" "$@" "'${white}..."
+        echo -e "Calling... ${black}'" time "${makePath}" -w --file="${NameOfMakefile}" "$@" "| tee ${LogFile} '${white}..."
         if [ "X${JustBashCompletion}" != "Xtrue" ]; then
             time "${makePath}" -w --file="${NameOfMakefile}" "$@" \
                 3>&1 1>&2 2>&3 \
@@ -119,7 +119,7 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
                 2>&1 | tee "${LogFile}"
         fi
         returncode="$?"
-        datefinished="$(date "+%T the %D")"
+        datefinished="$(date "+%T - %D")"
 
         # XXX This is very specific, maybe there is a better way to detect it ?
         # Not with the returned error code of /usr/bin/make at least...
@@ -136,15 +136,22 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
         else
             # No notifications if make was called by the bash auto-completion function (options '-npq -C'...) or if it failed because no rule
             if [ "X${JustBashCompletion}" != "Xtrue" ]; then
+                runningfolder="$(readlink -f "${old}${c}")"
+                runningfolder="${runningfolder#$HOME/}/"
                 if [ "X${returncode}" = "X0" ]; then
-                    notify-send --icon=terminal "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>worked</b>, in the folder <i>'$(readlink -f "${old}${c}")'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> <b>:-)</b>"
+                    notify-send --icon=terminal "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>worked</b>, in the folder <i>'${runningfolder}'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> <b>:-)</b>"
                     if [ "X${Use_FreeSMS}" = "Xtrue" ]; then
-                        FreeSMS.py "[SUCCESS] make on '$*' *worked*, in the folder '$(readlink -f "${old}${c}")' :-)\\n\\n- Job started at '${datestarting}', finished at '${datefinished}'.\\n\\n- Sent by $(basename "$0") v${version}, using FreeSMS.py by Lilian Besson."
+                        FreeSMS.py "[SUCCESS] make on '$*' *worked*, in the folder '${runningfolder}' :-)\\n- Job started at '${datestarting}', finished at '${datefinished}'.\\n- Sent by $(basename "$0") v${version}, using FreeSMS.py by Lilian Besson."
                     fi
                 else
-                    notify-send --icon=error "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>failed</b>, in the folder <i>'$(readlink -f "${old}${c}")'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> ..."
+                    notify-send --icon=error "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>failed</b>, in the folder <i>'${runningfolder}'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> ..."
                     if [ "X${Use_FreeSMS}" = "Xtrue" ]; then
-                        FreeSMS.py "[FAILURE] make on '$*' *failed*, in the folder '$(readlink -f "${old}${c}")' :-(\\n\\n- Job started at '${datestarting}', finished at '${datefinished}'.\\n\\n- Sent by $(basename "$0") v${version}, using FreeSMS.py by Lilian Besson."
+                        lastlogfile="$(find . -maxdepth 1 -type f -iname '*'.log -printf '%C@ : %p\n' | sort | tail -n1 | awk '{ print $3 }')"
+                        errormsg=""
+                        if [ -f "${lastlogfile}" ]; then
+                            errormsg="\\n- Error:\n$(tail -n8 "${lastlogfile}" | ansi2txt)"
+                        fi
+                        FreeSMS.py "[FAILURE] make on '$*' *failed*, in the folder '${runningfolder}' :-(\\n- Job started at '${datestarting}', finished at '${datefinished}'.${errormsg}\\n- Sent by $(basename "$0") v${version}, using FreeSMS.py by Lilian Besson."
                     fi
                 fi
             fi
