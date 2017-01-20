@@ -3,7 +3,9 @@
 """
 A simple Python 2.7+ / 3.1+ script to send a text message to a Free Mobile phone.
 
-- Copyleft 2014-16 Lilian Besson
+- Warning: it only works in France to a French number, using the mobile operator Free Mobile.
+- Warning: some initial configuration is required before running this script (see the error messages).
+- Copyleft 2014-17 Lilian Besson
 - License GPLv3.
 
 Examples
@@ -124,8 +126,8 @@ language = language[0:2] if language else "fr"
 # Maximum size that can be sent
 # XXX Reference: https://en.wikipedia.org/wiki/Short_Message_Service#Message_size
 # "6 to 8 segment messages are the practical maximum"
-MAX_SIZE = 6 * 159
-STR_MAX_SIZE = "6*159"
+MAX_SIZE = 4 * 159
+STR_MAX_SIZE = "4*159"
 
 
 
