@@ -149,7 +149,7 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
                         lastlogfile="$(find . -maxdepth 1 -type f -iname '*'.log -printf '%C@ : %p\n' | sort | tail -n1 | awk '{ print $3 }')"
                         errormsg=""
                         if [ -f "${lastlogfile}" ]; then
-                            errormsg="\\n- Error:\n$(tail -n8 "${lastlogfile}" | ansi2txt)"
+                            errormsg="\\n- Error:\n$(tail -n6 "${lastlogfile}" | ansi2txt)"
                         fi
                         FreeSMS.py "[FAILURE] make on '$*' *failed*, in the folder '${runningfolder}' :-(\\n- Job started at '${datestarting}', finished at '${datefinished}'.${errormsg}\\n- Sent by $(basename "$0") v${version}, using FreeSMS.py by Lilian Besson."
                     fi
