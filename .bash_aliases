@@ -955,7 +955,7 @@ alias bd='. bd -s'
 # Or directly: 'ExplainShell grep -C 2 -n -m 10 grep .bash_history' for example
 ExplainShell() { /usr/bin/firefox http://explainshell.com/explain?cmd="${*// /%20}" &>/dev/null & }
 
-alias Tor='~/.local/tor-browser_fr/start-tor-browser'
+alias Tor='cd ~/.local/tor-browser ; ./start-tor-browser &'
 
 # Quickly play my favorite TV series
 alias kaamelott='/usr/bin/vlc --random ~/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
