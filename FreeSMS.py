@@ -251,7 +251,13 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.<reset><white>
     else:
         if argv:
             # Text of the SMS
-            text = " ".join(argv)
+            if isinstance(argv, list):
+                text = " ".join(argv)
+            elif isinstance(argv, str):
+                text = argv
+            else:
+                printc("<Warning>argv seems to be of unknown type (not list, not str, but {}) ...".format(type(argv)))
+                text = argv
             text = text.replace("\\n", "\n")
             # Durty hack to have true new lines in the message
         else:
