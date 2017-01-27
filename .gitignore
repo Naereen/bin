@@ -23,6 +23,8 @@ CorutilsViewer
 Marp
 ulogme*
 alacritty
-
+charm
+vpnc-script
 rg
 .bash_completion.d/rg.bash-completion
+
