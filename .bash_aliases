@@ -376,7 +376,9 @@ complete -f -X '!*.@(tex|pdf)' -o plusdirs tex2pdf TEX2PDF qpdf
 md2pdf() {
     for i in "$@"; do
         i="${i//.pdf/.md}"
-        pandoc -t latex -o "${i%md}pdf" "i"
+        pandoc --verbose -to=latex --output="${i%md}pdf" "$i"
+        # [ -f "{i%md}pdf" ] && PDFCompress "${i%md}pdf"
+        # [ -f "{i%md}pdf" ] && evince "${i%md}pdf" &>/dev/null&
     done
 }
 complete -f -X '!*.@(md|pdf)' -o plusdirs md2pdf
