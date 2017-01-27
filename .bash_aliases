@@ -372,6 +372,15 @@ TEX2PDF() {
 }
 complete -f -X '!*.@(tex|pdf)' -o plusdirs tex2pdf TEX2PDF qpdf
 
+# A small alias to convert .md to .pdf with Pandoc
+md2pdf() {
+    for i in "$@"; do
+        i="${i//.pdf/.md}"
+        pandoc -t latex -o "${i%md}pdf" "i"
+    done
+}
+complete -f -X '!*.@(md|pdf)' -o plusdirs md2pdf
+
 # A better and smaller bibtex2html command, with good options
 alias bib2html='bibtex2html -u -charset utf-8 -linebreak -debug'
 complete -f -X '!*.@(bib)' -o plusdirs bibtex2html bib2html
