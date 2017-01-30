@@ -13,11 +13,11 @@ from __future__ import print_function  # Python 2 compatibility if needed
 # Constantes
 repas = 15.25
 hotel = 150
-taxeSejour = 1.65
-metro = 1.4
+taxeSejour = 0  # 1.65
+metro = 1.5
 
 
-def main(nbJour=3, nbRepas=None, trains=None, nbNuit=None):
+def main(nbJour=3, nbRepas=None, trains=None, nbNuit=None, totalHotel=None):
     """ Calcule et affiche les détails des frais de mission.
 
     Par exemple :
@@ -41,7 +41,10 @@ def main(nbJour=3, nbRepas=None, trains=None, nbNuit=None):
     total += totalRepas
 
     # Hôtel
-    print("\n- Pour l'hôtel : déjà réglé avant, normalement. Sinon, max", hotel, "€ par nuit.")
+    if totalHotel:
+        print("\n- Pour l'hôtel, un total de", totalHotel, "€.")
+    else:
+        print("\n- Pour l'hôtel : déjà réglé avant, normalement. Sinon, max", hotel, "€ par nuit.")
     if nbNuit is None:
         nbNuit = nbJour - 1
         print("  ", nbJour, "jours sur place, soit", nbNuit, "nuits d'hôtel (par défaut)")
@@ -76,13 +79,13 @@ def main(nbJour=3, nbRepas=None, trains=None, nbNuit=None):
 
 
 if __name__ == '__main__':
-    # Mission #2 en décembre 2016.
+    # Mission #3 en janvier 2017.
     trains = {
-        "Rennes > Lille": (44.00, "14/12/16"),
-        "Lille > Paris ": (25.50, "16/12/16"),
-        "Paris > Rennes": (35.00, "03/01/17"),
+        "Rennes > Lille": (44.00, "24/01/17"),
+        "Lille > Paris ": (25.50, "27/01/17"),
+        "Paris > Rennes": (35.00, "29/01/17"),
     }
-    main(nbJour=3, trains=trains)
+    main(nbJour=4, trains=trains, nbRepas=5, totalHotel=97.50)
 
     # TODO prochaines missions !
 
