@@ -162,6 +162,7 @@ autotexf() {
     fi
 
     # TODO: for BibTeX ?
+    # CP *.bib /tmp/
 
     cd /tmp/
     rm -v -f -- /tmp/${template%.tex}.pdf
@@ -171,6 +172,7 @@ autotexf() {
 
     echo -e "\n\n\n===============================================================================\n\n\n"
     # $pdflatex $template && $pdflatex $template && \
+    # bibtex ${template%.tex} && \
     $pdflatex $template && $pdflatex $template && \
         mv -f -v -- ${template%.tex}.pdf "$p"/"${f%.tex}".pdf
     answ="$?"
