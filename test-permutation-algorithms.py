@@ -64,7 +64,7 @@ def second_permutations(iterable):
         return reduce(lambda acc, x: acc + head_of_all(x, second_permutations(rm(x, iterable))), iterable, [])
 
 
-# --- Second algorithm : Johnson Trotter algorithm
+# --- Third algorithm : Johnson Trotter algorithm
 left = False
 right = True
 
@@ -140,7 +140,7 @@ def scan_flip_larger(x, a):
 
 
 def third_permutations(iterable):
-    """Second algorithm, Johnson Trotter algorithm."""
+    """Third algorithm, Johnson Trotter algorithm."""
     i = sorted(list(iterable))  # Required by the algorithm
     a = attach_direction(i)
     r = list(iterable)[:]
