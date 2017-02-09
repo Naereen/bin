@@ -146,10 +146,13 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
                 else
                     notify-send --icon=error "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>failed</b>, in the folder <i>'${runningfolder}'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> ..."
                     if [ "X${Use_FreeSMS}" = "Xtrue" ]; then
-                        lastlogfile="$(find . -maxdepth 2 -type f -iname '*'.log -printf '%C@ : %p\n' | sort | tail -n1 | awk '{ print $3 }')"
+                        # Search for the last modified log file, either *.log or *log.txt, in . or any sub dir of depth 1
+                        # Then print is last modified time stamp in decimal seconds, sort it, take last one, remove date
+                        lastlogfile="$(find . -maxdepth 2 -type f \( -iname '*'.log -o -iname '*'log.txt \) -printf '%T@ : %p\n' | sort -n | tail -n1 | awk '{ print $3 }')"
                         errormsg=""
                         if [ -f "${lastlogfile}" ]; then
-                            errormsg="\\n- Error:\n$(tail -n6 "${lastlogfile}" | ansi2txt)"
+                            # Reading the last modified log file, to txt, remove empty lines, keep 5 lines
+                            errormsg="\\n- Error:\n$(tail -n20 "${lastlogfile}" | ansi2txt | grep -v '^$' | tail -n5)"
                         fi
                         FreeSMS.py "[FAILURE] make on '$*' *failed*, in the folder '${runningfolder}' :-(\\n- Job started at '${datestarting}', finished at '${datefinished}'.${errormsg}\\n- Sent by $(basename "$0") v${version}, using FreeSMS.py by Lilian Besson."
                     fi
