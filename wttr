@@ -1,0 +1,4 @@
+#!/bin/bash
+# https://github.com/chubin/wttr.in
+# Source: curl wttr.in/:bash.function
+curl --silent -H "Accept-Language: ${LANG%_*}" wttr.in/"${1:-Rennes}" | head -n-3
