@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # author: Lilian BESSON
 # email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# date: 22-04-2016
+# date: 13-02-2017
 # web: https://bitbucket.org/lbesson/bin/src/master/smoothnameone.sh
 #
 # A small script to smooth filenames in order for my scripts to work more nicely.
@@ -25,6 +25,7 @@ i="$*"
 i="${i// \!/}"
 i="${i// \?/}"
 i="${i// /_}"
+i="${i//|/_}"
 i="${i//_-_/__}"
 i="${i//\~/_}"
 i="${i//,/_}"
