@@ -40,6 +40,8 @@ SLACK_CHANNEL = "#random"
 
 POISSON_TIME = 30 * seconds
 
+URL = "https://bitbucket.org/lbesson/bin/src/master/my-small-slack-bot.py"
+
 
 # --- Functions
 
@@ -62,6 +64,7 @@ def random_line(lines):
 
 def send(text, sc, use_channel=USE_CHANNEL):
     channel = SLACK_CHANNEL if use_channel else SLACK_USER
+    text = "{}\n(Sent by an open-source Python script, {}, written by Lilian Besson)".format(text, URL)
     logging.info("Sending the message {} to channel/user {} ...".format(text, channel))
     # https://github.com/slackapi/python-slackclient#sending-a-message
     return sc.api_call(
