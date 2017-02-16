@@ -45,7 +45,7 @@ USE_CHANNEL = True
 SLACK_USER = "@lilian"
 SLACK_CHANNEL = "#random"
 
-MEAN_TIME = 2 * (HOURS if USE_CHANNEL else 30)
+MEAN_TIME = (12 * HOURS) if USE_CHANNEL else 30
 
 URL = "https://bitbucket.org/lbesson/bin/src/master/my-small-slack-bot.py"
 
@@ -128,7 +128,7 @@ def send(text, sc, use_channel=USE_CHANNEL):
     # https://api.slack.com/methods/chat.postMessage
     return sc.api_call(
         "chat.postMessage", channel=channel, text=text,
-        username="my-small-slack-bot.py", icon_emoji=":robot_face:"
+        username="Citations aléatoires", icon_emoji=":robot_face:"
     )
 
 
