@@ -61,10 +61,10 @@ if [ "X${JustVersion}" = "Xtrue" ]; then
 fi
 
 # Variable
-depth=${1:-20}
+depth="${1:-20}"
 
 function du() {
-    du -h $* | sed s/'\t'/' : '/
+    du -h $* | sed s/'\t'/' : '/g
 }
 
 # First, visualize with...
@@ -79,17 +79,20 @@ time find . -maxdepth $depth -type f -iname '*'.mp3 -exec soundconverter -t -b -
 
 # Finally, print and check
 msg="Converting .mp3 to .ogg : done in $(pwd).\nNew files are $(find . -maxdepth $depth -type f -iname '*'.ogg -exec du {} \;)"
+echo -e "$msg"
 for command in notify-send FreeSMS.py; do
     echo -e "Executing :" "$command" "$msg" "..."  # DEBUG
+    echo -e "\n${green}OK to execute this?${white} [Enter or Ctrl+C]"
+    read || exit
     if type "$command" >/dev/null 2>/dev/null; then
         "$command" "$msg"
     fi
 done
 
 # Remove all .mp3 files if the .ogg have been converted correctly?
-for i in $(find . -maxdepth $depth -type f -iname '*'.ogg); do
-    j="${i%.ogg}.mp3"
-    echo -e "\n$(du ${j}) ---> $(du ${i})"
-    file "${i}"
-    rm -vi "${j}"
-done
+#for i in $(find . -maxdepth $depth -type f -iname '*'.ogg); do
+#    j="${i%.ogg}.mp3"
+#    echo -e "\n$(du ${j}) ---> $(du ${i})"
+#    file "${i}"
+#    rm -vi "${j}"
+#done
