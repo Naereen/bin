@@ -567,6 +567,26 @@ capitalize() {  # move filenames to Capitalize
     done
 }
 
+alias titlecase="python -c \"from sys import argv; from titlecase import titlecase; print(titlecase('\n'.join(argv[1:])))\""
+
+titlecase_all() {  # move filenames to Title Case
+    for file ; do
+        filename="${file##*/}"
+        case "$filename" in
+            */*) dirname==${file%/*} ;;
+            *) dirname=.;;
+        esac
+        nf="$(titlecase "$filename")"
+        newname="${dirname}/${nf}"
+        if [ "$nf" != "$filename" ]; then
+            mv "$file" "$newname"
+            echo "titlecase_all: $file --> $newname"
+        else
+            echo "titlecase_all: $file not changed."
+        fi
+    done
+}
+
 swap() {        # swap 2 filenames around
     local TMPFILE=tmp.$$
     mv "$1" $TMPFILE
