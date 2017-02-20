@@ -194,7 +194,9 @@ def send_sms(text="Empty!", secured=True):
     printc("\n<green>Your message is:<white>\n<yellow>" + text + "<white>")
     dictQuery = {"user": user, "pass": password, "msg": text}
     url = "http" + ("s" if secured else "")
-    printc("\nThe web-based query to the Free Mobile API (<u>{}://smsapi.free-mobile.fr/sendmsg?query<U>) will be based on:\n{}.".format(url, dumps(dictQuery, sort_keys=True, indent=4)))
+    string_query = dumps(dictQuery, sort_keys=True, indent=4)
+    string_query = string_query.replace(password, '*' * len(password))
+    printc("\nThe web-based query to the Free Mobile API (<u>{}://smsapi.free-mobile.fr/sendmsg?query<U>) will be based on:\n{}.".format(url, string_query))
 
     query = urlencode(dictQuery)
     url += "://smsapi.free-mobile.fr/sendmsg?{}".format(query)
