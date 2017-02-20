@@ -1001,7 +1001,7 @@ function random_scrubs_vo() {
 
 alias friends='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
 function random_friends() {
-    /usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
+    /usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &
     random-vrun-next.sh 5
 }
 #alias friends-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
