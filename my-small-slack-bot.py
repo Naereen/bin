@@ -38,7 +38,7 @@ HOURS = 60 * MINUTES
 
 QUOTE_FILE = os.getenv("quotes", expanduser(join("~", ".quotes.txt")))
 
-SLACK_TOKEN = "FIXME"
+SLACK_TOKEN = open(expanduser(join("~", ".slack_api_key")), 'r').readline().strip()
 
 USE_CHANNEL = False  # DEBUG
 USE_CHANNEL = True
