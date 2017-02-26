@@ -139,8 +139,24 @@ CD() {
 # Magie noire
 alias cd..="CD .."
 alias cdBack='CD "${OLDPWD:=$PWD}"'  # Nul : cd - fait la même chose !
+alias -- -='cd -'  # Cf. http://askubuntu.com/a/146034/
 alias cdP='cd "$(pwd -P)"'
 alias cd="CD"
+
+# ----------------------------------------------------------------------
+# Options for a better cd command, cf. https://github.com/mrzool/bash-sensible#sensible-bash
+
+# Prepend cd to directory names automatically
+shopt -s autocd 2> /dev/null
+# Correct spelling errors during tab-completion
+shopt -s dirspell 2> /dev/null
+# Correct spelling errors in arguments supplied to cd
+shopt -s cdspell 2> /dev/null
+
+# This defines where cd looks for targets
+# Add the directories you want to have fast access to, separated by colon
+# Ex: CDPATH=".:~:~/projects" will look for targets in the current working directory, in home and in the ~/projects folder
+CDPATH=".:~/publis/:~/ownCloud/cloud.openmailbox.org/"
 
 # Commandes avec SSH :
 alias ssh='/usr/bin/ssh -X -C'
@@ -235,20 +251,19 @@ xtitle() {
 
 # Autre outils pratiques
 Regler_son() {
-    xtitle "($(date)<$USER@$HOSTNAME> { AlsaMixer v1.0.25 }" || true
+    xtitle "$(date)<$USER@$HOSTNAME> { AlsaMixer v1.0.25 }" || true
     clear ; alsamixer; clear
 }
 
 Wavemon() {
-    xtitle "($(date)<$USER@$HOSTNAME> { Wavemon v0.7.6 }" || true
+    xtitle "$(date)<$USER@$HOSTNAME> { Wavemon v0.7.6 }" || true
     clear ; wavemon; clear
 }
 t() {
-    xtitle "($(date)<$USER@$HOSTNAME> { htop 1.0.3 }" || true
+    xtitle "$(date)<$USER@$HOSTNAME> { htop 1.0.3 }" || true
     htop || alert
     clear
 }
-
 
 captureEcran() {  # now the Alt+$ shortcut does the same!
     sleep 3s
@@ -406,7 +421,7 @@ alias IpAdresses='ifconfig | grep "inet"'
 alias version='cat /proc/version'
 
 # Check today content of Google Calendar (FIXME)
-alias CheckGoogleCalendar='google calendar today | grep "$(date \"+%d\")" && google --cal="Cours" calendar today | grep "$(date \"+%d\")"'
+alias CheckGoogleCalendar='google calendar today | grep "$(date \"+%d\")"'
 alias CalendarRandQuote='google calendar add "$(randquote)"'
 
 # Gobby Server
@@ -729,10 +744,8 @@ alias p='clear ; git push'
 alias Pull='clear ; git gc && git pull && git gc && git-blame-last-commit.sh'
 alias Status='clear ; git status'
 alias Commit='clear ; git commit -m'
-# Experimental
 alias c='clear ; git commit -m'
 alias Add='git add'
-# Experimental, as I don't use autotex that much these days...
 alias a='git add'
 alias Aggressive='git gc --aggressive'
 alias Sync='clear ; echo -e "Synchronizing (git push, gc, send_zamok)..."; git push; git gc --aggressive; make send_zamok; alert'
@@ -792,12 +805,12 @@ alias watch='watch -b -d -e'
 # Do a job, only for a certain amount of time
 # Exemple : DoForATime 60 my-very-long-command-that-can-never-terminate
 DoForATime(){
-    log=/tmp/DoForATime$(date "+%Hh-%Mm-%Ss").log
-    TIMEOUT=$1
+    log="/tmp/DoForATime$(date "+%Hh-%Mm-%Ss").log"
+    TIMEOUT="$1"
     shift
     echo -e "${reset}Launching $@, in $PWD, for $TIMEOUT seconds only." | tee "$log"
     echo -e "$white"
-    "$@" & { sleep ${TIMEOUT}; eval 'kill -9 $!' &>> "$log"; }
+    "$@" & { sleep "${TIMEOUT}"; eval 'kill -9 $!' &>> "$log"; }
 }
 
 pstree() { /usr/bin/pstree -a -h -s -c -U "$@"; }
@@ -879,10 +892,10 @@ Nginx_Start() {
         sudo nginx -s reload
     fi
     echo -e "${red} PIDs or command line of ${cyan}${u}nginx${U}${reset} :"
-    echo "$(pidof nginx)"
+    pidof nginx
 }
 
-# With Munin
+# With Munin
 Munin_Start() {
     echo -e "${blue} Last changes on ~/munin.conf on local git repository :${reset}"
     git diff ~/munin.conf
@@ -946,7 +959,7 @@ eog() { ( /usr/bin/eog "$@" || /usr/bin/ristretto "$@" ) &> /dev/null & }
 firefox() { ( /usr/bin/firefox "$@" || /usr/bin/elinks "$@" ) &> /dev/null & }
 
 vlc() {
-	if $(type gmusicbrowser &>/dev/null); then
+	if type gmusicbrowser &>/dev/null; then
 		echo -e "${blue}Pausing GMusicBrowser (with the 'gmusicbrowser -cmd' CLI tool)...${white}"
 		pidof gmusicbrowser &>/dev/null && gmusicbrowser -cmd Pause || echo -e "${red}Warning: GMusicBrowser not playing.${white}"
 	fi
@@ -957,7 +970,7 @@ vlc() {
 # linphone() { /usr/bin/linphone "$@" &> /dev/null & }
 libreoffice() { ( /usr/bin/libreoffice "$@" || /usr/bin/abiword "$@" ) &> /dev/null & }
 
-butterfly() {  # From pip install butterfly
+butterfly() {  # From 'pip install butterfly'
     butterfly.server.py --logging=none --unsecure &> /dev/null &
     echo -e "Butterfly running... Open your browser at http://127.0.0.1:57575/ to use the Butterfly terminal in your browser"
 }
@@ -977,34 +990,36 @@ ExplainShell() { /usr/bin/firefox http://explainshell.com/explain?cmd="${*// /%2
 
 alias Tor='cd ~/.local/tor-browser ; ./start-tor-browser &'
 
+function poisson() { python -c "from numpy.random import poisson; print(poisson(int($1)))"; }
+
 # Quickly play my favorite TV series
 alias kaamelott='/usr/bin/vlc --random ~/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
 #alias kaamelott-parole='parole --fullscreen ~/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
 function random_kaamelott() {
-    /usr/bin/vlc --random ~/Séries/Kaamelott/ >/dev/null 2>/dev/null &
+    /usr/bin/vlc --random --start-time=$(poisson $((10 * 3 * 60)) ) ~/Séries/Kaamelott/ >/dev/null 2>/dev/null &
     random-vrun-next.sh 3
 }
 
 alias scrubs='/usr/bin/vlc --random ~/Séries/Scrubs/ >/dev/null 2>/dev/null &'
 #alias scrubs-parole='parole --fullscreen ~/Séries/Scrubs/ >/dev/null 2>/dev/null &'
 function random_scrubs() {
-    /usr/bin/vlc --random ~/Séries/Scrubs/ >/dev/null 2>/dev/null &
+    /usr/bin/vlc --random --start-time=$(poisson $((6 * 60)) ) ~/Séries/Scrubs/ >/dev/null 2>/dev/null &
     random-vrun-next.sh 8
 }
 
 alias scrubs-vo='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" >/dev/null 2>/dev/null &'
 #alias scrubs-vo-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" >/dev/null 2>/dev/null &'
 function random_scrubs_vo() {
-    /usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" >/dev/null 2>/dev/null &
+    /usr/bin/vlc --random --start-time=$(poisson $((6 * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" >/dev/null 2>/dev/null &
     random-vrun-next.sh 8
 }
 
 alias friends='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
+#alias friends-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
 function random_friends() {
-    /usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &
+    /usr/bin/vlc --random --start-time=$(poisson $((6 * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &
     random-vrun-next.sh 5
 }
-#alias friends-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
 
 #alias himym='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" >/dev/null 2>/dev/null &'
 #alias himym-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" >/dev/null 2>/dev/null &'
@@ -1146,7 +1161,7 @@ alias VEILLE='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.o
 alias LOCK_NO_SLEEP='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when going locked (but not asleep)." "[LOG] ${USER}@${HOSTNAME} : going locked"; GoingSleep.sh no'
 alias Mail_LOG_save='mail.py "Automatically sent by the machine $HOSTNAME.crans.org when saving." "[LOG] ${USER}@${HOSTNAME} : save"'
 
-export sublpath=~/.config/sublime-text-3/Packages/User/
+export sublpath="$HOME/.config/sublime-text-3/Packages/User/"
 
 alias openvpn_enscachan='cd ~/.local/share/openvpn/ ; sudo openvpn --config 32.conf'
 
