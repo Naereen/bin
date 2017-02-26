@@ -164,6 +164,10 @@ xterm*|rxvt*|screen*)
     ;;
 esac
 
+if [ X"$TERM" = X"xterm" ]; then
+	export TERM=xterm-256color
+fi
+
 # PS2 : message du prompt quand la ligne n'est pas terminee :
 PS2=${PS1%'> '}'>and?> '
 

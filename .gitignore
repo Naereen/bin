@@ -7,7 +7,7 @@
 
 # GPG signatures
 *.asc
-	
+
 # Ignored file types
 *.json
 
@@ -28,3 +28,4 @@ vpnc-script
 rg
 .bash_completion.d/rg.bash-completion
 mdp
+micro
