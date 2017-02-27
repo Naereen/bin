@@ -14,6 +14,19 @@
 # on ne charge pas le .bashrc
 [ -z "$PS1" -o "$TERM" = dumb ] && return
 
+# Hack pour que $COLUMNS contienne le nombre de colonne du terminal
+# Sinon, le prompt kikoo risque de deborder/etre trop court
+COLUMNS="$(tput cols)"
+LINES="$(tput lines)"
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+
+# -----------------------------------------------------------------------------
+# Configuration for optimal history control, cf. https://github.com/dvorka/hstr#configuration
+
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
 # HISTCONTROL=ignoredups  #:ignorespace
@@ -24,19 +37,21 @@ shopt -s histappend
 # pour sauvegarder les commandes de plusieurs lignes (\ ) en une seule
 shopt -s cmdhist
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=10000000
-HISTFILESIZE=500000000
 # Memoriser le timestamp d'execution de la commande
 export HISTTIMEFORMAT='%F %T - '
 
-# Hack pour que $COLUMNS contienne le nombre de colonne du terminal
-# Sinon, le prompt kikoo risque de deborder/etre trop court
-COLUMNS="$(tput cols)"
-LINES="$(tput lines)"
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
+export HH_CONFIG=hicolor         # get more colors
+shopt -s histappend              # append new history items to .bash_history
+export HISTCONTROL=ignorespace   # leading space hides commands from history
+export HISTFILESIZE=100000       # increase history file size (default is 500)
+export HISTSIZE=${HISTFILESIZE}  # increase history size (default is 500)
+# if this is interactive shell, then bind hh to Ctrl-r (for Vi mode check doc)
+if type hh &>/dev/null; then
+    if [[ $- =~ .*i.* ]]; then
+        bind '"\C-r": "\C-a hh -- \C-j"';
+    fi
+fi
+
 
 # -----------------------------------------------------------------------------
 # General options for better Bash behavior, comes from https://github.com/mrzool/bash-sensible#sensible-bash
@@ -156,8 +171,6 @@ unset color_prompt force_color_prompt
 # If this is an xterm set the title
 case "$TERM" in
 xterm*|rxvt*|screen*)
-#     PS1="\[\e[27;24;23;06;2m\]\[\e]0;${debian_chroot:+($debian_chroot)}(\d -- \t)<\u@\h:[\w]> {\sv\v}\a\]$PS1"
-# XXX le premier marche pas dans les tty[1-6]
      PS1="\[\e]0;${debian_chroot:+($debian_chroot)}(\d -- \t)<\u@\h:[\w]> {\sv\v}\a\]$PS1"
     ;;
 *)
@@ -219,11 +232,6 @@ fi
 
 # Placez vos fichiers de bash-completion custom dans "$HOME"/bin/.bash_completion.d/
 # ils seront charges par la ligne suivante
-# if [ -d "$HOME"/.bash_completion.d/ ]; then
-#     for f in "$HOME"/.bash_completion.d/*.bash_completion; do
-#         source "$f"
-#     done
-# fi
 if [ -d "$HOME"/bin/.bash_completion.d/ ]; then
     for f in "$HOME"/bin/.bash_completion.d/*.bash_completion; do
         source "$f"
@@ -278,9 +286,7 @@ PROMPT_COMMAND=my_prompt_command
 ## Classic prompt command
 # shopt -s histappend
 # PROMPT_COMMAND="$PROMPT_COMMAND; history -a; history -n"
-
-# A try to correct byobu's bad handling of changing title (FAIL)
-#PROMPT_COMMAND="$PROMPT_COMMAND; printf \"\033]0; .: ($(date))<${USER}@$(hostname)>:[$(pwd)] ($(__ip_address t)) - ${PKG} :. \007\""
+export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"   # mem/file sync
 
 # Add to the $PATH
 export PATH="$HOME"/bin/:"$PATH":"$HOME"/.local/bin/:"$HOME"/.ConkyWizardTheme/scripts/:"$HOME"/.screenlayout/
