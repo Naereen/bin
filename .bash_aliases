@@ -1176,6 +1176,10 @@ alias ↓='Pull'
 
 export PYTHONIOENCODING='UTF-8'
 
+# Manipulate raw timestamps (as used in ulogme)
+function ppDay() { python -c "from datetime import datetime; d = datetime.fromtimestamp(int($1)); print(d.strftime('%A %d %B %Y'))"; }
+function ppTime() { python -c "from datetime import datetime; d = datetime.fromtimestamp(int($1)); print(d.strftime('%A %d %B %Y, %r'))"; }
+
 ##############################################################################
 # (c) 2011-2017 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
