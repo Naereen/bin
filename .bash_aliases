@@ -156,7 +156,7 @@ shopt -s cdspell 2> /dev/null
 # This defines where cd looks for targets
 # Add the directories you want to have fast access to, separated by colon
 # Ex: CDPATH=".:~:~/projects" will look for targets in the current working directory, in home and in the ~/projects folder
-CDPATH=".:~/publis/:~/ownCloud/cloud.openmailbox.org/"
+# CDPATH=".:~/publis/:~/ownCloud/cloud.openmailbox.org/"
 
 # Commandes avec SSH :
 alias ssh='/usr/bin/ssh -X -C'

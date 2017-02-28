@@ -31,7 +31,6 @@ shopt -s checkwinsize
 # ... or force ignoredups and ignorespace
 # HISTCONTROL=ignoredups  #:ignorespace
 HISTCONTROL=ignoreboth  # XXX this try comes from https://github.com/tmux-plugins/tmux-resurrect
-
 # append to the history file, don't overwrite it
 shopt -s histappend
 # pour sauvegarder les commandes de plusieurs lignes (\ ) en une seule
@@ -41,7 +40,6 @@ shopt -s cmdhist
 export HISTTIMEFORMAT='%F %T - '
 
 export HH_CONFIG=hicolor         # get more colors
-shopt -s histappend              # append new history items to .bash_history
 export HISTCONTROL=ignorespace   # leading space hides commands from history
 export HISTFILESIZE=100000       # increase history file size (default is 500)
 export HISTSIZE=${HISTFILESIZE}  # increase history size (default is 500)
@@ -77,7 +75,7 @@ shopt -s nocaseglob;
 # Smarter tab-completion (readline bindings)
 
 # Perform file completion in a case insensitive fashion
-bind "set completion-ignore-case on"
+# bind "set completion-ignore-case on"
 
 # Treat hyphens and underscores as equivalent
 bind "set completion-map-case on"
@@ -86,7 +84,16 @@ bind "set completion-map-case on"
 bind "set show-all-if-ambiguous on"
 
 # Immediately add a trailing slash when autocompleting symlinks to directories
+bind "set mark-directories on"
 bind "set mark-symlinked-directories on"
+
+# Readline attempts to briefly move the cursor to an opening parenthesis when a closing parenthesis is inserted
+bind "set blink-matching-paren on"
+
+# Readline displays possible completions using different colors to indicate their file type
+bind "set visible-stats on"
+bind "set colored-stats on"
+bind "set colored-completion-prefix on"
 
 
 # -----------------------------------------------------------------------------
