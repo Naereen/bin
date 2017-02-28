@@ -169,27 +169,28 @@ export TIMEFORMAT=$'\nreal %3R\tuser %3U\tsys %3S\tpcpu %P\n'
 export HISTIGNORE="&:bg:fg"
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$> '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n>>> '
 else
-    PS1='\[\e[01;32m\](\t)${debian_chroot:+($debian_chroot)}\[\e[01;34m\]\u\[\e[01;37m\]@\[\e[01;36m\]\h\[\e[01;37m\]#\[\e[01;31m\]${LINENO}\[\e[01;37m\][\w]\$> '
+    PS1='\[\e[01;32m\](\t)${debian_chroot:+($debian_chroot)}\[\e[01;34m\]\u\[\e[01;37m\]@\[\e[01;36m\]\h\[\e[01;37m\]#\[\e[01;31m\]${LINENO}\[\e[01;37m\][\w]\n>>> '
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title
 case "$TERM" in
-xterm*|rxvt*|screen*)
-     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}(\d -- \t)<\u@\h:[\w]> {\sv\v}\a\]$PS1"
+    xterm*|rxvt*|screen*)
+        PS1="\[\e]0;${debian_chroot:+($debian_chroot)}(\d -- \t)<\u@\h:[\w]> {\sv\v}\a\]$PS1"
     ;;
-*)
+    *)
     ;;
 esac
 
 if [ X"$TERM" = X"xterm" ]; then
-	export TERM=xterm-256color
+    export TERM=xterm-256color
 fi
 
 # PS2 : message du prompt quand la ligne n'est pas terminee :
-PS2=${PS1%'> '}'>and?> '
+# PS2=${PS1%'> '}'>and?> '  # recopie tout le PS1
+PS2='... '
 
 # Man pages
 # export MANPATH=$MANPATH:/usr/share/man:/usr/local/man
@@ -255,45 +256,37 @@ export blue="${escp}01;34m"
 export magenta="${escp}01;35m"
 export cyan="${escp}01;36m"
 export white="${escp}01;37m"
-# To erase the current line. (not print '\n' but ERASE trully).
-export ERASE_LINE="\r\033[K"
-
+export ERASE_LINE="\r\033[K"  # To erase the current line. (not print '\n' but ERASE trully).
 # More colors !
 [ -f "$HOME/.color.sh" ] && . "$HOME/.color.sh"
 
-# wakatime for bash
+# Wakatime for bash
 # https://github.com/API-PLUGIN-RESSOURCES/bash-wakatime
 # hook function to send wakatime a tick
-# pre_prompt_command() {
+# wakatime_pre_prompt_command() {
 #     (echo "$(date +"%Y-%m-%d %H:%M:%S") -- Sending '/usr/local/bin/wakatime --write --plugin \"bash-wakatime/0.1\" --entity-type app --project Terminal --alternate-language Bash --entity \"$(echo $(fc -ln -0) | cut -d ' ' -f1)\" 2>&1 > /dev/null &' ..." >> /tmp/bash-wakatime.log ; /usr/local/bin/wakatime --write --plugin "bash-wakatime/0.1" --entity-type app --project Terminal --alternate-language Bash --entity "$(echo $(fc -ln -0) | cut -d ' ' -f1)" 2>&1 > /dev/null &)
 # }
 
-# Old PS1
 PS1OLD="$PS1"
-# A test to integrate $? in PS1
-#  in red if $? is indicating an error on last command
-# PROMPT_COMMAND='ANSWER=$?; if [ $ANSWER = 0 ]; then PS1="${PS1OLD%> }\[\e[01;37m\]> "; else PS1="${PS1OLD%> }\[${red}\]+$ANSWER+\[\e[01;37m\]> "; printf "\a"; fi' #; history -a; history -n'
+# --> in red if $? is indicating an error on last command
 ps1_prompt_command() {
     ANSWER=$?
     if [ $ANSWER = 0 ]; then
-        PS1="${PS1OLD%> }\[\e[01;37m\]> "
+        PS1="${PS1OLD%>>> }\[\e[01;37m\]>>> "
     else
-        PS1="${PS1OLD%> }\[${red}\]+$ANSWER+\[\e[01;37m\]> "
+        PS1="${PS1OLD%>>> }\[${red}\]+$ANSWER+\[\e[01;37m\]>>> "
         printf "\a"
     fi;
 }
 
 my_prompt_command() {
+    # wakatime_pre_prompt_command  # To enable the WakaTime plugin
     ps1_prompt_command
 }
-#    pre_prompt_command
 
 PROMPT_COMMAND=my_prompt_command
-
-## Classic prompt command
-# shopt -s histappend
-# PROMPT_COMMAND="$PROMPT_COMMAND; history -a; history -n"
-export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"   # mem/file sync
+# export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"   # mem/file sync
+# export PROMPT_COMMAND="history -a; ${PROMPT_COMMAND}"   # only writes to the history, does not load more commands from others running sessions
 
 # Add to the $PATH
 export PATH="$HOME"/bin/:"$PATH":"$HOME"/.local/bin/:"$HOME"/.ConkyWizardTheme/scripts/:"$HOME"/.screenlayout/
