@@ -101,12 +101,11 @@ make() {
     mymake.sh "$@"
     if [ X"$?" = X"0" -a X"${#@}" = X"1" -a X"${1:0:1}" != X"-" ]; then
         # We only add an alias for make commands with one argument, to avoid capturing the options
-        alias -p | grep -o "^alias $1='make $1'$" &>/dev/null
-        if [ X"$?" = "X0" ]; then
+        if alias -p | grep -o "^alias $1='make -B $1'$" &>/dev/null; then
             echo -e "The previous make command ('${black}make ${1}${white}') ${green}worked${white}, but ${blue}${1}${white} has already been aliased : ${green}nothing to do :-)${white}..."
         else
             echo -e "The previous make command ('${black}make ${1}${white}') ${green}worked${white}, and ${blue}${1}${white} has not been aliased yet..."
-            alias $1="make $1"
+            alias $1="make -B $1"
             echo -e "  '${blue}${1}${white}' is now registered as a ${yellow}new alias${white} for '${black}make ${1}${white}' ..."
         fi
     fi
