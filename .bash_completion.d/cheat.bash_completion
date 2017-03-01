@@ -1,3 +1,5 @@
+#!/bin/bash
+# Add autocomplete support for cheat in bash.
 function _cheat_autocomplete {
     sheets=$(cheat -l | cut -d' ' -f1)
     COMPREPLY=()

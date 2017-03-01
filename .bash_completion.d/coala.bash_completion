@@ -1,5 +1,6 @@
+#!/bin/bash
+# Add autocomplete support for coala for bash.
 # Cf. https://github.com/coala/documentation/issues/388#issuecomment-283194813
-
 _python_argcomplete() {
     local IFS=$'\013'
     local SUPPRESS_SPACE=0

@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-
+#!/bin/bash
+# Add autocomplete support for tmux and tmuxinator for bash.
 _tmuxinator() {
     COMPREPLY=()
     local word="${COMP_WORDS[COMP_CWORD]}"
