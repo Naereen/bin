@@ -39,7 +39,7 @@ if [ -f ~/.use_FreeSMS_for_mymake ]; then
     Use_FreeSMS="true"
 fi
 
-Use_SlackWrap="true"
+Use_SlackWrap="false"
 if [ -f ~/.use_SlackWrap_for_mymake ]; then
     echo -e "The file '${black}~/.use_SlackWrap_for_mymake${white}' has been found, turning on the option ${cyan}--SlackWrap${white} ..."
     Use_SlackWrap="true"
