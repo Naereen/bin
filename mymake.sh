@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON, (C) 2015-oo
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 06-11-2016.
+# Date: 07-03-2017.
 # Web: https://bitbucket.org/lbesson/bin/src/master/mymake.sh
 #
 # A top-recursive 'make' command, with two awesome behaviors.
@@ -11,6 +11,8 @@
 #   - Additionally, it keeps looking as long as no rule has been found.
 #   - An optional --FreeSMS option can be given, in which case a text message is sent when a job failed or succeed (like the notification)
 #   - If the file ~/.use_FreeSMS_for_mymake is present, the option is turned on by default
+#   - An optional --SlackWrap option can be given, in which case a text message is sent when a job failed or succeed (like the notification)
+#   - If the file ~/.use_SlackWrap_for_mymake is present, the option is turned on by default
 #
 # Licence: MIT Licence (http://lbesson.mit-license.org).
 #
@@ -23,6 +25,11 @@ set -o pipefail
 # Use https://bitbucket.org/lbesson/bin/src/master/.color.sh to add colors in Bash scripts
 [ -f ~/.color.sh ] && . ~/.color.sh
 
+# Try to detect automatically the location of the make binary
+makePath="$(type make | awk ' { print $3 } ')"
+# But if it failed, use the default one
+makePath="${makePath:-/usr/bin/make}"
+
 # options
 JustVersion="false"
 JustBashCompletion="false"
@@ -30,6 +37,12 @@ Use_FreeSMS="false"
 if [ -f ~/.use_FreeSMS_for_mymake ]; then
     echo -e "The file '${black}~/.use_FreeSMS_for_mymake${white}' has been found, turning on the option ${cyan}--FreeSMS${white} ..."
     Use_FreeSMS="true"
+fi
+
+Use_SlackWrap="true"
+if [ -f ~/.use_SlackWrap_for_mymake ]; then
+    echo -e "The file '${black}~/.use_SlackWrap_for_mymake${white}' has been found, turning on the option ${cyan}--SlackWrap${white} ..."
+    Use_SlackWrap="true"
 fi
 
 for i in "$@"; do
@@ -47,6 +60,10 @@ for i in "$@"; do
         ;;
         --FreeSMS )
             Use_FreeSMS="true"
+            shift
+        ;;
+        --SlackWrap )
+            Use_SlackWrapSMS="true"
             shift
         ;;
     esac
@@ -72,15 +89,28 @@ if [ "X${Use_FreeSMS}" = "Xtrue" ]; then
     fi
 fi
 
+# Do we need to turn down the SlackWrap plugin ?
+if [ "X${Use_SlackWrap}" = "Xtrue" ]; then
+    if type slack-wrap &>/dev/null; then
+        echo -e "${cyan}Option '--SlackWrap' was found, and the program 'slack-wrap' is present : OK ...${white}"
+    else
+        Use_SlackWrap="false"
+        echo -e "${red}Option '--SlackWrap' was found, but the program 'slack-wrap' is not present : I am disabling the SlackWrap option ...${white}"
+    fi
+fi
+if [ "X${JustBashCompletion}" = "Xtrue" ]; then
+    Use_FreeSMS="false"
+    Use_SlackWrap="false"
+fi
+
 # Working variables
 LogFile="$(tempfile)"
 mv -f -- "${LogFile}" "${LogFile}_mymake.log"
 LogFile="${LogFile}_mymake.log"
 
-# Try to detect automatically the location of the make binary
-makePath="$(type make | awk ' { print $3 } ')"
-# But if it failed, use the default one
-makePath="${makePath:-/usr/bin/make}"
+if [ "X${Use_SlackWrap}" = "Xtrue" ]; then
+    wrap="slack-wrap"
+fi
 
 OriginalPath="$(pwd)/"
 
@@ -107,15 +137,15 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
     # Now using it to execute make
     if [ -f "${old}${c}Makefile" ]; then
         echo -e "${green}${NameOfMakefile}${white} is there, I'm using it :"
-        echo -e "Calling... ${black}'" time "${makePath}" -w --file="${NameOfMakefile}" "$@" "| tee ${LogFile} '${white}..."
+        echo -e "Calling... ${black}'" time ${wrap:-} "${makePath}" -w --file="${NameOfMakefile}" "$@" "| tee ${LogFile} '${white}..."
         if [ "X${JustBashCompletion}" != "Xtrue" ]; then
-            time "${makePath}" -w --file="${NameOfMakefile}" "$@" \
+            time ${wrap:-} "${makePath}" -w --file="${NameOfMakefile}" "$@" \
                 3>&1 1>&2 2>&3 \
                 | tee "${LogFile}"
             # FIXED this pipe disabled color on stdout of programs that detect pipes (sphinx, my ansicolortags script, grep etc...)
             # This trick '3>&1 1>&2 2>&3' swaps stdout and stderr: only stderr is piped to |tee so colors are still in stdout (from https://serverfault.com/a/63708)
         else
-            time "${makePath}" -w --file="${NameOfMakefile}" "$@" \
+            time ${wrap:-} "${makePath}" -w --file="${NameOfMakefile}" "$@" \
                 2>&1 | tee "${LogFile}"
         fi
         returncode="$?"
