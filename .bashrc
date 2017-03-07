@@ -44,11 +44,11 @@ export HISTCONTROL=ignorespace   # leading space hides commands from history
 export HISTFILESIZE=100000       # increase history file size (default is 500)
 export HISTSIZE=${HISTFILESIZE}  # increase history size (default is 500)
 # if this is interactive shell, then bind hh to Ctrl-r (for Vi mode check doc)
-if type hh &>/dev/null; then
-    if [[ $- =~ .*i.* ]]; then
-        bind '"\C-r": "\C-a hh -- \C-j"';
-    fi
-fi
+# if type hh &>/dev/null; then
+#     if [[ $- =~ .*i.* ]]; then
+#         bind '"\C-R": "\C-a hh -- \C-j"';
+#     fi
+# fi
 
 
 # -----------------------------------------------------------------------------
