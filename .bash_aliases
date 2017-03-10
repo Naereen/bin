@@ -1073,7 +1073,7 @@ pdfinfo() { for i in "$@"; do echo -e "\n${green}# For '${red}${u}$i${U}${white}
 complete -f -X '!*.@(pdf|PDF)' -o plusdirs pdfinfo pdftk pdfgrep pdftohtml pdftotext
 
 f() { echo -e "Opening args '$@' in firefox..."; firefox "$@" || alert; }
-b() { echo -e "Executing args '$@' with bpython..."; bpython "$@" || alert; }
+# b() { echo -e "Executing args '$@' with bpython..."; bpython "$@" || alert; }
 # Default to Python 3
 i2() { echo -e "Executing args '$@' with ipython2..."; ipython2 --pylab "$@" || alert; }
 pti2() { echo -e "Executing args '$@' with ptipython2..."; ptipython2 "$@" || alert; }  # custom script
