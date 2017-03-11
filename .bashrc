@@ -1,6 +1,6 @@
 #!/bin/bash
 #	.bashrc for GNU Bash v4+
-#	(c) 2011-2016 Lilian BESSON
+#	(c) 2011-2017 Lilian BESSON
 #	Cr@ns: http://perso.crans.org/besson
 #	On Bitbucket:	https://bitbucket.org/lbesson/home/
 #
@@ -169,9 +169,9 @@ export TIMEFORMAT=$'\nreal %3R\tuser %3U\tsys %3S\tpcpu %P\n'
 export HISTIGNORE="&:bg:fg"
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n>>> '
+    PS1='${debian_chroot:+($debian_chroot)} \[\033[01;32m\] \u @ \h \[\033[00m\]:\[\033[01;34m\] \w\[\033[00m\]\n➤➤➤ '
 else
-    PS1='\[\e[01;32m\](\t)${debian_chroot:+($debian_chroot)}\[\e[01;34m\]\u\[\e[01;37m\]@\[\e[01;36m\]\h\[\e[01;37m\]#\[\e[01;31m\]${LINENO}\[\e[01;37m\][\w]\n>>> '
+    PS1='\[\e[01;32m\]⏰  \t${debian_chroot:+($debian_chroot)}\[\e[01;34m\] 👤  \u\[\e[01;37m\] @\[\e[01;36m\] 💻  \h\[\e[01;37m\] #\[\e[01;31m\]${LINENO} \[\e[01;37m\][ \w ] ✔ \n➤➤➤ '
 fi
 unset color_prompt force_color_prompt
 
@@ -269,19 +269,21 @@ export ERASE_LINE="\r\033[K"  # To erase the current line. (not print '\n' but E
 
 PS1OLD="$PS1"
 # --> in red if $? is indicating an error on last command
-ps1_prompt_command() {
-    ANSWER=$?
+red_if_error_prompt_command() {
+    ANSWER="$?"
     if [ $ANSWER = 0 ]; then
-        PS1="${PS1OLD%>>> }\[\e[01;37m\]>>> "
+        PS1="${PS1OLD%➤➤➤ }\[\e[01;37m\]➤➤➤ "
+        PS1="${PS1//✗/✔}"
     else
-        PS1="${PS1OLD%>>> }\[${red}\]+$ANSWER+\[\e[01;37m\]>>> "
+        PS1="${PS1OLD%➤➤➤ }\[${red}\]Error:$ANSWER\[\e[01;37m\]➤➤➤ "
+        PS1="${PS1//✔/✗}"
         printf "\a"
     fi;
 }
 
 my_prompt_command() {
     # wakatime_pre_prompt_command  # To enable the WakaTime plugin
-    ps1_prompt_command
+    red_if_error_prompt_command
 }
 
 PROMPT_COMMAND=my_prompt_command
@@ -470,7 +472,7 @@ pidof gpg-agent>/dev/null || eval $(gpg-agent --daemon) || echo "Failed to conne
 # eval "$(register-python-argcomplete /usr/local/bin/coala)"
 
 ##############################################################################
-# (c) 2011-2016 Lilian BESSON
+# (c) 2011-2017 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
 # On Bitbucket: https://bitbucket.org/lbesson/home/
 #
