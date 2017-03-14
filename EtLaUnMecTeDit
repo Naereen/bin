@@ -1,0 +1,4 @@
+#!/usr/bin/python3
+import random as r
+if __name__=='__main__':
+    print('Hmmm,', r.randint(10**10,10**12))
