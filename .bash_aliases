@@ -307,7 +307,7 @@ export Sdpt='lbesson@ssh.dptinfo.ens-cachan.fr:~/public_html/'
 export Szam='besson@zamok.crans.org:~/www/'
 export toprint="${Szam}dl/.p/toprint/"
 export Sjarvis=~/"Public/"
-export Sw='lilian_besson@ws3:~/'
+export Sw='lilian_besson@ws2:~/'
 
 # Un outil pour les messages du jour
 alias motd='changemotd.sh --print'
