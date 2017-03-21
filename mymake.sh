@@ -63,7 +63,7 @@ for i in "$@"; do
             shift
         ;;
         --SlackWrap )
-            Use_SlackWrapSMS="true"
+            Use_SlackWrap="true"
             shift
         ;;
     esac
