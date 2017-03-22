@@ -307,7 +307,10 @@ export Sdpt='lbesson@ssh.dptinfo.ens-cachan.fr:~/public_html/'
 export Szam='besson@zamok.crans.org:~/www/'
 export toprint="${Szam}dl/.p/toprint/"
 export Sjarvis=~/"Public/"
+export SWS3='lilian_besson@ws3'
 export Sw='lilian_besson@ws3:~/'
+export SFORGE='lbesson@scm.gforge.inria.fr'
+export Sforge='lbesson@scm.gforge.inria.fr:/home/groups/banditslilian/htdocs/'
 
 # Un outil pour les messages du jour
 alias motd='changemotd.sh --print'
@@ -849,6 +852,8 @@ alias s05='sshtmux 05.dptinfo.ens-cachan.fr'
 alias s06='sshtmux 06.dptinfo.ens-cachan.fr'
 alias sshws3='sshtmux lilian_besson@ws3'
 alias sw='sshws3'
+alias sshforge='ssh lbesson@scm.gforge.inria.fr'
+alias forge='sshforge'
 
 # Navigateur en console
 alias elinks='/usr/bin/elinks -verbose 0'
