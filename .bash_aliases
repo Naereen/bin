@@ -737,10 +737,23 @@ ViewHTML() {
 
 alias MacAddress='ifconfig | grep "HWaddr [0-9a-f:]*"'
 
+# Thanks to http://stackoverflow.com/a/4529147/5889533
+function pushall(){
+    for i in $(git remote | sort -r); do
+        echo -e "git push $i ${1:-master}" "..."
+        git push $i ${1:-master}
+    done;
+}
+function pullall(){
+    for i in $(git remote | sort -r); do
+        echo -e "git pull $i ${1:-master}" "..."
+        git pull $i ${1:-master}
+    done;
+}
 # For Git
 alias Push='clear ; git push && git gc'
 alias p='clear ; git push'
-alias Pull='clear ; git gc && git pull && git gc && git-blame-last-commit.sh'
+alias Pull='clear ; git gc && pullall && git gc && git-blame-last-commit.sh'
 alias Status='clear ; git status'
 alias Commit='clear ; git commit -m'
 alias c='clear ; git commit -m'
