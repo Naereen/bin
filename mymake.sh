@@ -168,13 +168,14 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
             if [ "X${JustBashCompletion}" != "Xtrue" ]; then
                 runningfolder="$(readlink -f "${old}${c}")"
                 runningfolder="${runningfolder#$HOME/}/"
+                displayfolder="$(basename "${runningfolder}")"
                 if [ "X${returncode}" = "X0" ]; then
-                    notify-send --icon=terminal "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>worked</b>, in the folder <i>'${runningfolder}'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> <b>:-)</b>"
+                    notify-send --icon=terminal "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>worked</b>, in the folder <i>'${displayfolder}'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> <b>:-)</b>"
                     if [ "X${Use_FreeSMS}" = "Xtrue" ]; then
-                        FreeSMS.py "[SUCCESS] make on '$*' *worked*, in the folder '${runningfolder}' :-)\\n- Job started at '${datestarting}', finished at '${datefinished}'.\\n- Sent by $(basename "$0") v${version}, using FreeSMS.py by Lilian Besson."
+                        FreeSMS.py "[SUCCESS] make on '$*' *worked*, in the folder '${displayfolder}' :-)\\n- Job started at '${datestarting}', finished at '${datefinished}'.\\n- Sent by $(basename "$0") v${version}, using FreeSMS.py by Lilian Besson."
                     fi
                 else
-                    notify-send --icon=error "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>failed</b>, in the folder <i>'${runningfolder}'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> ..."
+                    notify-send --icon=error "$(basename "$0") v${version}" "make on <i>'$*'</i>  <b>failed</b>, in the folder <i>'${displayfolder}'</i> from <i>'$(readlink -f "${OriginalPath}")'</i> ..."
                     if [ "X${Use_FreeSMS}" = "Xtrue" ]; then
                         # Search for the last modified log file, either *.log or *log.txt, in . or any sub dir of depth 1
                         # Then print is last modified time stamp in decimal seconds, sort it, take last one, remove date
@@ -184,7 +185,7 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
                             # Reading the last modified log file, to txt, remove empty lines, keep 5 lines
                             errormsg="\\n- Error:\n$(tail -n20 "${lastlogfile}" | ansi2txt | grep -v '^$' | tail -n5)"
                         fi
-                        FreeSMS.py "[FAILURE] make on '$*' *failed*, in the folder '${runningfolder}' :-(\\n- Job started at '${datestarting}', finished at '${datefinished}'.${errormsg}\\n- Sent by $(basename "$0") v${version}, using FreeSMS.py by Lilian Besson."
+                        FreeSMS.py "[FAILURE] make on '$*' *failed*, in the folder '${displayfolder}' :-(\\n- Job started at '${datestarting}', finished at '${datefinished}'.${errormsg}\\n- Sent by $(basename "$0") v${version}, using FreeSMS.py by Lilian Besson."
                     fi
                 fi
             fi
