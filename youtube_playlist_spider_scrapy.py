@@ -18,8 +18,11 @@ class QuotesSpider(scrapy.Spider):
     ]
 
     def parse(self, response):
+        print("response =", response)  # DEBUG
         i = 0
         for item in response.css('td.pl-video-title'):
+            print("i =", i)  # DEBUG
+            print("item =", item)  # DEBUG
             i += 1
             video = item.css('a.pl-video-title-link')[0]
             author = item.css('div.pl-video-owner')[0]
