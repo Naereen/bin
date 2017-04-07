@@ -2,7 +2,7 @@
 # -*- coding: utf-8; mode: python -*-
 """ Calcule les frais de mission.
 
-- *Date:* mercredi  4 janvier 2017, 13:07:54.
+- *Date:* lundi 3 avril 2017.
 - *Author:* Lilian Besson, (C) 2017.
 - *Licence:* MIT Licence (http://lbesson.mit-license.org).
 """
@@ -79,13 +79,9 @@ def main(nbJour=3, nbRepas=None, trains=None, nbNuit=None, totalHotel=None):
 
 
 if __name__ == '__main__':
-    # Mission #3 en janvier 2017.
-    trains = {
-        "Rennes > Lille": (44.00, "24/01/17"),
-        "Lille > Paris ": (25.50, "27/01/17"),
-        "Paris > Rennes": (35.00, "29/01/17"),
-    }
-    main(nbJour=4, trains=trains, nbRepas=5, totalHotel=97.50)
+    # Mission #4 en mars 2017.
+    trains = None  # Payé par l'INRIA
+    main(nbJour=11, trains=trains, nbRepas=11, totalHotel=0)
 
     # TODO prochaines missions !
 
