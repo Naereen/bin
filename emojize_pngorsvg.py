@@ -45,7 +45,7 @@ USE_SVG = False
 
 def emojize(s, use_svg=USE_SVG):
     """Call markdown.markdown() on s."""
-    emoji_generator = pymdownx.emoji.to_svg if USE_SVG else pymdownx.emoji.to_png
+    emoji_generator = pymdownx.emoji.to_svg if use_svg else pymdownx.emoji.to_png
     extension_configs = {
         'pymdownx.emoji': {
             'emoji_generator': emoji_generator
@@ -54,7 +54,7 @@ def emojize(s, use_svg=USE_SVG):
     res = markdown(s,
                    extensions=['pymdownx.emoji'],
                    extension_configs=extension_configs
-                   )
+                  )
     return res.replace('<p>', '').replace('</p>', '')
 
 
@@ -69,6 +69,7 @@ def emojize_all(s, use_svg=USE_SVG):
 
 
 def main(path, use_svg=USE_SVG):
+    """Handle the file given by its path."""
     with open(path, 'r') as f:
         for line in f.readlines():
             print(emojize_all(line, use_svg=use_svg), end='')
@@ -80,7 +81,7 @@ if __name__ == '__main__':
         USE_SVG = True
         while '--svg' in argv:
             del argv[argv.index('--svg')]
-    for path in argv[1:]:
-        main(path, use_svg=USE_SVG)
+    for arg in argv[1:]:
+        main(arg, use_svg=USE_SVG)
 
 # End of emojize.py
