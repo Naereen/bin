@@ -2,7 +2,8 @@
 # -*- coding: utf-8; mode: python -*-
 """ Substitue any :emojis: in the input document with its UTF-8 code.
 
-See https://stackoverflow.com/questions/42087466/sphinx-extension-to-use-github-markdown-emoji-in-sphinx
+- See https://stackoverflow.com/questions/42087466/sphinx-extension-to-use-github-markdown-emoji-in-sphinx
+- Requirements: 'emoji' package, from https://github.com/carpedm20/emoji/
 
 I use it with a small Bash script :
 
@@ -35,7 +36,7 @@ except ImportError:
 
 
 def match_to_emoji(m):
-    """Call emoji.emojize on m.group()."""
+    """Call emoji.emojize on m)."""
     return emojize(m.group(), use_aliases=True)
 
 
