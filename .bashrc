@@ -187,6 +187,7 @@ esac
 
 if [ X"$TERM" = X"xterm" ]; then
     export TERM=xterm-256color
+    # export TERM=screen-256color
 fi
 
 # PS2 : message du prompt quand la ligne n'est pas terminee :
