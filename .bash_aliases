@@ -805,6 +805,7 @@ youtube-mp3() {
         youtube-dl --youtube-skip-dash-manifest --format worst --output "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 --no-overwrites -- "$arg"
     done
 }
+alias y='youtube-mp3'
 youtube-video() {
     for i in "$@"; do
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
@@ -1027,14 +1028,14 @@ function random_scrubs() {
 alias scrubs-vo='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" >/dev/null 2>/dev/null &'
 #alias scrubs-vo-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" >/dev/null 2>/dev/null &'
 function random_scrubs_vo() {
-    /usr/bin/vlc --random --start-time=$(poisson $((6 * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" >/dev/null 2>/dev/null &
+    /usr/bin/vlc --random --start-time=$(poisson $((11 * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" >/dev/null 2>/dev/null &
     random-vrun-next.sh 8
 }
 
 alias friends='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
 #alias friends-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
 function random_friends() {
-    /usr/bin/vlc --random --start-time=$(poisson $((6 * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &
+    /usr/bin/vlc --random --start-time=$(poisson $((13 * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &
     random-vrun-next.sh 5
 }
 
