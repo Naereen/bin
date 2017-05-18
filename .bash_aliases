@@ -427,9 +427,9 @@ alias IpAdresses='ifconfig | grep "inet"'
 # Get Linux kernel versions and informations
 alias version='cat /proc/version'
 
-# Check today content of Google Calendar (FIXME)
-alias CheckGoogleCalendar='google calendar today | grep "$(date \"+%d\")"'
-alias CalendarRandQuote='google calendar add "$(randquote)"'
+# Check today content of Google Calendar
+alias CheckGoogleCalendar='gcalcli agenda today tomorrow'
+alias CalendarRandQuote='gcalcli --calendar "amelia"."noreen"@"gmail"."com" quick "$(randquote)"'
 
 # Gobby Server
 alias SOBBY='sobby -p 6522 --password 120193 --autosave-file=/home/lilian/.gobby.savefile --autosave-interval=10'
