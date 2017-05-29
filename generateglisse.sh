@@ -191,7 +191,7 @@ for i in $targets; do
     cat "${direction}/generateglisse.log" \
         | sed s_"./"_"http://./"_ \
         | sed s%"/home/lilian/photos/"%"http://0.0.0.0/lns_photos/"% \
-        | ansi2html -a \
+        | ansi2html \
         | sed s_"http://./"_"./"_ \
         | sed s_"http://./"_"./"_ \
         | sed s_"http://.http://"_"http://"_ \
