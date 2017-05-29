@@ -426,7 +426,7 @@ alias VeilleEcranNoirContinue='watch --interval=1 "echo -e \"Screen is sleeping,
 alias IpAdresses='ifconfig | grep "inet"'
 
 # Get Linux kernel versions and informations
-alias version='cat /proc/version'
+alias version='cat /proc/version ; lsb_release -a'
 
 # Check today content of Google Calendar
 alias CheckGoogleCalendar='gcalcli agenda today tomorrow'
