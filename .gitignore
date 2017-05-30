@@ -34,3 +34,6 @@ ponysay
 ponysay-tool
 ponythink
 pipsi
+
+# See https://AppImage.org/
+*.AppImage
