@@ -38,3 +38,4 @@ ngrok
 
 # See https://AppImage.org/
 *.AppImage
+appimaged
