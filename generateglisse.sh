@@ -2,11 +2,13 @@
 #
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 05-01-2017
+# Date: 16/06/2017
 # Web version: http://perso.crans.org/besson/bin/generateglisse.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/generateglisse.sh
 #
 # Auto generate an 'index.html' page to show photos with glisse.js
+# Also generate a 'index.htm' page, which works on Windows by fetching the CSS and JS online (http://perso.crans.org/besson/_static/) and not locally (http://0.0.0.0/).
+#
 # FUTURE: use http://dimsemenov.com/plugins/magnific-popup/documentation.html#gallery instead, seems better.
 #
 # A demo is here : http://perso.crans.org/besson/generateglisse.sh/
@@ -201,6 +203,13 @@ for i in $targets; do
     cat "${direction}/index.html~" \
         | sed s_TIMESPENT_"$(cat "${direction}/generateglisse.time")"_ \
         > "${direction}/index.html"
+
+    # Make the index.htm page for Windows
+    cat "${direction}/index.html" \
+        | sed s_"0\.0\.0\.0"_"perso.crans.org/besson/"_g \
+        | sed s_"/index.html"_"/index.htm"_g \
+        | sed s_"Programme pour GNU/Linux"_"Page pour Windows®"_ \
+        > "${direction}/index.htm"
 done
 
 # END

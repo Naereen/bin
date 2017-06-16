@@ -2,7 +2,7 @@
 #
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 05-01-2017
+# Date: 16/06/2017
 # Web version: http://perso.crans.org/besson/bin/generatejplayer.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/generatejplayer.sh
 #
@@ -271,7 +271,9 @@ for i in $targets; do
     cat "${direction}/index.html~" \
         | sed s_TIMESPENT_"$(cat "${direction}/generatejplayer.time")"_ \
         > "${direction}/index.html"
-    rm -v "${direction}/index.html~" "${direction}/generatejplayer.time" >/dev/null
+    rm -f "${direction}/index.html~" "${direction}/generatejplayer.time"
+
+    # Make the index.htm page for Windows
     cat "${direction}/index.html" \
         | sed s_"0\.0\.0\.0"_"perso.crans.org/besson/"_g \
         | sed s_"/index.html"_"/index.htm"_g \
