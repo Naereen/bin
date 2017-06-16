@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8; mode: python -*-
 """Small script to put all the strings in arguments to title case, as specified by the New York Times Manual of Style.
 
