@@ -206,7 +206,7 @@ alias jupyter-iocaml='DYLD_LIBRARY_PATH=/home/lilian/.opam/4.02.3/lib/stublibs/ 
 alias j2html='jupyter-nbconvert --to html'
 alias j2pdf='jupyter-nbconvert --to pdf'
 alias j2py='jupyter-nbconvert --to python'
-complete -f -X '!*.ipynb' -o plusdirs j2html j2pdf j2py
+complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2py
 
 # Reference for this is https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
 complete -f -X '!*.ml' -o plusdirs ocaml ocamlc ocamlopt leocaml leditocaml rlocaml mocaml mocaml_noANSI ocamls iocaml jupyter-iocaml
