@@ -318,6 +318,9 @@ export Sw='lilian_besson@ws3:~/'
 export SFORGE='lbesson@scm.gforge.inria.fr'
 export Sforge='lbesson@scm.gforge.inria.fr:/home/groups/banditslilian/htdocs/'
 
+# Play an ASCII version of Star Wars, A new hope
+alias telnet_starwars='telnet towel.blinkenlights.nl'
+
 # Un outil pour les messages du jour
 alias motd='changemotd.sh --print'
 chmotd() {

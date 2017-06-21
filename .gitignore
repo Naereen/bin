@@ -34,8 +34,5 @@ ponysay
 ponysay-tool
 ponythink
 pipsi
-ngrok
-
-# See https://AppImage.org/
+bandit*
 *.AppImage
-appimaged
