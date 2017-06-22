@@ -1,7 +1,7 @@
 # [bitbucket.org/lbesson/bin](https://bitbucket.org/lbesson/bin)
 
 ## En *français*
-Ce dossier contient plein de petits scripts, la plupart en Bash (*GNU Bash v4.2+*), certains en Python (*v2 or v3*).
+Ce dossier contient plein de petits scripts, la plupart en Bash (*GNU Bash v4+*), certains en Python (*v2 or v3*).
 
 #### Plus d'informations
 La page [bin.html](http://perso.crans.org/besson/bin.html) présente une rapide description des différents scripts.
