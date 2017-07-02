@@ -1,20 +1,21 @@
 #!/usr/bin/env python2
 # -*- coding: utf8 -*-
-# See https://github.com/andreecmonette/pydras
-# Author: Andree C. Monette
-# Source: https://raw.githubusercontent.com/andreecmonette/pydras/master/delqueen.py
-#
-# Launch the script, cancel it with Ctrl+C to solve the n-queen problem
-#
-# $ delqueen.py 6
-# Interrupt me to solve the 6 queens problem!
-# ^CTraceback (most recent call last):
-#   File "/home/lilian/bin/delqueen.py", line 68, in <module>
-#     while True:
-# KeyboardInterrupt
-# 894  board states traversed.
-# The number of  6 -queens solutions is:  4
-#
+"""
+See https://github.com/andreecmonette/pydras
+Author: Andree C. Monette
+Source: https://raw.githubusercontent.com/andreecmonette/pydras/master/delqueen.py
+
+Launch the script, cancel it with Ctrl+C to solve the n-queen problem
+
+    $ delqueen.py 6
+    Interrupt me to solve the 6 queens problem!
+    ^CTraceback (most recent call last):
+    File "/home/lilian/bin/delqueen.py", line 68, in <module>
+        while True:
+    KeyboardInterrupt
+    894  board states traversed.
+    The number of  6 -queens solutions is:  4
+"""
 
 from __future__ import print_function
 import sys
