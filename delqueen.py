@@ -24,9 +24,11 @@ if sys.version_info.major < 3:
 
 
 class delBoard:
-    """ A weird object that does nothing while alive, but solves the n-queens problem when garbage collected.
+    """ A weird object that does nothing while alive,
+    but solves the n-queens problem when garbage collected.
 
-    It uses CPython's garbage collection graph traversal algorithm to explore the graph of possible solutions to the n-queens problem.
+    It uses CPython's garbage collection graph traversal algorithm to explore
+    the graph of possible solutions to the n-queens problem.
     Very weird, but it works. And it's fast!
     """
 
@@ -52,7 +54,9 @@ class delBoard:
 
         __builtins__.collected += 1
 
-        if self.myPos in self.boardState[0] or self.myPos in self.boardState[1] or self.myPos in self.boardState[2]:
+        if self.myPos in self.boardState[0] \
+            or self.myPos in self.boardState[1] \
+            or self.myPos in self.boardState[2]:
             return
 
         if len(self.boardState[0]) == __builtins__.nqueens - 1:
