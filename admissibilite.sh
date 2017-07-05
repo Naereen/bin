@@ -3,10 +3,10 @@ out="/tmp/publinet.html"
 # Download the result page
 wget --quiet -O "$out" "http://publinetce2.education.fr/publinet/Servlet/PublinetServlet?_concours=EAE&_page=LISTE_SECTION&_sort=CHRONO"
 
-state="ADMISSIBILITÉ"
-# state="ADMISSION"
-state2="admissibilité"
-# state2="admission"
+# state="ADMISSIBILITÉ"
+state="ADMISSION"
+# state2="admissibilité"
+state2="admission"
 
 # matiere="MUSIQUE"
 matiere="MATHEMATIQUES"
