@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # Wikipedia in the shell
 # © Jorrit Visser <git.io/jorvi>
 # Major props to konsolebox <https://git.io/konsolebox>
@@ -35,7 +36,7 @@ shiki() {
       break # break out of `case` to prevent 'article' reassignment
     ;;
     -*)
-      printf "Invalid option: ${1}!\n"
+      printf "Invalid option: %s!\n" "${1}"
       return 1
     ;;
     *)
@@ -76,6 +77,5 @@ shiki() {
   # Remove all markup cruft at article boundaries, with `sed`
   # For `formatversion=1` use `sed 's/"}}}.*//'`
   # Literal newline `sed` hack for POSIX compatibility
-  curl -fsSL "${url}" | sed 's/^.*"extract":"//; s/"}\]}.*//; s/\\n/\
-/g' | less # Pipe into `less` for cleaner article browsing
+  curl -fsSL "${url}" | sed 's/^.*"extract":"//; s/"}\]}.*//; s/\\n//g' | less # Pipe into `less` for cleaner article browsing
 }
