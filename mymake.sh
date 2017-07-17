@@ -62,8 +62,16 @@ for i in "$@"; do
             Use_FreeSMS="true"
             shift
         ;;
+        --noFreeSMS )
+            Use_FreeSMS="false"
+            shift
+        ;;
         --SlackWrap )
             Use_SlackWrap="true"
+            shift
+        ;;
+        --noSlackWrap )
+            Use_SlackWrap="false"
             shift
         ;;
     esac
