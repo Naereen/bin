@@ -55,6 +55,7 @@ duration="10"
 description="Événement rajouté automatiquement le $(date) par le script Bash $(basename $0) (https://bitbucket.org/lbesson/bin/src/master/random-gcal-events-to-call-some-friends.sh), écrit par Lilian Besson (https://bitbucket.org/lbesson), et distribué en ligne sous licence MIT (https://lbesson.mit-license.org/). Si ce script présente une erreur, merci de la signaler: https://bitbucket.org/lbesson/bin/issues/new. Bonne journée :-)"
 reminder="5"
 
+echo -e "   Date: $(date)..."
 echo -e "Adding an event to your google calendar for calling '$people' ..."
 echo -- gcalcli --calendar "'${calendar}'" \
 	--title "'${title}'" \
