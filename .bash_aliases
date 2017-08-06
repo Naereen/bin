@@ -724,9 +724,9 @@ LatexFormula() {
     display -title "Image for the LaTeX formula: '${@//\\/\\\\}'   (thanks to an awesome webservice)" "${out}"
 }
 
-alias CheckHomePage_crans='wget -q http://perso.crans.org/besson -O - | grep "Mis.*jour"'
-# alias CheckHomePage_dpt='wget -q http://www.dptinfo.ens-cachan.fr/~lbesson -O - | grep "Mis.*jour"'
-alias CheckHomePage_jarvis='wget -q http://jarvis -O - | grep "Mis.*jour"'
+alias CheckHomePage_crans='wget -q http://perso.crans.org/besson/index.fr.html -O - | grep "Mis.*jour"'
+# alias CheckHomePage_dpt='wget -q http://www.dptinfo.ens-cachan.fr/~lbesson/index.fr.html -O - | grep "Mis.*jour"'
+alias CheckHomePage_jarvis='wget -q http://localhost/index.fr.html -O - | grep "Mis.*jour"'
 
 alias GenP="base64 < /dev/urandom | tr -d +/ | head -c 18; echo"
 
