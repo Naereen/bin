@@ -1189,6 +1189,7 @@ alias LOCK_NO_SLEEP='mail_ghost.py "Automatically sent by the machine $HOSTNAME.
 alias Mail_LOG_save='mail.py "Automatically sent by the machine $HOSTNAME.crans.org when saving." "[LOG] ${USER}@${HOSTNAME} : save"'
 
 export sublpath="$HOME/.config/sublime-text-3/Packages/User/"
+export codepath="$HOME/.config/Code/User/"
 
 alias openvpn_enscachan='cd ~/.local/share/openvpn/ ; sudo openvpn --config 32.conf'
 
@@ -1200,6 +1201,10 @@ alias ^='Push'
 alias ↑='Push'
 alias v='Pull'
 alias ↓='Pull'
+
+# I sometimes forgot that Visual Studio Code cli is called 'code' and not 'vscode'...
+alias visualstudiocode='code'
+alias vscode='code'
 
 export PYTHONIOENCODING='UTF-8'
 
