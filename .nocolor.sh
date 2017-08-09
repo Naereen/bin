@@ -18,7 +18,7 @@
 #  You can pipe a colored command through ' | sed -r "s:\x1B\[[0-9;]*[mK]::g"' to remove all colors.
 #
 ## Copyrigths:
-#  (c) 2013-15, Lilian Besson
+#  (c) 2013-17, Lilian Besson
 #
 ## From ANSIColors.py module, auto generated with -g option. (*i.e.* the command './ANSIColors.py --generate')
 # About the convention for the names of the colors :
@@ -33,7 +33,7 @@
 #
 #
 ## List of colors
-#  Text colors
+# Text colors
 export black=""
 export red=""
 export green=""
@@ -42,7 +42,7 @@ export blue=""
 export magenta=""
 export cyan=""
 export white=""
-#  Without bold colors
+# Without bold colors
 export Bblack=""
 export Bred=""
 export Bgreen=""
@@ -51,7 +51,7 @@ export Bblue=""
 export Bmagenta=""
 export Bcyan=""
 export Bwhite=""
-#  Background colors
+# Background colors
 export Black=""
 export Red=""
 export Green=""
@@ -60,9 +60,9 @@ export Blue=""
 export Magenta=""
 export Cyan=""
 export White=""
-#  Special effects
-export Blink=""  # Start blinking
-export blink=""  # Stop blinking
+# Special effects
+export blink=""  # Start blinking
+export Blink=""  # Stop blinking
 export nocolors=""
 export default=""
 export Default=""
