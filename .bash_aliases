@@ -79,6 +79,7 @@ alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 alias .6='cd ../../../../../..'
 alias path='echo -e ${PATH//:/\\n}'
+up(){ DEEP=$1; cd "$(python -c "print('../'*${DEEP})")"; }
 
 # Commande dut : 'du' Trie. dush : total du dossier courant.
 alias dut='/usr/bin/du -kx | egrep -v "\./.+/" | sort -n'
