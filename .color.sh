@@ -15,8 +15,8 @@
 #
 #
 ## Copyrigths:
-#  (c) 2013-15, Lilian Besson
-# 
+#  (c) 2013-17, Lilian Besson
+#
 ## From ANSIColors.py module, auto generated with -g option. (*i.e.* the command './ANSIColors.py --generate')
 # About the convention for the names of the colors :
 # * for the eight colors black, red, green, yellow, blue, magenta, cyan, white:
@@ -30,7 +30,7 @@
 #
 #
 ## List of colors
-#  Text colors
+# Text colors
 export black="\033[01;30m"
 export red="\033[01;31m"
 export green="\033[01;32m"
@@ -39,7 +39,7 @@ export blue="\033[01;34m"
 export magenta="\033[01;35m"
 export cyan="\033[01;36m"
 export white="\033[01;37m"
-#  Without bold colors
+# Without bold colors
 export Bblack="\033[02;30m"
 export Bred="\033[02;31m"
 export Bgreen="\033[02;32m"
@@ -49,7 +49,7 @@ export Bmagenta="\033[02;35m"
 export Bcyan="\033[02;36m"
 export Bwhite="\033[02;37m"
 export Black="\033[40m"
-#  Background colors
+# Background colors
 export Red="\033[41m"
 export Green="\033[42m"
 export Yellow="\033[43m"
@@ -57,9 +57,9 @@ export Blue="\033[44m"
 export Magenta="\033[45m"
 export Cyan="\033[46m"
 export White="\033[47m"
-#  Special effects
-export Blink="\033[06m"  # Start blinking
-export blink="\033[05m"  # Stop blinking
+# Special effects
+export blink="\033[05m"  # Start blinking
+export Blink="\033[06m"  # Stop blinking
 export nocolors="\033[0m"
 export default="\033[39m"
 export Default="\033[49m"
@@ -81,5 +81,4 @@ export question="\033[01;33m\033[4m/?\\ \033[24m\033[39m"  # /?\ with colors
 export ERROR="\033[0;39;49m\033[01;31mERROR\033[39m"  # ERROR with colors
 export WARNING="\033[0;39;49m\033[01;33mWARNING\033[39m"  # WARNING with colors
 export INFO="\033[0;39;49m\033[01;34mINFO\033[39m"  # INFO with colors
-#DONE
-
+# DONE
