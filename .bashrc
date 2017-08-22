@@ -472,7 +472,10 @@ pidof gpg-agent>/dev/null || eval $(gpg-agent --daemon) || echo "Failed to conne
 
 # From https://github.com/shyiko/commacd
 [ -s "${HOME}/bin/commacd.bash" ] && source "${HOME}/bin/commacd.bash"
-[ -s "${HOME}/.qfc/bin/qfc.sh" ] && source "${HOME}/.qfc/bin/qfc.sh"
+[ -s "${HOME}/.qfc/bin/qfc.sh" ]  && source "${HOME}/.qfc/bin/qfc.sh"
+
+# From https://github.com/jml/undistract-me/
+[ -s "/etc/profile.d/undistract-me.sh" ] && source "/etc/profile.d/undistract-me.sh"
 
 ##############################################################################
 # (c) 2011-2017 Lilian BESSON
