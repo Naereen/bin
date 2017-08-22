@@ -475,7 +475,7 @@ pidof gpg-agent>/dev/null || eval $(gpg-agent --daemon) || echo "Failed to conne
 [ -s "${HOME}/.qfc/bin/qfc.sh" ]  && source "${HOME}/.qfc/bin/qfc.sh"
 
 # From https://github.com/jml/undistract-me/
-[ -s "/etc/profile.d/undistract-me.sh" ] && source "/etc/profile.d/undistract-me.sh"
+# [ -s "/etc/profile.d/undistract-me.sh" ] && source "/etc/profile.d/undistract-me.sh"
 
 ##############################################################################
 # (c) 2011-2017 Lilian BESSON
@@ -484,4 +484,3 @@ pidof gpg-agent>/dev/null || eval $(gpg-agent --daemon) || echo "Failed to conne
 #
 # Put a blank line after
 #  to autorize echo "newentry" >> "$HOME"/.bashrc
-
