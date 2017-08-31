@@ -201,7 +201,7 @@ ocamls() {
     done
 }
 # TODO this requires https://github.com/andrewray/iocaml/#installation (and maybe some local hack to make it work)
-alias jupyter-iocaml='DYLD_LIBRARY_PATH=/home/lilian/.opam/4.02.3/lib/stublibs/ && eval $(opam config env) && jupyter notebook --Session.key="b\"\""'
+alias jupyter-iocaml='DYLD_LIBRARY_PATH=/home/lilian/.opam/4.04.2/lib/stublibs/ && eval $(opam config env) && jupyter notebook --Session.key="b\"\""'
 
 # Convert Jupyter notebooks
 alias j2html='jupyter-nbconvert --to html'
