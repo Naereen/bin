@@ -1200,8 +1200,9 @@ alias mario='vba --fullscreen --filter-lq2x ~/Public/rom/gba/pyrio.gba'
 alias sudo='sudo -H'
 
 alias impressive='impressive.py --nologo --clock --tracking --transtime 0'
-alias slides='impressive'
-complete -f -X '!*.@(pdf|djvu|PDF|png|PNG|jpg|JPG|jpeg|JPEG)' -o plusdirs impressive slides
+# alias slides='impressive'
+alias slides='pdfpc'
+complete -f -X '!*.@(pdf|djvu|PDF|png|PNG|jpg|JPG|jpeg|JPEG)' -o plusdirs impressive slides pdfpc
 
 alias todo_message='for i in $(seq 1 1000); do figlet -w ${COLUMNS} ">  T O D O ,  T O D O ,  T O D O ,  T O D O ,  T O D O" | lolcat ; sleep 10s ; done'
 alias timake='time make && alert'
