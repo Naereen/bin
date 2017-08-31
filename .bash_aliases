@@ -6,7 +6,7 @@
 # On Bitbucket:   https://bitbucket.org/lbesson/bin/
 
 # A try with erase line.
-LS_ECHO() {
+function LS_ECHO() {
     printf " ${blue}${u} Listing${reset} \$*..."
     sleep 0.5
     printf "${el}..."
@@ -23,7 +23,7 @@ alias mv='/bin/mv -i'
 # Commandes ls avec diverses options :
 # The 'ls' family (this assumes you use the GNU ls)
 
-la() {
+function la() {
     arg=$(history | tail -n1 | sed s/'^.*la '/''/)
     if [[ X"$@" = X ]]; then
         echo -e "Contenu du dossier $reset${u}$(pwd)$U$white ${magenta}[option -A]$white"
@@ -32,7 +32,7 @@ la() {
     fi
     /bin/ls --color=auto -A "$@"
 }
-l() {
+function l() {
     arg="$(history | tail -n1 | sed s/'^.*l '/''/)"
     if [[ X"$@" = X ]]; then
         echo -e "Contenu du dossier $reset${u}$(pwd)$U$white ${magenta}[option -hCF]$white"
@@ -41,7 +41,7 @@ l() {
     fi
     /bin/ls --color=auto -hCF "$@"
 }
-lnc() {
+function lnc() {
     arg="$(history | tail -n1 | sed s/'^.*l '/''/)"
     if [[ X"$@" = X ]]; then
         echo -e "Contenu du dossier $(pwd) [option -hCF]"
@@ -79,7 +79,7 @@ alias .4='cd ../../../..'
 alias .5='cd ../../../../..'
 alias .6='cd ../../../../../..'
 alias path='echo -e ${PATH//:/\\n}'
-up(){ DEEP=$1; cd "$(python -c "print('../'*${DEEP})")"; }
+function up() { DEEP=$1; cd "$(python -c "print('../'*${DEEP})")"; }
 
 # Commande dut : 'du' Trie. dush : total du dossier courant.
 alias dut='/usr/bin/du -kx | egrep -v "\./.+/" | sort -n'
@@ -98,7 +98,7 @@ alias MAKE="/usr/bin/make -w"
 # XXX Experimental function that adds shortcuts :
 # If 'make foo' worked, then 'alias foo="make foo"' is added to the CURRENT bash session
 # I got the idea on Saturday 27-08-16 at Lausanne, and I find it pretty awesome
-make() {
+function make() {
     mymake.sh "$@"
     if [ X"$?" = X"0" -a X"${#@}" = X"1" -a X"${1:0:1}" != X"-" ]; then
         # We only add an alias for make commands with one argument, to avoid capturing the options
@@ -117,7 +117,7 @@ alias delete='echo -e "Supression avec une seule confirmation ?"; /bin/rm -I'
 alias rm='/bin/rm -vi'
 
 alias _cd_old='cd'  # Does not work
-CD() {
+function CD() {
     p="$(pwd)"
     p2="$(pwd -P)"
     if [ "X$@" = "X" ]
@@ -162,7 +162,7 @@ shopt -s cdspell 2> /dev/null
 alias ssh='/usr/bin/ssh -X -C'
 
 # Des commandes auxquelles on rajoute des messages inutiles :
-mkdir() {
+function mkdir() {
     echo -e "Le système va essayer de créer le dossier $*..."
     /bin/mkdir -p "$@"
 }
@@ -186,14 +186,14 @@ alias nautici='echo -e "Ouverture de Nautilus dans le repertoire courant [${blue
 
 # Support de l'outil LEDIT pour un meilleur toplevel ocaml.
 alias leditocaml='ledit -x -h ocaml_history.ml ocaml'
-alias leocaml='rlwrap -t dumb --file=/home/lilian/keyword_mocaml_rlwrap.txt --renice --remember -Acm -aPassword: -pGreen --break-chars "(){}[],+-=&^%$#@\"" --histsize 3000000 -H ocaml_history.ml ledit -x -u -l $COLUMNS -h ocaml_history.ml ocaml'
-alias rlocaml='rlwrap -t dumb -z count_in_prompt --file=/home/lilian/keyword_mocaml_rlwrap.txt --renice --remember -Acm  -aPassword: -pGreen --break-chars "(){}[],+-=&^%$#@\"" --histsize 3000000 ocaml'
+alias leocaml='rlwrap -t dumb --file=/home/lilian/keyword_mocaml_rlwrap.txt --renice --remember -Acm -aPassword: -pGreen --break-chars "() {}[],+-=&^%$#@\"" --histsize 3000000 -H ocaml_history.ml ledit -x -u -l $COLUMNS -h ocaml_history.ml ocaml'
+alias rlocaml='rlwrap -t dumb -z count_in_prompt --file=/home/lilian/keyword_mocaml_rlwrap.txt --renice --remember -Acm  -aPassword: -pGreen --break-chars "() {}[],+-=&^%$#@\"" --histsize 3000000 ocaml'
 
-alias mocaml='rlwrap -t dumb --file=/home/lilian/keyword_mocaml_rlwrap.txt --renice --remember -Acm -aPassword: -pGreen --break-chars "(){}[],+-=&^%$#@\"" --histsize 3000000 -H mocaml_history.ml  ledit -x -u -l $COLUMNS -h mocaml_history.ml ocaml'
-alias mocaml_noANSI='rlwrap -t dumb --file=/home/lilian/keyword_mocaml_rlwrap.txt --renice --remember -Acm -aPassword: -pGreen --break-chars "(){}[],+-=&^%$#@\"" --histsize 3000000 -H mocaml_history.ml ledit -x -u -l $COLUMNS -h mocaml_history.ml /home/lilian/.mocaml/launch_noANSI.sh'
+alias mocaml='rlwrap -t dumb --file=/home/lilian/keyword_mocaml_rlwrap.txt --renice --remember -Acm -aPassword: -pGreen --break-chars "() {}[],+-=&^%$#@\"" --histsize 3000000 -H mocaml_history.ml  ledit -x -u -l $COLUMNS -h mocaml_history.ml ocaml'
+alias mocaml_noANSI='rlwrap -t dumb --file=/home/lilian/keyword_mocaml_rlwrap.txt --renice --remember -Acm -aPassword: -pGreen --break-chars "() {}[],+-=&^%$#@\"" --histsize 3000000 -H mocaml_history.ml ledit -x -u -l $COLUMNS -h mocaml_history.ml /home/lilian/.mocaml/launch_noANSI.sh'
 
 # Interpréter les fichiers. Bien mieux que 'ocaml file1.ml file2.ml'.
-ocamls() {
+function ocamls() {
     for i in "$@"; do
         cat "${i}" >> /tmp/iocaml.ml
         echo -e "(** OCaml on ${i}:1:1 *)" >> /tmp/iocaml.log
@@ -225,10 +225,10 @@ case $TERM in
         ;;
 esac
 alias catColor='pygmentize -f $CAT_COLOR -g'
-ExportColorLaTeX() {
+function ExportColorLaTeX() {
     pygmentize -f latex -P encoding=utf8 -o "$1.tex" "$1"
 }
-ExportColorLaTeXFull() {
+function ExportColorLaTeXFull() {
     pygmentize -f latex -P encoding=utf8 -O full -o "$1.full.tex" "$1"
 }
 
@@ -236,7 +236,7 @@ ExportColorLaTeXFull() {
 export RLWRAP_HOME='/home/lilian/'
 export RLWRAP_EDITOR='/home/lilian/bin/nano.last --autoindent --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve'
 
-voirImage() {
+function voirImage() {
     for image in "$@"; do
         echo -e "L'image '${image}' va etre affichee en ASCII."
         if [ -f "${image}" ]; then
@@ -247,7 +247,7 @@ voirImage() {
 # Ajout d'une bash complétion comme ça, en une ligne !
 complete -f -X '!*.@(gif|GIF|jp?(e)g|pn[gm]|PN[GM]|ico|ICO)' -o plusdirs voirImage
 
-xtitle() {
+function xtitle() {
     echo -e "${reset}Setting title to $@..." >> /tmp/xtitle.log
     echo -e "${cyan}Setting title to ${white}${u}$*${U}...${reset}${white}"
     if [ -x /usr/bin/xtitle ]; then
@@ -256,22 +256,22 @@ xtitle() {
 }
 
 # Autre outils pratiques
-Regler_son() {
+function Regler_son() {
     xtitle "$(date)<$USER@$HOSTNAME> { AlsaMixer v1.0.25 }" || true
     clear ; alsamixer; clear
 }
 
-Wavemon() {
+function Wavemon() {
     xtitle "$(date)<$USER@$HOSTNAME> { Wavemon v0.7.6 }" || true
     clear ; wavemon; clear
 }
-t() {
+function t() {
     xtitle "$(date)<$USER@$HOSTNAME> { htop 1.0.3 }" || true
     htop || alert
     clear
 }
 
-captureEcran() {  # now the Alt+$ shortcut does the same!
+function captureEcran() {  # now the Alt+$ shortcut does the same!
     sleep 3s
     xfce4-screenshooter -r -d 5 || gnome-screenshot -i
     clear
@@ -293,7 +293,7 @@ alias MatrixVeille='cmatrix -b -f -s -u 9'
 alias cacademoTerminal='OLDDISPLAY=$DISPLAY; DISPLAY=""; cacademo; DISPLAY=$OLDDISPLAY'
 alias cacafireTerminal='OLDDISPLAY=$DISPLAY; DISPLAY=""; cacafire; DISPLAY=$OLDDISPLAY'
 
-lessColor() {
+function lessColor() {
     for i in "$@"; do
         pygmentize -P encoding="$(file -b --mime-encoding "${i}")" -f $CAT_COLOR -g "${i}" | less -r || \
         echo -e "${ERROR} LessColor failed to read ${u}${i}${U} ...${white}" > /dev/stderr
@@ -324,7 +324,7 @@ alias telnet_starwars='telnet towel.blinkenlights.nl'
 
 # Un outil pour les messages du jour
 alias motd='changemotd.sh --print'
-chmotd() {
+function chmotd() {
     if [ "X$DISPLAY" = "X" ]; then
         echo -e "Using : dialog."
         changemotd.sh --new-dialog
@@ -333,24 +333,24 @@ chmotd() {
         changemotd.sh --new-zenity
     fi
 }
-SMSmotd() {
+function SMSmotd() {
     FreeSMS.py "$(tail -n +2 ~/motd)"
 }
 
-LessColor() { pygmentize -f $CAT_COLOR -g "$@" | less -r; }
+function LessColor() { pygmentize -f $CAT_COLOR -g "$@" | less -r; }
 
 # Un meilleur 'scp'. Ne fonctionne pas avec tous les serveurs, car la cible doit avoir rsync aussi.
 # NOTE: fonctionne aussi en local (et donne un avancement et propose une compression, meme en local).
 alias rsync='/usr/bin/rsync --verbose --times --perms --compress --human-readable --progress --archive'
 # Deprecated: use http://besson.qc.to/bin/CP instead (with colours!)
 
-DOCXtoPDF() { for i in "$@"; do echo -e "${i} ----[abiword]----> ${i%.docx}.pdf"; abiword "${i}" --to="${i%.docx}.pdf"; echo -e "$?"; done }
+function DOCXtoPDF() { for i in "$@"; do echo -e "${i} ----[abiword]----> ${i%.docx}.pdf"; abiword "${i}" --to="${i%.docx}.pdf"; echo -e "$?"; done }
 
 # Netoyer les fichiers temporaires (sauvegarde, python, ou emacs)
 alias rmPyc='rm -vrI ./*.py[co] ./__pycache__/ && echo "Local Python compiled files (*.pyc and *.pyo) have been deleted..."'
 alias rmt='rm -vrI ./*~ ./.*~ ./*.py[co] ./__pycache__/ ./\#*\#'
 
-rmTilde() {
+function rmTilde() {
     if [ X"$1" != X"" ]; then
         for i in "$@"; do
             # d="$(basename \"$i\")" # ? inutile ?
@@ -370,7 +370,7 @@ alias rmt=rmTilde
 alias rm~="rmTilde *"
 
 # Netoyer les fichiers temporaires crees par LaTeX (pdflatex et hevea)
-rmLaTeX() {
+function rmLaTeX() {
     echo -e "# ${blue}rmLaTeX:${white}"
     for i in ./*.tex; do
         echo -e "# For the file ${yellow}${u}$i${U}${white}:"
@@ -382,14 +382,14 @@ rmLaTeX() {
 }
 
 # A super pdflatex
-tex2pdf() {
+function tex2pdf() {
     for i in "$@"; do
         i="${i//.pdf/.tex}"
         ( pdflatex "$i" && pdflatex "$i" && mv -f "${i%tex}log" "${i%tex}aux" "${i%tex}synctex.gz" "${i%tex}out" "${i%tex}vrb" /tmp/ 2>/dev/null ) || (clear ; chktex "$i" ; alert )
         mv -f "${i%tex}snm" "${i%tex}nav" "${i%tex}toc" /tmp/ 2>/dev/null
     done
 }
-TEX2PDF() {
+function TEX2PDF() {
     for i in "$@"; do
         i="${i//.pdf/.tex}"
         ( pdflatex "$i" && pdflatex "$i" && mv -f "${i%tex}log" "${i%tex}aux" "${i%tex}synctex.gz"* "${i%tex}out" "${i%tex}vrb" /tmp/ 2>/dev/null ) || (clear ; chktex "$i" ; alert )
@@ -400,7 +400,7 @@ TEX2PDF() {
 complete -f -X '!*.@(tex|pdf)' -o plusdirs tex2pdf TEX2PDF qpdf
 
 # A small alias to convert .md to .pdf with Pandoc
-md2pdf() {
+function md2pdf() {
     for i in "$@"; do
         i="${i//.pdf/.md}"
         pandoc --verbose --to=latex --output="${i%md}pdf" "$i"
@@ -446,7 +446,7 @@ alias EffacePresenceAPPLE='find -type d -name *Apple* -exec rm -vrI {} \;'
 # Affiche tous les programmes dans le $PATH.
 alias LS_PATH='ls ${PATH//:/ }'
 
-LOG_Colored() {
+function LOG_Colored() {
     "$@" 2> /tmp/LOG_Colored.log
     printf "${reset}${el}\a"
     catColor /tmp/LOG_Colored.log
@@ -485,7 +485,7 @@ alias unTarBZ2='tar -jxvf'
 alias unTarTBZ='tar -xjvf'
 
 #  Use grep to look for TODO or FIXME or FIXED or HOWTO or XXX or DEBUG, or WARNING balises in code
-GrepBalises() {
+function GrepBalises() {
     echo -e "GrepBalises >>> Looking for specials developpement balises in files ${blue}$@${white}."
     notfound=""
     for balise in 'TODO' 'FIXME' 'FIXED' 'HOWTO' 'XXX' 'DEBUG' 'WARNING'; do
@@ -527,13 +527,13 @@ export LESS=' -r -F -B -i -J -w -W -~ -K -d -w -W -m -X -u -r'
 # File & strings related functions:
 
 # Find a file with a pattern in name:
-ff() { find . -type f -iname '*'"$@"'*' -ls ; }
+function ff() { find . -type f -iname '*'"$@"'*' -ls ; }
 
 # Find a file with pattern $1 in name and Execute $2 on it:
-fe() { find . -type f -iname '*'"$1"'*' -exec "${2:-file}" {} \;  ; }
+function fe() { find . -type f -iname '*'"$1"'*' -exec "${2:-file}" {} \;  ; }
 
 # find pattern in a set of files and highlight them:
-fstr() {
+function fstr() {
         OPTIND=1
         local case=""
         local usage="fstr: find string in files.
@@ -556,7 +556,7 @@ Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
         sed "s/$1/${SMSO}\0${RMSO}/gI" | more
 }
 
-lowercase() {  # move filenames to lowercase
+function lowercase() {  # move filenames to lowercase
     for file ; do
         filename="${file##*/}"
         case "$filename" in
@@ -574,7 +574,7 @@ lowercase() {  # move filenames to lowercase
     done
 }
 
-capitalize() {  # move filenames to Capitalize
+function capitalize() {  # move filenames to Capitalize
     for file ; do
         filename="${file##*/}"
         case "$filename" in
@@ -596,7 +596,7 @@ capitalize() {  # move filenames to Capitalize
 
 alias titlecase="python -c \"from sys import argv; from titlecase import titlecase; print(titlecase('\n'.join(argv[1:])))\""
 
-titlecase_all() {  # move filenames to Title Case
+function titlecase_all() {  # move filenames to Title Case
     for file ; do
         filename="${file##*/}"
         case "$filename" in
@@ -614,22 +614,22 @@ titlecase_all() {  # move filenames to Title Case
     done
 }
 
-swap() {        # swap 2 filenames around
+function swap() {        # swap 2 filenames around
     local TMPFILE=tmp.$$
     mv "$1" $TMPFILE
     mv "$2" "$1"
     mv $TMPFILE "$2"
 }
 
-my_ps() { ps "$@" -u "$USER" -o pid,%cpu,%mem,bsdtime,command ; }
+function my_ps() { ps "$@" -u "$USER" -o pid,%cpu,%mem,bsdtime,command ; }
 
-pp() { my_ps f | awk '!/awk/ && $0~var' var="${1:-".*"}" ; }
+function pp() { my_ps f | awk '!/awk/ && $0~var' var="${1:-".*"}" ; }
 
-my_ip() {  # get IP adresses
+function my_ip() {  # get IP adresses
     MY_IP=$(/sbin/ifconfig | awk '/inet adr:/ { print $2 } ' | sed -e s/addr://)
 }
 
-ii() {   # get current host related info
+function ii() {   # get current host related info
     echo -e "\nYou are logged on ${blue}$HOSTNAME ($HOSTNAME_WIFI)"
     echo -e "\nAdditionnal information:${reset}${white} " ; uname -a
     echo -e "\n${blue}Users logged on:${reset}${white} " ; w -h
@@ -654,19 +654,19 @@ export PYTHONUNBUFFERED="yes"
 export PYLINTHOME="$HOME"
 
 # Three different mutt (useless):
-mutt(){
+function mutt() {
     xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { Mutt 1.5.21 } : for localhost"
     /usr/bin/mutt-patched "$@"
     [ -f yes ] && rm -f yes
 }
 
-mutt-crans(){
+function mutt-crans() {
     xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { Mutt 1.5.21 } : for crans.org"
     clear ; /usr/bin/mutt-patched -F ~/.mutt/crans.muttrc "$@" && clear
     [ -f yes ] && rm -f yes
 }
 
-mutt-ens(){
+function mutt-ens() {
     xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { Mutt 1.5.21 } : for ens-cachan.fr"
     clear ; /usr/bin/mutt-patched -F ~/.mutt/ens.muttrc "$@" && clear
     [ -f yes ] && rm -f yes
@@ -679,7 +679,7 @@ alias CleanPNG='echo "Cleaning and compressing PNG images..." && exiftool -v2 -f
 alias CleanPDF='echo "Cleaning and compressing PDF images..." && exiftool -v2 -fast -overwrite_original_in_place -all= ./*.pdf && PDFCompress --no-keep ./*.pdf && M'
 
 ## A less for PDF files (useless)
-lessPDF() {
+function lessPDF() {
     for f in "$@"; do
         pdftotext -r 200 -layout -eol unix -enc UTF-8 -raw "$f" && less -f -J "${f%.pdf}.txt"
     done
@@ -687,10 +687,10 @@ lessPDF() {
 
 eval "$(/bin/lesspipe)"
 # Man visual
-Man() { yelp "man:$@" ; }
+function Man() { yelp "man:$@" ; }
 
 #  Le script suivant permet de decompresser un large eventail de types de fichiers compresses. Il vous suffira juste de taper quel que soit le type d'archive :
-extract() {
+function extract() {
     echo -e "${reset}${neg}Extracting $1...${reset}"
     if [ -f "$1" ] ; then
         case "$1" in
@@ -717,7 +717,7 @@ extract() {
 }
 
 # Experimental
-LatexFormula() {
+function LatexFormula() {
     out="/tmp/LatexFormula_$$.jpg"
     # tente d'afficher les arguments interpretes comme une formule LaTeX, via le bon service web.
     wget --quiet 'http://s0.wp.com/latex.php?bg=ffffff&fg=1c1c1c&s=0&zoom=10&latex=\displaystyle'"${@// /+}" -O "${out}" \
@@ -741,7 +741,7 @@ alias PlusROwner='chmod -vR o+r ./ | tee /tmp/.script_droit_Rowner.log'
 alias PlusRGroup='chmod -vR g+r ./ | tee /tmp/.script_droit_Rgroup.log'
 alias PLUS='( PlusROwner ; PlusRGroup) | grep -v symbolique | grep modif'
 
-ViewHTML() {
+function ViewHTML() {
     for i in "$@"; do
         echo -e "Trying to see the file at the address ${yellow}'${i}'${white}"
         curl --insecure "$i" 2> /tmp/ViewHTML.$$.log | html2text | pygmentize -f terminal -l rst
@@ -750,28 +750,59 @@ ViewHTML() {
 
 alias MacAddress='ifconfig | grep "HWaddr [0-9a-f:]*"'
 
+# --- For Git only ---
+alias g='git'
 # Thanks to http://stackoverflow.com/a/4529147/5889533
-function pushall(){
-    for i in $(git remote | sort -r); do
+function pushall() {
+    for i in "$(git remote | sort -r)"; do
         echo -e "git push $i ${1:-master}" "..."
-        git push $i ${1:-master}
+        git push "$i" "${1:-master}"
     done;
 }
-function pullall(){
-    for i in $(git remote | sort -r); do
+function pullall() {
+    for i in "$(git remote | sort -r)"; do
         echo -e "git pull $i ${1:-master}" "..."
-        git pull $i ${1:-master}
+        git pull "$i" "${1:-master}"
     done;
 }
-# For Git
-alias Push='clear ; git push && git gc'
-alias p='clear ; git push'
-alias Pull='clear ; git gc && pullall && git gc && git-blame-last-commit.sh'
-alias Status='clear ; git status'
-alias Commit='clear ; git commit -m'
-alias c='clear ; git commit -m'
-alias Add='git add'
-alias a='git add'
+
+# --- For Git and subversion ---
+function Push() {
+    clear
+    (git push "$@" && git gc) || svn update "$@"
+}
+function p() {
+    clear
+    git push "$@" || svn update "$@"
+}
+
+function Pull() {
+    clear
+    (pullall "$@" && git gc && [ -x git-blame-last-commit.sh] && git-blame-last-commit.sh) || svn update "$@"
+}
+
+function s() {
+    clear
+    ( git status "$@" || svn status "$@" ) | less -r
+}
+alias Status='s'
+
+function wd() {
+    clear
+    git wdiff "$@" || svn diff "$@"
+}
+
+function c() {
+    clear
+    git commit -m "$@" || svn commit -m "$@"
+}
+alias Commit='c'
+
+function a() {
+    git add "$@" || svn add "$@"
+}
+alias Add='a'
+
 alias Aggressive='git gc --aggressive'
 alias Sync='clear ; echo -e "Synchronizing (git push, gc, send_zamok)..."; git push; git gc --aggressive; make send_zamok; alert'
 
@@ -792,14 +823,14 @@ alias TMUX='/usr/bin/tmux -2 -q -u attach-session || /usr/bin/tmux -2 -q -u'
 # For GPG
 GpgSign()    { gpg --armor --detach-sign --yes --no-batch --use-agent "$@"; }
 GpgVerify()  { gpg --verify --no-batch --use-agent "$@"; }
-GpgEncrypt() { gpg --encrypt --yes --no-batch --use-agent -r "$EMAIL" "$@"; }
-GpgDecrypt() { gpg --decrypt --yes --no-batch --use-agent "$@"; }
+function GpgEncrypt() { gpg --encrypt --yes --no-batch --use-agent -r "$EMAIL" "$@"; }
+function GpgDecrypt() { gpg --decrypt --yes --no-batch --use-agent "$@"; }
 
 # Pour que ssh-add ne memorise la passphrase que pendant 30 minutes
 alias ssh-add='ssh-add -t 1800'
 
 # youtube-dl shortcuts (there is also youtube-playlist.sh and youtube-albums.sh)
-youtube() {
+function youtube() {
     for i in "$@"; do
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
@@ -807,7 +838,7 @@ youtube() {
         youtube-dl --youtube-skip-dash-manifest --output "%(title)s.%(ext)s" --extract-audio --console-title --keep-video --audio-format=mp3 --no-overwrites -- "$arg"
     done
 }
-youtube-mp3() {
+function youtube-mp3() {
     for i in "$@"; do
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
@@ -816,7 +847,7 @@ youtube-mp3() {
     done
 }
 alias y='youtube-mp3'
-youtube-video() {
+function youtube-video() {
     for i in "$@"; do
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
@@ -830,7 +861,7 @@ alias watch='watch -b -d -e'
 
 # Do a job, only for a certain amount of time
 # Exemple : DoForATime 60 my-very-long-command-that-can-never-terminate
-DoForATime(){
+function DoForATime() {
     log="/tmp/DoForATime$(date "+%Hh-%Mm-%Ss").log"
     TIMEOUT="$1"
     shift
@@ -839,9 +870,9 @@ DoForATime(){
     "$@" & { sleep "${TIMEOUT}"; eval 'kill -9 $!' &>> "$log"; }
 }
 
-pstree() { /usr/bin/pstree -a -h -s -c -U "$@"; }
+function pstree() { /usr/bin/pstree -a -h -s -c -U "$@"; }
 
-sshtmux() {
+function sshtmux() {
     if [ "Z$TMUX" = "Z" ]; then
         echo -e "${blue}Using tmux on remote server.$white"
         ( /usr/bin/ssh -X -C -t "$@" "tmux -2 -q -u attach-session || byobu || tmux -2 -q -u" ) || ( alert ; echo -e "${red}Error, connection to $@ closed." )
@@ -869,7 +900,7 @@ alias forge='sshforge'
 # Navigateur en console
 alias elinks='/usr/bin/elinks -verbose 0'
 
-Lock(){
+function Lock() {
     echo -e "New use of Lock from $(w).\n\n Last: $(last).\n Date: $(date).\n\n" >> ~/.Lock.log
     if [ "X$(pidof gnome-screensaver)" != "X0" ]; then
         gnome-screensaver-command --lock
@@ -883,15 +914,15 @@ Lock(){
 }
 
 # Make shortcuts
-send_dpt(){
+function send_dpt() {
 ( make send_dpt 2>&1 | tee /tmp/make.log ) ; ( grep "Pas de règle" /tmp/make.log >/dev/null && echo -e "${red}Error: send_dpt not found.${white}" ; alert ) || echo -e "${green}Success in sending to zamok.crans.org :)${white}"
 }
 
-send_zamok(){
+function send_zamok() {
 ( make send_zamok 2>&1 | tee /tmp/make.log ) ; ( grep "Pas de règle" /tmp/make.log >/dev/null && echo -e "${red}Error: send_zamok not found.${white}" ; alert ) || echo -e "${green}Success in sending to ssh.dptinfo.ens-cachan.fr :)${white}"
 }
 
-randquote(){
+function randquote() {
     if [ -f "$quotes" ];  then
         shuf "$quotes" | head -n 1
     elif [ -f "$HOME/motd" ];  then
@@ -902,9 +933,9 @@ randquote(){
 }
 
 # With nginx
-Nginx_Access() { watch tail -n 10 /var/log/nginx/access.log || alert; }
-Nginx_Error() { watch tail -n 10 /var/log/nginx/error.log || alert; }
-Nginx_Start() {
+function Nginx_Access() { watch tail -n 10 /var/log/nginx/access.log || alert; }
+function Nginx_Error() { watch tail -n 10 /var/log/nginx/error.log || alert; }
+function Nginx_Start() {
     echo -e "${blue} Last changes on ~/nginx.conf on local git repository :${reset}"
     git diff ~/nginx.conf
     echo -e "${blue} Last changes on ~/nginx.conf compared with /etc/nginx/nginx.conf :${reset}"
@@ -924,7 +955,7 @@ Nginx_Start() {
 }
 
 # With Munin
-Munin_Start() {
+function Munin_Start() {
     echo -e "${blue} Last changes on ~/munin.conf on local git repository :${reset}"
     git diff ~/munin.conf
     echo -e "${blue} Last changes on ~/munin.conf compared with /etc/munin/munin.conf :${reset}"
@@ -958,7 +989,7 @@ export EDITOR="/bin/nano"
 alias GetQC='wget "$(wget http://questionablecontent.net/ -O - | grep -o "http://www.questionablecontent.net/comics.*[0-9]*.*\(png\|jpg\|jpeg\|gif\)")"'
 
 # Print the current read/watched TV shows or movies ('series.sh list' now does the same)
-Currents() {
+function Currents() {
     clear
     for i in ~/current*; do
             dir="$(cat "$i")"
@@ -982,11 +1013,11 @@ Currents() {
 alias UPDATE='( clear ; echo -e "You used the UPDATE alias: updating apt cache, upgrading, auto-removing and cleaning..."; sudo apt update ; sudo apt upgrade ; sudo apt autoremove ; sudo apt clean ; sudo apt autoclean ) || alert | tee /tmp/apt.log'
 
 # To avoid painfull &>$null& at the end of some commands that *should* be detached by default
-evince() { ( /usr/bin/evince "$@" || /usr/bin/firefox "$@" ) &> /dev/null & }
-eog() { ( /usr/bin/eog "$@" || /usr/bin/ristretto "$@" ) &> /dev/null & }
-firefox() { ( /usr/bin/firefox "$@" || /usr/bin/elinks "$@" ) &> /dev/null & }
+function evince() { ( /usr/bin/evince "$@" || /usr/bin/firefox "$@" ) &> /dev/null & }
+function eog() { ( /usr/bin/eog "$@" || /usr/bin/ristretto "$@" ) &> /dev/null & }
+function firefox() { ( /usr/bin/firefox "$@" || /usr/bin/elinks "$@" ) &> /dev/null & }
 
-vlc() {
+function vlc() {
 	if type gmusicbrowser &>/dev/null; then
 		echo -e "${blue}Pausing GMusicBrowser (with the 'gmusicbrowser -cmd' CLI tool)...${white}"
 		pidof gmusicbrowser &>/dev/null && gmusicbrowser -cmd Pause || echo -e "${red}Warning: GMusicBrowser not playing.${white}"
@@ -995,10 +1026,10 @@ vlc() {
 	/usr/bin/vlc --random "$@" &> /dev/null &
 }
 
-# linphone() { /usr/bin/linphone "$@" &> /dev/null & }
-libreoffice() { ( /usr/bin/libreoffice "$@" || /usr/bin/abiword "$@" ) &> /dev/null & }
+# function linphone() { /usr/bin/linphone "$@" &> /dev/null & }
+function libreoffice() { ( /usr/bin/libreoffice "$@" || /usr/bin/abiword "$@" ) &> /dev/null & }
 
-butterfly() {  # From 'pip install butterfly'
+function butterfly() {  # From 'pip install butterfly'
     butterfly.server.py --logging=none --unsecure &> /dev/null &
     echo -e "Butterfly running... Open your browser at http://127.0.0.1:57575/ to use the Butterfly terminal in your browser"
 }
@@ -1014,9 +1045,9 @@ alias bd='. bd -s'
 
 # The best way to use it is by typing a command, canceling it, and then with 'ExplainShell !!'
 # Or directly: 'ExplainShell grep -C 2 -n -m 10 grep .bash_history' for example
-ExplainShell() { /usr/bin/firefox http://explainshell.com/explain?cmd="${*// /%20}" &>/dev/null & }
+function ExplainShell() { /usr/bin/firefox http://explainshell.com/explain?cmd="${*// /%20}" &>/dev/null & }
 
-alias Tor='cd ~/.local/tor-browser ; ./start-tor-browser &'
+alias Tor='cd ~/.local/tor-browser ; ./start-tor-browser & ; cd -'
 
 function poisson() { python -c "from numpy.random import poisson; print(poisson(int($1)))"; }
 
@@ -1066,13 +1097,13 @@ alias veillesudo='sudo dbus-send --system --print-reply --dest="org.freedesktop.
 # With Linphone - it's not working anymore
 num="XX922026YY"; num="${num/XX/04}"; num="${num/YY/27}"
 alias ETTelephoneMaison='linphone -c ${num}@crans.org'
-Appeler() {
+function Appeler() {
     echo -e linphone -c "$1"@crans.org
     echo -e "Confirmez-vous l'appel au numéro $1 ?"
     read && linphone -c "$1"@crans.org
 }
 
-PROXY () {
+function PROXY () {
     case $1 in
         off)
             if pidof firefox >/dev/null; then
@@ -1098,33 +1129,30 @@ alias ax='autotex'
 complete -f -X '!*.@(tex|pdf|PDF)' -o plusdirs autotex
 alias P='PDFCompress'
 complete -f -X '!*.@(pdf|PDF)' -o plusdirs P
-pdfinfo() { for i in "$@"; do echo -e "\n${green}# For '${red}${u}$i${U}${white}':"; /usr/bin/pdfinfo "$i"; done }
+function pdfinfo() { for i in "$@"; do echo -e "\n${green}# For '${red}${u}$i${U}${white}':"; /usr/bin/pdfinfo "$i"; done }
 complete -f -X '!*.@(pdf|PDF)' -o plusdirs pdfinfo pdftk pdfgrep pdftohtml pdftotext
 
-f() { echo -e "Opening args '$@' in firefox..."; firefox "$@" || alert; }
-# b() { echo -e "Executing args '$@' with bpython..."; bpython "$@" || alert; }
+function f() { echo -e "Opening args '$@' in firefox..."; firefox "$@" || alert; }
+# function b() { echo -e "Executing args '$@' with bpython..."; bpython "$@" || alert; }
 # Default to Python 3
-i2() { echo -e "Executing args '$@' with ipython2..."; ipython2 --pylab "$@" || alert; }
-pti2() { echo -e "Executing args '$@' with ptipython2..."; ptipython2 "$@" || alert; }  # custom script
-i() { echo -e "Executing args '$@' with ipython3..."; ipython3 --pylab "$@" || alert; }
+function i2() { echo -e "Executing args '$@' with ipython2..."; ipython2 --pylab "$@" || alert; }
+function pti2() { echo -e "Executing args '$@' with ptipython2..."; ptipython2 "$@" || alert; }  # custom script
+function i() { echo -e "Executing args '$@' with ipython3..."; ipython3 --pylab "$@" || alert; }
 # ptipython from https://github.com/jonathanslenders/ptpython
-pti() { echo -e "Executing args '$@' with ptipython..."; ptipython "$@" || alert; }
-i3() { echo -e "Executing args '$@' with ipython3..."; ipython3 --pylab "$@" || alert; }
-pti3() { echo -e "Executing args '$@' with ptipython3..."; ptipython3 "$@" || alert; }  # custom script
+function pti() { echo -e "Executing args '$@' with ptipython..."; ptipython "$@" || alert; }
+function i3() { echo -e "Executing args '$@' with ipython3..."; ipython3 --pylab "$@" || alert; }
+function pti3() { echo -e "Executing args '$@' with ptipython3..."; ptipython3 "$@" || alert; }  # custom script
 
-e() { echo -e "Opening args '$@' in evince..."; evince "$@" || alert; }
+function e() { echo -e "Opening args '$@' in evince..."; evince "$@" || alert; }
 complete -f -X '!*.@(pdf|djvu|PDF|DJVU)' -o plusdirs e
 
 alias j='jupyter-notebook'
 alias m='clear ; make'
-alias s='clear ; git status | less -r'
-alias g='git'
-alias wd='clear ; git wdiff'
 alias pdf='make pdf'        # special alias for Makefile-powered LaTeX projects
 alias clean='make clean'    # special alias for Makefile-powered LaTeX projects
 
 # Meta fonction experimentale pour ouvrir un fichier avec l'application appropriee.
-o() {
+function o() {
     if [ X"$1" == X"--help" ] || [ X"$1" == X"-h" ] || [ X"$1" == X"-?" ] || [ X"$1" == X"" ]; then
         echo -e "Use the alias o to open any file : o FILE1 [FILE2 [...]], or directory. mimeopen is used by default if my hand-made rules fail."
     else
@@ -1177,11 +1205,10 @@ complete -f -X '!*.@(pdf|djvu|PDF|png|PNG|jpg|JPG|jpeg|JPEG)' -o plusdirs impres
 
 alias todo_message='for i in $(seq 1 1000); do figlet -w ${COLUMNS} ">  T O D O ,  T O D O ,  T O D O ,  T O D O ,  T O D O" | lolcat ; sleep 10s ; done'
 alias timake='time make && alert'
+
+# Shortcut for fast edit of .htaccess or .gitignore files (very common situation)
 alias nhtaccess='nano .htaccess -Y sh'
 alias ngitignore='nano .gitignore -Y sh'
-
-alias selfspy='rm -vi ~/.selfspy/selfspy.pid.lock ; /usr/local/bin/selfspy'
-alias selfvis='cd ~/Public/ ; echo -e "Generating selfvis graphs..." ; selfvis.py ; cd -'
 
 alias SHUTDOWN='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when shutdown." "[LOG] ${USER}@${HOSTNAME} : shutdown"; mail_tel.py "Automatically sent by the machine $HOSTNAME.crans.org when shutdown." "[LOG] ${USER}@${HOSTNAME} : shutdown"; sudo shutdown now'
 alias REBOOT='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when reboot." "[LOG] ${USER}@${HOSTNAME} : reboot"; mail_tel.py "Automatically sent by the machine $HOSTNAME.crans.org when reboot." "[LOG] ${USER}@${HOSTNAME} : reboot"; sudo reboot now'
@@ -1213,7 +1240,7 @@ export PYTHONIOENCODING='UTF-8'
 function ppDay() { python -c "from datetime import datetime; d = datetime.fromtimestamp(int($1)); print(d.strftime('%A %d %B %Y'))"; }
 function ppTime() { python -c "from datetime import datetime; d = datetime.fromtimestamp(int($1)); print(d.strftime('%A %d %B %Y, %r'))"; }
 
-function help_remount(){
+function help_remount() {
 	echo -e "To remount a read-only partition as read-write, do this: \nsudo mount -o remount,rw /partition/identifier /mount/point"
 }
 
