@@ -204,8 +204,28 @@ function ocamls() {
 alias jupyter-iocaml='DYLD_LIBRARY_PATH=/home/lilian/.opam/4.04.2/lib/stublibs/ && eval $(opam config env) && jupyter notebook --Session.key="b\"\""'
 
 # Convert Jupyter notebooks
-alias j2html='jupyter-nbconvert --to html'
-alias j2pdf='jupyter-nbconvert --to pdf'
+# alias j2html='jupyter-nbconvert --to html'
+function j2html() {
+  for old in "$@"; do
+    jupyter-nbconvert --to html "$old"
+  done
+}
+# alias j2pdf='jupyter-nbconvert --to pdf'
+function j2pdf() {
+  for old in "$@"; do
+    new="${old%.ipynb}__fix-iocaml-notebook-exports-to-pdf.ipynb"
+    [ -f "$new" ] && mv -vf "$new" /tmp/
+    fix-iocaml-notebook-exports-to-pdf.py "$old" "$new"
+    if [ $? = 0 ]; then
+      jupyter-nbconvert --to pdf "$new"
+      [ -f "${old%.ipynb}.pdf" ] && mv -vf "${old%.ipynb}.pdf" /tmp/
+      mv -vf "${new%.ipynb}.pdf" "${old%.ipynb}.pdf"
+      mv -vf "$new" /tmp/
+    else
+      jupyter-nbconvert --to pdf "$old"
+    fi
+  done
+}
 alias j2py='jupyter-nbconvert --to python'
 complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2py
 
@@ -778,7 +798,7 @@ function p() {
 
 function Pull() {
     clear
-    (pullall "$@" && git gc && [ -x git-blame-last-commit.sh] && git-blame-last-commit.sh) || svn update "$@"
+    (pullall "$@" && git gc && [ -x git-blame-last-commit.sh ] && git-blame-last-commit.sh) || svn update "$@"
 }
 
 function s() {
