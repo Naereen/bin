@@ -1168,6 +1168,7 @@ complete -f -X '!*.@(pdf|djvu|PDF|DJVU)' -o plusdirs e
 
 alias j='jupyter-notebook'
 alias m='clear ; make'
+alias mB='clear ; make -B'
 alias pdf='make pdf'        # special alias for Makefile-powered LaTeX projects
 alias clean='make clean'    # special alias for Makefile-powered LaTeX projects
 
