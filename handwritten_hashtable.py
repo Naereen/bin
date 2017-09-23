@@ -3,6 +3,10 @@
 """
 Hand written implementation of a very naive hash table data structure.
 
+- It supports the same interface as Python default 'dict' data structure.
+- O(1) insertion, O(1) read, deletion and write (in average)
+- It is not slow! For about 100 values, it is about has fast as 'dict', 10x slower for 1000 values, 100x slower for 10000 values.
+
 About:
 - *Date:* 23/09/2017.
 - *Author:* Lilian Besson, (C) 2017
@@ -63,12 +67,13 @@ class hashtable(object):
 
     # internal double method
 
-    def _double_size(self):
+    def _double_size(self, debug=False):
         """If needed, double the size of the hash table."""
         self._array += [[] for _ in range(self._size)]
         self._nb_bits += 1
         self._size *= 2
-        print("Doubling the size of the hash table...\nUsing now {} bits for the addressing, and able to store up to {} values. Currently {} are used.".format(self._nb_bits, self._size, self._nb))  # DEBUG
+        if debug:
+            print("Doubling the size of the hash table...\nUsing now {} bits for the addressing, and able to store up to {} values. Currently {} are used.".format(self._nb_bits, self._size, self._nb))  # DEBUG
 
     # read, write, delete methods
 
@@ -156,31 +161,6 @@ class hashtable(object):
             if len(c) > 0:
                 for kv in c:
                     yield kv
-
-    # def __getitem__(self, index):
-    #     """Return the index-th value stored in the hash table. Order is not important!"""
-    #     n, m, nb = -1, 0, -1
-    #     if index >= self._nb:
-    #         raise IndexError
-    #     # need 3 loops : for incorrect indexes, for empty cells, and for incorrect keys in cells
-    #     while nb < index:
-    #         i = n + 1
-    #         while i < self._size and len(self._array[i]) == 0:
-    #             i += 1
-    #         if i >= self._size:
-    #             raise IndexError
-    #         elif len(self._array[i]) > 0:
-    #             n = i
-    #             # non empty cell
-    #             m = j = 0
-    #             maxJ = len(self._array[i])
-    #             while j < maxJ and nb < index:
-    #                 nb += 1
-    #                 j += 1
-    #             if j >= maxJ:
-    #                 continue
-    #             m = j
-    #     return self._array[n][m]
 
 
 # --- Testing
