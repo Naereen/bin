@@ -32,15 +32,20 @@ class hashtable(object):
         self._size = 1 << nb_bits
         self._nb = 0
         self._array = [None] * self._size
+        # Naive way of inserting
         if map_values is not None:
             for key, value in map_values:
                 self.insert(key, value)
+
+    # convenient methods
 
     def __len__(self):
         return self._nb
 
     def __str__(self):
-        return "{" + ", ".join(["{}: {}".format(kv[0], kv[1]) for kv in self._array if kv is not None]) + "}"
+        return "{" + ", ".join(["{}: {}".format(kv[0], kv[1]) for kv in self]) + "}"
+
+    __repr__ = __str__
 
     def insert(self, key, value):
         """Insert a new (key, value) pair in the hash table."""
@@ -53,12 +58,16 @@ class hashtable(object):
             self._double_size()
         self._array[h] = (key, value)
 
+    # internal double method
+
     def _double_size(self):
         """If needed, double the size of the hash table."""
         self._array += [None] * self._size
         self._nb_bits += 1
         self._size *= 2
         print("Doubling the size of the hash table...\nUsing now {} bits for the addressing, and able to store up to {} values. Currently {} are used.".format(self._nb_bits, self._size, self._nb))  # DEBUG
+
+    # read, write, delete methods
 
     def read(self, key):
         """Read the value stored with this key."""
@@ -86,14 +95,39 @@ class hashtable(object):
         else:
             self._array[h] = (key, value)
 
+    # dictionary like methods
+
     def keys(self):
-        """Return list of keys."""
-        return [kv[0] for kv in self._array if kv is not None]
+        """Return iterator of keys."""
+        return (kv[0] for kv in self)
 
     def items(self):
-        """Return list of items."""
-        return [kv[1] for kv in self._array if kv is not None]
+        """Return iterator of items."""
+        return (kv[1] for kv in self)
 
+    # Methods to make it an iterator
+
+    def iter(self):
+        return (kv for kv in self._array if kv is not None)
+
+    def __getitem__(self, index):
+        """Return the index-th value stored in the hash table. Order is random!"""
+        n, nb = -1, -1
+        if index >= self._nb:
+            raise IndexError
+        while nb < index:
+            i = n + 1
+            while i < self._size and self._array[i] is None:
+                i += 1
+            if i >= self._size:
+                raise IndexError
+            elif self._array[i] is not None:
+                nb += 1
+                n = i
+        return self._array[n]
+
+
+# --- Testing
 
 def test():
     print("Creating empty hash table ...")
@@ -115,6 +149,9 @@ def test():
         H.delete(i)
     print(H)
     print("len(H) =", len(H))
+    print("Trying to __getitem__:")
+    for k in range(len(H)):
+        print("H.__getitem__({}) = {}".format(k, H.__getitem__(k)))
 
 if __name__ == '__main__':
     test()
