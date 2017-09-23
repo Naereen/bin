@@ -12,6 +12,8 @@ About:
 
 
 def small_hash(x, nb_bits=3):
+    """A naive hash function."""
+    # return abs(hash(x)) % 2  # test, to check that collisions are well handled
     return abs(hash(x)) % (1 << nb_bits)
 
 
@@ -23,15 +25,16 @@ class hashtable(object):
     """Manual implementation of a naive hash table.
 
     - Can only store hashable values.
-    - Uses a non cryptographic hash function.
-    - Very not resistant to collision!
+    - Use single-linked lists to be collision-resistant!
+    - Uses a non cryptographic hash function (default `hash`).
     """
 
     def __init__(self, map_values=None, nb_bits=NB_BITS):
         self._nb_bits = nb_bits
         self._size = 1 << nb_bits
         self._nb = 0
-        self._array = [None] * self._size
+        self._array = [[] for _ in range(self._size)]
+        self._keys = []
         # Naive way of inserting
         if map_values is not None:
             for key, value in map_values:
@@ -49,20 +52,20 @@ class hashtable(object):
 
     def insert(self, key, value):
         """Insert a new (key, value) pair in the hash table."""
+        if key in self.keys():
+            raise ValueError("key = {} is already present in the hash table".format(key))
+        self._keys.append(key)
         self._nb += 1
         h = small_hash(key, nb_bits=self._nb_bits)
-        # FIXME implement chained hashing!
-        if self._array[h] is not None:
-            raise IndexError
         if self._nb >= self._size:
             self._double_size()
-        self._array[h] = (key, value)
+        self._array[h].append((key, value))
 
     # internal double method
 
     def _double_size(self):
         """If needed, double the size of the hash table."""
-        self._array += [None] * self._size
+        self._array += [[] for _ in range(self._size)]
         self._nb_bits += 1
         self._size *= 2
         print("Doubling the size of the hash table...\nUsing now {} bits for the addressing, and able to store up to {} values. Currently {} are used.".format(self._nb_bits, self._size, self._nb))  # DEBUG
@@ -71,60 +74,113 @@ class hashtable(object):
 
     def read(self, key):
         """Read the value stored with this key."""
-        h = small_hash(key, nb_bits=self._nb_bits)
-        v = self._array[h]
-        if v is None:
+        if key not in self.keys():
             raise IndexError
-        else:
-            return v[1]
+        h = small_hash(key, nb_bits=self._nb_bits)
+        cell = self._array[h]
+        for (k, v) in cell:
+            if k == key:
+                return v
+        raise IndexError
+
+    __getitem__ = read
 
     def delete(self, key):
         """Delete the value stored with this key."""
-        h = small_hash(key, nb_bits=self._nb_bits)
-        if self._array[h] is None:
+        if key not in self.keys():
             raise IndexError
+        h = small_hash(key, nb_bits=self._nb_bits)
+        cell = self._array[h]
+        for i, (k, _) in enumerate(cell):
+            if k == key:
+                self._nb -= 1
+                del cell[i]
+                del self._keys[self._keys.index(k)]
+                break
         else:
-            self._nb -= 1
-            self._array[h] = None
+            raise IndexError
+
+    __delitem__ = delete
 
     def write(self, key, value):
         """Set the value stored with this key."""
-        h = small_hash(key, nb_bits=self._nb_bits)
-        if self._array[h] is None:
+        if key not in self.keys():
             raise IndexError
+        h = small_hash(key, nb_bits=self._nb_bits)
+        cell = self._array[h]
+        for i, (k, _) in enumerate(cell):
+            if k == key:
+                cell[i] = (key, value)
+                break
         else:
-            self._array[h] = (key, value)
+            raise IndexError
 
     # dictionary like methods
 
     def keys(self):
         """Return iterator of keys."""
-        return (kv[0] for kv in self)
+        return self._keys
 
     def items(self):
         """Return iterator of items."""
-        return (kv[1] for kv in self)
+        return (self[k] for k in self.keys())
+
+    def __contains__(self, key):
+        return key in self.keys()
+
+    def __setitem__(self, key, value):
+        if key in self.keys():
+            self.write(key, value)
+        else:
+            self.insert(key, value)
+
+    def update(self, iterator):
+        if hasattr(iterator, 'keys') and callable(iterator.keys):
+            for k in iterator:
+                self[k] = iterator[k]
+        else:
+            for k, v in iterator:
+                self[k] = v
 
     # Methods to make it an iterator
 
-    def iter(self):
-        return (kv for kv in self._array if kv is not None)
+    def list(self):
+        r = []
+        for c in self._array:
+            if len(c) > 0:
+                r += c
+        return r
 
-    def __getitem__(self, index):
-        """Return the index-th value stored in the hash table. Order is random!"""
-        n, nb = -1, -1
-        if index >= self._nb:
-            raise IndexError
-        while nb < index:
-            i = n + 1
-            while i < self._size and self._array[i] is None:
-                i += 1
-            if i >= self._size:
-                raise IndexError
-            elif self._array[i] is not None:
-                nb += 1
-                n = i
-        return self._array[n]
+    def __iter__(self):
+        for c in self._array:
+            if len(c) > 0:
+                for kv in c:
+                    yield kv
+
+    # def __getitem__(self, index):
+    #     """Return the index-th value stored in the hash table. Order is not important!"""
+    #     n, m, nb = -1, 0, -1
+    #     if index >= self._nb:
+    #         raise IndexError
+    #     # need 3 loops : for incorrect indexes, for empty cells, and for incorrect keys in cells
+    #     while nb < index:
+    #         i = n + 1
+    #         while i < self._size and len(self._array[i]) == 0:
+    #             i += 1
+    #         if i >= self._size:
+    #             raise IndexError
+    #         elif len(self._array[i]) > 0:
+    #             n = i
+    #             # non empty cell
+    #             m = j = 0
+    #             maxJ = len(self._array[i])
+    #             while j < maxJ and nb < index:
+    #                 nb += 1
+    #                 j += 1
+    #             if j >= maxJ:
+    #                 continue
+    #             m = j
+    #     return self._array[n][m]
 
 
 # --- Testing
@@ -133,25 +189,52 @@ def test():
     print("Creating empty hash table ...")
     H = hashtable()
     print(H)
+
     print("Inserting i**2 for i = 0..9 ...")
     for i in range(10):
         H.insert(i, i**2)
     print(H)
+
     print("Reading i**2 for i = 0..9 ...")
     for i in range(10):
-        print(i, H.read(i))
+        assert H[i] == H.read(i)
+        print("H[{}] = {} = H.read({}) = {}".format(i, H[i], i, H.read(i)))
+    print(H)
+
     print("Writing in place i**3 ...")
     for i in range(10):
         H.write(i, i**3)
     print(H)
+
+    print("Writing in place i**4 ...")
+    for i in range(10):
+        H[i] = i**4
+    print(H)
+
     print("Deleting even values ...")
     for i in range(0, 10, 2):
         H.delete(i)
     print(H)
+
+    print("Inserting a new value ...")
+    H.insert(20, 8000)
+    print(H)
+
+    print("Deleting this new value ...")
+    del H[20]
+    print(H)
+
     print("len(H) =", len(H))
-    print("Trying to __getitem__:")
-    for k in range(len(H)):
-        print("H.__getitem__({}) = {}".format(k, H.__getitem__(k)))
+
+    print("list(H) =", list(H))
+
+    print("Updating from a dictionary ...")
+    H.update({k: k**2 for k in range(10, 15)})
+    print(H)
+
+    print("Updating from a list ...")
+    H.update([(k, k**2) for k in range(15, 20)])
+    print(H)
 
 if __name__ == '__main__':
     test()
