@@ -1093,6 +1093,12 @@ function random_scrubs_vo() {
     random-vrun-next.sh 8
 }
 
+alias tbbt-vo='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/The_Big_Bang_Theory" >/dev/null 2>/dev/null &'
+function random_tbbt() {
+    /usr/bin/vlc --random --start-time=$(poisson $((8 * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/The_Big_Bang_Theory" >/dev/null 2>/dev/null &
+    random-vrun-next.sh 8
+}
+
 alias friends='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
 #alias friends-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
 function random_friends() {
