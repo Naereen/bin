@@ -1093,6 +1093,12 @@ function random_scrubs_vo() {
     random-vrun-next.sh 8
 }
 
+alias tbbt='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/The_Big_Bang_Theory" >/dev/null 2>/dev/null &'
+function random_tbbt() {
+    /usr/bin/vlc --random --start-time=$(poisson $((8 * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/The_Big_Bang_Theory" >/dev/null 2>/dev/null &
+    random-vrun-next.sh 8
+}
+
 alias friends='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
 #alias friends-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
 function random_friends() {
@@ -1100,8 +1106,18 @@ function random_friends() {
     random-vrun-next.sh 5
 }
 
-#alias himym='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" >/dev/null 2>/dev/null &'
+alias himym='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" >/dev/null 2>/dev/null &'
 #alias himym-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" >/dev/null 2>/dev/null &'
+function random_himym() {
+    /usr/bin/vlc --random --start-time=$(poisson $((13 * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" >/dev/null 2>/dev/null &
+    random-vrun-next.sh 5
+}
+
+function random_sitcoms() {
+    /usr/bin/vlc --random --start-time=$(poisson $((6 * 60)) ) ~/Séries/Kaamelott/ ~/Séries/Scrubs/ "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/The_Big_Bang_Theory" "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &
+    # "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother"
+    random-vrun-next.sh 5
+}
 
 alias dropbox.start='( /usr/bin/dropbox start ; alert ) &>/dev/null&'
 

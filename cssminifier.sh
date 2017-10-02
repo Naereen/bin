@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# (C) Lilian BESSON, 2013
-# A client to the web service cssminifier.com
+# (C) Lilian BESSON, 2013-2017
+# A minimalist cli client to the web service https://cssminifier.com/curl
 # Latest version of http://perso.crans.org/besson/bin/cssminifier.sh
 #
 clear
@@ -31,9 +31,9 @@ done
 echo -e "Output will be ${desti}. Are you sure ?"
 read
 
-#curl -X POST -s --data-urlencode "input=`cat ${script}`" http://cssminifier.com/raw > "${desti}" && \
+#curl -X POST -s --data-urlencode "input=`cat ${script}`" https://cssminifier.com/raw > "${desti}" && \
 
-curl -v -X POST -s --data-urlencode input@"${script}" http://cssminifier.com/raw > "${desti}" && \
+curl -v -X POST -s --data-urlencode input@"${script}" https://cssminifier.com/raw > "${desti}" && \
 chmod --preserve-root -c --reference="${script}" "${desti}" && \
 ls --color=always -larth "${script}" "${desti}" && \
 echo -e "${script} -> ${desti}: well compressed."
