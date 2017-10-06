@@ -227,7 +227,8 @@ function j2pdf() {
   done
 }
 alias j2py='jupyter-nbconvert --to python'
-complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2py
+alias j2ml='jupyter-nbconvert --to script'  # FIXME see https://github.com/akabe/ocaml-jupyter/issues/58
+complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2py j2ml
 
 # Reference for this is https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
 complete -f -X '!*.ml' -o plusdirs ocaml ocamlc ocamlopt leocaml leditocaml rlocaml mocaml mocaml_noANSI ocamls iocaml jupyter-iocaml
