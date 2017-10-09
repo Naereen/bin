@@ -8,7 +8,7 @@
 #     "no matches by prefix" (introduced in 0.2.0)
 #   COMMACD_SEQSTART - set it to 1 if you want "multiple choices" to start from 1 instead of 0
 #
-# @version 0.3.2
+# @version 0.3.3
 # @author Stanley Shyiko <stanley.shyiko@gmail.com>
 # @license MIT
 
@@ -86,7 +86,14 @@ _commacd_forward() {
     return
   fi
   if [[ ${#dir[@]} -gt 1 ]]; then
+    # https://github.com/shyiko/commacd/issues/12
+    trap 'trap - SIGINT; stty '"$(stty -g)" SIGINT
+
     dir=$(_commacd_choose_match "${dir[@]}")
+
+    # make sure trap is removed regardless of whether read -e ... was interrupted or not
+    trap - SIGINT
+    if [[ -z "$dir" ]]; then return 1; fi
   fi
   _command_cd "$dir"
 }
