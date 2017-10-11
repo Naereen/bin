@@ -825,7 +825,7 @@ function a() {
     git add "$@" || svn add "$@"
 }
 alias Add='a'
-alias add_modified='git add $(git status --porcelain | grep \'^ M\' | awk \'{ print $2}\')'
+function add_modified() { git add $(git status --porcelain | grep '^ M' | awk '{ print $2}'); }
 
 alias Aggressive='git gc --aggressive'
 alias Sync='clear ; echo -e "Synchronizing (git push, gc, send_zamok)..."; git push; git gc --aggressive; make send_zamok; alert'
