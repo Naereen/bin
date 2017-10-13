@@ -106,7 +106,7 @@ def calc_interets(comptes, taux=taux2016):
     """ Calcule une estimation de mes intérêts."""
     interet_fin_annee = sum(comptes[k] * taux[k] / 100.0 for k in type_comptes)
     for k in type_comptes:
-        print("Pour mon <blue>compte {:>3}<white>, avec <magenta>{:>10,.2f} €<white>, et un <cyan<taux à <u>{:>4,.2f}%<U><white> {} <green>intérêt ~= {:>6.2f} €<white>.".format(k.upper(), comptes[k], taux[k], '→', comptes[k] * taux[k] / 100.0))
+        print("Pour mon <blue>compte {:>4}<white>, avec <magenta>{:>10,.2f} €<white>, et un <cyan<taux à <u>{:>4,.2f}%<U><white> {} <green>intérêt ~= {:>6.2f} €<white>.".format(k.upper(), comptes[k], taux[k], '→', comptes[k] * taux[k] / 100.0))
     print("<green>Intérêt estimé pour 2016 : {:.2f} €.<white>".format(interet_fin_annee))
     print("<red>Attention<white> : les vrais intérêts sont calculés toutes les quinzaines, mon estimation n'est pas précise !")
     return interet_fin_annee
@@ -134,7 +134,7 @@ def main(comptes, taux=taux2016):
     mydate = time.strftime('%d %b %Y', time.localtime())
     # FIXME FUCKING hack because Matplotlib apparently fails to handles utf-8 correctly here...
     mydate2 = mydate.replace('û', 'u').replace('é', 'e')
-    mytitle = "Mes comptes (le {}). interets = {:.2f} -> Interets = {:.2f} euros ?".format(mydate2, argenttotal, interets)
+    mytitle = "Mes comptes (le {}). Total = {:.2f} -> Interets = {:.2f} euros ?".format(mydate2, argenttotal, interets)
     print("Using title: <magenta>{}<white>".format(mytitle))
     mytitle = u"Mes comptes (le {}). Total = {:.2f} € $\\rightarrow$ intérêts = {:.2f} € ?".format(mydate, argenttotal, interets)
 
