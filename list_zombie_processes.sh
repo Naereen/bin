@@ -1,23 +1,21 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON, (C) 2016-oo
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 30-10-2016.
+# Date: 19-10-2017.
 # Web: https://bitbucket.org/lbesson/bin/src/master/list_zombie_processes.sh
 #
 # List the zombie processes, but do not kill any.
 #
 # Usage: list_zombie_processes.sh
 #
-# Example: optionnal example for this script.
-#
 # Licence: MIT Licence (http://lbesson.mit-license.org).
 #
-version="0.1"
+version="0.2"
 
 # http://redsymbol.net/articles/unofficial-bash-strict-mode/
 set -euo pipefail
 
-. ~/.color.sh
+[ -x ~/.color.sh ] && . ~/.color.sh
 # Add here options
 NOANSI='false'
 JUSTVERSION='false'
@@ -26,7 +24,7 @@ for i in "$@"; do
     case "$i" in
         --noansi )
             NOANSI='true'
-            . ~/.nocolor.sh
+            [ -x ~/.nocolor.sh ] && . ~/.nocolor.sh
             shift
             ;;
         --version | -v )
@@ -66,6 +64,6 @@ echo -e "\nTo kill any of the zombie process, use:"
 echo -e "$ kill [PROCESSID]"
 echo -e "\nAnd if this fails:"
 echo -e "$ kill [PARENT_PROCESSID]"
-echo -e "\n${warning}Warning: it might kill a parent program brutally${white}"
+echo -e "\n${WARNING} It might kill a parent program brutally${white}"
 
 # End of list_zombie_processes.sh
