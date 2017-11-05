@@ -45,3 +45,9 @@ julia
 julia-debug
 fd
 ls_color
+
+epylint
+isort
+pylint
+pyreverse
+symilar
