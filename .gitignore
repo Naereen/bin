@@ -29,7 +29,6 @@ rg
 .bash_completion.d/rg.bash-completion
 mdp
 micro
-
 ponysay
 ponysay-tool
 ponythink
@@ -45,9 +44,9 @@ julia
 julia-debug
 fd
 ls_color
-
 epylint
 isort
 pylint
 pyreverse
 symilar
+ngrok
