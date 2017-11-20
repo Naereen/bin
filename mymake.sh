@@ -104,6 +104,7 @@ if [ "X${Use_SlackWrap}" = "Xtrue" ]; then
     else
         Use_SlackWrap="false"
         echo -e "${red}Option '--SlackWrap' was found, but the program 'slack-wrap' is not present : I am disabling the SlackWrap option ...${white}"
+        echo -e "You can install it from 'https://github.com/EricCrosson/slack-wrap/' ..."
     fi
 fi
 if [ "X${JustBashCompletion}" = "Xtrue" ]; then
