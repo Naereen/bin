@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # author: Lilian BESSON
 # email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# date: 07-12-2016
+# date: 21-11-2017
 # web: https://bitbucket.org/lbesson/bin/src/master/youtube-playlist.sh
 #
 # A small script to download every song from a YouTube playlist,
@@ -57,7 +57,7 @@ dlplaylist() {
     echo -e "Just to be sure, I am showing you the downloading commands I will execute : (${magenta}[Enter]${white} to see)."
     $READ || exit
     for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" "${out}"  | sed s/'watch?v='// | uniq); do
-        echo -e youtube-dl --no-overwrites --retries 60 --continue -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w -- "$j"
+        echo -e youtube-dl --restrict-filenames --no-overwrites --retries 60 --continue -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w -- "$j"
     done
 
     echo -e "Are you OK with these downloading commands ? (${magenta}[Enter]${white} if OK)."
@@ -81,7 +81,7 @@ dlplaylist() {
     echo -e "OK, so I can start the downloading command I showed you : (${magenta}[Enter]${white} if OK)"
     # FIXED run this in parallel is a HUGE mess (consume too much RAM)
     for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" "${out}"  | sed s/'watch?v='/''/ | uniq); do
-        time youtube-dl --no-overwrites --retries 5 --continue -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w -- "$j" \
+        time youtube-dl --restrict-filenames --no-overwrites --retries 5 --continue -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w -- "$j" \
             || echo "$j" >> tofetch_youtube-dl.url
     done
 
