@@ -201,7 +201,7 @@ function ocamls() {
     done
 }
 # TODO this requires https://github.com/andrewray/iocaml/#installation (and maybe some local hack to make it work)
-alias jupyter-iocaml='DYLD_LIBRARY_PATH=/home/lilian/.opam/4.04.2/lib/stublibs/ && eval $(opam config env) && jupyter notebook --Session.key="b\"\""'
+# alias jupyter-iocaml='DYLD_LIBRARY_PATH=/home/lilian/.opam/4.04.2/lib/stublibs/ && eval $(opam config env) && jupyter notebook --Session.key="b\"\""'
 
 # Convert Jupyter notebooks
 # alias j2html='jupyter-nbconvert --to html'
@@ -232,8 +232,10 @@ alias j2py='jupyter-nbconvert --to python'
 alias j2ml='jupyter-nbconvert --to ocaml'  # With https://github.com/Naereen/Jupyter-Notebook-OCaml/
 complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2script j2py j2ml
 
+alias iocaml='jupyter-console --kernel=ocaml-jupyter'
+
 # Reference for this is https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
-complete -f -X '!*.ml' -o plusdirs ocaml ocamlc ocamlopt leocaml leditocaml rlocaml mocaml mocaml_noANSI ocamls iocaml jupyter-iocaml
+complete -f -X '!*.ml' -o plusdirs ocaml ocamlc ocamlopt leocaml leditocaml rlocaml mocaml mocaml_noANSI ocamls iocaml iocaml.sh jupyter-iocaml
 
 ########################################################################
 # Outil pygmentize : permet une coloration syntaxique dans la console
