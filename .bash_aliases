@@ -676,26 +676,7 @@ export PYTHONSTARTUP="$HOME/.pythonrc"
 export PYTHONUNBUFFERED="yes"
 
 # For PyLint (see http://docs.pylint.org/)
-export PYLINTHOME="$HOME"
-
-# Three different mutt (useless):
-function mutt() {
-    xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { Mutt 1.5.21 } : for localhost"
-    /usr/bin/mutt-patched "$@"
-    [ -f yes ] && rm -f yes
-}
-
-function mutt-crans() {
-    xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { Mutt 1.5.21 } : for crans.org"
-    clear ; /usr/bin/mutt-patched -F ~/.mutt/crans.muttrc "$@" && clear
-    [ -f yes ] && rm -f yes
-}
-
-function mutt-ens() {
-    xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { Mutt 1.5.21 } : for ens-cachan.fr"
-    clear ; /usr/bin/mutt-patched -F ~/.mutt/ens.muttrc "$@" && clear
-    [ -f yes ] && rm -f yes
-}
+export PYLINTHOME="$HOME/.pylint.d/"
 
 # Supprimer les meta-données des images JPEG et PNG, et PDF
 alias CleanPicturesR='echo "Erasing EXIF infos...." && exiftool -v2 -recurse -fast -overwrite_original_in_place -all= ./* | tee "exiftool__$$_$(date "+%H_%M_%S")".log && echo "All EXIF infos have been erased :)"'
