@@ -169,7 +169,8 @@ export TIMEFORMAT=$'\nreal %3R\tuser %3U\tsys %3S\tpcpu %P\n'
 export HISTIGNORE="&:bg:fg"
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)} \[\033[01;32m\] \u @ \h \[\033[00m\]:\[\033[01;34m\] \w\[\033[00m\]\n➤➤➤ '
+    # New (March 2017), using a few UTF-8 symbols to have a pretty PS1 prompt!
+    PS1='${debian_chroot:+($debian_chroot)} \[\033[01;32m\] \u @ \h \[\033[00m\]:\[\033[01;34m\] \w\[\033[00m\]\n>>> '
 else
     # New (March 2017), using a few UTF-8 symbols to have a pretty PS1 prompt!
     PS1='\[\e[01;32m\]⏰ \t${debian_chroot:+($debian_chroot)}\[\e[01;34m\] 👤 \u\[\e[01;37m\] @\[\e[01;36m\] 💻 \h\[\e[01;37m\] #\[\e[01;31m\]${LINENO} \[\e[01;37m\][ \w ] ✔ \n➤➤➤ '
@@ -269,18 +270,20 @@ export ERASE_LINE="\r\033[K"  # To erase the current line. (not print '\n' but E
 #     (echo "$(date +"%Y-%m-%d %H:%M:%S") -- Sending '/usr/local/bin/wakatime --write --plugin \"bash-wakatime/0.1\" --entity-type app --project Terminal --alternate-language Bash --entity \"$(echo $(fc -ln -0) | cut -d ' ' -f1)\" 2>&1 > /dev/null &' ..." >> /tmp/bash-wakatime.log ; /usr/local/bin/wakatime --write --plugin "bash-wakatime/0.1" --entity-type app --project Terminal --alternate-language Bash --entity "$(echo $(fc -ln -0) | cut -d ' ' -f1)" 2>&1 > /dev/null &)
 # }
 
-PS1OLD="$PS1"
+# PS1OLD="$PS1"
 # --> in red if $? is indicating an error on last command
 red_if_error_prompt_command() {
     ANSWER="$?"
-    if [ $ANSWER = 0 ]; then
-        PS1="${PS1OLD%➤➤➤ }\[\e[01;37m\]➤➤➤ "
+    if [ "X${ANSWER}" = "X0" ]; then
+        # PS1="${PS1OLD%➤➤➤ }\[\e[01;37m\]➤➤➤ "
+        PS1="$(echo "$PS1" | sed s/'\\n.*'/'\\n\\[\\e[01;37m\\]➤➤➤ '/g)"
         PS1="${PS1//✗/✔}"
     else
-        PS1="${PS1OLD%➤➤➤ }\[${red}\]Error:$ANSWER\[\e[01;37m\]➤➤➤ "
+        # PS1="${PS1OLD%➤➤➤ }\[\e[01;31m\]Error:$ANSWER\[\e[01;37m\]➤➤➤ "
+        PS1="$(echo "$PS1" | sed s/'\\n.*'/'\\n\\[\\e[01;31m\\]Error:$ANSWER\\[\\e[01;37m\\]➤➤➤ '/g)"
         PS1="${PS1//✔/✗}"
         printf "\a"
-    fi;
+    fi
 }
 
 my_prompt_command() {
@@ -289,8 +292,8 @@ my_prompt_command() {
 }
 
 PROMPT_COMMAND=my_prompt_command
-# export PROMPT_COMMAND="history -a; history -n; ${PROMPT_COMMAND}"   # mem/file sync
-# export PROMPT_COMMAND="history -a; ${PROMPT_COMMAND}"   # only writes to the history, does not load more commands from others running sessions
+# export PROMPT_COMMAND="${PROMPT_COMMAND}; history -a; history -n"   # mem/file sync
+export PROMPT_COMMAND="${PROMPT_COMMAND}; history -a"   # only writes to the history, does not load more commands from others running sessions
 
 # Add to the $PATH
 export PATH="$HOME"/bin/:"$PATH":"$HOME"/.local/bin/:"$HOME"/.ConkyWizardTheme/scripts/:"$HOME"/.screenlayout/:"$HOME"/.local/julia-0.6.0/bin/
