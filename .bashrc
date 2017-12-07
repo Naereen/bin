@@ -293,7 +293,7 @@ PROMPT_COMMAND=my_prompt_command
 # export PROMPT_COMMAND="history -a; ${PROMPT_COMMAND}"   # only writes to the history, does not load more commands from others running sessions
 
 # Add to the $PATH
-export PATH="$HOME"/bin/:"$PATH":"$HOME"/.local/bin/:"$HOME"/.ConkyWizardTheme/scripts/:"$HOME"/.screenlayout/
+export PATH="$HOME"/bin/:"$PATH":"$HOME"/.local/bin/:"$HOME"/.ConkyWizardTheme/scripts/:"$HOME"/.screenlayout/:"$HOME"/.local/julia-0.6.0/bin/
 # Add "$HOME"/bin if needed (but only if needed, having one directory twice in $PATH is durty!
 
 export RLWRAP_HOME="$HOME"

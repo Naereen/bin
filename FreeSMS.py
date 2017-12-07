@@ -6,7 +6,7 @@ A simple Python 2.7+ / 3.1+ script to send a text message to a Free Mobile phone
 - Warning: it only works in France to a French number, using the mobile operator Free Mobile.
 - Warning: some initial configuration is required before running this script (see the error messages).
 - Copyleft 2014-17 Lilian Besson
-- License GPLv3.
+- License MIT.
 
 Examples
 --------
@@ -17,26 +17,34 @@ $ FreeSMS.py "I like using Python to send SMS to myself from my laptop -- and it
 Will send a test message to your mobile phone.
 
 
-- Last version? Take a look to the latest version at https://bitbucket.org/lbesson/bin/src/master/FreeSMS.py
+- Last version? Take a look to the latest version at https://github.com/Naereen/FreeSMS.py
 - Initial Copyright : José - Juin 2014 (http://eyesathome.free.fr/index.php/tag/freemobile/)
 - License:
 
-   This program is free software: you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
+    MIT License
 
-   FreeSMS.py is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    Copyright (c) 2017 Lilian Besson (Naereen), https://github.com/Naereen
 
-   See the GNU General Public License for more details.
-   You should have received a copy of the GNU General Public License v3 along with FreeSMS.py.
-   If not, see <http://perso.crans.org/besson/LICENSE.html>.
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
 """
 
-from __future__ import print_function   # Python 2/3 compatible
-from __future__ import absolute_import  # Python 2/3 compatible
+from __future__ import print_function
 
 import sys
 from os import getenv
@@ -178,18 +186,10 @@ def send_sms(text="Empty!", secured=True):
     # Read number, user, password
 
     #: Identification Number free mobile
-    # user = b64decode(open(expanduser('~') + ".smsapifreemobile_user.b64").readline()[:-1])
-    # if user[-1] == '\n':
-    #     user = user[:-1]
     user = openSpecialFile("user")
 
     #: Password
-    # password = b64decode(open(expanduser('~') + ".smsapifreemobile_password.b64").readline()[:-1])
-    # if password[-1] == '\n':
-    #     password = password[:-1]
     password = openSpecialFile("password")
-
-    # FIXME find a way to secure this step better than the way it is right now.
 
     printc("\n<green>Your message is:<white>\n<yellow>" + text + "<white>")
     dictQuery = {"user": user, "pass": password, "msg": text}
@@ -215,8 +215,8 @@ def send_sms(text="Empty!", secured=True):
 def main(argv):
     """ Main function. Use the arguments of the command line (sys.argv).
     """
-    # FIXME use docopt to handle the command line arguments! Cf. http://docopt.org/
-    # FIXME can docopt handle a cli documentation with ansicolortags tags in it? Cf. http://ansicolortags.rtfd.io/
+    # TODO use docopt to handle the command line arguments! Cf. http://docopt.org/
+    # TODO can docopt handle a cli documentation with ansicolortags tags in it? Cf. http://ansicolortags.rtfd.io/
     # Manual handing of the command line arguments
     if "-h" in argv or "--help" in argv:
         printc("""
@@ -235,10 +235,8 @@ Try to send the content of the file MyMessageFile.txt.
 <black>$ FreeSMS.py "I like using Python to send me SMS from my laptop -- and it"s free thanks to Free !"<white>
 Will send a test message to your mobile phone.
 
-<magenta>Copyleft 2014-16 Lilian Besson (License GPLv3)<white>
-<b>FreeSMS.py is distributed in the hope that it will be useful,
-but <red>WITHOUT ANY WARRANTY<white>; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.<reset><white>
+<magenta>Copyleft 2014-17 Lilian Besson (License MIT)<white>
+<b>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.<reset><white>
 """)
         return 0
 
@@ -266,7 +264,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.<reset><white>
             text = """Test SMS sent from {machinename} with FreeSMS.py (the {date}).
 
     (a Python 2.7+ / 3.1+ script by Lilian Besson, open source, you can find the code
-    at https://bitbucket.org/lbesson/bin/src/master/FreeSMS.py
+    at https://github.com/Naereen/FreeSMS.py
     or http://perso.crans.org/besson/bin/FreeSMS.py)
 
     For any issues, reach me by email at jarvis[at]crans[dot]org !"""
