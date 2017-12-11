@@ -50,3 +50,4 @@ pylint
 pyreverse
 symilar
 ngrok
+shell-functools
