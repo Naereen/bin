@@ -38,11 +38,11 @@ except ImportError:
         """
         print(*a, **kw)
 
-from_language = 'EN'
-to_language = 'FR'
+FROM_LANGUAGE = 'EN'
+TO_LANGUAGE = 'FR'
 
 
-def main(argv, to_language=to_language, from_language=from_language):
+def main(argv, to_language=TO_LANGUAGE, from_language=FROM_LANGUAGE):
     """ Main function. Use the arguments of the command line (sys.argv). """
     # TODO use docopt to handle the command line arguments! Cf. http://docopt.org/
     # TODO can docopt handle a cli documentation with ansicolortags tags in it? Cf. http://ansicolortags.rtfd.io/
