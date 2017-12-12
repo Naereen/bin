@@ -11,14 +11,14 @@ Généralement, chaque script contient une description de sa fonction, avec parf
 
 [![Website http://perso.crans.org/besson/bin/](https://img.shields.io/website-up-down-green-red/http/perso.crans.org.svg)](http://perso.crans.org/besson/bin/)
 [![Made with Python v3.5+](https://img.shields.io/badge/Fait%20avec-Python-1f425f.svg)](https://www.python.org/)
-[![Made with Bash v4.4+](https://img.shields.io/badge/Fait%20avec-Bash-1f425f.svg)](https://www.gnu.org/software/bash/)
+[![Made with Bash v4.4+](https://img.shields.io/badge/Fait%20avec-GNU%20Bash-1f425f.svg)](https://www.gnu.org/software/bash/)
 [![Maintenu ? Oui !](https://img.shields.io/badge/Maintenu%3F-oui-green.svg)](https://bitbucket.org/lbesson/bin/commits/)
 [![Demandez moi n'importe quoi !](https://img.shields.io/badge/Demandez%20moi-n'%20importe%20quoi-1abc9c.svg)](https://bitbucket.org/lbesson/ama.fr)
 
 #### Licence ?
 Tout est distribué sous les termes de la [Licence GPLv3](http://perso.crans.org/besson/LICENSE.html) (document en anglais).
 
-#### Copyleft ?
+#### Copyright ?
 Sauf contre-indications, tous les documents stockés dans ce dépôt sont © [Lilian Besson](https://bitbucket.org/lbesson), 2011-2017.
 
 ---
@@ -35,14 +35,14 @@ and sometimes there is even details on which option you can give to the script !
 
 [![Website http://perso.crans.org/besson/bin/](https://img.shields.io/website-up-down-green-red/http/perso.crans.org.svg)](http://perso.crans.org/besson/bin/)
 [![Made with Python v3.5+](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
-[![Made with Bash v4.4+](https://img.shields.io/badge/Made%20with-sphinx-1f425f.svg)](https://www.gnu.org/software/bash/)
+[![Made with Bash v4.4+](https://img.shields.io/badge/Made%20with-GNU%20Bash-1f425f.svg)](https://www.gnu.org/software/bash/)
 [![Maintained? Yes!](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://bitbucket.org/lbesson/bin/commits/)
 [![Ask Me Anything!](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://bitbucket.org/lbesson/ama)
 
 #### Licence ? [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
 Everything here is publicly released under the term of the [GPLv3 Licence](http://perso.crans.org/besson/LICENSE.html).
 
-#### Copyrights ?
+#### Copyright ?
 Without other indications, every documents stored here are © [Lilian Besson](https://bitbucket.org/lbesson), 2011-2017.
 
 [![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://bitbucket.org/lbesson/bin/commits/)
