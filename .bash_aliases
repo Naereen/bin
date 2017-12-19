@@ -1022,6 +1022,7 @@ alias UPDATE='( clear ; echo -e "You used the UPDATE alias: updating apt cache, 
 
 # To avoid painfull &>$null& at the end of some commands that *should* be detached by default
 function evince() { ( /usr/bin/evince "$@" || /usr/bin/firefox "$@" ) &> /dev/null & }
+function okular() { ( /usr/bin/okular "$@" || /usr/bin/firefox "$@" ) &> /dev/null & }
 function eog() { ( /usr/bin/eog "$@" || /usr/bin/ristretto "$@" ) &> /dev/null & }
 function firefox() { ( /usr/bin/firefox "$@" || /usr/bin/elinks "$@" ) &> /dev/null & }
 
