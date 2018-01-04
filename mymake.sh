@@ -78,7 +78,7 @@ for i in "$@"; do
 done
 
 # Copyrights
-echo -e "${cyan}$(basename "$0") v${version} : copyright (C) 2016 Lilian Besson${white}"
+echo -e "${cyan}$(basename "$0") v${version} : copyright (C) 2016-2018 Lilian Besson${white}"
 if [ "X${JustVersion}" = "Xtrue" ]; then
     echo -e "  ${black}You can find it online (https://bitbucket.org/lbesson/bin/src/master/mymake.sh)${white}"
     echo -e "  ${black}This is free software, and you are welcome to redistribute it under certain conditions.${white}"
