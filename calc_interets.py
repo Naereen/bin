@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """ Petit script Python pour afficher des graphiques de ses comptes et calculer des intérêts.
 
-- *Date:* 30 December 2016.
-- *Author:* Lilian Besson, © 2016-17.
+- *Date:* 05 January 2018.
+- *Author:* Lilian Besson, © 2016-18.
 - *Licence:* MIT Licence (http://lbesson.mit-license.org).
 """
 
@@ -37,12 +37,12 @@ except ImportError:
 
 
 # Valeurs EMPIRIQUES des taux d'intérêts.
-taux2016 = {'CCP': 0.00,
-            'LA': 0.58,
-            'LEP': 1.25,
-            'LJ': 1.71,
-            'PEA': 0.00,
-            'PEL': 2.25,
+taux2016 = {'CCP' : 0.00,
+            'LA'  : 0.63,
+            'LEP' : 1.25,  # XXX I don't own a LEP anymore
+            'LJ'  : 1.65,
+            'PEA' : 0.00,
+            'PEL' : 2.30,
             'CCP2': 0.00,
             }
 
