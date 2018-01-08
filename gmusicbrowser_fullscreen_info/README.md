@@ -44,7 +44,7 @@ Of course, adapt the path to where you downloaded and saved `gmusicbrowser_fulls
 
 ## About
 [![Website http://perso.crans.org/besson/bin/](https://img.shields.io/website-up-down-green-red/http/perso.crans.org.svg)](http://perso.crans.org/besson/bin/)
-[![Made with Python v3.6+](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)(https://www.python.org/)
+[![Made with Python v3.6+](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Made with Bash v4.4+](https://img.shields.io/badge/Made%20with-GNU%20Bash-1f425f.svg)](https://www.gnu.org/software/bash/)
 [![Maintained? Yes!](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://bitbucket.org/lbesson/bin/commits/)
 [![Ask Me Anything!](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://bitbucket.org/lbesson/ama)
