@@ -9,24 +9,24 @@
     <!-- MouseTrap.js (http://craig.is/killing/mice) -->
 	<script type="text/javascript" src="{{ url_for('static', filename='js/mousetrap.min.js')}}"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='js/toggleFullScreen.js')}}"></script>
-
     <style type="text/css">
         body {
             font-size: 250%;
             background: black;
-            color: #CCC;
+            color: #DDD;
+            overflow-x: hidden !important;
         }
         h1 {
-            font-size: 350%;
+            font-size: 375%;
         }
         h2 {
-            font-size: 325%;
+            font-size: 350%;
         }
         h3 {
-            font-size: 300%;
+            font-size: 325%;
         }
         h4 {
-            font-size: 275%;
+            font-size: 300%;
         }
         h5 {
             font-size: 265%;
@@ -40,21 +40,44 @@
         h4 {
             color: gray;
         }
+        button {
+            transform: scale(1.1);
+        }
+        .love {
+            display: inline-block;
+            position: relative;
+            font-size: 1.5em;
+            color: #f95959;
+            -webkit-transform: scale(.9);
+            -moz-transform: scale(.9);
+            -o-transform: scale(.9);
+            transform: scale(.9);
+            -webkit-animation: love .5s infinite linear alternate-reverse;
+            -moz-animation: love .5s infinite linear alternate-reverse;
+            -o-animation: love .5s infinite linear alternate-reverse;
+            animation: love .5s infinite linear alternate-reverse;
+        }
+        @media (min-width: 1300px) {
+            .container {
+                width: 95%;
+            }
+        }
     </style>
     <script type="text/javascript">
-        fullScreen();
-
         function prev () {
-            $.ajax({ type: 'POST', url: '/prev' });
             window.location.reload();
+            setTimeout(function(){window.location.reload()}, 500); // TODO after 0.5 seconds?
+            $.ajax({ type: 'POST', url: '/prev' });
         };
         function playpause () {
-            $.ajax({ type: 'POST', url: '/playpause' });
             window.location.reload();
+            setTimeout(function(){window.location.reload()}, 500); // TODO after 0.5 seconds?
+            $.ajax({ type: 'POST', url: '/playpause' });
         };
         function next () {
-            $.ajax({ type: 'POST', url: '/next' });
             window.location.reload();
+            setTimeout(function(){window.location.reload()}, 500); // TODO after 0.5 seconds?
+            $.ajax({ type: 'POST', url: '/next' });
         };
 
         // Make the body go full screen when page is ready
@@ -65,62 +88,64 @@
             Mousetrap.bind(["right", "n"], next);
             Mousetrap.bind(["h", "?"], function() { alert("Use 'p' for previous song, 'n' for next song, 'space' for pause, 'f' to toggle full screen.")} );
             Mousetrap.bind(['f', 'F'], toggleFullScreen);
-
+            // XXX Try to force the full screen, but it does not work
+            // fullScreen();
         });
 	</script>
-	<!-- <meta http-equiv="refresh" content="1; URL=/"> -->
+	<!-- <meta http-equiv="refresh" content="0.5; URL=/"> -->
 </head>
 <body>
 	<div class="container text-center" style="padding-top: 5%; padding-bottom: 5%;">
         <!-- <h1 class="text-center">Full screen mode for GMusicBrowser</h1> -->
 
         <!-- Large UI buttons -->
-        <button type="button" class="btn btn-info btn-lg" onclick="prev()" title="Previous song">⏮</button>
-        <button type="button" class="btn btn-warning btn-lg" onclick="playpause()" title="Pause/Play song">⏯</button>
-        <button type="button" class="btn btn-success btn-lg" onclick="next()" title="Next song">⏭</button>
+        <button type="button" class="btn btn-info btn-lg" onclick="prev();" title="Previous song">⏮</button>
+        <button type="button" class="btn btn-warning btn-lg" onclick="playpause();" title="Pause/Play song">⏯</button>
+        <button type="button" class="btn btn-success btn-lg" onclick="next();" title="Next song">⏭</button>
 
         <!-- Meta data -->
         {% if 'title' in data and data['title'] != '<Inconnu>' %}
-            <h1><small>Title:</small> <b>{{ data['title'] }}</b></h1>
+            <hr>
+            <h2><small>Titre :</small> <b>{{ data['title'] }}</b></h2>
             <hr>
         {% endif %}
         {% if 'artist' in data and data['artist'] != '<Inconnu>' %}
-            <h3><small>By:</small> {{ data['artist'] }}</h3>
-        {% endif %}
-        {% if 'album' in data and data['album'] != '<Inconnu>' %}
-            <h3><small>In:</small> <em>{{ data['album'] }}</em></h3>
+            <h4><small>Par :</small> {{ data['artist'] }}</h4>
             <hr>
         {% endif %}
-        {% if 'year' in data and data['year'] != '<Inconnu>' %}
-        <h4>
-            {{ data['year'] }}
-        </h4>
+        {% if 'album' in data and data['album'] != '<Inconnu>' %}
+            <h4><small>Dans :</small> <em>{{ data['album'] }}</em></h4>
+            <hr>
         {% endif %}
-        {% if 'disk' in data and data['disk'] != '<Inconnu>' %}
-        <h4>
-            {{ data['disk'] }}
-        </h4>
+        {% if 'year' in data or 'disk' in data or 'track' in data %}
+        <h5>
+            {% if 'year' in data and data['year'] != '' %}
+                {{ data['year'] }}
+            {% endif %}
+            {% if 'disk' in data and data['disk'] != '' %}
+                {{ data['disk'] }}
+            {% endif %}
+            {% if 'track' in data and data['track'] != '' %}
+                Piste #{{ data['track'] }}
+            {% endif %}
+        </h5>
         {% endif %}
-        {% if 'track' in data and data['track'] != '<Inconnu>' %}
-        <h4>Piste
-            #{{ data['track'] }}
-        </h4>
+        {% if 'filepath' in data %}
+            <small style="font-size: 85%;">
+                Fichier '{{ data['filepath'] }}'.
+            </small>
         {% endif %}
         <!-- TODO something with the album cover? -->
-        <!-- {% if 'filepath' in data %}
-        <h4>File path</h4>
-            {{ data['filepath'] }}
-        {% endif %} -->
         <!-- {% if 'coverpath' in data %}
-        <h4>Cover path</h4>
+        <small>Cover path</small>
             {{ data['coverpath'] }}
         {% endif %} -->
-        <hr>
     </div>
     <footer class="container text-center">
         <small>
-            This page is generated with a <a href="http://flask.pocoo.org/">Flask web app</a>,
-            written by <a href="https://bitbucket.org/lbesson/">Lilian Besson</a>.
+            This page is dynamically generated with a <a href="http://flask.pocoo.org/">Flask web app</a>,
+            written with <span class="love">&hearts;</span> by <a href="https://bitbucket.org/lbesson/">Lilian Besson</a>.<br>
+            Sources are <a href="https://bitbucket.org/lbesson/bin/src/master/gmusicbrowser_fullscreen_info/">here</a>, under the <a href="https://lbesson.mit-license.org/"></a> MIT License.
         </small>
     </footer>
 </body>
