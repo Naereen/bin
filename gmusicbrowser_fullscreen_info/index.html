@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Full screen mode for GMusicBrowser</title>
+    <!-- Latest compiled and minified CSS -->
+	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css')}}">
+	<!-- Latest compiled and minified JavaScript -->
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.1.1.min.js')}}"></script>
+    <!-- MouseTrap.js (http://craig.is/killing/mice) -->
+	<script type="text/javascript" src="{{ url_for('static', filename='js/mousetrap.min.js')}}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/toggleFullScreen.js')}}"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 250%;
+            background: black;
+            color: #CCC;
+        }
+        h1 {
+            font-size: 350%;
+        }
+        h2 {
+            font-size: 325%;
+        }
+        h3 {
+            font-size: 300%;
+        }
+        h4 {
+            font-size: 275%;
+        }
+        h5 {
+            font-size: 265%;
+        }
+        h6 {
+            font-size: 260%;
+        }
+        small {
+            color: darkgray;
+        }
+        h4 {
+            color: gray;
+        }
+    </style>
+    <script type="text/javascript">
+        fullScreen();
+
+        function prev () {
+            $.ajax({ type: 'POST', url: '/prev' });
+            window.location.reload();
+        };
+        function playpause () {
+            $.ajax({ type: 'POST', url: '/playpause' });
+            window.location.reload();
+        };
+        function next () {
+            $.ajax({ type: 'POST', url: '/next' });
+            window.location.reload();
+        };
+
+        // Make the body go full screen when page is ready
+        $(document).ready(function() {
+            // MouseTrap (http://craig.is/killing/mice)
+            Mousetrap.bind(["left", "p"], prev);
+            Mousetrap.bind(["space"], playpause);
+            Mousetrap.bind(["right", "n"], next);
+            Mousetrap.bind(["h", "?"], function() { alert("Use 'p' for previous song, 'n' for next song, 'space' for pause, 'f' to toggle full screen.")} );
+            Mousetrap.bind(['f', 'F'], toggleFullScreen);
+
+        });
+	</script>
+	<!-- <meta http-equiv="refresh" content="1; URL=/"> -->
+</head>
+<body>
+	<div class="container text-center" style="padding-top: 5%; padding-bottom: 5%;">
+        <!-- <h1 class="text-center">Full screen mode for GMusicBrowser</h1> -->
+
+        <!-- Large UI buttons -->
+        <button type="button" class="btn btn-info btn-lg" onclick="prev()" title="Previous song">⏮</button>
+        <button type="button" class="btn btn-warning btn-lg" onclick="playpause()" title="Pause/Play song">⏯</button>
+        <button type="button" class="btn btn-success btn-lg" onclick="next()" title="Next song">⏭</button>
+
+        <!-- Meta data -->
+        {% if 'title' in data and data['title'] != '<Inconnu>' %}
+            <h1><small>Title:</small> <b>{{ data['title'] }}</b></h1>
+            <hr>
+        {% endif %}
+        {% if 'artist' in data and data['artist'] != '<Inconnu>' %}
+            <h3><small>By:</small> {{ data['artist'] }}</h3>
+        {% endif %}
+        {% if 'album' in data and data['album'] != '<Inconnu>' %}
+            <h3><small>In:</small> <em>{{ data['album'] }}</em></h3>
+            <hr>
+        {% endif %}
+        {% if 'year' in data and data['year'] != '<Inconnu>' %}
+        <h4>
+            {{ data['year'] }}
+        </h4>
+        {% endif %}
+        {% if 'disk' in data and data['disk'] != '<Inconnu>' %}
+        <h4>
+            {{ data['disk'] }}
+        </h4>
+        {% endif %}
+        {% if 'track' in data and data['track'] != '<Inconnu>' %}
+        <h4>Piste
+            #{{ data['track'] }}
+        </h4>
+        {% endif %}
+        <!-- TODO something with the album cover? -->
+        <!-- {% if 'filepath' in data %}
+        <h4>File path</h4>
+            {{ data['filepath'] }}
+        {% endif %} -->
+        <!-- {% if 'coverpath' in data %}
+        <h4>Cover path</h4>
+            {{ data['coverpath'] }}
+        {% endif %} -->
+        <hr>
+    </div>
+    <footer class="container text-center">
+        <small>
+            This page is generated with a <a href="http://flask.pocoo.org/">Flask web app</a>,
+            written by <a href="https://bitbucket.org/lbesson/">Lilian Besson</a>.
+        </small>
+    </footer>
+</body>
+</html>
