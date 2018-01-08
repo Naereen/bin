@@ -1,14 +1,44 @@
 # Full Screen mode for [GMusicBrowser](http://gmusicbrowser.org/)
 > Cf. [this issue](https://bitbucket.org/lbesson/bin/issues/9/) (in French).
 
-## Screenshots
-TODO write this!
+This program is a simple web app that connects to the GMusicBrowser API to display in white-on-black and very large font the current song played by my favorite music player.
+It allows to change to the next and prev song.
+
+## Why?
+When I host some friends, and use my laptop to play music, and I don't want my screen to show anything but the name of the song, and my friends should only be able to go to the next song, not read my email or whatever: putting this webpage in full screen helps!
+
+Also, it is displayed in very large font, to be easily readable from anywhere in the room.
+
+## Screenshot
+![screenshots/demo1.png](screenshots/demo1.png)
 
 ## How to install
-TODO write this!
+- Install Python, and pip,
+- Install requests and Flask modules:
+```bash
+sudo pip3 install -U requests flask
+```
+- Download this folder,
+- Save it somewhere, for instance `~/bin/gmusicbrowser_fullscreen_info`,
+- When you want to use it, go in the folder, and do `make`.
+
+## Settings
+In GMusicBrowser settings, under the tab "Plugins", enable the "Current song" plugin,
+and use these two values for the two text boxes:
+
+- Command to run when the song starts:
+  `/home/lilian/bin/gmusicbrowser_fullscreen_info/update_ui.py start %t %a %l %y %d %n %f %c`
+
+- Command to run when the song stops:
+  `/home/lilian/bin/gmusicbrowser_fullscreen_info/update_ui.py stop %t %a %l %y %d %n %f %c`
+
+Of course, adapt the path to where you downloaded and saved `gmusicbrowser_fullscreen_info`.
 
 ## How to use
-TODO write this!
+- Launching the app also opens it in Chromium (by default).
+- Use 'n' to play next song, 'p' for previous song, 'space' to pause.
+
+> This is a **very minimalist** interface to GMusicBrowser, any other manipulation still have to be done from the main GMusicBrowser interface, of course!
 
 ---
 
@@ -19,8 +49,8 @@ TODO write this!
 [![Maintained? Yes!](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://bitbucket.org/lbesson/bin/commits/)
 [![Ask Me Anything!](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://bitbucket.org/lbesson/ama)
 
-### Licence ? [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
-Everything here is publicly released under the term of the [GPLv3 Licence](http://perso.crans.org/besson/LICENSE.html).
+### Licence ? [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+Everything in this folder is publicly released under the term of the [MIT Licence](https://lbesson.mit-license.org/).
 
 ### Copyright ?
 © [Lilian Besson](https://bitbucket.org/lbesson), 2018.
