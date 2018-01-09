@@ -102,6 +102,14 @@
             $.ajax({ type: 'POST', url: '/next', complete: function(){console.log("Ajax request 'next' completed...")} });
             doublereload();
         };
+        function volumedown () {
+            $.ajax({ type: 'POST', url: '/volumedown', complete: function(){console.log("Ajax request 'volumedown' completed...")} });
+            doublereload();
+        };
+        function volumeup () {
+            $.ajax({ type: 'POST', url: '/volumeup', complete: function(){console.log("Ajax request 'volumeup' completed...")} });
+            doublereload();
+        };
 
         // Make the body go full screen when page is ready
         $(document).ready(function() {
@@ -110,13 +118,15 @@
             Mousetrap.bind(["left", "p", "P"], prev);
             Mousetrap.bind(["space", "b", "B"], playpause);
             Mousetrap.bind(["right", "n", "N"], next);
+            Mousetrap.bind(["down", "d", "D"], volumedown);
+            Mousetrap.bind(["up", "u", "U"], volumeup);
             Mousetrap.bind(["h", "H", "?"], function() { alert("Use 'p' for previous song, 'n' for next song, 'space' for pause, 'f' to toggle full screen.")} );
             Mousetrap.bind(["f", "F"], toggleFullScreen);
             // XXX Try to force the full screen, but it does not work
             fullScreen();
         });
 	</script>
-	<meta http-equiv="refresh" content="5; URL=/">
+	<meta http-equiv="refresh" content="5">
 </head>
 <body>
 	<div class="container text-center" style="padding-top: 5%; padding-bottom: 5%;">
@@ -124,9 +134,11 @@
         <!-- <h1 class="text-center">Full screen mode for GMusicBrowser</h1> -->
 
         <!-- Large UI buttons -->
+        <button type="button" class="btn btn-danger btn-lg" onclick="volumedown();" title="Increase volume">🔉</button>
         <button type="button" class="btn btn-info btn-lg" onclick="prev();" title="Previous song">⏮</button>
         <button type="button" class="btn btn-warning btn-lg" onclick="playpause();" title="Pause/Play song">⏯</button>
         <button type="button" class="btn btn-success btn-lg" onclick="next();" title="Next song">⏭</button>
+        <button type="button" class="btn btn-danger btn-lg" onclick="volumeup();" title="Increase volume">🔊</button>
 
         <!-- Meta data -->
         {% if 'title' in data and data['title'] != '<Inconnu>' %}
