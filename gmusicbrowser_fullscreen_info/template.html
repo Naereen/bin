@@ -2,20 +2,26 @@
 <html lang="en">
 <head>
     <title>Full screen mode for GMusicBrowser</title>
+    <link rel="shortcut icon" href="static/favicon.ico"/>
     <!-- Latest compiled and minified CSS -->
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css')}}">
+    <link type="text/css" rel="stylesheet" href="static/css/bootstrap.min.css">
     <!-- Latest compiled and minified JavaScript -->
-    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.1.1.min.js')}}"></script>
+    <script type="text/javascript" src="static/js/jquery-3.1.1.min.js"></script>
     <!-- MouseTrap.js (http://craig.is/killing/mice) -->
-    <script type="text/javascript" src="{{ url_for('static', filename='js/mousetrap.min.js')}}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/toggleFullScreen.js')}}"></script>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}"/>
+    <script type="text/javascript" src="static/js/mousetrap.min.js"></script>
+    <script type="text/javascript" src="static/js/toggleFullScreen.js"></script>
     <style type="text/css">
         body {
             font-size: 250%;
             background: black;
             color: #DDD;
             overflow-x: hidden !important;
+            /*
+            background: -webkit-canvas(fireworks);
+            background: -moz-element(#fireworks) repeat-x;
+            width: 100%;
+            height: 100%;
+            */
         }
         h1 {
             font-size: 375%;
@@ -41,9 +47,10 @@
         h4 {
             color: gray;
         }
-        button {
-            transform: scale(1.1);
+        .btn-lg {
+            font-size: 64px;
         }
+        // Pulsing Heart animation
         .love {
             display: inline-block;
             position: relative;
@@ -80,7 +87,7 @@
         function doublereload(){
             setTimeout(function(){
                 window.location.reload(true);
-            }, 500);  // XXX after 0.5 seconds?
+            }, 1000);  // XXX after 1.0 seconds?
             // window.location.reload(true);
         }
         function prev () {
@@ -99,19 +106,21 @@
         // Make the body go full screen when page is ready
         $(document).ready(function() {
             // MouseTrap (http://craig.is/killing/mice)
-            Mousetrap.bind(["left", "p"], prev);
-            Mousetrap.bind(["space"], playpause);
-            Mousetrap.bind(["right", "n"], next);
-            Mousetrap.bind(["h", "?"], function() { alert("Use 'p' for previous song, 'n' for next song, 'space' for pause, 'f' to toggle full screen.")} );
-            Mousetrap.bind(['f', 'F'], toggleFullScreen);
+            Mousetrap.bind(["r", "R"], doublereload);
+            Mousetrap.bind(["left", "p", "P"], prev);
+            Mousetrap.bind(["space", "b", "B"], playpause);
+            Mousetrap.bind(["right", "n", "N"], next);
+            Mousetrap.bind(["h", "H", "?"], function() { alert("Use 'p' for previous song, 'n' for next song, 'space' for pause, 'f' to toggle full screen.")} );
+            Mousetrap.bind(["f", "F"], toggleFullScreen);
             // XXX Try to force the full screen, but it does not work
-            // fullScreen();
+            fullScreen();
         });
 	</script>
-	<!-- <meta http-equiv="refresh" content="0.5; URL=/"> -->
+	<meta http-equiv="refresh" content="5; URL=/">
 </head>
 <body>
 	<div class="container text-center" style="padding-top: 5%; padding-bottom: 5%;">
+        <!-- <canvas class="fireworks" id="fireworks"></canvas> -->
         <!-- <h1 class="text-center">Full screen mode for GMusicBrowser</h1> -->
 
         <!-- Large UI buttons -->
@@ -163,6 +172,10 @@
             written with <span class="love">&hearts;</span> by <a href="https://bitbucket.org/lbesson/">Lilian Besson</a>.<br>
             Sources are <a href="https://bitbucket.org/lbesson/bin/src/master/gmusicbrowser_fullscreen_info/">here</a>, under the <a href="https://lbesson.mit-license.org/"></a> MIT License.
         </small>
+        <!-- anime.js
+        <script type="text/javascript" src="static/js/anime.min.js"></script>
+        <script type="text/javascript" src="static/js/fireworks.js"></script>
+        -->
     </footer>
 </body>
 </html>
