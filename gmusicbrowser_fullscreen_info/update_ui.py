@@ -37,11 +37,11 @@ import requests
 PROTOCOL = "http"
 ADDRESS = "0.0.0.0"
 PORT = "9999"
-WEBAPPBASE = f"{PROTOCOL}://{ADDRESS}:{PORT}/"
+WEBAPPBASE = "{}://{}:{}/".format(PROTOCOL, ADDRESS, PORT)
 
 
 def update_ui(start, data):
-    return requests.post(f"{WEBAPPBASE}{start}", data=data)
+    return requests.post("{}{}".format(WEBAPPBASE, start), data=data)
 
 
 def main(args):

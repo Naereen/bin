@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Full screen mode for GMusicBrowser</title>
+    <title>Full screen mode for GMusicBrowser</title>
     <!-- Latest compiled and minified CSS -->
-	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css')}}">
-	<!-- Latest compiled and minified JavaScript -->
-	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.1.1.min.js')}}"></script>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css')}}">
+    <!-- Latest compiled and minified JavaScript -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.1.1.min.js')}}"></script>
     <!-- MouseTrap.js (http://craig.is/killing/mice) -->
-	<script type="text/javascript" src="{{ url_for('static', filename='js/mousetrap.min.js')}}"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='js/toggleFullScreen.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/mousetrap.min.js')}}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/toggleFullScreen.js')}}"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}"/>
     <style type="text/css">
         body {
             font-size: 250%;
@@ -56,6 +57,18 @@
             -moz-animation: love .5s infinite linear alternate-reverse;
             -o-animation: love .5s infinite linear alternate-reverse;
             animation: love .5s infinite linear alternate-reverse;
+        }
+        @-webkit-keyframes love {
+            to { -webkit-transform: scale(1.1); }
+        }
+        @-moz-keyframes love {
+            to { -moz-transform: scale(1.1); }
+        }
+        @-o-keyframes love {
+            to { -o-transform: scale(1.1); }
+        }
+        @keyframes love {
+            to { transform: scale(1.1); }
         }
         @media (min-width: 1300px) {
             .container {
