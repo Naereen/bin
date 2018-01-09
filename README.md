@@ -10,7 +10,7 @@ J'essaie de la garder à jour le mieux que je peux.
 Généralement, chaque script contient une description de sa fonction, avec parfois un détail sur les options qu'on peut lui passer.
 
 [![Website http://perso.crans.org/besson/bin/](https://img.shields.io/website-up-down-green-red/http/perso.crans.org.svg)](http://perso.crans.org/besson/bin/)
-[![Made with Python v3.5+](https://img.shields.io/badge/Fait%20avec-Python-1f425f.svg)](https://www.python.org/)
+[![Made with Python v3.6+](https://img.shields.io/badge/Fait%20avec-Python-1f425f.svg)](https://www.python.org/)
 [![Made with Bash v4.4+](https://img.shields.io/badge/Fait%20avec-GNU%20Bash-1f425f.svg)](https://www.gnu.org/software/bash/)
 [![Maintenu ? Oui !](https://img.shields.io/badge/Maintenu%3F-oui-green.svg)](https://bitbucket.org/lbesson/bin/commits/)
 [![Demandez moi n'importe quoi !](https://img.shields.io/badge/Demandez%20moi-n'%20importe%20quoi-1abc9c.svg)](https://bitbucket.org/lbesson/ama.fr)
@@ -34,7 +34,7 @@ I aslo try to embed a small description of its purpose in every program,
 and sometimes there is even details on which option you can give to the script !
 
 [![Website http://perso.crans.org/besson/bin/](https://img.shields.io/website-up-down-green-red/http/perso.crans.org.svg)](http://perso.crans.org/besson/bin/)
-[![Made with Python v3.5+](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+[![Made with Python v3.6+](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Made with Bash v4.4+](https://img.shields.io/badge/Made%20with-GNU%20Bash-1f425f.svg)](https://www.gnu.org/software/bash/)
 [![Maintained? Yes!](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://bitbucket.org/lbesson/bin/commits/)
 [![Ask Me Anything!](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://bitbucket.org/lbesson/ama)
