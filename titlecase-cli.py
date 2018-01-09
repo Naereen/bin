@@ -16,7 +16,10 @@ About:
 from __future__ import print_function # Python 2 compatibility if needed
 
 from sys import argv
-from titlecase import titlecase
+try:
+    from titlecase import titlecase
+except ImportError:
+    print("Install titlecase with 'pip install titlecase'...")  # DEBUG
 
 if __name__ == '__main__':
     for v in argv[1:]:
