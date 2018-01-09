@@ -4,7 +4,7 @@
 
 Start the UI, waits for update_ui.py to change it trough POST requests.
 
-- *Date:* 07 January 2018.
+- *Date:* 09 January 2018.
 - *Author:* Lilian Besson, © 2018.
 - *Licence:* MIT Licence, https://lbesson.mit-license.org/.
 """
@@ -15,6 +15,10 @@ from subprocess import call
 
 def cmd_gmusicbrowser(arg):
     return call(["gmusicbrowser", "-cmd", arg])
+
+def cmd_Volumesh(arg):
+    """Requires my Volume.sh script, download it from https://bitbucket.org/lbesson/bin/src/master/Volume.sh and place it somewhere in your PATH."""
+    return call(["Volume.sh", arg])
 
 
 from flask import Flask, request, render_template
@@ -75,6 +79,16 @@ def pause():
 @app.route("/next", methods=['GET', 'POST'])
 def next():
     cmd_gmusicbrowser("NextSong")
+    return render_template("template.html", action=action, data=data)
+
+@app.route("/volumedown", methods=['GET', 'POST'])
+def volumedown():
+    cmd_Volumesh("-")
+    return render_template("template.html", action=action, data=data)
+
+@app.route("/volumeup", methods=['GET', 'POST'])
+def volumeup():
+    cmd_Volumesh("+")
     return render_template("template.html", action=action, data=data)
 
 
