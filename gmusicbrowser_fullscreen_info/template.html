@@ -77,20 +77,23 @@
         }
     </style>
     <script type="text/javascript">
+        function doublereload(){
+            setTimeout(function(){
+                window.location.reload(true);
+            }, 500);  // XXX after 0.5 seconds?
+            // window.location.reload(true);
+        }
         function prev () {
-            window.location.reload();
-            setTimeout(function(){window.location.reload()}, 500); // TODO after 0.5 seconds?
-            $.ajax({ type: 'POST', url: '/prev' });
+            $.ajax({ type: 'POST', url: '/prev', complete: function(){console.log("Ajax request 'prev' completed...")} });
+            doublereload();
         };
         function playpause () {
-            window.location.reload();
-            setTimeout(function(){window.location.reload()}, 500); // TODO after 0.5 seconds?
-            $.ajax({ type: 'POST', url: '/playpause' });
+            $.ajax({ type: 'POST', url: '/playpause', complete: function(){console.log("Ajax request 'playpause' completed...")} });
+            doublereload();
         };
         function next () {
-            window.location.reload();
-            setTimeout(function(){window.location.reload()}, 500); // TODO after 0.5 seconds?
-            $.ajax({ type: 'POST', url: '/next' });
+            $.ajax({ type: 'POST', url: '/next', complete: function(){console.log("Ajax request 'next' completed...")} });
+            doublereload();
         };
 
         // Make the body go full screen when page is ready
