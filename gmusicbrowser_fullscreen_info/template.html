@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Full screen mode for GMusicBrowser</title>
+    <title>Full Screen Mode for GMusicBrowser</title>
     <link rel="shortcut icon" href="static/favicon.ico"/>
     <!-- Latest compiled and minified CSS -->
     <link type="text/css" rel="stylesheet" href="static/css/bootstrap.min.css">
@@ -57,27 +57,32 @@
             font-size: 1.5em;
             color: #f95959;
             -webkit-transform: scale(.9);
-            -moz-transform: scale(.9);
-            -o-transform: scale(.9);
-            transform: scale(.9);
+               -moz-transform: scale(.9);
+                 -o-transform: scale(.9);
+                    transform: scale(.9);
             -webkit-animation: love .5s infinite linear alternate-reverse;
-            -moz-animation: love .5s infinite linear alternate-reverse;
-            -o-animation: love .5s infinite linear alternate-reverse;
-            animation: love .5s infinite linear alternate-reverse;
+               -moz-animation: love .5s infinite linear alternate-reverse;
+                 -o-animation: love .5s infinite linear alternate-reverse;
+                    animation: love .5s infinite linear alternate-reverse;
         }
         @-webkit-keyframes love {
             to { -webkit-transform: scale(1.1); }
         }
         @-moz-keyframes love {
-            to { -moz-transform: scale(1.1); }
+            to {    -moz-transform: scale(1.1); }
         }
         @-o-keyframes love {
-            to { -o-transform: scale(1.1); }
+            to {      -o-transform: scale(1.1); }
         }
         @keyframes love {
-            to { transform: scale(1.1); }
+            to {         transform: scale(1.1); }
         }
-        @media (min-width: 1300px) {
+        @media (max-width: 1400px) {
+            body {
+                font-size: 200%;
+            }
+        }
+        @media (min-width: 1400px) {
             .container {
                 width: 95%;
             }
@@ -85,10 +90,12 @@
     </style>
     <script type="text/javascript">
         function doublereload(){
+            console.log("Will reload in 1.0 seconds...");
             setTimeout(function(){
+                console.log("Reloading after 1.0 seconds...");
                 window.location.reload(true);
             }, 1000);  // XXX after 1.0 seconds?
-            // window.location.reload(true);
+            // window.location.reload(true);  // not required
         }
         function prev () {
             $.ajax({ type: 'POST', url: '/prev', complete: function(){console.log("Ajax request 'prev' completed...")} });
@@ -104,15 +111,14 @@
         };
         function volumedown () {
             $.ajax({ type: 'POST', url: '/volumedown', complete: function(){console.log("Ajax request 'volumedown' completed...")} });
-            doublereload();
         };
         function volumeup () {
             $.ajax({ type: 'POST', url: '/volumeup', complete: function(){console.log("Ajax request 'volumeup' completed...")} });
-            doublereload();
         };
 
         // Make the body go full screen when page is ready
         $(document).ready(function() {
+            console.log("Adding keyboard shortcut...");
             // MouseTrap (http://craig.is/killing/mice)
             Mousetrap.bind(["r", "R"], doublereload);
             Mousetrap.bind(["left", "p", "P"], prev);
@@ -123,7 +129,7 @@
             Mousetrap.bind(["h", "H", "?"], function() { alert("Use 'p' for previous song, 'n' for next song, 'space' for pause, 'f' to toggle full screen.")} );
             Mousetrap.bind(["f", "F"], toggleFullScreen);
             // XXX Try to force the full screen, but it does not work
-            fullScreen();
+            // fullScreen();
         });
 	</script>
 	<meta http-equiv="refresh" content="15">
@@ -180,7 +186,7 @@
     </div>
     <footer class="container text-center">
         <small>
-            This page is dynamically generated with a <a href="http://flask.pocoo.org/">Flask web app</a>,
+            <a href="http://localhost/gmusicbrowser/">This page</a> is (dynamically) generated with a <a href="http://flask.pocoo.org/">Flask webapp</a>,
             written with <span class="love">&hearts;</span> by <a href="https://bitbucket.org/lbesson/">Lilian Besson</a>.<br>
             Sources are <a href="https://bitbucket.org/lbesson/bin/src/master/gmusicbrowser_fullscreen_info/">here</a>, under the <a href="https://lbesson.mit-license.org/"></a> MIT License.
         </small>
