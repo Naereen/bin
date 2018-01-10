@@ -5,9 +5,9 @@
 
 var canvasEl = document.querySelector('.fireworks');
 var ctx = canvasEl.getContext('2d');
-var numberOfParticules = 30;
-var pointerX = 0;
-var pointerY = 0;
+var numberOfParticules = 50;
+var pointerX = window.innerWidth / 2;
+var pointerY = window.innerHeight / 2;
 var tap = ('ontouchstart' in window || navigator.msMaxTouchPoints) ? 'touchstart' : 'mousedown';
 var colors = ['#FF1461', '#18FF92', '#5A87FF', '#FBF38C'];
 
@@ -20,9 +20,12 @@ function setCanvasSize() {
 }
 
 function updateCoords(e) {
-    pointerX = e.clientX || e.touches[0].clientX;
-    pointerY = e.clientY || e.touches[0].clientY;
+    pointerX = e.clientX || e.touches[0].clientX || e.pageX;
+    pointerY = e.clientY || e.touches[0].clientY || e.pageY;
 }
+
+document.addEventListener('mousemove', updateCoords, false);
+document.addEventListener('mouseenter', updateCoords, false);
 
 function setParticuleDirection(p) {
     var angle = anime.random(0, 360) * Math.PI / 180;
@@ -39,7 +42,7 @@ function createParticule(x, y) {
     p.x = x;
     p.y = y;
     p.color = colors[anime.random(0, colors.length - 1)];
-    p.radius = anime.random(16, 32);
+    p.radius = anime.random(16, 42);
     p.endPos = setParticuleDirection(p);
     p.draw = function() {
         ctx.beginPath();
@@ -87,20 +90,20 @@ function animateParticules(x, y) {
             x: function(p) { return p.endPos.x; },
             y: function(p) { return p.endPos.y; },
             radius: 0.1,
-            duration: anime.random(1200, 1800),
+            duration: anime.random(1200, 5800),
             easing: 'easeOutExpo',
             update: renderParticule
         })
         .add({
             targets: circle,
-            radius: anime.random(120, 560),
+            radius: anime.random(120, 1220),
             lineWidth: 0,
             alpha: {
                 value: 0,
                 easing: 'linear',
-                duration: anime.random(600, 800),
+                duration: anime.random(600, 5800),
             },
-            duration: anime.random(1200, 1800),
+            duration: anime.random(1200, 5800),
             easing: 'easeOutExpo',
             update: renderParticule,
             offset: 0
@@ -114,30 +117,60 @@ var render = anime({
     }
 });
 
-function FireTheFireworks(e){
+function fireTheFireworks(e) {
     render.play();
-    updateCoords(e);
+    if (e !== undefined) {
+        updateCoords(e);
+    }
     animateParticules(pointerX, pointerY);
 };
 
-document.addEventListener(tap, function(e) {
-    FireTheFireworks(e)
-}, false);
-
-// From https://stackoverflow.com/a/442474/
-function getOffset(el) {
-    var _x = 0;
-    var _y = 0;
-    while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
-        _x += el.offsetLeft - el.scrollLeft;
-        _y += el.offsetTop - el.scrollTop;
-        el = el.offsetParent;
-    }
-    return { top: _y, left: _x };
-}
-
+// Trick to resize the canvas if needed
 var centerX = window.innerWidth / 2;
 var centerY = window.innerHeight / 2;
 
 setCanvasSize();
 window.addEventListener('resize', setCanvasSize, false);
+
+window.addEventListener(tap, function(e) {
+    fireTheFireworks(e)
+}, false);
+
+// Change the function, to display fireworks in case of keyboard shortcuts
+$(document).ready(function() {
+    Mousetrap.bind(["r", "R"], function(e) {
+        console.log("Calling new version of function bound to ['r', 'R']...");
+        doublereload();
+        fireTheFireworks();
+    });
+    Mousetrap.bind(["left", "p", "P"], function(e) {
+        console.log("Calling new version of function bound to ['left', 'p', 'P']...");
+        prev();
+        fireTheFireworks();
+    });
+    Mousetrap.bind(["space", "b", "B"], function(e) {
+        console.log("Calling new version of function bound to ['space', 'b', 'B']...");
+        playpause();
+        fireTheFireworks();
+    });
+    Mousetrap.bind(["right", "n", "N"], function(e) {
+        console.log("Calling new version of function bound to ['right', 'n', 'N']...");
+        next();
+        fireTheFireworks();
+    });
+    Mousetrap.bind(["down", "d", "D"], function(e) {
+        console.log("Calling new version of function bound to ['down', 'd', 'D']...");
+        volumedown();
+        fireTheFireworks();
+    });
+    Mousetrap.bind(["up", "u", "U"], function(e) {
+        console.log("Calling new version of function bound to ['up', 'u', 'U']...");
+        volumeup();
+        fireTheFireworks();
+    });
+    Mousetrap.bind(["h", "H", "?"], function(e) {
+        console.log("Calling new version of[ function bound to ['h', 'H', '?']...");
+        alert("Use 'p' for previous song, 'n' for next song, 'space' for pause, 'f' to toggle full screen.");
+        fireTheFireworks();
+    });
+});
