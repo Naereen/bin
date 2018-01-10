@@ -1158,15 +1158,11 @@ function pdfinfo() { for i in "$@"; do echo -e "\n${green}# For '${red}${u}$i${U
 complete -f -X '!*.@(pdf|PDF)' -o plusdirs pdfinfo pdftk pdfgrep pdftohtml pdftotext
 
 function f() { echo -e "Opening args '$@' in firefox..."; firefox "$@" || alert; }
-# function b() { echo -e "Executing args '$@' with bpython..."; bpython "$@" || alert; }
+function C() { echo -e "Opening args '$@' in chromium-browser..."; chromium-browser "$@" || alert; }
 # Default to Python 3
 function i2() { echo -e "Executing args '$@' with ipython2..."; ipython2 --pylab "$@" || alert; }
-function pti2() { echo -e "Executing args '$@' with ptipython2..."; ptipython2 "$@" || alert; }  # custom script
 function i() { echo -e "Executing args '$@' with ipython3..."; ipython3 --pylab "$@" || alert; }
-# ptipython from https://github.com/jonathanslenders/ptpython
-function pti() { echo -e "Executing args '$@' with ptipython..."; ptipython "$@" || alert; }
 function i3() { echo -e "Executing args '$@' with ipython3..."; ipython3 --pylab "$@" || alert; }
-function pti3() { echo -e "Executing args '$@' with ptipython3..."; ptipython3 "$@" || alert; }  # custom script
 
 function e() { echo -e "Opening args '$@' in evince..."; evince "$@" || alert; }
 complete -f -X '!*.@(pdf|djvu|PDF|DJVU)' -o plusdirs e
