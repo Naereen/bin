@@ -34,11 +34,21 @@ and use these two values for the two text boxes:
 
 Of course, adapt the path to where you downloaded and saved `gmusicbrowser_fullscreen_info`.
 
+## Interactive demo
+This short (15s) video shows how to do that:
+
+![screenshots/demo2.gif](screenshots/demo2.gif)
+
 ## How to use
 - Launching the app also opens it in Chromium (by default).
-- Use 'n' to play next song, 'p' for previous song, 'space' to pause.
+- Use 'n' to play next song, 'p' for previous song, 'space' to pause, 'u' and 'd' to increase and decrease volume (needs [this script](https://bitbucket.org/lbesson/bin/src/master/Volume.sh) somewhere in your PATH).
 
 > This is a **very minimalist** interface to GMusicBrowser, any other manipulation still have to be done from the main GMusicBrowser interface, of course!
+
+## Interactive demo
+This other video (30s) shows how to do that:
+
+![screenshots/demo3.gif](screenshots/demo3.gif)
 
 ---
 
