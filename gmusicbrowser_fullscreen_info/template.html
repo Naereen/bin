@@ -50,7 +50,18 @@
         .btn-lg {
             font-size: 64px;
         }
-        // Pulsing Heart animation
+        /* Responsive hack */
+        @media (max-width: 1400px) {
+            body {
+                font-size: 200%;
+            }
+        }
+        @media (min-width: 1400px) {
+            .container {
+                width: 95%;
+            }
+        }
+        /* Pulsing Heart animation */
         .love {
             display: inline-block;
             position: relative;
@@ -77,15 +88,14 @@
         @keyframes love {
             to {         transform: scale(1.1); }
         }
-        @media (max-width: 1400px) {
-            body {
-                font-size: 200%;
-            }
-        }
-        @media (min-width: 1400px) {
-            .container {
-                width: 95%;
-            }
+        /* Hack to have fireworks in the background */
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
     </style>
     <script type="text/javascript">
@@ -116,10 +126,9 @@
             $.ajax({ type: 'POST', url: '/volumeup', complete: function(){console.log("Ajax request 'volumeup' completed...")} });
         };
 
-        // Make the body go full screen when page is ready
         $(document).ready(function() {
             console.log("Adding keyboard shortcut...");
-            // MouseTrap (http://craig.is/killing/mice)
+            // MouseTrap keyboard shortcut (http://craig.is/killing/mice)
             Mousetrap.bind(["r", "R"], doublereload);
             Mousetrap.bind(["left", "p", "P"], prev);
             Mousetrap.bind(["space", "b", "B"], playpause);
@@ -132,19 +141,16 @@
             // fullScreen();
         });
 	</script>
-	<meta http-equiv="refresh" content="15">
+	<!-- <meta http-equiv="refresh" content="15"> -->
 </head>
 <body>
 	<div class="container text-center" style="padding-top: 5%; padding-bottom: 5%;">
-        <!-- <canvas class="fireworks" id="fireworks"></canvas> -->
-        <!-- <h1 class="text-center">Full screen mode for GMusicBrowser</h1> -->
-
         <!-- Large UI buttons -->
-        <button type="button" class="btn btn-danger btn-lg" onclick="volumedown();" title="Increase volume">🔉</button>
-        <button type="button" class="btn btn-info btn-lg" onclick="prev();" title="Previous song">⏮</button>
-        <button type="button" class="btn btn-warning btn-lg" onclick="playpause();" title="Pause/Play song">⏯</button>
-        <button type="button" class="btn btn-success btn-lg" onclick="next();" title="Next song">⏭</button>
-        <button type="button" class="btn btn-danger btn-lg" onclick="volumeup();" title="Increase volume">🔊</button>
+        <button type="button" class="btn btn-danger btn-lg" id="volumedown" onclick="volumedown();" title="Increase volume">🔉</button>
+        <button type="button" class="btn btn-info btn-lg" id="prev" onclick="prev();" title="Previous song">⏮</button>
+        <button type="button" class="btn btn-warning btn-lg" id="playpause" onclick="playpause();" title="Pause/Play song">⏯</button>
+        <button type="button" class="btn btn-success btn-lg" id="next" onclick="next();" title="Next song">⏭</button>
+        <button type="button" class="btn btn-danger btn-lg" id="volumeup" onclick="volumeup();" title="Increase volume">🔊</button>
 
         <!-- Meta data -->
         {% if 'title' in data and data['title'] != '<Inconnu>' %}
@@ -183,6 +189,11 @@
         <small>Cover path</small>
             {{ data['coverpath'] }}
         {% endif %} -->
+
+        <canvas class="fireworks" id="fireworks"></canvas>
+        <!-- anime.min.js and fireworks.js to have nice fireworks -->
+        <script type="text/javascript" src="static/js/anime.min.js"></script>
+        <script type="text/javascript" src="static/js/fireworks.js"></script>
     </div>
     <footer class="container text-center">
         <small>
@@ -190,10 +201,6 @@
             written with <span class="love">&hearts;</span> by <a href="https://bitbucket.org/lbesson/">Lilian Besson</a>.<br>
             Sources are <a href="https://bitbucket.org/lbesson/bin/src/master/gmusicbrowser_fullscreen_info/">here</a>, under the <a href="https://lbesson.mit-license.org/"></a> MIT License.
         </small>
-        <!-- anime.js
-        <script type="text/javascript" src="static/js/anime.min.js"></script>
-        <script type="text/javascript" src="static/js/fireworks.js"></script>
-        -->
     </footer>
 </body>
 </html>
