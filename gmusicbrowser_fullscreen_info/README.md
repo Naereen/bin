@@ -22,6 +22,16 @@ sudo pip3 install -U requests flask
 - Save it somewhere, for instance `~/bin/gmusicbrowser_fullscreen_info`,
 - When you want to use it, go in the folder, and do `make`.
 
+Note: you can also use [this .desktop file](GMusicBrowser_Fullscreen_Info.desktop) to install this as a desktop application:
+
+```bash
+$ desktop-file-validate GMusicBrowser_Fullscreen_Info.desktop
+# if this is OK, install it
+$ sudo desktop-file-install GMusicBrowser_Fullscreen_Info.desktop
+```
+
+Then the application will be available from your desktop menu, under the name "Full screen mode for GMusicBrowser".
+
 ## Settings
 In GMusicBrowser settings, under the tab "Plugins", enable the "Current song" plugin,
 and use these two values for the two text boxes:
