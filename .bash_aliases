@@ -22,6 +22,7 @@ alias mv='/bin/mv -i'
 
 # Commandes ls avec diverses options :
 # The 'ls' family (this assumes you use the GNU ls)
+alias sl='ls'
 
 function la() {
     arg=$(history | tail -n1 | sed s/'^.*la '/''/)
