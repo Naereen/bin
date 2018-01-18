@@ -106,7 +106,7 @@ def plot_data_by_weekday(all_cloud_cover, filename):
     plt.xlabel("Day of the week")
     plt.ylabel("Mean cloud cover (0 is fully sunny, 1 is fully cloudy)")
 
-    days = ["Mon", "Tue", "Wed", "Thu", "Wed", "Sat", "Sun"]
+    days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     plt.bar(days, mean_by_weekday, color="gold")
     plt.show()
 
