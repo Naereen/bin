@@ -22,7 +22,7 @@ from matplotlib.dates import DayLocator, HourLocator, DateFormatter
 try:
     from darksky import forecast
 except ImportError as e:
-    print("Install 'darksky' module with 'pip install darksky'...")
+    print("Install 'darksky' module with 'pip install git+https://github.com/lukaskubis/darkskylib'...")
     raise e
 
 
@@ -32,7 +32,6 @@ def get_data(location, key, delay=365):
     alldata = {}
     all_cloud_cover = {}
     for d in range(delay):
-        # t = dt(2013, 5, 6, 12).isoformat()
         t = thisday.isoformat()
         if 'T' not in t:
             t += 'T12:00:00'
@@ -43,6 +42,7 @@ def get_data(location, key, delay=365):
                 print("For the day", thisday, "the 'cloudCover' index was", all_cloud_cover[thisday])
         except:
                 all_cloud_cover[thisday] = np.nan
+                print("Missing data for", thisday, "so using a nan... it won't be included in the plots!")
         thisday = thisday - oneday
     return alldata, all_cloud_cover
 
