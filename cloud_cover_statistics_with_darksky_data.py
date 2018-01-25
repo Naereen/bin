@@ -65,7 +65,7 @@ def load_data(filename):
     return all_cloud_cover
 
 
-def plot_data(all_cloud_cover, filename):
+def plot_data(all_cloud_cover, name, filename):
     Xs = np.array(list(all_cloud_cover.keys()))
     Ys = np.array(list(all_cloud_cover.values()))
 
@@ -75,7 +75,7 @@ def plot_data(all_cloud_cover, filename):
     Ys = Ys[~are_nans]
 
     fig, ax = plt.subplots()
-    ax.set_title("Cloud cover index in CentraleSupélec, Rennes")
+    ax.set_title(f"Cloud cover index in {name}")
     ax.set_xlabel("Date")
     ax.set_ylabel("Cloud cover (0 is fully sunny, 1 is fully cloudy)")
     ax.plot_date(Xs, Ys, ms=5, marker='o', color='black')
@@ -88,7 +88,7 @@ def plot_data(all_cloud_cover, filename):
     print("Figure was saved to", filename)
 
 
-def plot_data_by_weekday(all_cloud_cover, filename):
+def plot_data_by_weekday(all_cloud_cover, name, filename):
     count_of_weekday = np.zeros(7)
     data_by_weekday = np.zeros(7)
     mean_by_weekday = np.zeros(7)
@@ -102,7 +102,7 @@ def plot_data_by_weekday(all_cloud_cover, filename):
         mean_by_weekday[weekday] = data_by_weekday[weekday] / count_of_weekday[weekday]
 
     plt.figure()
-    plt.title("Mean cloud cover index in CentraleSupélec, Rennes, in 2017")
+    plt.title(f"Mean cloud cover index in {name}, in 2017")
     plt.xlabel("Day of the week")
     plt.ylabel("Mean cloud cover (0 is fully sunny, 1 is fully cloudy)")
 
@@ -118,10 +118,15 @@ def plot_data_by_weekday(all_cloud_cover, filename):
 
 if __name__ == '__main__':
     # CentraleSupélec, campus of Rennes, France
-    name = "CentraleSupélec, campus of Rennes, France"
+    name = "CentraleSupélec, Rennes"
     # 48° 6' 36"N, 1° 40' 48"W
     # https://www.google.fr/maps/place/Supélec/@48.1252316,-1.6255899,17z/
     location = 48.1252316, -1.6255899
+
+    # name = "Briançon, France"
+    # location = 44.8826142, 6.6285124
+    # # https://www.google.fr/maps/place/21+Rue+Joseph+Silvestre,+05100+Briançon/@44.8826142,6.6285124,16z/
+
     print("For localisation '{}' at location {}...".format(name, location))
 
 
@@ -142,6 +147,6 @@ if __name__ == '__main__':
         save_data(all_cloud_cover, "all_cloud_cover.json")
         print("Success in saving the data from 'all_cloud_cover.json' ...")
 
-    plot_data(all_cloud_cover, "all_cloud_cover.png")
-    plot_data_by_weekday(all_cloud_cover, "cloud_cover_by_weekday.png")
+    plot_data(all_cloud_cover, name, "all_cloud_cover.png")
+    plot_data_by_weekday(all_cloud_cover, name, "cloud_cover_by_weekday.png")
     print("Done...")
