@@ -1,4 +1,4 @@
-       // (C) Lilian Besson, 2015, for http://perso.crans.org/besson/generatejplayer.sh/
+       // (C) Lilian Besson, 2015, for //perso.crans.org/besson/generatejplayer.sh/
        console.log("[INFO] footer.html starts now.");
        NProgress.start();
       </script>
@@ -15,7 +15,7 @@
     $(document).ready(function() {
 		NProgress.inc();
 		Mousetrap.bind(["up", "u"], function() { alert("Dossier parent."); location.href="../index.html";});
-		Mousetrap.bind(["i"], function() { alert("Dossier principal."); location.href= (window.location.protocol + "//" + window.location.host + "/music/") ;}); // "http://perso.crans.org/besson/music/"
+		Mousetrap.bind(["i"], function() { alert("Dossier principal."); location.href= (window.location.protocol + "//" + window.location.host + "/music/") ;}); // "//perso.crans.org/besson/music/"
 	});
     $(window).load(function(){
 		// Noty message.
@@ -25,7 +25,7 @@
 		  {addClass: 'btn btn-primary', text: 'Oui !', onClick: function($noty) {
 		      $noty.close();
 		      noty({text: "<strong>Normal, je code <i>très bien</i> ;) !</strong>"
-		       + "\n</br>N'hésitez pas à consulter d'<a href=\"http://perso.crans.org/besson/\">autres pages</a> !", type: 'success', timeout: 30000});
+		       + "\n</br>N'hésitez pas à consulter d'<a href=\"//perso.crans.org/besson/\">autres pages</a> !", type: 'success', timeout: 30000});
 		    }
 		  },
 		  {addClass: 'btn btn-danger', text: 'Non ?!', onClick: function($noty) {
@@ -74,7 +74,7 @@
         $('input#id_search_folder').quicksearch('div.subdirs > span > ul li');
     });
     </script>
-<script async type="text/javascript" src="http://0.0.0.0/_static/ga.js"></script>
-<img style="visibility: hidden; display: none;" src="http://perso.crans.org/besson/beacon/music/PATHTOBECHANGED?pixel"/>
-<!-- (C) Lilian Besson, 2015, for http://perso.crans.org/besson/generatejplayer.sh/ -->
+<script async type="text/javascript" src="//0.0.0.0/_static/ga.js"></script>
+<img style="visibility: hidden; display: none;" src="//perso.crans.org/besson/beacon/music/PATHTOBECHANGED?pixel"/>
+<!-- (C) Lilian Besson, 2015, for //perso.crans.org/besson/generatejplayer.sh/ -->
 </body></html>
