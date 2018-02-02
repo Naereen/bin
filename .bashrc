@@ -173,7 +173,7 @@ if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)} \[\033[01;32m\] \u @ \h \[\033[00m\]:\[\033[01;34m\] \w\[\033[00m\]\n>>> '
 else
     # New (March 2017), using a few UTF-8 symbols to have a pretty PS1 prompt!
-    PS1='\[\e[01;32m\]⏰ \t${debian_chroot:+($debian_chroot)}\[\e[01;34m\] 👤 \u\[\e[01;37m\] @\[\e[01;36m\] 💻 \h\[\e[01;37m\] #\[\e[01;31m\]${LINENO} \[\e[01;37m\][ \w ] ✔ \n➤➤➤ '
+    PS1='\[\e[01;32m\]⏰ \t${debian_chroot:+($debian_chroot)}\[\e[01;34m\] 👨 \u\[\e[01;37m\] @\[\e[01;36m\] 💻 \h\[\e[01;37m\] #\[\e[01;31m\]${LINENO} \[\e[01;37m\][ \w ] ✔ \n➤➤➤ '
 fi
 unset color_prompt force_color_prompt
 
