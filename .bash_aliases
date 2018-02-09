@@ -945,12 +945,14 @@ function randquote() {
 function Nginx_Access() { watch tail -n 10 /var/log/nginx/access.log || alert; }
 function Nginx_Error() { watch tail -n 10 /var/log/nginx/error.log || alert; }
 function Nginx_Start() {
+    #destination="/etc/nginx/nginx.conf"
+    destination="/usr/local/nginx/conf/nginx.conf"
     echo -e "${blue} Last changes on ~/nginx.conf on local git repository :${reset}"
     git diff ~/nginx.conf
-    echo -e "${blue} Last changes on ~/nginx.conf compared with /etc/nginx/nginx.conf :${reset}"
-    diff ~/nginx.conf /etc/nginx/
-    echo -e "${red} Copying ~/nginx.conf to /etc/nginx ...${reset}"
-    sudo cp -i ~/nginx.conf /etc/nginx/
+    echo -e "${blue} Last changes on ~/nginx.conf compared with ${destination} :${reset}"
+    diff ~/nginx.conf "${destination}"
+    echo -e "${red} Copying ~/nginx.conf to ${destination} ...${reset}"
+    sudo cp -i ~/nginx.conf "${destination}"
     p="$(pidof nginx)"
     if [ "X$p" = "X" ]; then
         echo -e "${red} Starting nginx...${reset}"
