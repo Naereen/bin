@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON, (C) 2015-oo
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 07-03-2017.
+# Date: 17-02-2018.
 # Web: https://bitbucket.org/lbesson/bin/src/master/mymake.sh
 #
 # A top-recursive 'make' command, with two awesome behaviors.
@@ -16,7 +16,7 @@
 #
 # Licence: MIT Licence (http://lbesson.mit-license.org).
 #
-version="1.0"
+version="1.0.1"
 returncode="0"  # If success, return 0
 datestarting="$(date "+%T - %D")"
 
@@ -162,7 +162,7 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
 
         # XXX This is very specific, maybe there is a better way to detect it ?
         # Not with the returned error code of /usr/bin/make at least...
-        grep 'make: \*\*\* No rule to make target' "${LogFile}" &>/dev/null
+        grep 'make: \*\*\* Aucune règle pour fabriquer la cible' "${LogFile}" || grep 'make: \*\*\* No rule to make target' "${LogFile}" &>/dev/null
         grepReturnCode="$?"
         if [[ "X${grepReturnCode}" = "X0" ]]; then
             echo -e "${red}Failed because there is no rule${white} to make the target '${yellow}$*${white}' in the current Makefile (${green}${NameOfMakefile}${white}) ..."
