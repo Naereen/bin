@@ -1041,10 +1041,11 @@ function vlc() {
 # function linphone() { /usr/bin/linphone "$@" &> /dev/null & }
 function libreoffice() { ( /usr/bin/libreoffice "$@" || /usr/bin/abiword "$@" ) &> /dev/null & }
 
-function butterfly() {  # From 'pip install butterfly'
-    butterfly.server.py --logging=none --unsecure &> /dev/null &
-    echo -e "Butterfly running... Open your browser at http://127.0.0.1:57575/ to use the Butterfly terminal in your browser"
-}
+#function butterfly() {  # From 'pip install butterfly'
+#    butterfly.server.py --logging=none --unsecure &> /dev/null &
+#    echo -e "Butterfly running... Open your browser at http://127.0.0.1:57575/ to use the Butterfly terminal in your browser"
+#    o http://127.0.0.1:57575/
+#}
 
 # Better .rst → .html and .md → .html (simpler)
 alias rst2html='rst2html -v -t --no-generator -l fr --cloak-email-addresses '
