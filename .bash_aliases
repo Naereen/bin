@@ -1220,7 +1220,7 @@ alias CHF_Course='echo -e "${black}Requête à Wolfram|Alpha en cours..."; echo 
 alias brigthness='xrandr --output LVDS --brightness '
 
 alias FilesLog='find | tee find.log ; du | tee du.log ; dut | tee dut.log'
-alias mario='vba --fullscreen --filter-lq2x ~/Public/rom/gba/pyrio.gba'
+alias mario='vba --filter-lq2x ~/Public/roms/gba/mario.gba'
 
 # flag to remove warning in 'sudo pip install [..]' and 'sudo pip3 install [..]'
 alias sudo='sudo -H'
