@@ -2,18 +2,18 @@
 #
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 01/03/2017
+# Date: 21/02/2018
 #
 # A small wrapper around the output of lualatex.
 # Can be save to ~/bin/lualatex for example.
 #
 version='1.5'
-LANG='en'
+#LANG='en'
 GREP="grep --color=always --line-buffered"
 COLUMNS=$(tput cols)
 nbcols=${COLUMNS:-194}
 
-echo -e "${reset}$u$yellow .: Starting: PDF LaTeX :.$reset"
+echo -e "${reset}$u$yellow .: Starting: LuaLaTeX :.$reset"
 
 # | fmt -w ${nbcols} \
 ( /usr/bin/lualatex -synctex=1 -file-line-error $* 2>&1 ) \
