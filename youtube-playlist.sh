@@ -47,6 +47,9 @@ dlplaylist() {
     # Try to download it according to the args passed to the script
     wget "${1}" -O "${out}" || wget "https://www.youtube.com/playlist?list=${1}" -O "${out}"
 
+    # # Use this to manually use a file download from YouTube
+    # out="/tmp/test.html"
+
     # Then parsing it and downloading every songs
     number=$(for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" "${out}"  | sed s/'watch?v='// | uniq); do echo "$j"; done | wc -l)
     echo -e "I found ${green}${number}${white} different songs in this playlist, is it correct ?"
