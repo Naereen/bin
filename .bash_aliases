@@ -454,6 +454,7 @@ alias VeilleEcranNoir='xset dpms force standby'
 alias VeilleEcranNoirContinue='watch --interval=1 "echo -e \"Screen is sleeping, Ctrl+C, ^C to cancel.\" ; xset dpms force standby"'
 
 alias IpAdresses='ifconfig | grep "inet"'
+alias SpeedTest="wget -O /dev/null http://speedtest.wdc01.softlayer.com/downloads/test100.zip"
 
 # Get Linux kernel versions and informations
 alias version='cat /proc/version ; lsb_release -a'
