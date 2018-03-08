@@ -205,33 +205,36 @@ function ocamls() {
 # alias jupyter-iocaml='DYLD_LIBRARY_PATH=/home/lilian/.opam/4.04.2/lib/stublibs/ && eval $(opam config env) && jupyter notebook --Session.key="b\"\""'
 
 # Convert Jupyter notebooks
+alias j='jupyter-notebook'
 # alias j2html='jupyter-nbconvert --to html'
 function j2html() {
-  for old in "$@"; do
-    jupyter-nbconvert --to html "$old"
-  done
+    for old in "$@"; do
+        jupyter-nbconvert --to html "$old"
+    done
 }
 # alias j2pdf='jupyter-nbconvert --to pdf'
 function j2pdf() {
-  for old in "$@"; do
-    new="${old%.ipynb}__fix-iocaml-notebook-exports-to-pdf.ipynb"
-    [ -f "$new" ] && mv -vf "$new" /tmp/
-    fix-iocaml-notebook-exports-to-pdf.py "$old" "$new"
-    if [ $? = 0 ]; then
-      jupyter-nbconvert --to pdf "$new"
-      [ -f "${old%.ipynb}.pdf" ] && mv -vf "${old%.ipynb}.pdf" /tmp/
-      mv -vf "${new%.ipynb}.pdf" "${old%.ipynb}.pdf"
-      mv -vf "$new" /tmp/
-    else
-      jupyter-nbconvert --to pdf "$old"
-    fi
-  done
+    for old in "$@"; do
+        jupyter-nbconvert --to pdf "$old"
+        # new="${old%.ipynb}__fix-iocaml-notebook-exports-to-pdf.ipynb"
+        # [ -f "$new" ] && mv -vf "$new" /tmp/
+        # fix-iocaml-notebook-exports-to-pdf.py "$old" "$new"
+        # if [ $? = 0 ]; then
+        #     jupyter-nbconvert --to pdf "$new"
+        #     [ -f "${old%.ipynb}.pdf" ] && mv -vf "${old%.ipynb}.pdf" /tmp/
+        #     mv -vf "${new%.ipynb}.pdf" "${old%.ipynb}.pdf"
+        #     mv -vf "$new" /tmp/
+        # else
+        #     jupyter-nbconvert --to pdf "$old"
+        # fi
+    done
 }
 
 alias j2script='jupyter-nbconvert --to script'
 alias j2py='jupyter-nbconvert --to python'
 alias j2ml='jupyter-nbconvert --to ocaml'  # With https://github.com/Naereen/Jupyter-Notebook-OCaml/
-complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2script j2py j2ml
+alias j2ju='jupyter-nbconvert --to julia'
+complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2script j2py j2ml j2ju
 
 alias iocaml='jupyter-console --kernel=ocaml-jupyter'
 
@@ -923,15 +926,6 @@ function Lock() {
     fi
 }
 
-# Make shortcuts
-function send_dpt() {
-( make send_dpt 2>&1 | tee /tmp/make.log ) ; ( grep "Pas de règle" /tmp/make.log >/dev/null && echo -e "${red}Error: send_dpt not found.${white}" ; alert ) || echo -e "${green}Success in sending to zamok.crans.org :)${white}"
-}
-
-function send_zamok() {
-( make send_zamok 2>&1 | tee /tmp/make.log ) ; ( grep "Pas de règle" /tmp/make.log >/dev/null && echo -e "${red}Error: send_zamok not found.${white}" ; alert ) || echo -e "${green}Success in sending to ssh.dptinfo.ens-cachan.fr :)${white}"
-}
-
 function randquote() {
     if [ -f "$quotes" ];  then
         shuf "$quotes" | head -n 1
@@ -1172,11 +1166,12 @@ function i3() { echo -e "Executing args '$@' with ipython3..."; ipython3 --pylab
 function e() { echo -e "Opening args '$@' in evince..."; evince "$@" || alert; }
 complete -f -X '!*.@(pdf|djvu|PDF|DJVU)' -o plusdirs e
 
-alias j='jupyter-notebook'
 alias m='clear ; make'
 alias mB='clear ; make -B'
 alias pdf='make pdf'        # special alias for Makefile-powered LaTeX projects
 alias clean='make clean'    # special alias for Makefile-powered LaTeX projects
+alias send_zamok='make send_zamok'
+alias send_ws3='make send_ws3'
 
 # Meta fonction experimentale pour ouvrir un fichier avec l'application appropriee.
 function o() {
