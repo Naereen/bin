@@ -43,12 +43,16 @@ icon=$(ls -H /usr/share/icons/*/*/*/*music*svg 2>/dev/null|uniq|head -n1)
 
 dlplaylist() {
     oldpwd="$(pwd)"
-    echo -e "${white}Trying to download the playlist : '${blue}${1}${white}'..."
-    # Try to download it according to the args passed to the script
-    wget "${1}" -O "${out}" || wget "https://www.youtube.com/playlist?list=${1}" -O "${out}"
-
-    # # Use this to manually use a file download from YouTube
-    # out="/tmp/test.html"
+    if [ -f "${1}" ]; then
+        # Use this to manually use a file download from YouTube
+        # out="/tmp/test.html"
+        echo -e "${white}The input is already a file on disk, '${blue}${1}${white}', using this..."
+        out="$1"
+    else
+        echo -e "${white}Trying to download the playlist : '${blue}${1}${white}'..."
+        # Try to download it according to the args passed to the script
+        wget "${1}" -O "${out}" || wget "https://www.youtube.com/playlist?list=${1}" -O "${out}"
+    fi
 
     # Then parsing it and downloading every songs
     number=$(for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" "${out}"  | sed s/'watch?v='// | uniq); do echo "$j"; done | wc -l)
@@ -67,7 +71,7 @@ dlplaylist() {
     $READ || exit
 
     # Create the directory
-    title=$(grep "<title>" "${out}" | head | sed s/"<title>"// | sed s/"^[ ]*"// | sed s_"</title>"__ )
+    title=$(grep "<title>" "${out}" | head | sed s/"<title>"// | sed s/"^[ ]*"// | sed s_"</title>"__ | sed s_"<link.*"_""_ )
     echo -e "Apparently, the playlist's title is : '${yellow}${title}${white}'. Are you OK with it ? (${magenta}[Enter]${white} if OK)."
     $READ || exit
 
