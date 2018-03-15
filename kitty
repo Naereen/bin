@@ -1,0 +1,3 @@
+#!/bin/sh
+cd ~/.local/kitty
+python3 . &
