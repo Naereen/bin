@@ -1,6 +1,6 @@
 #!/bin/bash
 # .bash_aliases for GNU Bash v4+
-# (c) 2011-2017 Lilian BESSON
+# (c) 2011-2018 Lilian BESSON
 # GPLv3 Licensed
 # Cr@ns: http://perso.crans.org/besson
 # On Bitbucket:   https://bitbucket.org/lbesson/bin/
@@ -1058,53 +1058,54 @@ function ExplainShell() { /usr/bin/firefox http://explainshell.com/explain?cmd="
 alias Tor='cd ~/.local/tor-browser ; ./start-tor-browser & ; cd -'
 
 function poisson() { python -c "from numpy.random import poisson; print(poisson(int($1)))"; }
+#function uniform() { python -c "from random import randint; print(randint(int($1), int($2)))"; }
+function uniform() { echo $(($1 + RANDOM%($2-$1+1))); }
 
 # Quickly play my favorite TV series
 alias kaamelott='/usr/bin/vlc --random ~/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
 #alias kaamelott-parole='parole --fullscreen ~/Séries/Kaamelott/ >/dev/null 2>/dev/null &'
 function random_kaamelott() {
     /usr/bin/vlc --random --start-time=$(poisson $((10 * 3 * 60)) ) ~/Séries/Kaamelott/ >/dev/null 2>/dev/null &
-    random-vrun-next.sh 3
+    random-vrun-next.sh "${1:-3}"
 }
 
 alias scrubs='/usr/bin/vlc --random ~/Séries/Scrubs/ >/dev/null 2>/dev/null &'
 #alias scrubs-parole='parole --fullscreen ~/Séries/Scrubs/ >/dev/null 2>/dev/null &'
 function random_scrubs() {
-    /usr/bin/vlc --random --start-time=$(poisson $((6 * 60)) ) ~/Séries/Scrubs/ >/dev/null 2>/dev/null &
-    random-vrun-next.sh 8
+    /usr/bin/vlc --random --start-time=$(poisson $((3 * (1 + RANDOM%5) * 60)) ) ~/Séries/Scrubs/ >/dev/null 2>/dev/null &
+    random-vrun-next.sh "${1:-5}"
 }
 
 alias scrubs-vo='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" >/dev/null 2>/dev/null &'
 #alias scrubs-vo-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" >/dev/null 2>/dev/null &'
 function random_scrubs_vo() {
-    /usr/bin/vlc --random --start-time=$(poisson $((11 * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" >/dev/null 2>/dev/null &
-    random-vrun-next.sh 8
+    /usr/bin/vlc --random --start-time=$(poisson $((3 * (1 + RANDOM%6) * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" >/dev/null 2>/dev/null &
+    random-vrun-next.sh "${1:-5}"
 }
 
 alias tbbt='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/The_Big_Bang_Theory" >/dev/null 2>/dev/null &'
 function random_tbbt() {
-    /usr/bin/vlc --random --start-time=$(poisson $((8 * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/The_Big_Bang_Theory" >/dev/null 2>/dev/null &
-    random-vrun-next.sh 8
+    /usr/bin/vlc --random --start-time=$(poisson $((3 * (1 + RANDOM%6) * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/The_Big_Bang_Theory" >/dev/null 2>/dev/null &
+    random-vrun-next.sh "${1:-5}"
 }
 
 alias friends='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
 #alias friends-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &'
 function random_friends() {
-    /usr/bin/vlc --random --start-time=$(poisson $((13 * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &
-    random-vrun-next.sh 5
+    /usr/bin/vlc --random --start-time=$(poisson $((3 * (1 + RANDOM%6) * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &
+    random-vrun-next.sh "${1:-5}"
 }
 
 alias himym='/usr/bin/vlc --random "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" >/dev/null 2>/dev/null &'
 #alias himym-parole='parole --fullscreen "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" >/dev/null 2>/dev/null &'
 function random_himym() {
-    /usr/bin/vlc --random --start-time=$(poisson $((13 * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" >/dev/null 2>/dev/null &
-    random-vrun-next.sh 5
+    /usr/bin/vlc --random --start-time=$(poisson $((3 * (1 + RANDOM%6) * 60)) ) "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" >/dev/null 2>/dev/null &
+    random-vrun-next.sh "${1:-5}"
 }
 
 function random_sitcoms() {
-    /usr/bin/vlc --random --start-time=$(poisson $((6 * 60)) ) ~/Séries/Kaamelott/ ~/Séries/Scrubs/ "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/The_Big_Bang_Theory" "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" >/dev/null 2>/dev/null &
-    # "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother"
-    random-vrun-next.sh 5
+    /usr/bin/vlc --random --start-time=$(poisson $((3 * (1 + RANDOM%6) * 60)) ) ~/Séries/Kaamelott/ ~/Séries/Scrubs/ "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Scrubs_VO" "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/The_Big_Bang_Theory" "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Friends" "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/How_I_Met_Your_Mother" "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Mr_Bean" "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/The.IT.Crowd" "/media/lilian/Disque Dur - Naereen/Multimedia/Séries/Sitcoms/Bref" >/dev/null 2>/dev/null &
+    random-vrun-next.sh "${1:-5}"
 }
 
 alias dropbox.start='( /usr/bin/dropbox start ; alert ) &>/dev/null&'

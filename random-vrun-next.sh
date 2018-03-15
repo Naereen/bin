@@ -2,12 +2,12 @@
 #!/usr/bin/env bash
 # author: Lilian BESSON
 # email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# date: 20-02-2017
+# date: 15-03-2018
 # web: https://bitbucket.org/lbesson/bin/src/master/random-vrun-next.sh
 #
 # Continuously loop 1 and 2:
 #  1. Wait a random time, from a Poisson distribution of lambda = "$1" (arg#1)
-#  2. and then call "vrun next" (default, or command "$2")
+#  2. and then call "vrun next" (default, or command "$2"), and quit as soon as vlc is not running anymore
 #
 # Licence: MIT License, https://lbesson.mit-license.org/
 #
@@ -22,7 +22,12 @@ next_command="${2:-vrun next}"
 # Start the loop
 echo -e "${yellow}Starting${white} '${black}${0}${white}' ..."
 while true; do
-    echo -e "\nWaiting a random time ~ 'Poisson(${magenta}${mean_time}${white})' seconds ... Then calling '${black}${next_command}${white}' ..."
+    echo -e "Waiting a random time ~ 'Poisson(${magenta}${mean_time}${white})' seconds ... Then calling '${black}${next_command}${white}' ...\n"
     sleep-poisson-time.py "$mean_time"
-    $next_command
+    if pidof vlc > /dev/null; then
+        $next_command
+    else
+        echo -e "${red}Warning, vlc appears to not be running ... quitting now.${white}"
+        exit 1
+    fi
 done
