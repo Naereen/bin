@@ -480,10 +480,14 @@ pidof gpg-agent>/dev/null || eval $(gpg-agent --daemon) || echo "Failed to conne
 # From https://github.com/jml/undistract-me/
 # [ -s "/etc/profile.d/undistract-me.sh" ] && source "/etc/profile.d/undistract-me.sh"
 
+# From https://github.com/wting/autojump
+[ -s "/usr/share/autojump/autojump.sh" ] && source "/usr/share/autojump/autojump.sh"
+
 ##############################################################################
-# (c) 2011-2017 Lilian BESSON
+# (c) 2011-2018 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
-# On Bitbucket: https://bitbucket.org/lbesson/home/
+# On Bitbucket: https://bitbucket.org/lbesson/bin/
 #
 # Put a blank line after
 #  to autorize echo "newentry" >> "$HOME"/.bashrc
+
