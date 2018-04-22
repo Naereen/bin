@@ -205,7 +205,8 @@ function ocamls() {
 # alias jupyter-iocaml='DYLD_LIBRARY_PATH=/home/lilian/.opam/4.04.2/lib/stublibs/ && eval $(opam config env) && jupyter notebook --Session.key="b\"\""'
 
 # Convert Jupyter notebooks
-alias j='jupyter-notebook'
+alias j='jupyter-notebook'  # might be changed
+alias ju='jupyter-notebook'
 # alias j2html='jupyter-nbconvert --to html'
 function j2html() {
     for old in "$@"; do
