@@ -481,7 +481,7 @@ pidof gpg-agent>/dev/null || eval $(gpg-agent --daemon) || echo "Failed to conne
 # [ -s "/etc/profile.d/undistract-me.sh" ] && source "/etc/profile.d/undistract-me.sh"
 
 # From https://github.com/wting/autojump
-[ -s "/usr/share/autojump/autojump.sh" ] && source "/usr/share/autojump/autojump.sh"
+# [ -s "/usr/share/autojump/autojump.sh" ] && source "/usr/share/autojump/autojump.sh"
 
 ##############################################################################
 # (c) 2011-2018 Lilian BESSON
