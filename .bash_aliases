@@ -1234,6 +1234,7 @@ alias timake='time make && alert'
 # Shortcut for fast edit of .htaccess or .gitignore files (very common situation)
 alias nhtaccess='nano .htaccess -Y sh'
 alias ngitignore='nano .gitignore -Y sh'
+alias ngitconfig='nano .git/config'
 
 alias SHUTDOWN='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when shutdown." "[LOG] ${USER}@${HOSTNAME} : shutdown"; mail_tel.py "Automatically sent by the machine $HOSTNAME.crans.org when shutdown." "[LOG] ${USER}@${HOSTNAME} : shutdown"; sudo shutdown now'
 alias REBOOT='mail_ghost.py "Automatically sent by the machine $HOSTNAME.crans.org when reboot." "[LOG] ${USER}@${HOSTNAME} : reboot"; mail_tel.py "Automatically sent by the machine $HOSTNAME.crans.org when reboot." "[LOG] ${USER}@${HOSTNAME} : reboot"; sudo reboot now'
