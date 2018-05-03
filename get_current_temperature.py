@@ -76,7 +76,7 @@ if __name__ == '__main__':
     location = 48.1252316, -1.6255899
     names.append(name); locations.append(location)
 
-    # # https://www.google.fr/maps/place/21+Rue+Joseph+Silvestre,+05100+Briançon/@44.8826142,6.6285124,16z/
+    # # https://www.google.fr/maps/place/05100+Briançon/@44.8826142,6.6285124,16z/
     # name = "Briançon, France"
     # location = 44.8826142, 6.6285124
     # names.append(name); locations.append(location)

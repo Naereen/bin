@@ -125,7 +125,7 @@ if __name__ == '__main__':
 
     # name = "Briançon, France"
     # location = 44.8826142, 6.6285124
-    # # https://www.google.fr/maps/place/21+Rue+Joseph+Silvestre,+05100+Briançon/@44.8826142,6.6285124,16z/
+    # # https://www.google.fr/maps/place/05100+Briançon/@44.8826142,6.6285124,16z/
 
     print("For localisation '{}' at location {}...".format(name, location))
 
