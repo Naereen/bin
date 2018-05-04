@@ -1,9 +1,8 @@
 #!/bin/bash
-
 # By Lilian BESSON
 # http://perso.crans.org/besson/bin/Volume.sh
-
 # A bash script to control amixer volume through the command line.
+# (C) 2013-2018
 
 # Colors
 escp="\033["
@@ -15,7 +14,7 @@ white="${escp}01;37m"
 [ -f ~/.color.sh ] && . ~/.color.sh
 
 volume() {
- e=$(amixer sget 'Master',0 | grep 'Mono:' | grep -o '[0-9]*%')
+ e=$(amixer sget -- 'Master',0 | grep 'Mono:' | grep -o '[0-9]*%')
  echo "${e}"
 }
 
@@ -26,8 +25,8 @@ volume_value() {
 
 if [ "$*" = "" ]; then
 	# Simply print the volume !
-	echo -e "${green}Information about the volume : ${blue}$(amixer sget 'Master',0 | grep \"Mono:\")${white}.\n\tVolume=${red}$(volume)${white}"
-	notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget 'Master',0 | grep \"Mono:\")."
+	echo -e "${green}Information about the volume : ${blue}$(amixer sget -- 'Master',0 | grep 'Mono:')${white}.\n\tVolume=${red}$(volume)${white}"
+	notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget -- 'Master',0 | grep 'Mono:')."
 	exit 0
 fi
 
@@ -61,23 +60,23 @@ ${blue}COPYRIGHTS${white}:\n\
 		exit 0
 		;;
 	notify*)
-		echo -e "${green}Information about the volume : ${blue}$(amixer sget 'Master',0 | grep \"Mono:\")${white}.\n\tVolume=${red}$(volume)${white}"
-		notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget 'Master',0 | grep \"Mono:\")."
+		echo -e "${green}Information about the volume : ${blue}$(amixer sget -- 'Master',0 | grep 'Mono:')${white}.\n\tVolume=${red}$(volume)${white}"
+		notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget -- 'Master',0 | grep 'Mono:')."
 		exit 0
 		;;
 	mute*)
 		echo -e "${green}Mutting the volume${white} (command mute)..."
-		amixer sset 'Master',0 0% # | grep "Mono:"
-		## notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget 'Master',0 | grep \"Mono:\") (after mutting)."
+		amixer sset -- 'Master',0 0% # | grep "Mono:"
+		notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget -- 'Master',0 | grep 'Mono:') (after mutting)."
 		;;
 	unmute*)
 		echo -e "${green}Unmutting the volume${white} (command unmute)..."
 		#vol=$(volume_value)
-		#amixer sset 'Master',0 unmute 2> /dev/null > /dev/null
-		#amixer sset 'Master',0 on 2> /dev/null > /dev/null
-		amixer sset 'Master',0 20% # | grep "Mono:"
-#		amixer sset 'Master',0 -- -42.75dB | grep "Mono:"
-		## notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget 'Master',0 | grep \"Mono:\") (after unmutting)."
+		#amixer sset -- 'Master',0 unmute 2> /dev/null > /dev/null
+		#amixer sset -- 'Master',0 on 2> /dev/null > /dev/null
+		amixer sset -- 'Master',0 20% # | grep "Mono:"
+#		amixer sset -- 'Master',0 -- -42.75dB | grep "Mono:"
+		notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget -- 'Master',0 | grep 'Mono:') (after unmutting)."
 		;;
 	down*|-|moins*)
 		vol=$(volume_value)
@@ -87,24 +86,24 @@ ${blue}COPYRIGHTS${white}:\n\
 			newvol=0
 		fi
 		echo -e "${green}Decreasing the volume${white} by 5% ($vol -> $newvol) (command down)..."
-		amixer sset 'Master',0 $newvol%  | grep "Mono:"
-		## notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget 'Master',0 | grep \"Mono:\") (after decreasing by 5%)."
+		amixer sset -- 'Master',0 $newvol%  | grep "Mono:"
+		notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget -- 'Master',0 | grep 'Mono:') (after decreasing by 5%)."
 		;;
 	up*|+*|plus*)
 		vol=$(volume_value)
 		newvol=$((vol+5))
 		if [ "$newvol" -gt 100 ]; then
-			echo -e "${red}Volume negative...${white}"
-			newvol=0
+			echo -e "${red}Volume larger than 100%...${white}"
+			newvol=100
 		fi
 		echo -e "${green}Increasing the volume${white} by 5% ($vol -> $newvol) (command up)..."
-		amixer sset 'Master',0 $newvol%  | grep "Mono:"
-		## notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget 'Master',0 | grep \"Mono:\") (after increasing by 5%)."
+		amixer sset -- 'Master',0 $newvol%  | grep "Mono:"
+		notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget -- 'Master',0 | grep 'Mono:') (after increasing by 5%)."
 		;;
 	*)
 		echo -e "${green}Setting the volume to ${blue}$arg${white} (command PER% or VAL)..."
-		amixer sset 'Master',0 "$arg" | grep "Mono:"
-		notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget 'Master',0 | grep \"Mono:\") (after running $arg)."
+		amixer sset -- 'Master',0 "$arg" | grep "Mono:"
+		notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget -- 'Master',0 | grep 'Mono:') (after running $arg)."
 		;;
 	esac
 done
