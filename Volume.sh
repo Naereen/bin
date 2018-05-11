@@ -1,8 +1,13 @@
 #!/bin/bash
-# By Lilian BESSON
-# http://perso.crans.org/besson/bin/Volume.sh
+# Author: Lilian BESSON, (C) 2018-oo
+# Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
+# Date: 01-05-2018.
+# Web: https://bitbucket.org/lbesson/bin/src/master/Volume.sh
+#
 # A bash script to control amixer volume through the command line.
-# (C) 2013-2018
+# Run '$ Volume.sh --help' to see the help.
+#
+# License: MIT Licence (http://lbesson.mit-license.org).
 
 # Colors
 escp="\033["
@@ -87,7 +92,7 @@ ${blue}COPYRIGHTS${white}:\n\
 		fi
 		echo -e "${green}Decreasing the volume${white} by 5% ($vol -> $newvol) (command down)..."
 		amixer sset -- 'Master',0 $newvol%  | grep "Mono:"
-		notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget -- 'Master',0 | grep 'Mono:') (after decreasing by 5%)."
+		#notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget -- 'Master',0 | grep 'Mono:') (after decreasing by 5%)."
 		;;
 	up*|+*|plus*)
 		vol=$(volume_value)
@@ -98,7 +103,7 @@ ${blue}COPYRIGHTS${white}:\n\
 		fi
 		echo -e "${green}Increasing the volume${white} by 5% ($vol -> $newvol) (command up)..."
 		amixer sset -- 'Master',0 $newvol%  | grep "Mono:"
-		notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget -- 'Master',0 | grep 'Mono:') (after increasing by 5%)."
+		#notify-send --icon=sound "Volume.sh" "Information about the volume : $(amixer sget -- 'Master',0 | grep 'Mono:') (after increasing by 5%)."
 		;;
 	*)
 		echo -e "${green}Setting the volume to ${blue}$arg${white} (command PER% or VAL)..."
