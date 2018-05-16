@@ -71,7 +71,7 @@ dlplaylist() {
     $READ || exit
 
     # Create the directory
-    title=$(grep "<title>" "${out}" | head | sed s/"<title>"// | sed s/"^[ ]*"// | sed s_"</title>"__ | sed s_"<link.*"_""_ )
+    title=$(grep "<title>" "${out}" | head | sed s/"<title>"// | sed s/"^[ ]*"// | sed s_"</title>"__ | sed s_"<link.*"_""_ | tail -n1)
     echo -e "Apparently, the playlist's title is : '${yellow}${title}${white}'. Are you OK with it ? (${magenta}[Enter]${white} if OK)."
     $READ || exit
 
