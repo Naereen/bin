@@ -1270,6 +1270,10 @@ function help_remount() {
 	echo -e "To remount a read-only partition as read-write, do this: \nsudo mount -o remount,rw /partition/identifier /mount/point"
 }
 
+function Wait.fr() {
+	Wait $@ french
+}
+
 ##############################################################################
 # (c) 2011-2017 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson

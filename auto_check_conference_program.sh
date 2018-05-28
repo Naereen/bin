@@ -75,11 +75,12 @@ function check_this_authors () {
         short="${author:0:20}"
         count=$(pdfgrep -i -c "$short" "$pdf")
         if [ "${count:-0}" != 1 ]; then
-            short="(echo "$author" | grep -o '^[^;]*;' | tr -d ';')"
+            short="$(echo "$author" | grep -o '^[^;]*;' | tr -d ';')"
             count=$(pdfgrep -i -c "$short" "$pdf")
             if [ "${count:-0}" != 1 ]; then
                 echo -e "- Authors '$author' not found (when looking for '$short')..."
             fi
+        fi
     fi
 }
 
