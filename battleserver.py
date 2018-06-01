@@ -2,15 +2,17 @@
 # -*- coding: utf-8; mode: python -*-
 """ My not-too-naive answer to https://github.com/dutc/battlegame
 
+Server part!
+
 I am mainly trying to write fun and "Pythonic" Python, rather than trying to solve the questions.
 
 - Author: Lilian Besson, (C) 2018.
-- Online: https://bitbucket.org/lbesson/bin/
-- Licence: MIT Licence (http://lbesson.mit-license.org).
+- Online: https://bitbucket.org/lbesson/bin/src/master/battleserver.py
+- License: MIT License (http://lbesson.mit-license.org).
 """
 __author__ = "Lilian Besson"
 __name_of_app__ = "Battle Server"
-__version__ = "0.0.1"
+__version__ = "0.1"
 
 import sys
 from string import ascii_uppercase
@@ -31,6 +33,8 @@ ships = OrderedDict({
     "Submarine": 3,
     "Destroyer": 2,
 })
+max_length = max(l for l in ships.values())
+
 symbol_of_ship = OrderedDict({
     name: str.lower(list(set(name).intersection(ascii_uppercase))[0])
     for name in ships.keys()
@@ -68,8 +72,8 @@ uint8_of_symbol = OrderedDict({v: k for k, v in symbol_of_uint8.items()})
 
 class Board(object):
     def __init__(self, x=DEFAULT_X, y=DEFAULT_Y):
-        self.x = x
-        self.y = y
+        self.x = y
+        self.y = x
         self.board = np.zeros((x, y), dtype=np.uint8)
 
     def __getitem__(self, *args, **kwargs): return self.board.__getitem__(*args, **kwargs)
@@ -158,6 +162,9 @@ class Board(object):
 def main(args):
     # pprint(args)  # DEBUG
     sizex, sizey = [int(i) for i in args['--size'].split(',')]
+    if min(sizex, sizey) < max_length:
+        print(f"Error: <xy> both must be >= {max_length}.")
+        return 1
     board = Board(x=sizex, y=sizey)
     for name in ships.keys():
         if args[f'--{name.lower()}']:
