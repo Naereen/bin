@@ -25,17 +25,16 @@ import numpy as np
 DEFAULT_X = DEFAULT_Y = 5
 
 ships = OrderedDict({
-    # "Carrier": 5,
-    # "Battleship": 4,
-    # "cRuiser": 3,
-    # "Submarine": 3,
+    "Carrier": 5,
+    "Battleship": 4,
+    "cRuiser": 3,
+    "Submarine": 3,
     "Destroyer": 2,
 })
 symbol_of_ship = OrderedDict({
     name: str.lower(list(set(name).intersection(ascii_uppercase))[0])
     for name in ships.keys()
 })
-# pprint(symbol_of_ship)
 ship_of_symbol = OrderedDict({v: k for k, v in symbol_of_ship.items()})
 
 
@@ -44,7 +43,7 @@ ship_of_symbol = OrderedDict({v: k for k, v in symbol_of_ship.items()})
 documentation = f"""{__name_of_app__}.
 
 Usage:
-    battleserver.py {' '.join([f'[--{name.lower()}=<x,y,dir>]' for name in ships.keys()])} [--size=<xy>] (--show | --play)
+    battleserver.py {' '.join([f'[--{name.lower()}=<x,y,dir>]' for name in ships.keys()])} [--random] [--size=<xy>] (--show | --play)
     battleserver.py (-h | --help)
     battleserver.py --version
 
@@ -54,7 +53,8 @@ Options:
     --show          Print the board.
     --play          Let you play a "one player" game interactively.
     --size=<xy>     Set size of the board [default: {DEFAULT_X},{DEFAULT_Y}].
-    {'    '.join([f'--{name.lower()}=<x,y,dir>     Place ship {name} at position x,y and direction (h or v) [default: {i},0,h].' for i, name in enumerate(list(ships.keys()))])}
+    --random        Set every ship to a random position.
+    {'    '.join([f'--{name.lower()}=<x,y,dir>     Place ship {name} at position x,y and direction (h or v) [default: {i+1},1,h].' for i, name in enumerate(list(ships.keys()))])}
 """.replace(',h].', ',h].\n')
 
 
@@ -63,9 +63,7 @@ symbol_of_uint8.update({
     i+1: symbol_of_ship[name]
     for i, name in enumerate(ships.keys())
 })
-# pprint(symbol_of_uint8)
 uint8_of_symbol = OrderedDict({v: k for k, v in symbol_of_uint8.items()})
-# pprint(uint8_of_symbol)
 
 
 class Board(object):
@@ -92,7 +90,9 @@ class Board(object):
 
     def add_ship(self, name, x=0, y=0, direction='h', debug=True):
         size = ships[name]
+        # I store things in a "matrix" approach, not human coordinate
         horizontally = (direction == 'v')
+        x, y = y, x
         if horizontally:
             if x + size > self.x:
                 if debug: print(f"Unable to place ship '{name}' of size {size} at position {x}, {y} horizontally... ({x + size} > {self.x})")
@@ -120,7 +120,7 @@ class Board(object):
             trial += 1
         return retcode
 
-    def play(self, cheat=True, max_nb_moves=None):
+    def play(self, cheat=False, max_nb_moves=None):
         seen_x_y = set()
         nb_moves = -1
         if max_nb_moves is None: max_nb_moves = self.x * self.y
@@ -128,9 +128,11 @@ class Board(object):
             nb_moves += 1
             if cheat: self.show()
             try:
-                action = input("> ")
+                action = input("> ") if cheat else input("")
+                if self.is_empty():
+                    print(f"you win! in {nb_moves} moves")
                 if action == '': return
-                x, y = [int(i) for i in action.replace(',', ' ').split(' ')]
+                x, y = [int(i)-1 for i in action.replace(',', ' ').split(' ')]
                 if (x, y) in seen_x_y:
                     print("already played")
                 seen_x_y.add((x, y))
@@ -143,9 +145,9 @@ class Board(object):
                         print(f"hit {ship.lower()}")
                     else:
                         print(f"sunk {ship.lower()}")
-                if self.is_empty():
-                    print(f"you win! in {nb_moves} moves")
-                    return 0
+                # if self.is_empty():
+                #     print(f"you win! in {nb_moves} moves")
+                #     return 0
             except ValueError:
                 pass
             except (EOFError, KeyboardInterrupt):
@@ -154,16 +156,16 @@ class Board(object):
 
 
 def main(args):
-    # pprint(args)
+    # pprint(args)  # DEBUG
     sizex, sizey = [int(i) for i in args['--size'].split(',')]
     board = Board(x=sizex, y=sizey)
     for name in ships.keys():
         if args[f'--{name.lower()}']:
-            if args[f'--{name.lower()}'] == 'r':
+            if args[f'--{name.lower()}'] == 'r' or args['--random']:
                 board.random_add_ship(name)
             else:
                 x, y, direction = args[f'--{name.lower()}'].split(',')
-                board.add_ship(name, x=int(x), y=int(y), direction=direction)
+                board.add_ship(name, x=int(x)-1, y=int(y)-1, direction=direction)
     if args['--show']:
         return board.show()
     elif args['--play']:
@@ -171,5 +173,5 @@ def main(args):
 
 
 if __name__ == '__main__':
-    arguments = docopt(documentation, version=' 2.0')
+    arguments = docopt(documentation, version=f"{__name_of_app__} v{__version__}")
     sys.exit(main(arguments))
