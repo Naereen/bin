@@ -1274,6 +1274,10 @@ function Wait.fr() {
 	Wait $@ french
 }
 
+export CLASSPATH="~/.local/antlr/:~/.local/antlr/antlr-4.7.1-complete.jar:$CLASSPATH"
+alias antlr4='java -jar ~/.local/antlr/antlr-4.7.1-complete.jar'
+#alias grun='java org.antlr.v4.gui.TestRig'
+
 ##############################################################################
 # (c) 2011-2017 Lilian BESSON
 # Cr@ns: http://perso.crans.org/besson
