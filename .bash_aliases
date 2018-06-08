@@ -101,6 +101,7 @@ alias MAKE="/usr/bin/make -w"
 # I got the idea on Saturday 27-08-16 at Lausanne, and I find it pretty awesome
 function make() {
     mymake.sh "$@"
+    returncode="$?"
     if [ X"$?" = X"0" -a X"${#@}" = X"1" -a X"${1:0:1}" != X"-" ]; then
         # We only add an alias for make commands with one argument, to avoid capturing the options
         if alias -p | grep -o "^alias $1='make -B $1'$" &>/dev/null; then
@@ -111,6 +112,7 @@ function make() {
             echo -e "  '${blue}${1}${white}' is now registered as a ${yellow}new alias${white} for '${black}make ${1}${white}' ..."
         fi
     fi
+    (exit "${returncode}")  # http://stackoverflow.com/questions/10448160/ddg#10457902
 }
 
 # Ajout de securite sur la commande 'rm' :

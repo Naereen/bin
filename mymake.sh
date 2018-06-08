@@ -21,6 +21,7 @@ returncode="0"  # If success, return 0
 datestarting="$(date "+%T - %D")"
 
 # More details at http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -e
 set -o pipefail
 # Use https://bitbucket.org/lbesson/bin/src/master/.color.sh to add colors in Bash scripts
 [ -f ~/.color.sh ] && . ~/.color.sh
@@ -146,18 +147,30 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
     # Now using it to execute make
     if [ -f "${old}${c}Makefile" ]; then
         echo -e "${green}${NameOfMakefile}${white} is there, I'm using it :"
-        echo -e "Calling... ${black}'" time ${wrap:-} "${makePath}" -w --file="${NameOfMakefile}" "$@" "| tee ${LogFile} '${white}..."
+        echo -e "Calling... ${black}' time ${wrap:-} ${makePath} -w --file=${NameOfMakefile} $@ | tee ${LogFile} '${white}..."
         if [ "X${JustBashCompletion}" != "Xtrue" ]; then
             time ${wrap:-} "${makePath}" -w --file="${NameOfMakefile}" "$@" \
-                3>&1 1>&2 2>&3 \
-                | tee "${LogFile}"
+                3>&1 1>&2 2>&3 | tee "${LogFile}"
+            returncode="$?"
+            if [ "X${returncode}" = "X0" ]; then
+                if grep '\*\*\*.* Error [0-9]\+' "${LogFile}"; then
+                    returncode="$(grep -o 'Error [0-9]\+' "${LogFile}" | awk '{print $2}')"
+                fi
+            fi
+            # echo -e "1. Return code from this make rule: ${returncode}..."  # DEBUG
             # FIXED this pipe disabled color on stdout of programs that detect pipes (sphinx, my ansicolortags script, grep etc...)
             # This trick '3>&1 1>&2 2>&3' swaps stdout and stderr: only stderr is piped to |tee so colors are still in stdout (from https://serverfault.com/a/63708)
         else
             time ${wrap:-} "${makePath}" -w --file="${NameOfMakefile}" "$@" \
                 2>&1 | tee "${LogFile}"
+            returncode="$?"
+            if [ "X${returncode}" = "X0" ]; then
+                if grep '\*\*\*.* Error [0-9]\+' "${LogFile}"; then
+                    returncode="$(grep -o 'Error [0-9]\+' "${LogFile}" | awk '{print $2}')"
+                fi
+            fi
+            # echo -e "2. Return code from this make rule: ${returncode}..."  # DEBUG
         fi
-        returncode="$?"
         datefinished="$(date "+%T - %D")"
 
         # XXX This is very specific, maybe there is a better way to detect it ?
