@@ -240,9 +240,15 @@ function j2pdf() {
 
 alias j2script='jupyter-nbconvert --to script'
 alias j2py='jupyter-nbconvert --to python'
-alias j2ml='jupyter-nbconvert --to ocaml'  # With https://github.com/Naereen/Jupyter-Notebook-OCaml/
+alias j2ml='jupyter-nbconvert --to ocaml'  # With https://github.com/Naereen/Jupyter-NBConvert-OCaml/
 alias j2ju='jupyter-nbconvert --to julia'
-complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2script j2py j2ml j2ju
+function j2pyhtml() {
+    for old in "$@"; do jupyter-nbconvert --to html "$old"; jupyter-nbconvert --to python "$old"; done
+}
+function j2htmlpy() {
+    for old in "$@"; do jupyter-nbconvert --to html "$old"; jupyter-nbconvert --to python "$old"; done
+}
+complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2script j2py j2ml j2ju j2pyhtml j2htmlpy
 
 alias iocaml='jupyter-console --kernel=ocaml-jupyter'
 
