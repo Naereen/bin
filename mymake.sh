@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON, (C) 2015-oo
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 17-02-2018.
+# Date: 10-06-2018.
 # Web: https://bitbucket.org/lbesson/bin/src/master/mymake.sh
 #
 # A top-recursive 'make' command, with two awesome behaviors.
@@ -21,13 +21,12 @@ returncode="0"  # If success, return 0
 datestarting="$(date "+%T - %D")"
 
 # More details at http://redsymbol.net/articles/unofficial-bash-strict-mode/
-set -e
 set -o pipefail
 # Use https://bitbucket.org/lbesson/bin/src/master/.color.sh to add colors in Bash scripts
 [ -f ~/.color.sh ] && . ~/.color.sh
 
 # Try to detect automatically the location of the make binary
-makePath="$(type make | awk ' { print $3 } ')"
+makePath="$(type make | awk '{ print $3 }')"
 # But if it failed, use the default one
 makePath="${makePath:-/usr/bin/make}"
 
@@ -46,6 +45,7 @@ if [ -f ~/.use_SlackWrap_for_mymake ]; then
     Use_SlackWrap="true"
 fi
 
+# read all arguments
 for i in "$@"; do
     case "$i" in
         --noansi | --noANSI )
@@ -85,7 +85,7 @@ if [ "X${JustVersion}" = "Xtrue" ]; then
     echo -e "  ${black}This is free software, and you are welcome to redistribute it under certain conditions.${white}"
     echo -e "  ${black}This program comes with ABSOLUTELY NO WARRANTY; for details see http://lbesson.mit-license.org${white}"
     "${makePath}" --version
-    exit 1
+    # exit 1  # don't exit with code 0 if --version? XXX why?
 fi
 
 # Do we need to turn down the FreeSMS plugin ?
@@ -151,22 +151,22 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
         if [ "X${JustBashCompletion}" != "Xtrue" ]; then
             time ${wrap:-} "${makePath}" -w --file="${NameOfMakefile}" "$@" \
                 3>&1 1>&2 2>&3 | tee "${LogFile}"
+            # FIXED this pipe disabled color on stdout of programs that detect pipes (sphinx, my ansicolortags script, grep etc...)
+            # This trick '3>&1 1>&2 2>&3' swaps stdout and stderr: only stderr is piped to |tee so colors are still in stdout (from https://serverfault.com/a/63708)
             returncode="$?"
-            if [ "X${returncode}" = "X0" ]; then
-                if grep '\*\*\*.* Error [0-9]\+' "${LogFile}"; then
-                    returncode="$(grep -o 'Error [0-9]\+' "${LogFile}" | awk '{print $2}')"
+            if [ "X${returncode}" = "X0" -a -f "${LogFile}" ]; then
+                if grep '\*\*\*.* Error [0-9]\+' "${LogFile}" >/dev/null; then
+                    returncode="$(grep -o '\*\*\*.* Error [0-9]\+' "${LogFile}" | awk '{print $2}')"
                 fi
             fi
             # echo -e "1. Return code from this make rule: ${returncode}..."  # DEBUG
-            # FIXED this pipe disabled color on stdout of programs that detect pipes (sphinx, my ansicolortags script, grep etc...)
-            # This trick '3>&1 1>&2 2>&3' swaps stdout and stderr: only stderr is piped to |tee so colors are still in stdout (from https://serverfault.com/a/63708)
         else
             time ${wrap:-} "${makePath}" -w --file="${NameOfMakefile}" "$@" \
                 2>&1 | tee "${LogFile}"
             returncode="$?"
-            if [ "X${returncode}" = "X0" ]; then
-                if grep '\*\*\*.* Error [0-9]\+' "${LogFile}"; then
-                    returncode="$(grep -o 'Error [0-9]\+' "${LogFile}" | awk '{print $2}')"
+            if [ "X${returncode}" = "X0" -a -f "${LogFile}" ]; then
+                if grep '\*\*\*.* Error [0-9]\+' "${LogFile}" >/dev/null; then
+                    returncode="$(grep -o '\*\*\*.* Error [0-9]\+' "${LogFile}" | awk '{print $2}')"
                 fi
             fi
             # echo -e "2. Return code from this make rule: ${returncode}..."  # DEBUG
@@ -179,8 +179,9 @@ while [ "X$FailBecauseNoValidRule" = "Xtrue" ]; do
         grepReturnCode="$?"
         if [[ "X${grepReturnCode}" = "X0" ]]; then
             echo -e "${red}Failed because there is no rule${white} to make the target '${yellow}$*${white}' in the current Makefile (${green}${NameOfMakefile}${white}) ..."
-            [ "$(pwd)" = "/" -o "$(pwd)" = "${HOME}" ] && break  # avoid infinite loops!
             FailBecauseNoValidRule="true"
+            returncode="4"
+            [ "$(pwd)" = "/" -o "$(pwd)" = "${HOME}" ] && break  # avoid infinite loops!
             c="../${c}"
             cd ..  # FIXED We should just go up once.
             echo -e "${magenta}Going up in the parent folder...${white} Current directory: $(pwd)"

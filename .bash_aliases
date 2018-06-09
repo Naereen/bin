@@ -102,17 +102,22 @@ alias MAKE="/usr/bin/make -w"
 function make() {
     mymake.sh "$@"
     returncode="$?"
-    if [ X"$?" = X"0" -a X"${#@}" = X"1" -a X"${1:0:1}" != X"-" ]; then
-        # We only add an alias for make commands with one argument, to avoid capturing the options
-        if alias -p | grep -o "^alias $1='make -B $1'$" &>/dev/null; then
-            echo -e "The previous make command ('${black}make ${1}${white}') ${green}worked${white}, but ${blue}${1}${white} has already been aliased : ${green}nothing to do :-)${white}..."
+    if [ X"${returncode}" = X"0" -a X"${#@}" = X"1" -a X"${1:0:1}" != X"-" ]; then
+        # XXX We only add an alias for make commands with one argument, to avoid capturing the options
+        if alias -p | grep -o "^alias $1='mymake.sh $1'$" &>/dev/null; then
+            echo -e "The previous make command ('${black}make ${1}${white}') ${green}worked${white}, but ${blue}${1}${white} has already been aliased : ${green}nothing to do :-)${white}\n(mymake.sh does not override existing aliases...)"
         else
             echo -e "The previous make command ('${black}make ${1}${white}') ${green}worked${white}, and ${blue}${1}${white} has not been aliased yet..."
-            alias $1="make -B $1"
+            alias $1="mymake.sh $1"
             echo -e "  '${blue}${1}${white}' is now registered as a ${yellow}new alias${white} for '${black}make ${1}${white}' ..."
         fi
     fi
-    (exit "${returncode}")  # http://stackoverflow.com/questions/10448160/ddg#10457902
+    # Cf. https://stackoverflow.com/questions/10448160/ddg#10457902
+    if [ X"${returncode}" = X"0" ]; then
+        echo  # empty line, does nothing
+    else
+        ( exit "${returncode}" )  # propagate the 'make' error code
+    fi
 }
 
 # Ajout de securite sur la commande 'rm' :
