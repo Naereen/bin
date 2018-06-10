@@ -2,18 +2,19 @@
 #
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 05-01-2017
+# Date: 10-06-2018
 #
 # A first try to automatize the selection of the "next" episode in your current TV serie.
 #
 # Requires VLC 2.0+.
-# vrun is not yet included nor required (http://perso.crans.org/besson/bin/vrun)
+# vrun is not yet included nor required (https://perso.crans.org/besson/bin/vrun)
 #
-# A bash completion file is available (http://perso.crans.org/besson/bin/series.sh.bash_completion)
+# A bash completion file is available (https://perso.crans.org/besson/bin/series.sh.bash_completion)
 #
-version='0.7'
+version='0.8'
+myname="$(basename "$0")"
 
-# If possible, use ~/.color.sh (http://perso.crans.org/besson/bin/.color.sh)
+# If possible, use ~/.color.sh (https://perso.crans.org/besson/bin/.color.sh)
 [ -f ~/.color.sh ] && ( . ~/.color.sh ; clear )
 
 previous="no"
@@ -26,7 +27,7 @@ last="yes"
 for i in "$@"; do
     case "$i" in
         -h|--help|help)
-            echo -e "$green$(basename "$0")$white --help | [options]"
+            echo -e "$green${myname}$white --help | [options]"
             echo -e ""
             echo -e "Play the correct next (or last or previous) episode of your current TV show."
             echo -e ""
@@ -47,7 +48,7 @@ for i in "$@"; do
             echo -e ""
             echo -e "Copyrights: (c) Lilian Besson 2012-2017."
             echo -e "Released under the term of the GPL v3 Licence."
-            echo -e "In particular, $(basename "$0") is provided WITHOUT ANY WARANTY."
+            echo -e "In particular, $myname is provided WITHOUT ANY WARANTY."
             exit 0
         ;;
         -n|--next|n|next)
@@ -91,14 +92,12 @@ dflt="current_s01e01"
 
 echo -e "Reading ~/current to see the current watched folder..."
 current_path="$(cat ~/current || echo -e "$red Error: no ~/current file, using default current_path...$white" >/dev/stderr)"
-# FIXME
 current_path="${current_path:-~/Séries/TBBT/}"
 
 #
 # Go to the current folder
 #
-cd "$current_path" || \
- ( echo -e "${red} Error:$white the folder $u$current_path$U ${red}is not available...$reset$white" ; exit 1 )
+cd "$current_path" || ( echo -e "${red} Error:$white the folder $u$current_path$U ${red}is not available...$reset$white" ; exit 1 )
 
 echo -e "${blue}I am now in $magenta'$(pwd -P)'$white\n"
 
@@ -148,7 +147,7 @@ for cu in ${currents:-$dflt}; do
     # Print the current read/watched TV shows or movies
     Currents() {
         clear
-        echo -e "${white}Listing ($(basename "$0") list):"
+        echo -e "${white}Listing ($myname list):"
         for i in ~/current*; do
             dir="$(cat "$i")"
             echo -e "\n$u$black~/$(basename "$i")$U$white\t ---> \t$blue${dir}$white"
@@ -186,8 +185,6 @@ for cu in ${currents:-$dflt}; do
 
     echo -e "Episode:  $e"
 
-    #possibles=$(find . -type f -wholename '*'$d'*'/'*'s$d'*'e$e'*')
-    #possibles=$(find . -type f -wholename '*'$d'*'/'*'[sS]$d'*'[eE]$e'*')
     possibles=$(find . -type f -wholename '*'"$d"'*'/'*''[sS]'"$d"'*''[eE]'"$e"'*' | grep "\(avi\|mp4\|mkv\|AVI\|flv\|wma\|rmvb\)")
 
     [ "0$?" != "00" ] && \
@@ -203,15 +200,15 @@ for cu in ${currents:-$dflt}; do
 
     # New : pause GMusicBrowser or VLC before starting playing
     if type vrun &>/dev/null; then
-         echo -e "${blue}Pausing VLC (with the vrun CLI tool)...${white}"
-         pidof vlc &>/dev/null && ( vrun play && vrun pause ) || echo -e "${red}Warning: VLC not playing.${white}"
+        echo -e "${blue}Pausing VLC (with the vrun CLI tool)...${white}"
+        pidof vlc &>/dev/null && ( vrun play && vrun pause ) || echo -e "${red}Warning: VLC not playing.${white}"
     fi
     if type gmusicbrowser &>/dev/null; then
-         echo -e "${blue}Pausing GMusicBrowser (with the 'gmusicbrowser -cmd' CLI tool)...${white}"
-         pidof gmusicbrowser &>/dev/null && gmusicbrowser -cmd Pause || echo -e "${red}Warning: GMusicBrowser not playing.${white}"
+        echo -e "${blue}Pausing GMusicBrowser (with the 'gmusicbrowser -cmd' CLI tool)...${white}"
+        pidof gmusicbrowser &>/dev/null && gmusicbrowser -cmd Pause || echo -e "${red}Warning: GMusicBrowser not playing.${white}"
     fi
 
-    # PROPOSAL: on pourrait sauvegarder la position de la lecture, afin de pouvoir reprendre exactement là où on en était.
+    # Idée : on pourrait sauvegarder la position de la lecture, afin de pouvoir reprendre exactement là où on en était.
     # À utiliser: format dernierFichierLu.1h02m23s.position
     # ==> 1*3600 + 02*60 + 23 = 3743s
     # ==> vlc --start-time 3743 dernierFichierLu.avi
@@ -222,11 +219,17 @@ for cu in ${currents:-$dflt}; do
 
     nextcu="./current_s${d}e${e}"
 
-    #if [ "$next" = "yes" ]; then
     [ "$cu" != "nextcu" ] && mv "$cu" "$nextcu"
     echo -e "${green}OK: the episode has been read, new one is $magenta$nextcu$white"
-    #fi
+
+    if [ "$next" = "yes" ]; then
+        icon="/usr/share/icons/hicolor/256x256/apps/vlc.png"
+        [ ! -f "$icon" ] && icon="question"
+        if zenity --timeout=10 --title="$myname $version" --ok-label="Suivant" --cancel-label="Non" --text="Continuer à lire l'épisode suivant ? Saison <b>${d}</b>, épisode <b>${e}</b>..." --window-icon="${icon}" --question ; then
+            $0 next
+        fi
+    fi
 done
 
 echo -e "${yellow} .: Contact me at naereen[@]crans[.]org for any questions, proposals or bugs :.$reset$white"
-## END ##
+# End of series.sh
