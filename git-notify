@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function run {
 # how we want to extract the variables from the commit message.

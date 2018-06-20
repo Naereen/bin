@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Ce script a pour but d'automatiser le renommage des fichiers, notemment pour les séries et les musiques.
 

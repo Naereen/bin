@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #	__author__='Lilian BESSON'
 #	__email__='lilian DOT besson AT normale D O T fr'
 #	__version__='2.1b'

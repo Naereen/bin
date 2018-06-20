@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Tiny script to generate git statistics
 # Author: https://github.com/esc
 # From https://github.com/esc/git-stats/blob/master/git-stats.sh

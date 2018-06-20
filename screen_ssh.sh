@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # screen_ssh.sh by Chris Jones <cmsj@tenshu.net>
 # Released under the GNU GPL v2 licence.
 # Set the title of the current screen to the hostname being ssh'd to

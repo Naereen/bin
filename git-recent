@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # git-recent
 # From https://github.com/paulirish/git-recent/
 #

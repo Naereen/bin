@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ################################## INFO #####################################
 # A GNU Bash script to automatically TRY to compress PDF files in the current directory.
 # Copyright (C) 2013-2016 Lilian BESSON (lbesson at ens-cachan dot fr)

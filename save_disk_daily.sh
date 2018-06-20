@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Un script pour sauver facilement ses données.
 # Il est conçu pour être utilisé sur Ubuntu (10.04+), installé sur Windows via WUBI

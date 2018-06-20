@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # by Sairon Istyar, 2012, modified by Lilian Besson, 2014
 # Now: https://bitbucket.org/lbesson/bin/wa_nocolor.sh

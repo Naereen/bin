@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 clear
 echo -e "${yellow}Basic selfstats results.${white}"
 echo -e "  ${black}See ${u}https://github.com/gurgeh/selfspy#example-statistics${U} for more.${white}"

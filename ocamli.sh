@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Ce script a pour but d'automatiser la création de fichier .mli
 

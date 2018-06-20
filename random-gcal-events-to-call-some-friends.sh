@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #!/usr/bin/env bash
 # author: Lilian BESSON
 # email: Lilian.BESSON[AT]ens-cachan[DOT]fr

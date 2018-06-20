@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 #	This script is designed to be used with makePydoc, update__date__ and pylint.
 #	The reference page for this software is :

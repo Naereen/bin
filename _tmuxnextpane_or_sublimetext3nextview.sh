@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Script to interpret the ctrl + button#9 of my mouse (Dell with left/right button)
 # works on Ubuntu, with this .xbindkeysrc file (http://perso.crans.org/besson/bin/.xbindkeysrc)

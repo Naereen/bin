@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Author:		Michael Bianco, http://developer.mabwebdesign.com/, <software@mabwebdesign.com>
 # Description:	This script will uncompress CSS files compressed with CSS Optimizer (http://developer.mabwebdesign.com/cssoptimizer)
 #				This script requires the GNU version of the sed command, change the SED_COMMAND variable to represent the path to your GNU sed

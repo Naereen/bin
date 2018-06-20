@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 echo -e "Difference between ~/ownCloud/cloud.openmailbox.org/TODO.rst and ~/TODO.rst :"
 ls -larth ~/TODO.rst
 file ~/ownCloud/cloud.openmailbox.org/TODO.rst

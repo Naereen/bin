@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Un script pour redémarrer lightdm (en cas de bug du serveur X).
 # Copyrights (C) Lilian BESSON 2013
 # http://perso.crans.org/besson/bin/restart_unity.sh

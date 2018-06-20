@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Exporter une liste d'alias crée par mutt vers les contacts gmail en utilisant goobook.
 # La syntaxe de mutt est du type: alias nom prenom

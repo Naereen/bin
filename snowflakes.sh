@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # From https://stackoverflow.com/questions/8608226/simulate-bash-snow-fall-script-in-ncurses-c
 
 LINES=$(tput lines)

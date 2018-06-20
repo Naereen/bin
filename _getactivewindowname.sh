@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Returns the title of the current active window
 id=$(xdotool getactivewindow)
 # Don't ask about the black magic on this line, I don't know what's going on

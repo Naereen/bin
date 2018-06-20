@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Credit to http://ipinfo.io for providing the IP address info service. This script is a wrapper around their service, for convenience.
 #

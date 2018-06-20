@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Test for SSL verified site
  
 # CPR : Jd Daniel :: Ehime-ken

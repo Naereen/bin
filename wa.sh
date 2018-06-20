@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # by Sairon Istyar, 2012
 # Source: https://github.com/saironiq/shellscripts/blob/master/wolframalpha_com/wa.sh
