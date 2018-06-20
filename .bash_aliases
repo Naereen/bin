@@ -90,8 +90,7 @@ alias df='/bin/df -h -l -t ext3 -t ext4 -t fuseblk -t vfat'
 alias free='/usr/bin/free -h'
 
 # Commandes avec GNU-Nano :
-alias nano='xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { GNU Nano 2.4.2 (/bin/nano) }" ; /bin/nano --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds'
-alias nano.last='xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { GNU Nano 2.4.2 (nano.last) }" ; /home/lilian/bin/nano.last --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds'
+alias nano='xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { GNU Nano 2.9.3 (/bin/nano) }" ; /bin/nano --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds'
 
 alias MAKE="/usr/bin/make -w"
 # alias make='mymake.sh'
