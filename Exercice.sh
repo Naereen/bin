@@ -12,7 +12,7 @@ echo -e "${cyan}Random Maths Exercice, v1.2${reset}"
 
 # Quicker if you keep this value up-to-date here
 # n=$(wget -O - --quiet "http://mp.cpgedupuydelome.fr/index.php" | html2text | grep Exercice | grep -o [0-9]*)
-n=4139
+n=5303
 echo -e "${reset}Choix aléatoire parmi ${neg}${n}${Neg} exercices de maths (niveau MPSI et MP)..."
 
 # Formule de Bill Gradwohl, merci à http://abs.traduc.org/abs-5.3-fr/ch09s06.html
@@ -49,12 +49,13 @@ fi
 # | html2markdown --ignore-links --ignore-images -b ${COLUMNS:-78} | uniq \
 # | grep -v "URL" \
 # | tail -n +5 | head -n -3 \
+# | html2text -utf8 -nobs | uniq \
 
 read
 
 echo -e "${blue}Code LaTeX de l'exercice :"
 wget -O - --quiet "http://mp.cpgedupuydelome.fr/mesexos.php?idTex=${numexo}" \
- | html2text -utf8 -nobs | uniq \
+ | html2text | uniq \
  | tail -n +6 | head -n -7 \
  | grep -v "\(Template\|document\)" \
  | tee "/tmp/${numexo}.tex"
