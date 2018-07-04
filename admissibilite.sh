@@ -34,6 +34,8 @@ if [ "$cherche" != "" ]; then
     # mail_ghost.py "${content}" "$(echo $subj)" && notify-send "Jarvis Mail Daemon : Admissibilité" "${content}"
     FreeSMS.py "${content}" "$(echo $subj)" && notify-send "Jarvis Mail Daemon : Admissibilité" "${content}"
 
+    admissibilite_envoi_mail_thunderbird.sh
+
     # FIXED J'ai ajouté un code != 0 de sortie, histoire d'arrêter un "watch admissibilite.sh"
     # qui sinon continuerait indéfiniment...
     exit 1
