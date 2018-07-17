@@ -4,6 +4,9 @@
 
 Requirement: https://github.com/EmilioK97/pydeepl
 
+WARNING: not available, the DeepL API is now only for paying users.
+See https://github.com/EmilioK97/pydeepl/issues/6 and https://www.deepl.com/api.html.
+
 - *Date:* 11 December 2017.
 - *Author:* Lilian Besson, © 2017.
 - *Licence:* MIT Licence (http://lbesson.mit-license.org).
@@ -120,7 +123,7 @@ Me gusta usar la línea de comandos para traducir mi texto.
         if t.isspace() or len(t) == 0:
             results.append(t)
         else:
-            results.append(translate(t, to_language, from_lang=from_language))
+            results.append(translate(t, to_lang=to_language, from_lang=from_language))
     result = "\n".join(results)
     print(result)
     return result
