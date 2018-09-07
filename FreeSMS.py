@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # -*- coding:utf8 -*-
 """
 A simple Python 2.7+ / 3.1+ script to send a text message to a Free Mobile phone.
