@@ -1,15 +1,15 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8; mode: python -*-
-""" EXPERIMENTAL Python 3.4 script to check if a train ticket on www.voyages-sncf.com is available or not.
+""" EXPERIMENTAL Python 3.4+ script to check if a train ticket on https://www.voyages-sncf.com is available or not.
 
 WARNING: this script is only here to play and experiment with it, and demonstrate what robobrowser can do, NOT to be ran really.
 
 Requirement:
-- RoboBrowser, http://robobrowser.readthedocs.io, pip install robobrowser
+- RoboBrowser, https://robobrowser.readthedocs.io, pip install robobrowser
 
 
-- *Date:* Friday 27 Mai 2016.
-- *Author:* Lilian Besson, (C) 2016.
+- *Date:* Tuesday 20 November 2018.
+- *Author:* Lilian Besson, (C) 2016-2018.
 - *Licence:* MIT Licence (http://lbesson.mit-license.org).
 """
 
@@ -29,7 +29,7 @@ searchResponse_finder = re.compile(r"data.searchResponse = JSON.parse\('\{[^\n]*
 
 # url0 = "http://www.voyages-sncf.com//vsc/train-ticket/?_LANG=fr&site_country=FR&site_language=fr&ORIGIN_CITY=Toulon&DESTINATION_CITY=Paris%20%28Toutes%20gares%20intramuros%29&OUTWARD_DATE=31/05/2016&OUTWARD_TIME=15&INWARD_DATE=&INWARD_TIME=7&COMFORT_CLASS=2&DISTRIBUTED_COUNTRY=FR&NB_TYPO_ADULT=1&bookingChoice=train&PASSENGER_1=YOUNG&PASSENGER_1_CARD=MI1ST&PASSENGER_1_FID_PROG=&PASSENGER_1FID_NUM_BEGIN=&CODE_PROMO_1=&action:searchTravel=Rechercher"
 
-URL_TEMPLATE = "http://www.voyages-sncf.com//vsc/train-ticket/?_LANG=fr&site_country=FR&site_language=fr&ORIGIN_CITY={ORIGIN_CITY}&DESTINATION_CITY={DESTINATION_CITY}&OUTWARD_DATE={DATE}&OUTWARD_TIME={OUTWARD_TIME}&INWARD_DATE=&INWARD_TIME=7&COMFORT_CLASS=2&DISTRIBUTED_COUNTRY=FR&NB_TYPO_ADULT=1&bookingChoice=train&PASSENGER_1=YOUNG&PASSENGER_1_CARD=MI1ST&PASSENGER_1_FID_PROG=&PASSENGER_1FID_NUM_BEGIN=&CODE_PROMO_1=&action:searchTravel=Rechercher"
+URL_TEMPLATE = "https://www.voyages-sncf.com/vsc/train-ticket/?_LANG=fr&site_country=FR&site_language=fr&ORIGIN_CITY={ORIGIN_CITY}&DESTINATION_CITY={DESTINATION_CITY}&OUTWARD_DATE={DATE}&OUTWARD_TIME={OUTWARD_TIME}&INWARD_DATE=&INWARD_TIME=7&COMFORT_CLASS=2&DISTRIBUTED_COUNTRY=FR&NB_TYPO_ADULT=1&bookingChoice=train&PASSENGER_1=YOUNG&PASSENGER_1_CARD=MI1ST&PASSENGER_1_FID_PROG=&PASSENGER_1FID_NUM_BEGIN=&CODE_PROMO_1=&action:searchTravel=Rechercher"
 
 
 # url1 = 'http://www.voyages-sncf.com/vsc/proposals/findProposals?hid='
@@ -126,7 +126,7 @@ if __name__ == '__main__':
     print("TODO: finish this script !")
     # FIXED parse cli argument
     print("Lecture des arguments", argv)
-    DATE = argv[1] + '/2016' if len(argv) > 1 and argv[1] else '29/05/2016'
+    DATE = argv[1] + '/2018' if len(argv) > 1 and argv[1] else '25/12/2018'
     OUTWARD_TIME = argv[2] if len(argv) > 2 and argv[2] else '12'
     MY_OUTWARD_TIME = argv[3] if len(argv) > 3 and argv[3] else '17:43'  # XXX too specific
     ORIGIN_CITY = argv[4] if len(argv) > 4 and argv[4] else 'Toulon'  # XXX too specific

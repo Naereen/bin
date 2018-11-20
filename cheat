@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 """
 cheat.py -- cheat allows you to create and view interactive cheatsheets on the
             command-line. It was designed to help remind *nix system
