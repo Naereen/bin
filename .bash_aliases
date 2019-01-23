@@ -1240,7 +1240,7 @@ alias impressive='impressive.py --nologo --clock --tracking --transtime 0'
 alias slides='pdfpc'
 complete -f -X '!*.@(pdf|djvu|PDF|png|PNG|jpg|JPG|jpeg|JPEG)' -o plusdirs impressive slides pdfpc
 
-alias todo_message='for i in $(seq 1 1000); do figlet -w ${COLUMNS} ">  T O D O ,  T O D O ,  T O D O ,  T O D O ,  T O D O" | lolcat ; sleep 10s ; done'
+alias todo_message='for i in $(seq 1 1000); do figlet -w ${COLUMNS} ">  T O D O ,  T O D O ,  T O D O" | lolcat ; sleep 10s ; done'
 alias timake='time make && alert'
 
 # Shortcut for fast edit of .htaccess or .gitignore files (very common situation)
