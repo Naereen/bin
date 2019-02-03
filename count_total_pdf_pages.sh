@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+# Author: Lilian BESSON
+# Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
+# Web version: https://perso.crans.org/besson/bin/count_total_pdf_pages.sh
+# Date: 03-02-2019
+#
+# Count the total pages of all the input PDF documents.
+#
 
 function pdfinfo (){
     for i in "$@"; do
