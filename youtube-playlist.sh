@@ -86,7 +86,7 @@ dlplaylist() {
 
     # Start downloading !
     echo -e "OK, so I can start the downloading command I showed you : (${magenta}[Enter]${white} if OK)"
-    # FIXED run this in parallel is a HUGE mess (consume too much RAM)
+    # FIXED run this in parallel is a HUGE mess (consume too much RAM?)
     for j in $(grep -o "watch?v=[a-zA-Z0-9_-]*" "${out}"  | sed s/'watch?v='/''/ | uniq); do
         time youtube-dl --restrict-filenames --no-overwrites --retries 5 --continue -o "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 -w -- "$j" \
             || echo "$j" >> tofetch_youtube-dl.url
