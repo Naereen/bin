@@ -1289,10 +1289,10 @@ function Wait.fr() {
 export CLASSPATH="~/.local/antlr/:~/.local/antlr/antlr-4.7.1-complete.jar:$CLASSPATH"
 alias antlr4='java -jar ~/.local/antlr/antlr-4.7.1-complete.jar'
 
-alias url_encode='python -c "import urllib, sys; print(urllib.quote(sys.argv[1]))"'
-alias url_encode_plus='python -c "import urllib, sys; print(urllib.quote_plus(sys.argv[1]))"'
-alias url_decode='python -c "import urllib, sys; print(urllib.unquote(sys.argv[1]))"'
-alias url_decode_plus='python -c "import urllib, sys; print(urllib.unquote_plus(sys.argv[1]))"'
+alias url_encode='python -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))"'
+alias url_encode_plus='python -c "import urllib.parse, sys; print(urllib.parse.quote_plus(sys.argv[1]))"'
+alias url_decode='python -c "import urllib.parse, sys; print(urllib.parse.unquote(sys.argv[1]))"'
+alias url_decode_plus='python -c "import urllib.parse, sys; print(urllib.parse.unquote_plus(sys.argv[1]))"'
 
 
 ##############################################################################
