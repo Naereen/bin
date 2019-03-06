@@ -39,7 +39,7 @@ entry_types= {
 
 months = {
                 'jan'  :  'January',
-                'feb'  :  'Februry',
+                'feb'  :  'February',
                 'mar'  :  'March',
                 'apr'  :  'April',
                 'may'  :  'May',
