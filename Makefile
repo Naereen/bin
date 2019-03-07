@@ -10,7 +10,7 @@ bin.zip:
 
 send:	send_bashs send_zamok
 send_zamok:
-	CP --exclude=.git ./ ${Szam}bin/
+	CP --exclude=.*log --exclude=.git ./ ${Szam}bin/
 
 send_bashs:	signs
 	CP ~/bin/.bash{rc,_aliases}* ~/
