@@ -11,6 +11,8 @@
 # Ignored file types
 *.json
 
+.*_log/
+
 # Examples scripts
 git-crypt
 camlmix
