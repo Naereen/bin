@@ -69,7 +69,15 @@ bind Space:magic-space
 shopt -s globstar 2> /dev/null
 
 # Case-insensitive globbing (used in pathname expansion)
-shopt -s nocaseglob;
+shopt -s nocaseglob
+
+# This is a neat option that gets the shell to perform any expansions of variables, tildes and the like right there for you in the command line if you tab to complete
+shopt -s direxpand
+
+# This option stops the shell session from exiting if there are any jobs running in the background that haven't finished yet.
+# Instead, the unfinished jobs are listed for you. If you still want to exit, you can if you enter exit immediately afterwards again.
+shopt -s checkjobs
+
 
 # -----------------------------------------------------------------------------
 # Smarter tab-completion (readline bindings)
