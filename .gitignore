@@ -11,6 +11,7 @@
 # Ignored file types
 *.json
 
+.do*
 .*_log/
 
 # Examples scripts
