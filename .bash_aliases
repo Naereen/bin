@@ -1283,7 +1283,7 @@ function help_remount() {
 }
 
 function Wait.fr() {
-	Wait $@ french
+	Wait "$@" french
 }
 
 export CLASSPATH="~/.local/antlr/:~/.local/antlr/antlr-4.7.1-complete.jar:$CLASSPATH"
