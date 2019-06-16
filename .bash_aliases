@@ -287,7 +287,10 @@ function voirImage() {
     done
 }
 # Ajout d'une bash complétion comme ça, en une ligne !
-complete -f -X '!*.@(gif|GIF|jp?(e)g|pn[gm]|PN[GM]|ico|ICO)' -o plusdirs voirImage
+complete -f -X '!*.@(gif|GIF|jpg|jpeg|pn[gm]|PN[GM]|ico|ICO)' -o plusdirs voirImage
+complete -f -X '!*.@(png|PNG)' -o plusdirs advpng
+complete -f -X '!*.@(jpg|jpeg|JPG|JPEG)' -o plusdirs cjpeg djpeg jpegexiforient jpegoptim jpegtopnm jpegtran
+complete -f -X '!*.@(gif|GIF)' -o plusdirs gifcompress gifcurry gifdiff gifsicle giftopnm gifview gif2mp4.sh
 
 function xtitle() {
     echo -e "${reset}Setting title to $@..." >> /tmp/xtitle.log
@@ -1124,7 +1127,8 @@ function random_sitcoms() {
 alias dropbox.start='( /usr/bin/dropbox start ; alert ) &>/dev/null&'
 
 # Put your laptop in Suspend (veille)
-alias veille='date >> /tmp/veille.log ; ( gnome-session-quit --power-off || xfce4-session-logout || systemctl suspend || (Lock ; gksudo pm-suspend) )'
+alias veille2h='date >> /tmp/veille.log ; sleep 2h ; pm-suspend'
+alias veille4='date >> /tmp/veille.log ; ( gnome-session-quit --power-off || xfce4-session-logout || systemctl suspend || (Lock ; gksudo pm-suspend) )'
 alias reboot.systemctl='date >> /tmp/veille.log ; systemctl reboot'
 alias poweroff.systemctl='date >> /tmp/veille.log ; systemctl poweroff'
 alias suspend.systemctl='date >> /tmp/veille.log ; systemctl suspend'
