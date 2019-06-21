@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding:utf8 -*-
 """
 A simple Python script to generate a square wordcloud from a file or a bunch of files.
@@ -86,19 +86,20 @@ def readfiles(filenames):
     return text
 
 
-def generate(text, max_words=200, width=800, height=600):
+def generate(text, max_words=600, width=1600, height=900):
     """ Generate a word cloud image from the given text (one huge string). """
     # Take relative word frequencies into account, lower max_font_size
     # https://amueller.github.io/word_cloud/generated/wordcloud.WordCloud.html#wordcloud.WordCloud
-    max_words = int(max_words) if max_words is not None else  200
-    width     = int(width)     if width     is not None else  800
-    height    = int(height)    if height    is not None else  600
-    wc = WordCloud(max_font_size=40,
-                   relative_scaling=.5,
-                   max_words=max_words,
-                   width=width,
-                   height=height
-                   )
+    max_words = int(max_words) if max_words is not None else  600
+    width     = int(width)     if width     is not None else  1600
+    height    = int(height)    if height    is not None else  900
+    wc = WordCloud(
+        max_font_size=50,
+        relative_scaling=.5,
+        max_words=max_words,
+        width=width,
+        height=height
+    )
     return wc.generate(text)
 
 
