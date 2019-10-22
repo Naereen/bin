@@ -90,7 +90,7 @@ alias df='/bin/df -h -l -t ext3 -t ext4 -t fuseblk -t vfat'
 alias free='/usr/bin/free -h'
 
 # Commandes avec GNU-Nano :
-alias nano='xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { GNU Nano 2.9.3 (/bin/nano) }" ; /bin/nano --tabsize=8 --softwrap --suspend --const --smooth --rebindkeypad --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds'
+alias nano='xtitle "($(date)<$USER@$HOSTNAME>:[$(pwd)]> { GNU Nano 2.9.3 (/bin/nano) }" ; /bin/nano --tabsize=8 --softwrap --suspend --const --smooth --boldtext --multibuffer  --preserve --backup --historylog --nonewlines --quickblank --wordbounds'
 
 alias MAKE="/usr/bin/make -w"
 # alias make='mymake.sh'
@@ -1177,9 +1177,9 @@ complete -f -X '!*.@(pdf|PDF)' -o plusdirs pdfinfo pdftk pdfgrep pdftohtml pdfto
 function f() { echo -e "Opening args '$@' in firefox..."; firefox "$@" || alert; }
 function C() { echo -e "Opening args '$@' in chromium-browser..."; chromium-browser "$@" || alert; }
 # Default to Python 3
-function i2() { echo -e "Executing args '$@' with ipython2..."; ipython2 --pylab "$@" || alert; }
-function i() { echo -e "Executing args '$@' with ipython3..."; ipython3 --pylab "$@" || alert; }
-function i3() { echo -e "Executing args '$@' with ipython3..."; ipython3 --pylab "$@" || alert; }
+function i2() { echo -e "Executing args '$@' with ipython2..."; ipython2 "$@" || alert; }
+function i() { echo -e "Executing args '$@' with ipython3..."; ipython3 "$@" || alert; }
+function i3() { echo -e "Executing args '$@' with ipython3..."; ipython3 "$@" || alert; }
 
 function e() { echo -e "Opening args '$@' in evince..."; evince "$@" || alert; }
 complete -f -X '!*.@(pdf|djvu|PDF|DJVU)' -o plusdirs e
