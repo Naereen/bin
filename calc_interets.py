@@ -37,12 +37,12 @@ except ImportError:
 
 
 # Valeurs EMPIRIQUES des taux d'intérêts.
-taux2016 = {'CCP' : 0.00,
-            'LA'  : 0.63,
+taux2020 = {'CCP' : 0.00,
+            'LA'  : 0.73,
             'LEP' : 1.25,  # XXX I don't own a LEP anymore
             'LJ'  : 1.65,  # XXX I don't own a LJ anymore
-            'PEA' : 0.00,  # XXX I don't own a LJ anymore
-            'PEL' : 2.39,
+            'PEA' : 0.00,  # XXX I don't own a PEA anymore
+            'PEL' : 2.36,
             'CCP2': 0.00,
             }
 
@@ -102,7 +102,7 @@ def palette(nb):
     return sns.hls_palette(nb + 1)[:nb]
 
 
-def calc_interets(comptes, taux=taux2016):
+def calc_interets(comptes, taux=taux2020):
     """ Calcule une estimation de mes intérêts."""
     interet_fin_annee = sum(comptes[k] * taux[k] / 100.0 for k in type_comptes)
     for k in type_comptes:
@@ -112,7 +112,7 @@ def calc_interets(comptes, taux=taux2016):
     return interet_fin_annee
 
 
-def main(comptes, taux=taux2016):
+def main(comptes, taux=taux2020):
     """ Affiche un beau diagramme camembert montrant la répartition de ses économies. """
     argenttotal = sum(comptes.values())
     interets = sum(round(comptes[k] * taux[k] / 100.0, 3) for k in type_comptes)
