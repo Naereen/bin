@@ -166,7 +166,8 @@ shopt -s cdspell 2> /dev/null
 # CDPATH=".:~/publis/:~/ownCloud/cloud.openmailbox.org/"
 
 # Commandes avec SSH :
-alias ssh='/usr/bin/ssh -X -C'
+#alias ssh='/usr/bin/ssh -X -C'  # don't send X server, see http://www.hackinglinuxexposed.com/articles/20040705.html
+alias ssh='/usr/bin/ssh -C'
 
 # Des commandes auxquelles on rajoute des messages inutiles :
 function mkdir() {
