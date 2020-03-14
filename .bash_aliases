@@ -1300,6 +1300,8 @@ alias url_encode_plus='python -c "import urllib.parse, sys; print(urllib.parse.q
 alias url_decode='python -c "import urllib.parse, sys; print(urllib.parse.unquote(sys.argv[1]))"'
 alias url_decode_plus='python -c "import urllib.parse, sys; print(urllib.parse.unquote_plus(sys.argv[1]))"'
 
+alias corona_update="cd ~/web-sphinx/ ; git add coronavirus.*rst ; rm -f coronavirus.*~ ; git pull ; make ; clear ; notify-send 'Updated https://perso.crans.org/besson/coronavirus.fr.html'"
+
 
 ##############################################################################
 # (c) 2011-2017 Lilian BESSON
