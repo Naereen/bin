@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# Under MIT License, (c) Lilian Besson 2020
+# https://bitbucket.org/lbesson/bin/
+
+set -eu
+set -o pipefail
 
 notify-send "Building https://perso.crans.org/besson/index.fr.html ..."
 cd ~/web-sphinx/
