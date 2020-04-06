@@ -5,13 +5,13 @@
 set -eu
 set -o pipefail
 
-notify-send "Building https://perso.crans.org/besson/coronavirus.fr.html ..."
+notify-send "Building https://perso.crans.org/besson/ ..."
 cd ~/web-sphinx/
 
-rm -vf -- ./*coronavirus.*.rst~
-git add -- ./*coronavirus.*.rst
+rm -vf -- ./*coronavirus*.rst~
+git add -- ./*coronavirus*.rst
 
-git commit -m "Auto updating https://perso.crans.org/besson/coronavirus.fr.html"
+git commit -m "Auto updating https://perso.crans.org/besson/ ..."
 git push && clear
 
 make && clear
