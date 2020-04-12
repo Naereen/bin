@@ -367,7 +367,9 @@ export Sforge='lbesson@scm.gforge.inria.fr:/home/groups/banditslilian/htdocs/'
 
 # For http://besson.link/ and https://besson.link/
 export FOVH='ftp://bessonlihy@ftp.cluster028.hosting.ovh.net:21'
+export SOVH='bessonlihy@ftp.cluster028.hosting.ovh.net:21'
 export Fovh='ftp://bessonlihy@ftp.cluster028.hosting.ovh.net:~/www/'
+export Sovh='bessonlihy@ftp.cluster028.hosting.ovh.net:~/www/'
 
 # Play an ASCII version of Star Wars, A new hope
 alias telnet_starwars='telnet towel.blinkenlights.nl'
