@@ -367,7 +367,7 @@ export Sforge='lbesson@scm.gforge.inria.fr:/home/groups/banditslilian/htdocs/'
 
 # For http://besson.link/ and https://besson.link/
 export FOVH='ftp://bessonlihy@ftp.cluster028.hosting.ovh.net:21'
-export SOVH='bessonlihy@ftp.cluster028.hosting.ovh.net:21'
+export SOVH='bessonlihy@ftp.cluster028.hosting.ovh.net'
 export Fovh='ftp://bessonlihy@ftp.cluster028.hosting.ovh.net:~/www/'
 export Sovh='bessonlihy@ftp.cluster028.hosting.ovh.net:~/www/'
 
