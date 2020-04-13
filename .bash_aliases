@@ -1198,6 +1198,7 @@ alias pdf='make pdf'        # special alias for Makefile-powered LaTeX projects
 alias clean='make clean'    # special alias for Makefile-powered LaTeX projects
 alias send_zamok='make send_zamok'
 alias send_ws3='make send_ws3'
+alias send_ovh='make send_ovh'
 
 # Meta fonction experimentale pour ouvrir un fichier avec l'application appropriee.
 function o() {
