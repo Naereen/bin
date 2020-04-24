@@ -1,1 +1,2 @@
-ifconfig | grep inet | grep -v inet6
+ifconfig | grep inet
+# | grep -v inet6
