@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Launch this script when leaving, so your laptop continuously sends you SMS with data about itself.
+# Launch this script when leaving, so your laptop continuously sends you SMS with data about the weather.
 #
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]crans[DOT]org
@@ -14,4 +14,10 @@
 #
 
 echo "Je surveille la maison pour toi, jeune héros."
-watch --interval $(("${1:-15}*60")) 'FreeSMS.py "Utilisation actuelle de $(whoami) @ $(hostname) :\n\n$(/bin/df -h -l -t ext3 -t ext4 -t fuseblk -t vfat)\n\n$(uptime)\n\n$(free -h)\n\n(date : $(date))"'
+
+watch --interval $(("${1:-15}*60")) 'FreeSMS.py "Météo actuelle à Rennes :\n\n\
+    $(wa_nocolor.sh "Weather in Rennes, France" | tee /tmp/when-going-out-launch-watch-and-send-SMS-continuously-weather.sh_log.txt | head -n13 | tail -n11 | head -n6)\
+    Prédiction météo :\n\n\
+    $(cat /tmp/when-going-out-launch-watch-and-send-SMS-continuously-weather.sh_log.txt | head -n13 | tail -n4)\
+    \n\n\
+    (date : $(date))"'
