@@ -15,10 +15,15 @@
 
 echo "Je surveille la maison pour toi, jeune héros."
 
-watch --interval $(("${1:-15}*60")) 'FreeSMS.py "Météo actuelle à Rennes :\n\n\
+watch --interval \
+    $(("${1:-15}*60")) \
+    'FreeSMS.py "Météo actuelle à Rennes :\
+    \n\n\
     $(wa_nocolor.sh "Weather in Rennes, France" | tee /tmp/when-going-out-launch-watch-and-send-SMS-continuously-weather.sh_log.txt | head -n13 | tail -n11 | head -n6)\
-    Prédiction météo :\n\n\
+    Prédiction météo :\
+    \n\n\
     $(cat /tmp/when-going-out-launch-watch-and-send-SMS-continuously-weather.sh_log.txt | head -n13 | tail -n4)\
     \n\n\
-    (date : $(date))"'
+    (date : $(date))\
+    "'
 clear
