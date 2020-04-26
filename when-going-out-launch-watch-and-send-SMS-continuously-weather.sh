@@ -21,3 +21,4 @@ watch --interval $(("${1:-15}*60")) 'FreeSMS.py "Météo actuelle à Rennes :\n\
     $(cat /tmp/when-going-out-launch-watch-and-send-SMS-continuously-weather.sh_log.txt | head -n13 | tail -n4)\
     \n\n\
     (date : $(date))"'
+clear
