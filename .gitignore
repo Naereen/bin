@@ -3,6 +3,9 @@
 
 # Temp and backups
 *~
+.*~
+*.swp
+.*.swp
 *.pyc
 
 # GPG signatures
