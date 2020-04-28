@@ -13,17 +13,8 @@
 # will send the current weather and weather forecast every 15 minutes
 #
 
-echo "Je surveille la maison pour toi, jeune héros."
+watch_frequency="$(("${1:-15}*60"))"
+echo -e "Je surveille la maison pour toi, jeune héros.\nToutes les ${watch_frequency} minutes, je t'envoie des informations sur $(whoami)@$(hostname) par SMS"
 
-watch --interval \
-    $(("${1:-15}*60")) \
-    'FreeSMS.py "Météo actuelle à Rennes :\
-    \n\n\
-    $(wa_nocolor.sh "Weather in Rennes, France" | tee /tmp/when-going-out-launch-watch-and-send-SMS-continuously-weather.sh_log.txt | head -n13 | tail -n11 | head -n6)\
-    Prédiction météo :\
-    \n\n\
-    $(cat /tmp/when-going-out-launch-watch-and-send-SMS-continuously-weather.sh_log.txt | head -n13 | tail -n4)\
-    \n\n\
-    (date : $(date))\
-    "'
+watch --interval "${watch_frequency}" 'FreeSMS.py --sleep 300 "Météo actuelle à Rennes :\n\n$(wa_nocolor.sh "Weather in Rennes, France" | tee /tmp/when-going-out-launch-watch-and-send-SMS-continuously-weather.sh_log.txt | head -n13 | tail -n11 | head -n6)\n\nPrédiction météo :\n\n$(cat /tmp/when-going-out-launch-watch-and-send-SMS-continuously-weather.sh_log.txt | head -n13 | tail -n4)\n\n(date : $(date))"'
 clear
