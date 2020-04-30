@@ -15,6 +15,9 @@
 # will do "git pull" every 15 minutes instead.
 #
 
+echo "Going to the folder ~/publis/Pokemon-via-GitHub/fr/Version-Jaune.git ..."
+cd /home/lilian/publis/Pokemon-via-GitHub/fr/Version-Jaune.git
+
 watch_duration="${1:-60}"
 duration="$((${watch_duration} * 60))"
 
@@ -31,4 +34,16 @@ watch \
                 \n\n\
                 $(cat /tmp/Version-Jaune.log)\
             '\
+       && \
+       { \
+           grep -v 'à jour' /tmp/Version-Jaune.log && \
+           FreeSMS \
+           'Pokémon Version Jaune : dernière sauvegarde récupérée depuis GitHub à \
+                $(date)\
+                \n\n\
+                $(ls -larth /tmp/Version-Jaune.log)\
+                \n\n\
+                $(cat /tmp/Version-Jaune.log)\
+            ';\
+       }
     "
