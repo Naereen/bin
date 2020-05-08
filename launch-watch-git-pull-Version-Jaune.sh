@@ -16,6 +16,7 @@
 #
 
 echo "Going to the folder ~/publis/Pokemon-via-GitHub/fr/Version-Jaune.git ..."
+touch /tmp/Version-Jaune.log
 cd /home/lilian/publis/Pokemon-via-GitHub/fr/Version-Jaune.git
 
 watch_duration="${1:-60}"
