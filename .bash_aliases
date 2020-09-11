@@ -1307,6 +1307,8 @@ alias url_encode_plus='python -c "import urllib.parse, sys; print(urllib.parse.q
 alias url_decode='python -c "import urllib.parse, sys; print(urllib.parse.unquote(sys.argv[1]))"'
 alias url_decode_plus='python -c "import urllib.parse, sys; print(urllib.parse.unquote_plus(sys.argv[1]))"'
 
+complete -f -X '!*.java' -o plusdirs javac
+complete -f -X '!*.class' -o plusdirs java
 
 ##############################################################################
 # (c) 2011-2017 Lilian BESSON
