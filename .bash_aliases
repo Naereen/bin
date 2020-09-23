@@ -242,7 +242,9 @@ alias j2script='jupyter-nbconvert --to script'
 alias j2py='jupyter-nbconvert --to python'
 alias j2ml='jupyter-nbconvert --to ocaml'  # With https://github.com/Naereen/Jupyter-NBConvert-OCaml/
 alias j2ju='jupyter-nbconvert --to julia'
-alias j2ja='jupyter-nbconvert --to java'
+function j2ja() {
+    for old in "$@"; do jupyter-nbconvert --to script "$old"; mv "${old%.ipynb}.jshell" "${old%.ipynb}.java" ; done
+}
 function j2pyhtml() {
     for old in "$@"; do jupyter-nbconvert --to html "$old"; jupyter-nbconvert --to python "$old"; done
 }
