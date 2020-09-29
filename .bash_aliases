@@ -237,6 +237,7 @@ function j2pdf() {
         # fi
     done
 }
+alias j2webpdf='jupyter-nbconvert --to webpdf'
 
 alias j2script='jupyter-nbconvert --to script'
 alias j2py='jupyter-nbconvert --to python'
@@ -251,7 +252,7 @@ function j2pyhtml() {
 function j2htmlpy() {
     for old in "$@"; do jupyter-nbconvert --to html "$old"; jupyter-nbconvert --to python "$old"; done
 }
-complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2script j2py j2ml j2ju j2ja j2pyhtml j2htmlpy
+complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2webpdf j2script j2py j2ml j2ju j2ja j2pyhtml j2htmlpy
 
 alias iocaml='jupyter-console --kernel=ocaml-jupyter'
 
