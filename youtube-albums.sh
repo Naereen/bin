@@ -64,7 +64,7 @@ dlalbums() {
     $READ || exit
 
     # Create the directory
-    title=$(grep "<title>" "${out}" | head | sed s/"<title>"// | sed s/"^[ ]*"// | sed s/" – Sujet"// | sed s/" - Topic"// )
+    title=$(grep "<title>" "${out}" | head | sed s/"<title>"// | sed s/"^[ ]*"// | sed s/" – Sujet"// | sed s/" - Topic"// | sed s/" - YouTube"// | sed s_"</title>"__ )
     echo -e "Apparently, the channel/author title is : '${yellow}${title}${white}'. Are you OK with it ? (${magenta}[Enter]${white} if OK)."
     $READ || exit
 

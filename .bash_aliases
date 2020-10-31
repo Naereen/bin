@@ -793,17 +793,17 @@ alias g='git'
 # Thanks to http://stackoverflow.com/a/4529147/5889533
 function pushall() {
     for i in $(git remote | sort -r); do
-        echo -e "git push $i ${1:-master}" "..."
-        git push "$i" "${1:-master}"
+        echo -e "git push $i ${1:-main}" "..."
+        git push "$i" "${1:-main}"
     done;
 }
 function pullall() {
     for i in $(git remote | sort -r); do
-        echo -e "git pull $i ${1:-master}" "..."
-        git pull "$i" "${1:-master}"
+        echo -e "git pull $i ${1:-main}" "..."
+        git pull "$i" "${1:-main}"
     done;
 }
-alias ori='git pull origin master'
+alias ori='git pull origin main'
 
 # --- For Git and subversion ---
 function Push() {
