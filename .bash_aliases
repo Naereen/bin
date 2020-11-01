@@ -793,14 +793,14 @@ alias g='git'
 # Thanks to http://stackoverflow.com/a/4529147/5889533
 function pushall() {
     for i in $(git remote | sort -r); do
-        echo -e "git push $i ${1:-main}" "..."
-        git push "$i" "${1:-main}"
+        echo -e "git push $i ${1}" "..."
+        git push "$i" "${1}"
     done;
 }
 function pullall() {
     for i in $(git remote | sort -r); do
-        echo -e "git pull $i ${1:-main}" "..."
-        git pull "$i" "${1:-main}"
+        echo -e "git pull $i ${1}" "..."
+        git pull "$i" "${1}"
     done;
 }
 alias ori='git pull origin main'
