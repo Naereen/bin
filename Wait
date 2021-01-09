@@ -10,7 +10,7 @@
 # Usage: Wait "time" "Message" [french]
 #
 # Example:
-#  $ Wait "30 min" "Sors le plat du four." french.
+#  $ Wait "30 min" "Sors le plat du four." french
 #  $ Wait "20 min" "Call your dad."
 #
 # Licence: MIT Licence (http://lbesson.mit-license.org).
