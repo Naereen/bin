@@ -8,19 +8,30 @@
 # Idea coming from http://askubuntu.com/a/431038
 #
 # Use it with a crontab, to run every 30 minutes for instance:
-# 
+#    m h  dom mon dow   command
+#    15 *   *   *   *     /home/lilian/bin/yeux.sh
 #
 # TODO do the same with standing up?
 # TODO translate in English and use $LANG to change French or English? ... or write eyes.sh
 #
 # Licence: GPLv3 (http://perso.crans.org/besson/LICENSE.html)
 #
-duration=20
+duration=15
 
 date > /tmp/yeux.log
 echo "Repose tes yeux, pendant ${duration} secondes. Vas-y, regarde loin de ton écran, n'ai pas peur." | tee -a /tmp/yeux.log
 notify-send "Repose tes yeux" "Prends ces ${duration} secondes pour bien reposer tes yeux. Regarde au loin..."
 
+# http://redsymbol.net/articles/bash-exit-traps/
+function finish {
+  # Your cleanup code here
+  # Should we restore to previous brightness?
+  # ==> no, its not linked to the keyboard brightness keys, so restore to 1
+  xrandr --output "$output" --brightness 1 | tee -a /tmp/yeux.log
+}
+
+# be sure to restore full brightness, after duration
+sleep $(($duration + 5)) && finish &
 
 # Select your screen automatically
 output="LVDS"
@@ -33,8 +44,8 @@ zenity --info --title="Repose tes yeux" --timeout=$(($duration * 2)) --text="Pre
 
 sleep ${duration}s | tee -a /tmp/yeux.log
 
-# Should we restore to previous brightness?
-# ==> no, its not linked to the keyboard brightness keys, so restore to 1
-xrandr --output "$output" --brightness 1 | tee -a /tmp/yeux.log
+# this fails...
+trap finish EXIT SIGINT SIGTERM SIGUSR1
 
 echo "Terminé :) C'est bien, tu prends soin de tes yeux." | tee -a /tmp/yeux.log
+finish
