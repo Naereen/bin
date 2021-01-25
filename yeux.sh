@@ -40,7 +40,7 @@ output="${output:-eDP-1}"
 
 xrandr --output "$output" --brightness 0.3 | tee -a /tmp/yeux.log
 
-zenity --info --title="Repose tes yeux" --timeout=$(($duration * 2)) --text="Prends ces ${duration} secondes pour bien reposer tes yeux. Regarde au loin..." &
+zenity --width=350 --height=150 --info --title="Repose tes yeux" --timeout=$(($duration * 2)) --text="Prends ces ${duration} secondes pour bien reposer tes yeux. Regarde au loin..." &
 
 sleep ${duration}s | tee -a /tmp/yeux.log
 
