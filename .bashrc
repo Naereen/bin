@@ -1,7 +1,7 @@
 #!/bin/bash
 #	.bashrc for GNU Bash v4+
-#	(c) 2011-2017 Lilian BESSON
-#	Cr@ns: http://perso.crans.org/besson
+#	(c) 2011-2021 Lilian BESSON
+#	Cr@ns: https://perso.crans.org/besson
 #	On Bitbucket:	https://bitbucket.org/lbesson/home/
 #
 # ~/.bashrc: executed by bash(1) for non-login shells.
@@ -491,11 +491,13 @@ pidof gpg-agent>/dev/null || eval $(gpg-agent --daemon) || echo "Failed to conne
 # From https://github.com/wting/autojump
 # [ -s "/usr/share/autojump/autojump.sh" ] && source "/usr/share/autojump/autojump.sh"
 
+# From https://rustup.rs/
+source "$HOME/.cargo/env"
+
 ##############################################################################
-# (c) 2011-2018 Lilian BESSON
-# Cr@ns: http://perso.crans.org/besson
+# (c) 2011-2021 Lilian BESSON
+# Cr@ns: https://perso.crans.org/besson
 # On Bitbucket: https://bitbucket.org/lbesson/bin/
 #
 # Put a blank line after
 #  to autorize echo "newentry" >> "$HOME"/.bashrc
-

@@ -1,8 +1,8 @@
 #!/bin/bash
 # .bash_aliases for GNU Bash v4+
-# (c) 2011-2018 Lilian BESSON
+# (c) 2011-2021 Lilian BESSON
 # GPLv3 Licensed
-# Cr@ns: http://perso.crans.org/besson
+# Cr@ns: https://perso.crans.org/besson
 # On Bitbucket:   https://bitbucket.org/lbesson/bin/
 
 # A try with erase line.
@@ -333,7 +333,7 @@ alias Byobu-tmux='byobu-tmux -2 -q -u'
 # http://unix.stackexchange.com/a/1098
 alias byobu='TERM=xterm-256color /usr/bin/byobu-tmux -2 -q -u'
 
-alias py2html='pyhtmlizer --stylesheet=http://perso.crans.org/besson/pyhtmlizer.css'
+alias py2html='pyhtmlizer --stylesheet=https://perso.crans.org/besson/pyhtmlizer.css'
 complete -f -X '!*.@(py|py3)' -o plusdirs py2html pylint flake8 pep8
 
 # Ecrans de veilles
@@ -763,7 +763,7 @@ function LatexFormula() {
     display -title "Image for the LaTeX formula: '${@//\\/\\\\}'   (thanks to an awesome webservice)" "${out}"
 }
 
-alias CheckHomePage_crans='wget -q http://perso.crans.org/besson/index.fr.html -O - | grep "Mis.*jour"'
+alias CheckHomePage_crans='wget -q https://perso.crans.org/besson/index.fr.html -O - | grep "Mis.*jour"'
 # alias CheckHomePage_dpt='wget -q http://www.dptinfo.ens-cachan.fr/~lbesson/index.fr.html -O - | grep "Mis.*jour"'
 alias CheckHomePage_jarvis='wget -q http://localhost/index.fr.html -O - | grep "Mis.*jour"'
 
@@ -1314,8 +1314,8 @@ complete -f -X '!*.java' -o plusdirs javac
 complete -f -X '!*.class' -o plusdirs java
 
 ##############################################################################
-# (c) 2011-2017 Lilian BESSON
-# Cr@ns: http://perso.crans.org/besson
+# (c) 2011-2021 Lilian BESSON
+# Cr@ns: https://perso.crans.org/besson
 # On Bitbucket:   https://bitbucket.org/lbesson/bin/
 #
 # Put a blank line after to autorize echo "alias newalias='newentry'" >> ~/.bash_aliases
