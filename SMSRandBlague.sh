@@ -14,17 +14,17 @@
 echo -e "${yellow}.: Lilian Besson presents :."
 echo -e "${cyan}SMSRandBlague.sh, v1.0${reset}"
 
-quotes="${quotes:-$HOME/.blagues.txt}"
-echo -e "${black}Using $quotes to look for quotes.${reset}"
+blagues="${blagues:-$HOME/.blagues.txt}"
+echo -e "${black}Using $blagues to look for blagues.${reset}"
 
 function RandBlague () {
-    if [ -f "$quotes" ]; then
-        shuf "$quotes" | head -n 1;
+    if [ -f "$blagues" ]; then
+        shuf "$blagues" | head -n 1;
     else
         if [ -f "$HOME/motd" ]; then
             cat ~/motd;
         else
-            echo -e "No joke, ~/motd is not there, and \$quotes is not set.";
+            echo -e "No joke, ~/motd is not there, and \$blagues is not set.";
         fi;
     fi
 }
