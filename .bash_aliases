@@ -963,6 +963,18 @@ function randquote() {
     fi
 }
 
+function blague() {
+    if [ -f "$HOME/.blagues.txt" ];  then
+        echo -e "${blue}$(shuf "$HOME/.blagues.txt" | head -n 1)${reset}"
+    else
+        echo -e "T'es dans la campagne, tu vois un âne. « Et l'âne, tu t'appelles comment ? », « Bob », dit l'âne."
+    fi
+}
+
+function joke() {
+    python3 -c "import json,random; f=open('$HOME/.jokes.json'); line=random.choice(json.load(f)); print('$blue', line['setup']); print('$green', line['punchline'], '$reset')"
+}
+
 # With nginx
 function Nginx_Access() { watch tail -n 10 /var/log/nginx/access.log || alert; }
 function Nginx_Error() { watch tail -n 10 /var/log/nginx/error.log || alert; }
@@ -1312,6 +1324,9 @@ alias url_decode_plus='python -c "import urllib.parse, sys; print(urllib.parse.u
 
 complete -f -X '!*.java' -o plusdirs javac
 complete -f -X '!*.class' -o plusdirs java
+
+# Get rid of that non-breaking space, http://hauweele.net/~gawen/blog/?p=32
+xmodmap ~/.Xmodmap
 
 ##############################################################################
 # (c) 2011-2021 Lilian BESSON

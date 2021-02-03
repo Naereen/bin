@@ -45,8 +45,10 @@ content="<big><b>`echo $quote | sed s_'--'_'</b>--\n<i>'_`</i></big>"
 echo -e "Notifying with title='Rand Quote'...."
 echo -e "Notifying with content='$content'...."
 
-zenity --title="Rand Quote" --timeout=30 --window-icon="$icon" --info \
- --display=:0.0 --text="$content"
+zenity --title="Rand Quote" --timeout=30 \
+       --width=200 --height=300 \
+       --window-icon="$icon" --info \
+       --display=:0.0 --text="$content"
 
 exit 0
 # END
