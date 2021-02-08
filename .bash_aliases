@@ -1326,7 +1326,8 @@ complete -f -X '!*.java' -o plusdirs javac
 complete -f -X '!*.class' -o plusdirs java
 
 # Get rid of that non-breaking space, http://hauweele.net/~gawen/blog/?p=32
-xmodmap ~/.Xmodmap
+# xmodmap ~/.Xmodmap  # => TODO: doesn't work!
+setxkbmap -option "nbsp:none"  # DONE
 
 ##############################################################################
 # (c) 2011-2021 Lilian BESSON
