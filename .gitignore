@@ -17,6 +17,11 @@
 .*do*
 .*_log/
 
+# OCaml compiled files
+*.opt
+*.exe
+*.ocamlbytecode_exe
+
 # Examples scripts
 git-crypt
 camlmix
