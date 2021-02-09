@@ -254,6 +254,10 @@ function j2htmlpy() {
 }
 complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2webpdf j2script j2py j2ml j2ju j2ja j2pyhtml j2htmlpy
 
+function show_imported_from_python_module() {
+    python3 -c "from $1 import *; g=dict(globals()); print([s for s in g if s[0]!='_'])"
+}
+
 alias iocaml='jupyter-console --kernel=ocaml-jupyter'
 
 # Reference for this is https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion-Builtins.html
