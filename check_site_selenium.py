@@ -3,7 +3,7 @@
 """
 A simple Python 3.4+ script to use selenium to download a URL, research a message inside the interpreted web page (with JavaScript support!), and exit with return code 0 if message is found, 1 if message is not found.
 
-- Copyright 21 Lilian Besson
+- Copyright 2021 Lilian Besson
 - License MIT.
 
 Examples
@@ -36,12 +36,12 @@ def main(URL, message, success):
 
     if message in source:
         print(f"{URL} indique toujours le message recherché :\n\"{message}\"")
+        return 0
     else:
         print(f"{URL} n'indique pas le message recherché :\n\"{message}\"\n{success}")
         # !FreeSMS.py f"{URL} semble indiquer qu'il y a des disponibilités désormais."
         # exit 1 to quit the "watch" loop
         return 1
-    return 0
 
 
 if __name__ == '__main__':
@@ -52,9 +52,11 @@ if __name__ == '__main__':
     message = "ce centre n'a plus de disponibilités"
     if len(sys.argv) >= 3:
         message = sys.argv[2]
+        message = message.replace(r"\'", "'")
 
     success = "Peut être qu'il y a des disponibilités désormais !"
     if len(sys.argv) >= 4:
-        message = sys.argv[3]
+        success = sys.argv[3]
+        success = success.replace(r"\'", "'")
 
     sys.exit(main(URL, message, success))
