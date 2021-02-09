@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding:utf8 -*-
 """
-A simple Python 2.7+ / 3.4+ script to send a text message to a Free Mobile phone.
+A simple Python 3.4+ script to send a text message to a Free Mobile phone.
 
 - Warning: it only works in France to a French number, using the mobile operator Free Mobile.
 - Warning: some initial configuration is required before running this script (see the error messages).
@@ -23,7 +23,7 @@ Will send a test message to your mobile phone.
 
     MIT License
 
-    Copyright (c) 2020 Lilian Besson (Naereen), https://github.com/Naereen
+    Copyright (c) 2014-21 Lilian Besson (Naereen), https://github.com/Naereen
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -289,10 +289,10 @@ Will send a test message to your mobile phone.
 <black>$ FreeSMS.py --sleep 1 "This option makes the script sleep for one minute"<white>
 Sleep one minute.
 
-<magenta>Copyright 2014-20 Lilian Besson (License MIT)<white>
+<magenta>Copyright 2014-21 Lilian Besson (License MIT)<white>
 <b>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.<reset><white>
 """)
-        return 0
+        return [(0, None)]
 
     sleep = False
     sleep_duration = 15  # in seconds
