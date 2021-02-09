@@ -19,7 +19,6 @@ message="${2:-ce centre n\'a plus de disponibilités}"
 success="${3:-Peut être qu\'il y a des disponibilités désormais...}"
 
 sleepTime=${4:-1800s}
-sleepTime=${4:-18s}
 
 echo "Launching this command regularly..."
 echo "    " check_site_selenium.py "'$URL'" "'$message'" "'$success'"
