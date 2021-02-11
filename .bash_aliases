@@ -1293,16 +1293,18 @@ alias openvpn_enscachan='cd ~/.local/share/openvpn/ ; sudo openvpn --config 32.c
 
 # Experimental shortcuts, with ¹, ², è, à, @, ç, °, £, ^, ¨, ¤ etc. ?
 alias µ='cd /tmp/'
-alias ?='ExplainShell'
+alias ?='ExplainShell'  # try "? !!" for amazing result
 # ^ for Push (git push) and v for Pull (git pull), as it looks like and ↑ ↓
 alias ^='Push'
 alias ↑='Push'
 alias v='Pull'
 alias ↓='Pull'
 
-# I sometimes forgot that Visual Studio Code cli is called 'code' and not 'vscode'...
-alias visualstudiocode='code'
-alias vscode='code'
+# In 2019, I sometimes forgot that Visual Studio Code cli is called 'code' and not 'vscode'...
+alias visualstudiocode='GTK_IM_MODULE="xim" code'
+alias vscode='GTK_IM_MODULE="xim" code'
+# https://askubuntu.com/questions/1046418/how-do-i-disable-emoji-input-in-ubuntu-mate-18-04/1269241#1269241
+alias code='GTK_IM_MODULE="xim" code'
 
 export PYTHONIOENCODING='UTF-8'
 
@@ -1318,13 +1320,10 @@ function Wait.fr() {
 	Wait "$@" french
 }
 
-export CLASSPATH="~/.local/antlr/:~/.local/antlr/antlr-4.7.1-complete.jar:$CLASSPATH"
-alias antlr4='java -jar ~/.local/antlr/antlr-4.7.1-complete.jar'
-
-alias url_encode='python -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))"'
-alias url_encode_plus='python -c "import urllib.parse, sys; print(urllib.parse.quote_plus(sys.argv[1]))"'
-alias url_decode='python -c "import urllib.parse, sys; print(urllib.parse.unquote(sys.argv[1]))"'
-alias url_decode_plus='python -c "import urllib.parse, sys; print(urllib.parse.unquote_plus(sys.argv[1]))"'
+alias url_encode='python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))"'
+alias url_encode_plus='python3 -c "import urllib.parse, sys; print(urllib.parse.quote_plus(sys.argv[1]))"'
+alias url_decode='python3 -c "import urllib.parse, sys; print(urllib.parse.unquote(sys.argv[1]))"'
+alias url_decode_plus='python3 -c "import urllib.parse, sys; print(urllib.parse.unquote_plus(sys.argv[1]))"'
 
 complete -f -X '!*.java' -o plusdirs javac
 complete -f -X '!*.class' -o plusdirs java
