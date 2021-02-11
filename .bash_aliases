@@ -1301,10 +1301,11 @@ alias v='Pull'
 alias ↓='Pull'
 
 # In 2019, I sometimes forgot that Visual Studio Code cli is called 'code' and not 'vscode'...
-alias visualstudiocode='GTK_IM_MODULE="xim" code'
-alias vscode='GTK_IM_MODULE="xim" code'
-# https://askubuntu.com/questions/1046418/how-do-i-disable-emoji-input-in-ubuntu-mate-18-04/1269241#1269241
-alias code='GTK_IM_MODULE="xim" code'
+alias visualstudiocode='code'
+alias vscode='code'
+# using 'GTK_IM_MODULE="xim" code' was working to remove the emoji input for me, but it broke my ` key...
+# see https://askubuntu.com/questions/1046418/how-do-i-disable-emoji-input-in-ubuntu-mate-18-04/1269241#1269241
+alias code='code'
 
 export PYTHONIOENCODING='UTF-8'
 
