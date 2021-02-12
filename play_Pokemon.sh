@@ -5,8 +5,8 @@
 #
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]crans[DOT]org
-# Web version: http://perso.crans.org/besson/bin/when-going-out-launch-watch-and-send-SMS-continuously-weather.sh
-# Web version (2): https://bitbucket.org/lbesson/bin/src/master/when-going-out-launch-watch-and-send-SMS-continuously-weather.sh
+# Web version: http://perso.crans.org/besson/bin/play_Pokemon.sh
+# Web version (2): https://bitbucket.org/lbesson/bin/src/master/play_Pokemon.sh
 # Date: 2020-04-24 17:48
 #
 # $ when-going-out-launch-watch-and-send-SMS-continuously.sh 15

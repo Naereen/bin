@@ -655,7 +655,7 @@ function capitalize() {  # move filenames to Capitalize
     done
 }
 
-alias titlecase="python -c \"from sys import argv; from titlecase import titlecase; print(titlecase('\n'.join(argv[1:])))\""
+alias titlecase="python3 -c \"from sys import argv; from titlecase import titlecase; print(titlecase('\n'.join(argv[1:])))\""
 
 function titlecase_all() {  # move filenames to Title Case
     for file ; do
