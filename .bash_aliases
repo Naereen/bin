@@ -214,14 +214,9 @@ function ocamls() {
 # Convert Jupyter notebooks
 alias j='jupyter-notebook'  # might be changed
 alias ju='jupyter-notebook'
-# alias j2html='jupyter-nbconvert --to html'
-function j2html() {
-    for old in "$@"; do
-        jupyter-nbconvert --to html "$old"
-    done
-}
-# alias j2pdf='jupyter-nbconvert --to pdf'
-function j2pdf() {
+alias j2html='jupyter-nbconvert --to html'
+alias j2pdf='jupyter-nbconvert --to pdf'
+function _j2pdf() {
     for old in "$@"; do
         jupyter-nbconvert --to pdf "$old"
         # new="${old%.ipynb}__fix-iocaml-notebook-exports-to-pdf.ipynb"
@@ -238,21 +233,22 @@ function j2pdf() {
     done
 }
 alias j2webpdf='jupyter-nbconvert --to webpdf'
-
+alias j2slides='jupyter-nbconvert --to slides'
 alias j2script='jupyter-nbconvert --to script'
 alias j2py='jupyter-nbconvert --to python'
 alias j2ml='jupyter-nbconvert --to ocaml'  # With https://github.com/Naereen/Jupyter-NBConvert-OCaml/
 alias j2ju='jupyter-nbconvert --to julia'
-function j2ja() {
+function j2java() {
     for old in "$@"; do jupyter-nbconvert --to script "$old"; mv "${old%.ipynb}.jshell" "${old%.ipynb}.java" ; done
+}
+function j2rust() {
+    for old in "$@"; do jupyter-nbconvert --to script "$old"; done
 }
 function j2pyhtml() {
     for old in "$@"; do jupyter-nbconvert --to html "$old"; jupyter-nbconvert --to python "$old"; done
 }
-function j2htmlpy() {
-    for old in "$@"; do jupyter-nbconvert --to html "$old"; jupyter-nbconvert --to python "$old"; done
-}
-complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2webpdf j2script j2py j2ml j2ju j2ja j2pyhtml j2htmlpy
+complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2webpdf j2slides j2script j2py j2ml j2ju j2java j2rust j2pyhtml
+
 
 function show_imported_from_python_module() {
     python3 -c "from $1 import *; g=dict(globals()); print([s for s in g if s[0]!='_'])"
