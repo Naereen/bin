@@ -256,7 +256,6 @@ function j2all() {
         echo -e "\nConverting '${old}' to HTML, Slides HTML, PDF, and source code"
         jupyter-nbconvert --to html "$old"
         jupyter-nbconvert --to slides "$old"
-        jupyter-nbconvert --to pdf "$old"
         kernelname=$(grep -A 3 '"kernelspec"' "$old" 2>/dev/null| grep -o '"name": ".*"' 2>/dev/null | sed 's/"name": //g' | tr -d '"')
         # DONE?: detect extension and run --to appropriate command
         # # grep -A 3 kernel *nb | grep -o '"name": ".*"' | sed 's/"name": //g' | tr -d '"'
@@ -275,6 +274,8 @@ function j2all() {
             * )
                 jupyter-nbconvert --to script "$old" ;;
         esac
+        # PDF last, as it can break
+        jupyter-nbconvert --to pdf "$old"
     done
 }
 complete -f -X '!*.ipynb' -o plusdirs j j2html j2pdf j2webpdf j2slides j2script j2py j2ml j2ju j2c j2java j2rust j2pyhtml j2all

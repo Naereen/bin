@@ -74,7 +74,8 @@ svg2others(){
 		fi
 
 		if [ ! -f "$source.png" ]; then
-		 rsvg-convert -f png "$source.svg" "$source.png" && \
+		 # rsvg-convert -f png "$source.svg" "$source.png" && \
+		 convert "$source.svg" "$source.png" && \
 		 echo -e "${green}   $source.png ${blue}created${white}...."
 		else
 		 echo -e "${red} the $source.png output is already there..."
