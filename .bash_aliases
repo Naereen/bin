@@ -497,6 +497,24 @@ function md2pdf() {
 }
 complete -f -X '!*.@(md|pdf)' -o plusdirs md2pdf
 
+function marp2html() {
+    for i in "$@"; do
+        marp --config ~/publis/slides/common/.marprc-html.yml "$i"
+    done
+}
+function marp2pdf() {
+    for i in "$@"; do
+        marp --config ~/publis/slides/common/.marprc-pdf.yml "$i"
+    done
+}
+function marp2all() {
+    for i in "$@"; do
+        marp --config ~/publis/slides/common/.marprc-html.yml "$i"
+        marp --config ~/publis/slides/common/.marprc-pdf.yml  "$i"
+    done
+}
+complete -f -X '!*.md' -o plusdirs marp2pdf marp2html marp2all
+
 # A better and smaller bibtex2html command, with good options
 alias bib2html='bibtex2html -u -charset utf-8 -linebreak -debug'
 complete -f -X '!*.@(bib)' -o plusdirs bibtex2html bib2html
