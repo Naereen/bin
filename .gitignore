@@ -18,6 +18,10 @@
 .*_log/
 
 # OCaml compiled files
+*.annot
+*.cmi
+*.cmo
+*.cma
 *.opt
 *.exe
 *.ocamlbytecode_exe
