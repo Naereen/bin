@@ -1,0 +1,17 @@
+// .vscode/launch.json
+// https://code.visualstudio.com/docs/editor/debugging#_launch-configurations
+// https://marketplace.visualstudio.com/items?itemName=hackwaly.ocaml
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "OCaml",
+            "type": "ocamldebug",
+            "request": "launch",
+            "program": "${workspaceRoot}/main.d.byte",
+            "stopOnEntry": true,
+            // "postDebugTask": "clean", // Build after launch
+            "preLaunchTask": "build", // Build before launch
+        }
+    ]
+}
