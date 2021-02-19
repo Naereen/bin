@@ -405,6 +405,8 @@ export FOVH='ftp://bessonlihy@ftp.cluster028.hosting.ovh.net:21'
 export SOVH='bessonlihy@ftp.cluster028.hosting.ovh.net'
 export Fovh='ftp://bessonlihy@ftp.cluster028.hosting.ovh.net:~/www/'
 export Sovh='bessonlihy@ftp.cluster028.hosting.ovh.net:~/www/'
+# FIXME SSH don't work, use a durty hack! CP and rsync don't work, but cp does!
+export Sovh='Sovh=/run/user/1001/gvfs/ftp:host=ftp.cluster028.hosting.ovh.net/www/'
 
 # Play an ASCII version of Star Wars, A new hope
 alias telnet_starwars='telnet towel.blinkenlights.nl'
