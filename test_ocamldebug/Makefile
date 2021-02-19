@@ -19,9 +19,16 @@ test-profiling:
 	#diff --color=auto --side-by-side graphtest.ml graphtest_annotated.ml
 	git wdiff graphtest_annotated.ml
 
+show-produced-c-code:
+	git wdiff testCompile.ml
+	-mv -vf testCompile.c /tmp/
+	ocamlc -output-obj -o testCompile.c testCompile.ml
+	git wdiff testCompile.c testCompile.ml
+
 keep-assembly:
 	ocamlopt -S testCompile.ml
 	cat testCompile.s
+	git wdiff testCompile.s
 
 gprof:
 	ocamloptp -p testCompile.ml
