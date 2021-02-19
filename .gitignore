@@ -2,6 +2,7 @@
 .htaccess
 
 # Temp and backups
+eduroam*
 *~
 .*~
 *.swp

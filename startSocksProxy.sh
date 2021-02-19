@@ -7,7 +7,7 @@
 # and: http://blog.uggy.org/post/2006/04/22/86-tunnel-ssh-avec-l-option-d
 
 # The domain to connect with
-dom="${1:-ssh.crans.org}"
+dom="${1:-zamok.crans.org}"
 shift
 
 # The username to use
@@ -24,7 +24,7 @@ else
     echo -e "login:${login} port:23456 host:${dom}" >> /tmp/startSocksProxy.list
 fi
 
-echo -e "Now you can enable the SOCKS v5 proxy from Firefox's preferences : \nEdition\n > Preferences\n > Advanced\n > Network\n > Connexion : Parameters\n > Manually configured the proxy\n > SOCKS host\n > 127.0.0.1 with Port : 23456 (and toggle SOCKS v5)."
+echo -e "Now you can enable the SOCKS v5 proxy from Firefox's preferences : \nEdition\n > Preferences\n > General\n > Network\n > Connexion : Parameters\n > Manually configured the proxy\n > SOCKS host\n > 127.0.0.1 with Port : 23456 (and toggle SOCKS v5)."
 
-echo -e "Opening 'about:preferences#advanced' in firefox, you should enable the SOCKS v5 proxy ..."
-/usr/bin/firefox "about:preferences#advanced"
+echo -e "Opening 'about:preferences#general' in firefox, you should enable the SOCKS v5 proxy ..."
+/usr/bin/firefox "about:preferences#general"

@@ -1223,10 +1223,10 @@ function PROXY () {
     case $1 in
         off)
             if pidof firefox >/dev/null; then
-                echo -e "Opening 'about:preferences#advanced' in firefox, you should now disable the SOCKS v5 proxy ..."
-                /usr/bin/firefox "about:preferences#advanced"
+                echo -e "Opening 'about:preferences#general' in firefox, you should now disable the SOCKS v5 proxy ..."
+                /usr/bin/firefox "about:preferences#general"
             else
-                echo -e "Firefox is not running, I won't open it, but you should go to 'about:preferences#advanced'"
+                echo -e "Firefox is not running, I won't open it, but you should go to 'about:preferences#general'"
             fi
             rm -vf /tmp/startSocksProxy.list && echo -e "${green}PROXY is off.${white}"
             ;;
