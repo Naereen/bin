@@ -4,6 +4,8 @@
    $ ocamlprof graphtest.ml
 *)
 
+let nbiter = 500
+
 let () =
   Random.self_init ();
   Graphics.open_graph " 640x480"
@@ -19,7 +21,7 @@ let () =
     let r = 4.0 *. (float_of_int x) /. 640.0 in
     for i = 0 to 39 do
       let x_init = Random.float 1.0 in
-      let x_final = iterate r x_init 5000 in
+      let x_final = iterate r x_init nbiter in
       let y = int_of_float (x_final *. 480.) in
       Graphics.plot x y
     done

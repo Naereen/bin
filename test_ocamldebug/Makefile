@@ -10,6 +10,14 @@ clean:
 
 .PHONY: build clean run
 
+graphtest_all:
+	ocamlc -g -o graphtest.byte graphics.cma graphtest.ml
+	ocamlopt -g -o graphtest.opt graphics.cmxa graphtest.ml
+
+valgrind_graphtest:	graphtest_all
+	valgrind --leak-check=full ./graphtest.byte
+	valgrind --leak-check=full ./graphtest.opt
+
 test-profiling:
 	-mv -vf graphtest_annotated.ml ocamlprof.dump /tmp/
 	cp -vf graphtest.ml graphtest_annotated.ml

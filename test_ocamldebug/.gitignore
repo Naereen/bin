@@ -2,3 +2,5 @@ _build/
 *.byte
 graphtest
 *.dump
+*.o
+*.cm*
