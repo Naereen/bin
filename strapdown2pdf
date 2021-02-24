@@ -1,33 +1,33 @@
 #!/usr/bin/env bash
 # By: Lilian BESSON
-# Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 24-10-2015
-# Web: http://perso.crans.org/besson/bin/strapdown2pdf
-# Web2: http://lbesson.bitbucket.org/strapdown2pdf.html
+# Email: Lilian.BESSON[AT]crans[DOT]org
+# Date: 23-02-2021
+# Web: https://perso.crans.org/besson/bin/strapdown2pdf
+# Web2: https://lbesson.bitbucket.org/strapdown2pdf.html
 #
 # strapdown2pdf, a small script to simply convert a "StrapDown.js flavored"
 # HTML file (used to write with a Markdown syntax) to a PDF document.
 #
-# More details on http://lbesson.bitbucket.org/strapdown2pdf.html
+# More details on https://lbesson.bitbucket.org/strapdown2pdf.html
 #
 # Requirements:
-#  + [lunamark](http://jgm.github.io/lunamark/lunamark.1.html)
-#  + [autotex](http://perso.crans.org/besson/bin/autotex) (from my webpage),
-#  + [PDFCompress](http://perso.crans.org/besson/bin/PDFCompress) (from my webpage),
-#  + [pdflatex](http://perso.crans.org/besson/bin/pdflatex) (from my webpage).
+#  + [lunamark](https://jgm.github.io/lunamark/lunamark.1.html)
+#  + [autotex](https://perso.crans.org/besson/bin/autotex) (from my webpage),
+#  + [PDFCompress](https://perso.crans.org/besson/bin/PDFCompress) (from my webpage),
+#  + [pdflatex](https://perso.crans.org/besson/bin/pdflatex) (from my webpage).
 #
 # References and more details:
-#  + [StrapDown.js](http://lbesson.bitbucket.org/md/)
+#  + [StrapDown.js](https://lbesson.bitbucket.org/md/)
 #
-# Licence: [GPLv3](http://perso.crans.org/besson/LICENCE.html)
+# Licence: [GPLv3](https://perso.crans.org/besson/LICENCE.html)
 #
 # Bugs / FIXME:
 #  1. I think it is way better now. Hack something to preserve LaTeX code verbatim between $ $ in the HTML initial document
-#     Example: http://jarvis/a/maths.html -> http://jarvis/a/maths.pdf works very well,
+#     Example: https://jarvis/a/maths.html -> https://jarvis/a/maths.pdf works very well,
 #     only for MathJax flavored maths formulas, which are all copied in the .tex with escaped $ and { : \{ and \$ every where :(
 #
 #
-version='0.9'
+version='0.9.2'
 AUTOTEX="autotex batchmode"
 
 quiet="false"
@@ -77,7 +77,7 @@ for arg in "$@"; do
 			echo -e "    ${yellow}-n|-nocolor${white}		remove ANSI colors from the output. ${cyan}"'New!'
 			echo -e "${white}"
 			echo -e "strapdown2pdf v$version : Copyrights: (c) Lilian Besson 2011-2015."
-			echo -e "Released under the term of the GPL v3 Licence (more details on http://perso.crans.org/besson/LICENSE.html)."
+			echo -e "Released under the term of the GPL v3 Licence (more details on https://perso.crans.org/besson/LICENSE.html)."
 			echo -e "In particular, strapdown2pdf is provided WITHOUT ANY WARANTY."
 			exit 0
 			;;
@@ -225,7 +225,7 @@ StrapDown2PDF() {
 
 	# And a final line to say "Compiled from HTML/MarkDown with StrapDown.js to PDF with ..."
 	if [ "$discrete" != "true" ]; then
-		echo -e "\n\n\n\n%% Added with strapdown2pdf\n\\\\hspace{\\\\fill}\n\\\\vfill{}\n\n\\\\hspace{\\\\fill}\\\\rule{.6\\\\linewidth}{0.4pt}\\\\hspace{\\\\fill}\n\n\\\\begin{quote}\n\\\\begin{footnotesize}\n (Compiled to \\\\textbf{PDF} from a \\\\texttt{HTML/Markdown} file (powered by \\\\href{http://lbesson.bitbucket.org/md/}{\\\\texttt{StrapDown.js}}) with \\\\textbf{\\\\href{http://lbesson.bitbucket.org/md/strapdown2pdf.html}{strapdown2pdf}}, \\\\texttt{v${version}}.)\n\\\\end{footnotesize}\n\\\\end{quote}\n"  >> "${name}".tex
+		echo -e "\n\n\n\n%% Added with strapdown2pdf\n\\\\hspace{\\\\fill}\n\\\\vfill{}\n\n\\\\hspace{\\\\fill}\\\\rule{.6\\\\linewidth}{0.4pt}\\\\hspace{\\\\fill}\n\n\\\\begin{quote}\n\\\\begin{footnotesize}\n (Compiled to \\\\textbf{PDF} from a \\\\texttt{HTML/Markdown} file (powered by \\\\href{https://lbesson.bitbucket.org/md/}{\\\\texttt{StrapDown.js}}) with \\\\textbf{\\\\href{https://lbesson.bitbucket.org/md/strapdown2pdf.html}{strapdown2pdf}}, \\\\texttt{v${version}}.)\n\\\\end{footnotesize}\n\\\\end{quote}\n"  >> "${name}".tex
 	fi
 
 	# Compile in batchmode it with autotex, to automatically add headers and packages stuff
@@ -235,20 +235,20 @@ StrapDown2PDF() {
 		${AUTOTEX} "${name}".tex
 	fi
 
-	# Compress it (and even gpg sign it !)
-	if [ "$nocolor" = "true" ]; then
-		if [ "$sign" = "true" ]; then
-			PDFCompress --sign "${name}".pdf | sed -r "s:\x1B\[[0-9;]*[mK]::g"
-		else
-			PDFCompress "${name}".pdf | sed -r "s:\x1B\[[0-9;]*[mK]::g"
-		fi
-	else
-		if [ "$sign" = "true" ]; then
-			PDFCompress --sign "${name}".pdf
-		else
-			PDFCompress "${name}".pdf
-		fi
-	fi
+	# # Compress it (and even gpg sign it !)
+	# if [ "$nocolor" = "true" ]; then
+	# 	if [ "$sign" = "true" ]; then
+	# 		PDFCompress --sign "${name}".pdf | sed -r "s:\x1B\[[0-9;]*[mK]::g"
+	# 	else
+	# 		PDFCompress "${name}".pdf | sed -r "s:\x1B\[[0-9;]*[mK]::g"
+	# 	fi
+	# else
+	# 	if [ "$sign" = "true" ]; then
+	# 		PDFCompress --sign "${name}".pdf
+	# 	else
+	# 		PDFCompress "${name}".pdf
+	# 	fi
+	# fi
 
 
 	# Clean up local repertory

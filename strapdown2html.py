@@ -1,35 +1,37 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """ Convert some Markdown/StrapDown.js files to a single, simple HTML (.html) file,
 which looks as a StrapDown.js powered page, but is autonomous and *does not* require JavaScript at all.
 
-I tried to do it as (durtily) well as possible (and I included a couple of nice features).
+I tried to do it as (dirty) well as possible (and I included a couple of nice features).
 
 Features:
-- include a link to SquirtFr (http://lbesson.bitbucket.org/squirt/),
-- include the bootstrap theme, cf. http://bootswatch.com/united for all the possibilities,
+- include a link to SquirtFr (https://lbesson.bitbucket.org/squirt/),
+- include the bootstrap theme, cf. https://bootswatch.com/united for all the possibilities,
 - support UTF-8 (TODO try with another encoding?),
-- quick and pretty, even if the script is really DURTY...
+- quick and pretty, even if the script is really DIRTY...
 
 Links:
-- more information on StrapDown.js can be found here http://lbesson.bitbucket.org/md/,
-- another script I wrote for StrapDown.js is strapdown2pdf, here http://lbesson.bitbucket.org/md/strapdown2pdf.html
-- (TODO) Similarly, this page http://lbesson.bitbucket.org/md/strapdown2html.html will give info about that program strapdown2html.py
+- more information on StrapDown.js can be found here https://lbesson.bitbucket.org/md/,
+- another script I wrote for StrapDown.js is strapdown2pdf, here https://lbesson.bitbucket.org/md/strapdown2pdf.html
+- (TODO) Similarly, this page https://lbesson.bitbucket.org/md/strapdown2html.html will give info about that program strapdown2html.py
 
-Copyright: 2015, Lilian Besson.
-License: GPLv3.
+Copyright: 2015-2021, Lilian Besson.
+License: MIT.
 """
 
 from __future__ import print_function  # Python 2/3 compatibility !
 import sys
-import codecs
+# import codecs
+# Use time get string for today current hour
+import time
 import markdown
 import re
 import os.path
 from bs4 import BeautifulSoup, SoupStrainer
 
 __author__ = "Lilian Besson"
-__version__ = "0.3.1"
+__version__ = "0.4"
 
 # TODO: improve conformity with StrapDown.js Markdown parser:
 # nested list for instance, generic source code printer etc.
@@ -47,18 +49,17 @@ except ImportError:
     print("Optional dependancy (ANSIColors) is not available, using regular print function.")
     print("  You can install it with : 'pip install ANSIColors-balises' (or sudo pip)...")
 
-    def printc(*a, **kw):
-        print(*a, **kw)
+    printc = print
 
-# Load some Markdown extensions (Cf. https://pythonhosted.org/Markdown/extensions/index.html)
+# Load some Markdown extensions (Cf. https://python-markdown.github.io/extensions/#officially-supported-extensions)
 try:
     import markdown.extensions
     list_extensions = [
         'markdown.extensions.extra',  # https://pythonhosted.org/Markdown/extensions/extra.html
         'markdown.extensions.smarty',  # https://pythonhosted.org/Markdown/extensions/smarty.html
-        'markdown.extensions.headerid',  # https://pythonhosted.org/Markdown/extensions/header_id.html
+        # 'markdown.extensions.headerid',  # https://pythonhosted.org/Markdown/extensions/header_id.html
         'markdown.extensions.tables',  # https://pythonhosted.org/Markdown/extensions/tables.html
-        'markdown.extensions.smart_strong',  # https://pythonhosted.org/Markdown/extensions/smart_strong.html
+        # 'markdown.extensions.smart_strong',  # https://pythonhosted.org/Markdown/extensions/smart_strong.html
         # 'urlize'  # https://github.com/r0wb0t/markdown-urlize
     ]
     try:
@@ -88,7 +89,8 @@ except:
     # No extension
 
 # Fix UTF-8 output
-sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
+# FIXED: this codecs magic was for Python 2
+# sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 
 beta = False
 eraseFileAlreadyThere = False
@@ -106,32 +108,33 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
     printc("<magenta>The output file will be <white>'<u>{fullpath}<U>'.".format(fullpath=fullpath))
 
     with open(fullpath, "w") as html_file:
-        html_file = codecs.getwriter('utf-8')(html_file)
+        # FIXED: this codecs magic was for Python 2
+        # html_file = codecs.getwriter('utf-8')(html_file)
         # Writing the head of the HTML file
-        html_file.write(u"""<!DOCTYPE html>
+        html_file.write("""<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" name="viewport">
     <meta charset="utf-8">
     <title>{title}</title>
-    <link href="http://perso.crans.org/besson/_static/md/themes/united.min.css" rel="stylesheet">
-    <link href="http://perso.crans.org/besson/_static/md/strapdown.min.css" rel="stylesheet">
-    <link href="http://perso.crans.org/besson/_static/md/themes/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="http://perso.crans.org/besson/_static/prism/prism.css" rel="stylesheet">
-    <link rel="shortcut icon" href="http://perso.crans.org/besson/_static/.favicon.ico">
+    <link href="https://perso.crans.org/besson/_static/md/themes/united.min.css" rel="stylesheet">
+    <link href="https://perso.crans.org/besson/_static/md/strapdown.min.css" rel="stylesheet">
+    <link href="https://perso.crans.org/besson/_static/md/themes/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="https://perso.crans.org/besson/_static/prism/prism.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://perso.crans.org/besson/_static/.favicon.ico">
     <meta name="author" content="Lilian Besson">
     <meta name="generator" content="https://bitbucket.org/lbesson/bin/src/master/strapdown2html.py">
 """.format(title=title))
         # Include jquery, and some plugins. Useless except if there is a table in the input document
         # FIXME improve detection
         if use_jquery:
-            html_file.write(u"""
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.js"></script>
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.quicksearch.min.js"></script>
-    <script type="text/javascript" src="http://perso.crans.org/besson/_static/jquery.smooth-scroll.min.js"></script>\n""")
+            html_file.write("""
+    <script type="text/javascript" src="https://perso.crans.org/besson/_static/jquery.js"></script>
+    <script type="text/javascript" src="https://perso.crans.org/besson/_static/jquery.quicksearch.min.js"></script>
+    <script type="text/javascript" src="https://perso.crans.org/besson/_static/jquery.smooth-scroll.min.js"></script>\n""")
         # Beginning of the header
-        html_file.write(u"""</head>
+        html_file.write("""</head>
 <body>
 <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
@@ -141,17 +144,17 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
                 </div>
 """.format(title=title))
         # Last part of the navbar
-        html_file.write(u"""
+        html_file.write("""
                 <div id="headline-copyrights" class="brand">
                     Generated with <a href="https://bitbucket.org/lbesson/bin/src/master/strapdown2html.py">Python</a>,
-                    by <a href="http://perso.crans.org/besson/">Lilian Besson</a>.
-                    Based on <a title="http://lbo.k.vu/md" href="http://lbesson.bitbucket.org/md/index.html">StrapDown.js</a>
+                    by <a href="https://perso.crans.org/besson/">Lilian Besson</a>.
+                    Based on <a title="http://lbo.k.vu/md" href="https://lbesson.bitbucket.org/md/index.html">StrapDown.js</a>
                     (theme <a title="More information on this theme, on bootswatch.com." href="http://bootswatch.com/united"><i>united</i></a>),
-                    <!-- hosted on <a href="http://perso.crans.org/besson/">perso.crans.org/besson</a>. -->
+                    <!-- hosted on <a href="https://perso.crans.org/besson/">perso.crans.org/besson</a>. -->
                 </div>
                 <div id="headline-squirt" class="brand">
-                    <a title="Quick read with SquirtFR. Check http://lbesson.bitbucket.org/squirt/ for more information."
-                    href="javascript:(function(){sq=window.sq;if(sq&amp;&amp;sq.closed){window.sq.closed&amp;&amp;window.document.dispatchEvent(new%20Event('squirt.again'));}else{sq=window.sq||{};sq.version='0.4';sq.host='http://lbesson.bitbucket.org/squirt';sq.j=document.createElement('script');sq.j.src=sq.host+'/squirt.js?src=strapdown.min.js';document.body.appendChild(sq.j);}})();">[QuickRead]</a>
+                    <a title="Quick read with SquirtFR. Check https://lbesson.bitbucket.org/squirt/ for more information."
+                    href="javascript:(function(){sq=window.sq;if(sq&amp;&amp;sq.closed){window.sq.closed&amp;&amp;window.document.dispatchEvent(new%20Event('squirt.again'));}else{sq=window.sq||{};sq.version='0.4';sq.host='https://lbesson.bitbucket.org/squirt';sq.j=document.createElement('script');sq.j.src=sq.host+'/squirt.js?src=strapdown.min.js';document.body.appendChild(sq.j);}})();">[QuickRead]</a>
                 </div>
             </div>
         </div>
@@ -160,7 +163,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
 <div id="content" class="container" style="font-size:140%;">""")
         # Include the jQuery.QuickSearch plugin (no by default).
         if use_jquery:
-            html_file.write(u"""
+            html_file.write("""
     <blockquote class="pull-right" style="right-margin: 5%;">
         <h2>Search on that table?</h2>
             <p>(Thanks to the <a href="http://deuxhuithuit.github.io/quicksearch/">QuickSearch</a> <a href="https://www.jQuery.com/">jQuery</a> plugin.)</p>
@@ -170,14 +173,14 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
     </blockquote><hr><br>""")
         # Not useful anymore, my script works fine.
         if beta:
-            html_file.write(u"""
+            html_file.write("""
     <div class="alert alert-dismissable alert-warning">
         <button type="button" class="close" data-dismiss="alert">×</button>
         <h2>Warning!</h2>
         <p>This page has been converted from <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> documents, with a Python script.<br>
         This <a href="https://bitbucket.org/lbesson/bin/src/master/strapdown2html.py">script</a> is still experimental! If needed, please <a href="https://bitbucket.org/lbesson/bin/issues/new" title="It's free, open to anyone, quick and easy!">fill a bug report</a>?</p>
     </div><br><hr>""")
-        html_file.write(u"""\n<!-- First file -->\n""")
+        html_file.write("""\n<!-- First file -->\n""")
 
         # Now, work with each file.
         for inputfile in argv:
@@ -186,46 +189,62 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
                 with open(inputfile, 'r') as openinputfile:
                     printc(" I opened it, to '{openinputfile}'.".format(openinputfile=openinputfile))
                     # FIXME detect encoding better?
-                    openinputfile = codecs.getreader('utf-8')(openinputfile)
+                    # FIXED: this codecs magic was for Python 2
+                    # openinputfile = codecs.getreader('utf-8')(openinputfile)
                     printc(" <INFO> Codec manually changed to utf8.<white>")
                     html_text = "\t<!-- Failed to read from '{inputfile}'... This comment should have been replaced with the content of that file, converted to pure HTML... -->".format(inputfile=inputfile)
 
                     # Read that file !
                     markdown_text = openinputfile.read()
                     printc(" I just read from that file.")
-                    if beta:
-                        print(markdown_text)  # yes this works, useless now
+                    # if beta:
+                    #     print(markdown_text)  # yes this works, useless now
 
                     # Let try to convert this text to HTML from Markdown
                     try:
                         # First, let try to see if the input file was not a StrapDown.js file.
                         try:
                             only_xmp_tag = SoupStrainer("xmp")
-                            html = BeautifulSoup(markdown_text, "html.parser", parse_only=only_xmp_tag, from_encoding="utf-8")
+                            html = BeautifulSoup(markdown_text, "html.parser", parse_only=only_xmp_tag)
+                            # FIXED: this codecs magic was for Python 2
+                            # , from_encoding="utf-8"
                             if beta:
                                 print(" BTW, this html read with Beautiful soup has the encoding,", html.original_encoding)
                             x = html.xmp
                             printc(" <black>BeautifulSoup<white> was used to read the input file as an HTML file, and reading its first xmp tag.")
                             # new_markdown_text = unicode(x.prettify("utf-8"), encoding="utf-8")
-                            new_markdown_text = unicode(x.encode("utf-8"), encoding="utf-8")
+                            # new_markdown_text = unicode(x.encode("utf-8"), encoding="utf-8")
+                            new_markdown_text = x.text
+
                             printc(" I found the xmp tag and its content. Printing it:")
-                            # OMG this is so durty ! FIXME do better?
+                            # OMG this is so dirty ! FIXME do better?
                             if beta:
                                 print(type(new_markdown_text))
                                 print(new_markdown_text)
+
                             printc(" Now lets replaced '<xmp>' --> '' and '</xmp>' --> ''. Lets go!")
                             markdown_text = new_markdown_text.replace('<xmp>', '').replace('</xmp>', '')
                             printc(" Yeah, I replaced '<xmp>' --> '' and '</xmp>' --> ''. I did it!")
                             # Add code to add the good Prism.js class to <code> and <pre>, to color the code accordingly.
+                            markdown_text = markdown_text.replace('```ocaml', '<pre><code class="language-ocaml" style="font-size:145%;">')
+                            markdown_text = markdown_text.replace('```javascript', '<pre><code class="language-javascript" style="font-size:145%;">')
+                            markdown_text = markdown_text.replace('```julia', '<pre><code class="language-julia" style="font-size:145%;">')
+                            markdown_text = markdown_text.replace('```sql', '<pre><code class="language-sql" style="font-size:145%;">')
+                            markdown_text = markdown_text.replace('```c', '<pre><code class="language-c" style="font-size:145%;">')
+                            markdown_text = markdown_text.replace('```latex', '<pre><code class="language-latex" style="font-size:145%;">')
+                            markdown_text = markdown_text.replace('```html', '<pre><code class="language-html" style="font-size:145%;">')
                             markdown_text = markdown_text.replace('```python', '<pre><code class="language-python" style="font-size:145%;">')
                             markdown_text = markdown_text.replace('```bash', '<pre><code class="language-bash" style="font-size:145%;">')
+                            # TODO: this is WRONG! if the ``` block``` has no language,
+                            #  both start and end markups get converted to closing blocks!
                             markdown_text = markdown_text.replace('```', '</code></pre>')
                             # This should be good.
                         except Exception as e:
                             printc(" <warning> Exception found: <yellow>{e}<white>.".format(e=e))
                             printc("  ===> <WARNING> I tried to read the file as a StrapDown.js powered file, but failed.<white>\n <magenta>I will now read it as a simple Markdown file.<white>")
+                            raise e
 
-                        # This is so durty... FIXME do better?
+                        # This is so dirty... FIXME do better?
                         try:
                             markdown_text = markdown_text.replace('<!DOCTYPE html><html><head><meta charset="utf-8"/><title>', '<h1>')
                             markdown_text = markdown_text.replace('<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>', '<h1>')
@@ -234,7 +253,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
                             markdown_text = markdown_text.replace('<xmp theme="united">', '')
                             markdown_text = markdown_text.replace('</title></head><body><xmp theme="cyborg">', '</h1>')
                             markdown_text = markdown_text.replace('<xmp theme="cyborg">', '')
-                            markdown_text = markdown_text.replace('<p></xmp><script type="text/javascript" src="http://perso.crans.org/besson/s/md/strapdown.min.js"></script></body></html></p>', '')
+                            markdown_text = markdown_text.replace('<p></xmp><script type="text/javascript" src="https://perso.crans.org/besson/s/md/strapdown.min.js"></script></body></html></p>', '')
                             printc(" <INFO> Now I replace '<xmp>' --> '' and '</xmp>' --> ''. Lets go!<white>")
                         except:
                             printc(" I tried (again) to replace '<xmp>' --> '' and '</xmp>' --> '' byt failed")
@@ -266,7 +285,7 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
                 printc(" ==> <ERROR>: Failed to read from the file {inputfile}. Going to the next one.<reset><white>\n".format(inputfile=inputfile))
 
         if use_jquery:
-            html_file.write(u"""
+            html_file.write("""
     <script type="text/javascript">
         $('input#id_search').quicksearch('table tbody tr');
         $('a').smoothScroll({
@@ -275,16 +294,18 @@ def main(argv=[], path='/tmp', outfile='test.html', title='Test', use_jquery=Fal
         });
     </script>""")
         # Print the © message
-        html_file.write(u"""
+        today = time.strftime("%H:%M, %d-%m-%Y")
+        html_file.write(f"""
     <div class="alert alert-success pull-right">
-        <h4>© 2015 <a title="Check out my web-pages!" href="http://perso.crans.org/besson/">Lilian Besson</a>, generated by <a href="https://bitbucket.org/lbesson/bin/src/master/strapdown2html.py" title="Python 2.7 is cool!">an open-source Python script</a>.</h4>
+        <h4>© 2015-2021 <a title="Check out my web-pages!" href="https://perso.crans.org/besson/">Lilian Besson</a>, generated on {today} by <a href="https://bitbucket.org/lbesson/bin/src/master/strapdown2html.py" title="Python 3.6 is cool!">an open-source (<a href="https://lbesson.mit-license.org/">MIT</a>) Python script</a>.</h4>
     </div>
 </div>
-<script type="text/javascript" src="http://perso.crans.org/besson/_static/prism/prism.js"></script>
-<noscript><img alt="GA|Analytics" style="visibility:hidden;display:none;" src="http://perso.crans.org/besson/beacon/{fullpath}?pixel"/></noscript>
-<script type="text/javascript" src="http://perso.crans.org/besson/_static/ga.js" async defer></script>
+<script type="text/javascript" src="https://perso.crans.org/besson/_static/prism/prism.js"></script>
 </body></html>
-""".format(fullpath=fullpath))
+""")
+    # I removed the spying tools
+# <noscript><img alt="GA|Analytics" style="visibility:hidden;display:none;" src="https://perso.crans.org/besson/beacon/{fullpath}?pixel"/></noscript>
+# <script type="text/javascript" src="https://perso.crans.org/besson/_static/ga.js" async defer></script>
     return True
 
 
@@ -308,8 +329,8 @@ Options:
 Warning:
     Experimental! Almost done?
 
-Copyright: 2015, Lilian Besson.
-License: GPLv3.""")
+Copyright: 2015-2021, Lilian Besson.
+License: MIT (https://lbesson.mit-license.org/).""")
         exit(1)
 
     # OK get it from the user
@@ -344,13 +365,14 @@ License: GPLv3.""")
         use_jquery = True
         args.pop(args.index('--use-jquery'))
 
-    # Cleverly detect the title. So durty, again!
+    # Cleverly detect the title. So dirty, again!
     i = 0
     while title == '':
         i += 1
         try:
-            # with open(args[i], 'r') as file1:
-            with codecs.open(args[i], 'r', encoding='utf-8') as file1:
+            # FIXED: this codecs magic was for Python 2
+            # with codecs.open(args[i], 'r', encoding='utf-8') as file1:
+            with open(args[i], 'r') as file1:
                 try:
                     contentfile1 = file1.read()
                     # FIXME experimental detection of the need for QuickSearch
