@@ -36,7 +36,6 @@ pwnat
 youtube-dl
 imagejs
 CorutilsViewer
-[Mm]arp
 ulogme*
 alacritty
 charm
@@ -77,4 +76,6 @@ git-sizer
 mdcat
 autopep8
 geckodriver.log
+Marp
+marp
 sherlock
