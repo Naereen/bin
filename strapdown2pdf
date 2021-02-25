@@ -11,7 +11,8 @@
 # More details on https://lbesson.bitbucket.org/strapdown2pdf.html
 #
 # Requirements:
-#  + [lunamark](https://jgm.github.io/lunamark/lunamark.1.html)
+#  + [pandoc](https://pandoc.org/)
+#  + you can also use [lunamark](https://jgm.github.io/lunamark/lunamark.1.html), but it's less efficient and has some bugs (see https://github.com/Naereen/Bibliographie-agregation-maths-option-info/issues/7)
 #  + [autotex](https://perso.crans.org/besson/bin/autotex) (from my webpage),
 #  + [PDFCompress](https://perso.crans.org/besson/bin/PDFCompress) (from my webpage),
 #  + [pdflatex](https://perso.crans.org/besson/bin/pdflatex) (from my webpage).
@@ -27,7 +28,7 @@
 #     only for MathJax flavored maths formulas, which are all copied in the .tex with escaped $ and { : \{ and \$ every where :(
 #
 #
-version='0.9.2'
+version='0.9.3'
 AUTOTEX="autotex batchmode"
 
 quiet="false"
@@ -59,7 +60,7 @@ for arg in "$@"; do
 		-h|-help|--help)
 			echo -e "${green}strapdown2pdf${white} -help | [options]"
 			echo -e ""
-			echo -e "Print a StrapDown-powered web-page to a PDF document, using lunamark and autotex."
+			echo -e "Print a StrapDown-powered web-page to a PDF document, using pandoc and autotex."
 			echo -e ""
 			echo -e "Help:"
 			echo -e "    ${yellow}-h${white}           to print this help message (and quit)."
@@ -181,8 +182,11 @@ StrapDown2PDF() {
 			exit 0
 	fi
 
-	# Convert md -> tex with lunamark (in /tmp/, as always)
-	lunamark -Xhash_enumerators -t latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
+	# OLD Convert md -> tex with lunamark (in /tmp/, as always)
+	# lunamark -Xhash_enumerators -t latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
+
+	# NEw Convert md -> tex with pandoc (in /tmp/, as always)
+	pandoc --to latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
 
 	# Because we are proud of this script
 	echo -e "%% -*- coding:utf8; mode:latex -*-\n%% LaTeX file automatically generated with [strapdown2pdf](https://bitbucket.org/lbesson/bin/src/master/strapdown2pdf)" > "${name}".tex
