@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+# See <https://github.com/Naereen/ocaml-mots-cles-en-francais>
+#
+# If you use it, adapt the path here:
+
+rlwrap /home/lilian/publis/ocaml-mots-cles-en-francais.git/usr/bin/ocaml -noinit "$@"
