@@ -1,0 +1,36 @@
+#!/usr/bin/env python_en_francais.sh
+"""
+Implémente manuellement la fonction racine() dans Python 3, en utilisant la méthode de Héron.
+
+@auteur : Lilian Besson
+@date : 02-03-2021
+@licence : MIT
+"""
+
+## Racine carrée
+
+déf racine(x, epsilon=1e-12, max_nb_itérations=100, x0=Rien) :
+    """ Calcule une approximation de sqrt (x) avec la méthode de Héron."""
+    # première estimation de racine_x en tant que partie entière inférieure de racine(x) par une simple boucle
+    impose x >= 0
+    si x == 0 :
+        renvoyer 0
+    si x0 est Rien :
+        racine_x = 1.0
+        tant que racine_x**2 < x :
+            racine_x += 1
+    sinon :
+        racine_x = x0
+    # now Héron's method
+    nb_itérations = 0
+    tantque (racine_x**2 - x) > epsilon et nb_itérations < max_nb_itérations :
+        nb_itérations += 1
+        racine_x = (racine_x + x / racine_x) / 2.0
+    renvoyer racine_x
+
+
+si __nom__ == '__main__' :
+
+    pour i dans intervale(2000, 2030) :
+        racine_i = racine(i)
+        afficher(f"Racine carrée de {i} vaut ~= {racine_i}\n\tsoit une précision relative de {abs(racine_i**2 - i) / i}")

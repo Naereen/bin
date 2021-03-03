@@ -1,0 +1,288 @@
+#!/usr/bin/env python_en_francais.sh
+"""
+Des fonctions pour tester que mon programme de traduction python_en_francais.sh ne fait pas n'importe quoi.
+
+@auteur : Lilian Besson
+@date : 02-03-2021
+@licence : MIT
+"""
+
+déf tester_noms_variables() :
+    """ Pour chaque traduction (comme "déf => def"), je vais définir des noms de variables Xdéf, XXXdéf, défY, défYYY, XXXdéfYYY et vérifier que dans le programme traduit elles n'auront pas changées.
+    """
+
+    # rules to translate keywords
+    Xdéf = 1
+    XXXdéf = 2
+    défY = 3
+    défYYY = 4
+    XXXdéfYYY = 5
+    TODO = 6
+    Xpour = 7
+    XXXpour = 8
+    pourY = 9
+    pourYYY = 10
+    XXXpourYYY = 11
+    TODO = 12
+    Xtantque = 13
+    XXXtantque = 14
+    tantqueY = 15
+    tantqueYYY = 16
+    XXXtantqueYYY = 17
+    TODO = 18
+    Xsi = 19
+    XXXsi = 20
+    siY = 21
+    siYYY = 22
+    XXXsiYYY = 23
+    TODO = 24
+    Xousinon = 25
+    XXXousinon = 26
+    ousinonY = 27
+    ousinonYYY = 28
+    XXXousinonYYY = 29
+    TODO = 30
+    Xsinon = 31
+    XXXsinon = 32
+    sinonY = 33
+    sinonYYY = 34
+    XXXsinonYYY = 35
+    TODO = 36
+    Xrenvoyer = 37
+    XXXrenvoyer = 38
+    renvoyerY = 39
+    renvoyerYYY = 40
+    XXXrenvoyerYYY = 41
+    TODO = 42
+    Xest = 43
+    XXXest = 44
+    estY = 45
+    estYYY = 46
+    XXXestYYY = 47
+    TODO = 48
+    Xdans = 49
+    XXXdans = 50
+    dansY = 51
+    dansYYY = 52
+    XXXdansYYY = 53
+    TODO = 54
+    Xet = 55
+    XXXet = 56
+    etY = 57
+    etYYY = 58
+    XXXetYYY = 59
+    TODO = 60
+    Xou = 61
+    XXXou = 62
+    ouY = 63
+    ouYYY = 64
+    XXXouYYY = 65
+    TODO = 66
+    Xcontinue = 67
+    XXXcontinue = 68
+    continueY = 69
+    continueYYY = 70
+    XXXcontinueYYY = 71
+    TODO = 72
+    Xbrise = 73
+    XXXbrise = 74
+    briseY = 75
+    briseYYY = 76
+    XXXbriseYYY = 77
+    TODO = 78
+    Xnon = 79
+    XXXnon = 80
+    nonY = 81
+    nonYYY = 82
+    XXXnonYYY = 83
+    TODO = 84
+    Ximpose = 85
+    XXXimpose = 86
+    imposeY = 87
+    imposeYYY = 88
+    XXXimposeYYY = 89
+    TODO = 90
+    Ximporter = 91
+    XXXimporter = 92
+    importerY = 93
+    importerYYY = 94
+    XXXimporterYYY = 95
+    TODO = 96
+    Xdepuis = 97
+    XXXdepuis = 98
+    depuisY = 99
+    depuisYYY = 100
+    XXXdepuisYYY = 101
+    TODO = 102
+    Xessayer = 103
+    XXXessayer = 104
+    essayerY = 105
+    essayerYYY = 106
+    XXXessayerYYY = 107
+    TODO = 108
+    Xexception = 109
+    XXXexception = 110
+    exceptionY = 111
+    exceptionYYY = 112
+    XXXexceptionYYY = 113
+    TODO = 114
+    Xcomme = 115
+    XXXcomme = 116
+    commeY = 117
+    commeYYY = 118
+    XXXcommeYYY = 119
+    TODO = 120
+    Xavec = 121
+    XXXavec = 122
+    avecY = 123
+    avecYYY = 124
+    XXXavecYYY = 125
+    TODO = 126
+    Xclasse = 127
+    XXXclasse = 128
+    classeY = 129
+    classeYYY = 130
+    XXXclasseYYY = 131
+    TODO = 132
+    Xsoi = 133
+    XXXsoi = 134
+    soiY = 135
+    soiYYY = 136
+    XXXsoiYYY = 137
+
+    renvoyer 0
+
+
+déf tester_constantes() :
+    var1: booléen = Faux
+    var2: booléen = Vrai
+    var3 = Rien
+    renvoyer var1 != var2 \
+        et var2 != var3 \
+        et var3 est Rien
+
+déf tester_fonctions() :
+    afficher("a""fficher() =", afficher)
+    afficher("o""uvrir() =", ouvrir)
+    afficher("i""ntervale() =", intervale)
+    afficher("e""ntier() =", entier)
+    afficher("f""lottant() =", flottant)
+    afficher("c""haine() =", chaine)
+    afficher("l""iste() =", liste)
+    afficher("d""ictionnaire() =", dictionnaire)
+    afficher("e""nsemble() =", ensemble)
+    afficher("b""ooléen() =", booléen)
+    afficher("e""stinstance() =", estinstance)
+    afficher("s""omme() =", sum)
+    afficher("m""inimum() =", min)
+    afficher("m""aximum() =", max)
+    renvoyer Vrai
+
+déf tester_constructions() :
+    déf f(x): renvoyer x
+    pour i dans [1,2,3] :
+        afficher("i =", f(i))
+    i: entier = f(2018)
+    tant que i < 2021 :
+        afficher("i =", i)
+        i += 1
+    tantque i < 2023 :
+        afficher("i =", i)
+        i += 1
+    res: flottant = 0.0
+    si i >= 2000 :
+        res += 1.0
+    ou si i >= 2010:
+        res += 10.0
+    ousi i >= 2020 :
+        res += 20.0
+    sinon :
+        res += 30.0
+
+    pasgrandchose = Rien
+    si pasgrandchose est Rien :
+        afficher("pasgrandchose =", Rien)
+
+    maliste: liste = [1, 2, 3]
+    si 2 dans maliste:
+        afficher("2 appartient bien à", maliste)
+    si 2020 pas dans maliste:
+        afficher("2020 appartient pas à", maliste)
+
+    v = Vrai
+    impose v
+    f = Faux
+    impose non f
+
+    impose v et (non f)
+    impose v ou f
+    impose v ou (non f)
+    impose (non v) ou (non f)
+    impose non ((non v) et f)
+
+    importer math
+    afficher("pi =", math.pi)
+    essayer :
+        afficher("XKaopzjfpoaj =", math.XKaopzjfpoaj)
+    exception AttributeError comme e:
+        afficher("Une erreur e =", e)
+
+    essayer :
+        importer FauxModule
+    exception ImportError comme e:
+        afficher("Une autre erreur e =", e)
+
+    avec ouvrir("/etc/hosts", "r") comme fichier :
+        pour i, ligne dans énumère(fichier):
+            si i <= 1 :
+                continuer
+            ou si i > 5 :
+                brise
+            sinon :
+                afficher(f"Ligne #{i} = {ligne}")
+
+    renvoyer Vrai
+
+déf tester_classes() :
+    classe Point2D() :
+        déf __init__(soi, x, y) :
+            soi.x = x
+            soi.y = y
+
+        déf __str__(soi) :
+            renvoyer f"Point2D({soi.x}, {soi.y})"
+        
+        déf norm(soi) :
+            depuis math importer sqrt comme racine
+            renvoyer racine(soi.x**2 + soi.y ** 2)
+        
+        déf __add__(soi, autre) :
+            renvoyer Point2D(soi.x + autre.x, soi.y + autre.y)
+        
+        déf __sub__(soi, autre) :
+            renvoyer Point2D(soi.x - autre.x, soi.y - autre.y)
+        
+        déf distance(soi, autre) :
+            renvoyer (soi - autre).norm()
+
+
+    p0 = Point2D(0, 0)
+    afficher("p0 =", p0)
+    p1 = Point2D(1, 0)
+    afficher("p1 =", p1)
+    afficher("p0 + p1 =", p0 + p1)
+    afficher("p1.norm() =", p1.norm())
+    p2 = Point2D(0, 1)
+    afficher("p2 =", p2)
+    afficher("p1 - p2 =", p1 - p2)
+    afficher("p2.distance(p1) =", p2.distance(p1))
+
+    renvoyer 0 < (p1 + p2).norm()
+
+
+si __nom__ == '__main__' :
+    impose tester_noms_variables() == 0
+    impose tester_constantes()
+    impose tester_fonctions()
+    impose tester_constructions()
+    impose tester_classes()
