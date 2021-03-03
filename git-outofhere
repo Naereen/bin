@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+# A stupid git command so that I can type the example from this famous meme
+# « In case of fire :
+#   $ git commit
+#   $ git push
+#   $ git outofhere
+#
+# Another reference is this t-shirt
+# https://www.redbubble.com/fr/i/t-shirt/En-cas-d-incendie-D%C3%A9veloppement-logiciel-humour-humour-Git-Github-par-ManoliMerch/26972383.WFLAH.XYZ
+#
+# Author: Lilian Besson
+# License: MIT License (https://lbesson.mit-license.org/)
+# Date: 03/03/2021
+#
+echo "In case of fire, just exit the building."
+
+sleep 1
+echo "Run for your life..."
+
+sleep 1
+echo "Like Iron Maiden kept singing..."
+
+sleep 3
+xdg-open "https://www.youtube.com/watch?v=86URGgqONvA"
