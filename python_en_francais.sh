@@ -17,6 +17,7 @@
 # - [X] don't just translate, but also execute directly, so it can be used as a shebang
 # - [ ] TODO: instead of ugly regexp, rewrite a parser of CPython, recompile my own CPython and call it CPython.fr ? If I take the time to do that, I should also translate some error messages...
 # - [ ] TODO: if it's easy to do for Python, do the same for OCaml and C ?
+# - [ ] See https://github.com/Naereen/bin/issues/2
 #
 version='0.0.1'
 
