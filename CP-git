@@ -2,12 +2,12 @@
 #
 # Author: Lilian Besson
 # License: GPLv3
-# Online: https://perso.crans.org/besson/bin/CP
-# Online(2): https://bitbucket.org/lbesson/bin/src/master/CP
+# Online: https://perso.crans.org/besson/bin/CP-git
+# Online(2): https://bitbucket.org/lbesson/bin/src/master/CP-git
 # Date: 24-02-2021
 #
 # A small wrapper around the output of the 'rsync' command, adding colors for interesting parts.
-# Can be save to ~/bin/CP for example (or anywhere in your path).
+# Can be save to ~/bin/CP-git for example (or anywhere in your path).
 #
 # Perfect replacement for 'cp', notable improvement are:
 # - the ability to copy to and from distant location (if it is reachable by SSH),
@@ -23,7 +23,7 @@
 # - You can use this script in your Makefile, to add rules to send files over the network easily:
 #SHELL=/usr/bin/env /bin/bash
 #send_zamok:
-#	CP ./ ${Szam}bin/
+#	CP-git ./ ${Szam}bin/
 #
 version='.4'
 LANG='en'
@@ -39,11 +39,11 @@ echo -e "CP: receiving the argument(s) ${@}" >> /tmp/CP.log
 
 # Change in the next line the default options for rsync
 # and change in the next lines the colors (ANSI Colors, in GREP_COLOR) for separate parts of the output
-#	--cvs-exclude \
-#	$([ -f .gitignore ] && echo '--exclude-from=.gitignore' ) \
-#	$(ls *.pdf &>/dev/null && echo '--include=*.pdf' ) \
 (/usr/bin/rsync \
+	--cvs-exclude \
 	$([ -d .git ] && echo '--exclude=.git' ) \
+	$([ -f .gitignore ] && echo '--exclude-from=.gitignore' ) \
+	$(ls *.pdf &>/dev/null && echo '--include=*.pdf' ) \
 	--ipv4 \
 	--verbose \
 	--times \
