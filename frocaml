@@ -3,4 +3,4 @@
 #
 # If you use it, adapt the path here:
 
-rlwrap /home/lilian/publis/ocaml-mots-cles-en-francais.git/usr/bin/ocaml -noinit "$@"
+rlwrap /home/lilian/publis/ocaml-mots-cles-en-francais.git/ocaml-sources/usr/bin/ocaml -noinit "$@"
