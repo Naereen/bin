@@ -488,6 +488,23 @@ function TEX2PDF() {
 }
 complete -f -X '!*.@(tex|pdf)' -o plusdirs tex2pdf TEX2PDF qpdf
 
+# A small alias to extract .mkv to .aac or .oog or .mp3 using ffmpeg
+function mkv2sound() {
+    ext="$1"
+    shift
+    for input in "$@"; do
+        base="${input//.mkv}"
+        output="${base}.${ext}"
+        # Cf. https://askubuntu.com/a/1204043
+        echo ffmpeg -i "$input" "$output"
+        ffmpeg -i "$input" "$output"
+    done
+}
+alias mkv2aac='mkv2sound aac'
+alias mkv2oog='mkv2sound oog'
+alias mkv2mp3='mkv2sound mp3'
+complete -f -X '!*.@(mkv)' -o plusdirs mkv2sound mkv2aac mkv2oog mkv2mp3
+
 # A small alias to convert .md to .pdf with Pandoc
 function md2pdf() {
     for i in "$@"; do
@@ -1378,7 +1395,7 @@ complete -f -X '!*.class' -o plusdirs java
 
 # Get rid of that non-breaking space, http://hauweele.net/~gawen/blog/?p=32
 # xmodmap ~/.Xmodmap  # => TODO: doesn't work!
-setxkbmap -option "nbsp:none"  # DONE
+setxkbmap -option "nbsp:none"  # Get rid of that non-breaking space
 
 ##############################################################################
 # (c) 2011-2021 Lilian BESSON
