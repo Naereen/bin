@@ -488,7 +488,7 @@ function TEX2PDF() {
 }
 complete -f -X '!*.@(tex|pdf)' -o plusdirs tex2pdf TEX2PDF qpdf
 
-# A small alias to extract .mkv to .aac or .oog or .mp3 using ffmpeg
+# A small alias to extract .mkv to .aac or .ogg or .mp3 using ffmpeg
 function mkv2sound() {
     ext="$1"
     shift
@@ -501,9 +501,9 @@ function mkv2sound() {
     done
 }
 alias mkv2aac='mkv2sound aac'
-alias mkv2oog='mkv2sound oog'
+alias mkv2ogg='mkv2sound ogg'
 alias mkv2mp3='mkv2sound mp3'
-complete -f -X '!*.@(mkv)' -o plusdirs mkv2sound mkv2aac mkv2oog mkv2mp3
+complete -f -X '!*.@(mkv)' -o plusdirs mkv2sound mkv2aac mkv2ogg mkv2mp3
 
 # A small alias to convert .md to .pdf with Pandoc
 function md2pdf() {
