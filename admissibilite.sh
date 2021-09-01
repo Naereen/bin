@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 out="/tmp/publinet.html"
 # Download the result page
-wget --quiet -O "$out" "http://publinetce2.education.fr/publinet/Servlet/PublinetServlet?_concours=EAE&_page=LISTE_SECTION&_sort=CHRONO"
+#wget --quiet -O "$out" "http://publinetce2.education.fr/publinet/Servlet/PublinetServlet?_concours=EAE&_page=LISTE_SECTION&_sort=CHRONO"
+wget --quiet -O "$out" "http://publinetce2.education.fr/publinet/Servlet/PublinetServlet?_page=LISTE_RES&_section=7607&_type=ADMISSIBILITE&_concours=EAA"
 
 # state="ADMISSIBILITÉ"
 state="ADMISSION"

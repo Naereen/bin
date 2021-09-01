@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 ################################## INFO #####################################
 # A GNU Bash script to automatically TRY to compress PDF files in the current directory.
-# Copyright (C) 2013-2016 Lilian BESSON (lbesson at ens-cachan dot fr)
+# Copyright (C) 2013-2021 Lilian BESSON (lbesson at ens-cachan dot fr)
 #
-# Find the latest version on http://perso.crans.org/besson/bin/PDFCompress
+# Find the latest version on https://perso.crans.org/besson/bin/PDFCompress
 #
 #     This program is free software: you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 #
 #     You should have received a copy of the GNU General Public License
 #     along with this program. If not, see <http://www.gnu.org/licenses/>,
-#     or <http://perso.crans.org/besson/LICENSE>.
+#     or <https://perso.crans.org/besson/LICENSE>.
 ################################# CAUTION ###################################
 # Use with caution: sometime, the new PDF is bigger than the first one.
 # Good advice: in a git repository, compress before storing => a real improvement !
@@ -33,15 +33,15 @@ ECHO="echo -e"
 # If editing the meta data, change them to say that the PDF have been modified.
 # in fact, it is the default behavior :)
 ## FIXME: if using '{' or '/' in $creator, warning when using sed ...
-creator="Compressed with http://perso.crans.org/besson/bin/PDFCompress v$version -- a script by Lilian BESSON (C) 2013-2016"
+creator="Compressed with https://perso.crans.org/besson/bin/PDFCompress v$version -- a script by Lilian BESSON (C) 2013-2021"
 creator="$($ECHO "$creator" | tr '{' '_')"
 
-# If possible, use .color.sh (http://perso.crans.org/besson/bin/.color.sh or https://bitbucket.org/lbesson/bin/src/master/.color.sh)
+# If possible, use .color.sh (https://perso.crans.org/besson/bin/.color.sh or https://bitbucket.org/lbesson/bin/src/master/.color.sh)
 if [ -f "$HOME/.color.sh" ]; then
     . "$HOME/.color.sh"
 else
     $ECHO "\033[01;31m WARNING: ~/.color.sh have not been found...\033[01;37m" > /dev/stderr
-    $ECHO "\033[01;33m INFO: 1) You can download it on http://perso.crans.org/besson/bin/.color.sh or https://bitbucket.org/lbesson/bin/src/master/.color.sh \033[01;37m" > /dev/stderr
+    $ECHO "\033[01;33m INFO: 1) You can download it on https://perso.crans.org/besson/bin/.color.sh or https://bitbucket.org/lbesson/bin/src/master/.color.sh \033[01;37m" > /dev/stderr
     $ECHO "\033[01;33m INFO: 2) Then move it to "$"HOME/.color.sh (for example with 'mv .color.sh ~/.color.sh' ...) \033[01;37m" > /dev/stderr
     $ECHO "\033[01;33m INFO: 3) And finally, make it executable: 'chmod +x ~/.color.sh' . Now you can have colors in $BIN :) \033[01;37m" > /dev/stderr
 fi
@@ -75,9 +75,9 @@ PKILL="echo"
 
 
 ########################## Copyrights and options ##############################
-$ECHO "${green}$BIN v$version : Copyright (C) 2013-2016 Lilian BESSON"
+$ECHO "${green}$BIN v$version : Copyright (C) 2013-2021 Lilian BESSON"
 $ECHO "This is free software, and you are welcome to redistribute it under certain conditions."
-$ECHO "This program comes with ABSOLUTELY NO WARRANTY; for details see http://perso.crans.org/besson/LICENSE ${white}"
+$ECHO "This program comes with ABSOLUTELY NO WARRANTY; for details see https://perso.crans.org/besson/LICENSE ${white}"
 
 ############################# Argument handling ################################
 for i in "$@"
@@ -116,8 +116,8 @@ do
    $ECHO ""
    $ECHO "    ${yellow}-v|--verbose$white	 increase verbosity of gs (quiet by default, option '-q')."
    $ECHO ""
-   $ECHO "$BIN v$version : Copyrights: (c) Lilian Besson 2011-2014."
-   $ECHO "Released under the term of the GPL v3 Licence (more details on http://perso.crans.org/besson/LICENSE.html)."
+   $ECHO "$BIN v$version : Copyrights: (c) Lilian Besson 2011-2021."
+   $ECHO "Released under the term of the GPL v3 Licence (more details on https://perso.crans.org/besson/LICENSE.html)."
    $ECHO "In particular, $BIN is provided WITHOUT ANY WARANTY."
    exit 0
   ;;

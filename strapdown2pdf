@@ -34,7 +34,7 @@ AUTOTEX="autotex batchmode"
 quiet="false"
 sign="false"
 keep="false"
-discrete="false"
+discrete="true"
 htm="false"
 nocolor="false"
 
@@ -77,7 +77,7 @@ for arg in "$@"; do
 			echo -e "    ${yellow}-s|-sign${white}		sign the produce PDF document with GnuPG (thanks to PDFCompress)."
 			echo -e "    ${yellow}-n|-nocolor${white}		remove ANSI colors from the output. ${cyan}"'New!'
 			echo -e "${white}"
-			echo -e "strapdown2pdf v$version : Copyrights: (c) Lilian Besson 2011-2015."
+			echo -e "strapdown2pdf v$version : Copyrights: (c) Lilian Besson 2011-2021."
 			echo -e "Released under the term of the GPL v3 Licence (more details on https://perso.crans.org/besson/LICENSE.html)."
 			echo -e "In particular, strapdown2pdf is provided WITHOUT ANY WARANTY."
 			exit 0
@@ -169,6 +169,8 @@ StrapDown2PDF() {
 	# Now we have a pure Markdown file (at least we hope)
 
 	title="$(grep -o -m 1 "<title>[^<]*</title>" "${input}" | grep -o ">.*<" | sed s/">"/""/ | sed s/"<"/""/)"
+	titleYAML="$(grep -o -m 1 "title: [^$]*" "${input}" | sed s/"title: "/""/)"
+	title="${title:-$titleYAML}"
 	# New: if the title is not in the file, use the filename !
 	defaulttitle="$(echo -e "${name}" | tr _ ' ')"
 	title="${title:-$defaulttitle}"

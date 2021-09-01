@@ -791,7 +791,7 @@ function lessPDF() {
     done
 }
 
-eval "$(/bin/lesspipe)"
+eval "$(/usr/bin/lesspipe)"
 # Man visual
 function Man() { yelp "man:$@" ; }
 
