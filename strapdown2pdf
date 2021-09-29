@@ -187,7 +187,7 @@ StrapDown2PDF() {
 	# OLD Convert md -> tex with lunamark (in /tmp/, as always)
 	# lunamark -Xhash_enumerators -t latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
 
-	# NEw Convert md -> tex with pandoc (in /tmp/, as always)
+	# NEW Convert md -> tex with pandoc (in /tmp/, as always)
 	pandoc --to latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
 
 	# Because we are proud of this script
