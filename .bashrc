@@ -304,7 +304,7 @@ PROMPT_COMMAND=my_prompt_command
 export PROMPT_COMMAND="${PROMPT_COMMAND}; history -a"   # only writes to the history, does not load more commands from others running sessions
 
 # Add to the $PATH
-export PATH="$HOME"/bin/:"$PATH":"$HOME"/.local/bin/:"$HOME"/.ConkyWizardTheme/scripts/:"$HOME"/.screenlayout/:$HOME/bin/shell-functools/ft/
+export PATH="$HOME"/bin/:"$PATH":"$HOME"/.local/bin/:$HOME/bin/shell-functools/ft/
 # Add "$HOME"/bin if needed (but only if needed, having one directory twice in $PATH is durty!
 
 export RLWRAP_HOME="$HOME"

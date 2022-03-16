@@ -28,7 +28,7 @@
 #     only for MathJax flavored maths formulas, which are all copied in the .tex with escaped $ and { : \{ and \$ every where :(
 #
 #
-version='0.9.3'
+version='0.9.4'
 AUTOTEX="autotex batchmode"
 
 quiet="false"
@@ -206,6 +206,13 @@ StrapDown2PDF() {
 	# Apparently, I have been able to remove all weird spaced math LaTeX code in the input file ...
 
 	# FIXME: here we should also try to improve the LaTeX math code preservation
+		# | sed s/'\\_'/'_'/g \
+		# | sed s/'\\_{'/'_{'/g \
+		# | sed s/'\\_'/'_'/g \
+		# | sed s/'\\emph'/''/g \
+		# | sed 's/\\&/\&/g' \
+		# | sed s/'\\{'/'{'/g \
+		# | sed s/'\\}'/'}'/g \
 	cat "${name}".tex~ \
 		| sed s/'\\\$'/$/g \
 		| sed s/'\\^'/'^'/g \
@@ -213,20 +220,13 @@ StrapDown2PDF() {
 		| sed s/'\\char62{}'/'>'/g \
 		| sed s/'\\char60{}'/'<'/g \
 		| sed s/'\\char126{}'/'\~'/g \
-		| sed s/'\\{'/'{'/g \
-		| sed s/'\\}'/'}'/g \
-		| sed s/'\\_'/'_'/g \
-		| sed s/'\\_{'/'_{'/g \
-		| sed s/'\\_'/'_'/g \
-		| sed s/'\\emph'/''/g \
-		| sed 's/\\&/\&/g' \
 		| sed s/'\^{}'/'^'/g \
-		| sed s/'\"\([^"]*\)\"'/'« \1 »'/g \
-		| sed s/'\([A-Za-z]\)_\([A-Za-z]\)'/'\1\\_\2'/g \
 		| sed s_'\(\\href{http[^}]*}\){\([^} ]*\.[^} ]*\)}'_'\1{\\texttt{\2}}'_g \
 		| sed s/'\(\\[a-z]*section\){'/'\1*{'/g \
-		| sed s/'\\_'/'_'/g \
 		>> "${name}".tex || exit 16
+		# | sed s/'\([A-Za-z]\)_\([A-Za-z]\)'/'\1\\_\2'/g \
+		# | sed s/'\"\([^"]*\)\"'/'« \1 »'/g \
+		# | sed s/'\\_'/'_'/g \
 		# FIXME Add '\([^}]*\)' between on the left and right on {\([^} ]*\.[^} ]*\)} after { and before } ?
 
 	# And a final line to say "Compiled from HTML/MarkDown with StrapDown.js to PDF with ..."
