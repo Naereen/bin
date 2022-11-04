@@ -157,15 +157,15 @@ StrapDown2PDF() {
 	# Remove HTML only lines (typically, the first one and the 4 last ones),
 	grep -v "^<" "$input" \
 		| sed s/'\\\\'/'\\\\\\\\'/g \
-		| sed s/'\\_'/'\\\\\\_'/g \
-		| sed s/'`_`'/'`\\\\_`'/g \
 		| sed s/'`\\`'/'`\\\\`'/g \
 		| sed s/'`\\\\`'/'`\\\\\\\\`'/g \
 		| sed s/'`\$`'/'`\\\\$`'/g \
 		| sed s/'`\$\$`'/'`\\\\$$`'/g \
-		| sed s/'`\*`'/'`\\*`'/g \
-		| sed s/'`\*\*`'/'`\\*\\*`'/g \
 		> /tmp/"${name}".md
+		#| sed s/'\\_'/'\\\\\\_'/g \
+		#| sed s/'`_`'/'`\\\\_`'/g \
+		#| sed s/'`\*`'/'`\\*`'/g \
+		#| sed s/'`\*\*`'/'`\\*\\*`'/g \
 	# Now we have a pure Markdown file (at least we hope)
 
 	title="$(grep -o -m 1 "<title>[^<]*</title>" "${input}" | grep -o ">.*<" | sed s/">"/""/ | sed s/"<"/""/)"
