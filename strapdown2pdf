@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # By: Lilian BESSON
 # Email: Lilian.BESSON[AT]crans[DOT]org
-# Date: 23-02-2021
+# Date: 01-04-2023
 # Web: https://perso.crans.org/besson/bin/strapdown2pdf
 # Web2: https://lbesson.bitbucket.org/strapdown2pdf.html
 #
@@ -188,7 +188,8 @@ StrapDown2PDF() {
 	# lunamark -Xhash_enumerators -t latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
 
 	# NEW Convert md -> tex with pandoc (in /tmp/, as always)
-	pandoc --to latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
+	#pandoc --to latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
+        pandoc --verbose --filter ~/bin/minted-filter-for-pandoc.py --read=markdown --to latex --preserve-tabs --listings --highlight-style=pygments -o "${name}".tex~ /tmp/"${name}".md || exit 21
 
 	# Because we are proud of this script
 	echo -e "%% -*- coding:utf8; mode:latex -*-\n%% LaTeX file automatically generated with [strapdown2pdf](https://bitbucket.org/lbesson/bin/src/master/strapdown2pdf)" > "${name}".tex
