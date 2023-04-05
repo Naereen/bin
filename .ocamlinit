@@ -1,0 +1,38 @@
+(* Added by OPAM. *)
+let () =
+  try Topdirs.dir_directory (Sys.getenv "OCAML_TOPLEVEL_PATH")
+  with Not_found -> ()
+;;
+
+(** (c) Lilian Besson 2013. *)
+let version = Sys.ocaml_version;;
+let _version = int_of_string (String.make 1 version.[0]);;
+
+let ( !> ) = Sys.command;;
+
+(* https://github.com/ocaml/ocaml/blob/12f812abcd46a818cd561e686210cec90edf0fec/stdlib/list.ml#L62 *)
+let rec _init i last f =
+  if i > last then []
+  else if i = last then [f i]
+  else
+    let r1 = f i in
+    let r2 = f (i+1) in
+    r1 :: r2 :: _init (i+2) last f
+;;
+
+let list_init len f =
+  if len < 0 then invalid_arg "List.init" else
+  _init 0 (len - 1) f
+;;
+
+(** Merci à Nicolas Pécheux pour ce boût de code qui marche très bien ! 05-04-2023 *)
+module List = struct
+  include List
+  let init = list_init
+end
+
+#warnings "+a-4";;
+(* ## added by OPAM user-setup for ocamltop / base ## 3ec62baf6f9c219ae06d9814069da862 ## you can edit, but keep this line *)
+#use "topfind";;
+(* ## end of OPAM user-setup addition for ocamltop / base ## keep this line *)
+ 
