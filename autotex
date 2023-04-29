@@ -36,6 +36,7 @@ NOANSI='false'
 readonly icon="-i $(ls -H -- /usr/share/icons/*/*/*/*x-tex*svg | uniq | head -n1) "
 readonly NOTIFY="notify-send -t 10000 $icon autoTeX_v$version"
 pdflatex="pdflatex"
+#pdflatex="lualatex"  # TODO does it work too?
 readonly logfile=/tmp/autotex.log
 readonly MAXINCLUDEDFILES=200
 
@@ -48,7 +49,7 @@ case "$1" in
 		shift
 	;;
     -noansi )
-        # Use https://bitbucket.org/lbesson/bin/src/master/.color.sh to disable my colors in Bash scripts
+        # Use https://bitbucket.org/lbesson/bin/src/master/.nocolor.sh to disable my colors in Bash scripts
         [ -f ~/.nocolor.sh ] && . ~/.nocolor.sh
         NOANSI='true'
         pdflatex="/usr/bin/pdflatex -synctex=1 -file-line-error -interaction=errorstopmode"
