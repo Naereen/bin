@@ -4,7 +4,7 @@
 # License: GPLv3
 # Online: https://perso.crans.org/besson/bin/CP
 # Online(2): https://bitbucket.org/lbesson/bin/src/master/CP
-# Date: 24-02-2021
+# Date: 29-04-2023
 #
 # A small wrapper around the output of the 'rsync' command, adding colors for interesting parts.
 # Can be save to ~/bin/CP for example (or anywhere in your path).
@@ -16,7 +16,7 @@
 # - follow your .gitignore files to exclude files untracked by your current Git folder (if it exists)
 # - WARNING: this means that a well written .gitignore for LaTeX projects will NOT send the PDF!
 # - it pretty prints in full ANSI colors to highlight different information of rsync!
-# - notify-send when copy is done!
+# - optional: notify-send when copy is done! (just uncomment last line)
 # - logs the command to /tmp/CP.log, in case you want to find again what you sent 3h ago
 #
 # More features!
@@ -24,8 +24,8 @@
 #SHELL=/usr/bin/env /bin/bash
 #send_zamok:
 #	CP ./ ${Szam}bin/
-#
-version='.4'
+
+version='.5'
 LANG='en'
 
 # http://redsymbol.net/articles/unofficial-bash-strict-mode/
@@ -66,4 +66,4 @@ echo -e "CP: receiving the argument(s) ${@}" >> /tmp/CP.log
 	| GREP_COLOR="7;01;34" $GREP -P "100%|$"
 
 echo -e "\n${reset}${blue}CP sent successfully the files from input command $u${black}${@}${reset}"
-notify-send -- "CP successfully sent the files, from input command: ${@}" || echo "Failed to send notification" >/dev/stderr
+# notify-send "CP successfully sent the files, from input command: ${@}" || echo "Failed to send notification" >/dev/stderr
