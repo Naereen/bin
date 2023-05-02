@@ -2,7 +2,7 @@
 #
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 10-06-2018
+# Date: 02-05-2023
 #
 # A first try to automatize the selection of the "next" episode in your current TV serie.
 #
@@ -11,7 +11,7 @@
 #
 # A bash completion file is available (https://perso.crans.org/besson/bin/series.sh.bash_completion)
 #
-version='0.8'
+version='0.8.1'
 myname="$(basename "$0")"
 
 # If possible, use ~/.color.sh (https://perso.crans.org/besson/bin/.color.sh)
@@ -105,10 +105,10 @@ echo -e "${blue}I am now in $magenta'$(pwd -P)'$white\n"
 # Find meta data about the possible next episode(s).
 #
 currents=$(find . -type f -iname current_'*')
-[ "0$?" != "00" ] && echo -e "${red} Error:$white no ${black}current_$white file have been found...$reset$white"
+[ "0$?" != "00" ] && echo -e "${red} Error:$white no ${black}current_${white} file have been found...$reset$white"
 
 for cu in ${currents:-$dflt}; do
-    echo -e "${blue}I found '$magenta$cu$white' as possible ${black}current_$white file."
+    echo -e "${blue}I found '$magenta$cu$white' as possible ${black}current_${white} file."
 
     cu2=$(echo "$cu" | tr '[:upper:]' '[:lower:]')
     cu2=${cu2#./current_}
@@ -161,7 +161,7 @@ for cu in ${currents:-$dflt}; do
             e=${cu2#s[0-9]*e}
             e=${e#0*}
             if [[ "${d}${e}" != "" ]]; then
-                echo -e "For « ${u}${cyan}${serie}${white}${U} », the last watched episode is ${Black}${red}Season ${d:-?}${white}, ${magenta}Episode ${e:-?}${Default}${white}."
+                echo -e "For « ${u}${cyan}${serie}${white}${U} », the last watched episode is ${red}Season ${d:-?}${white}, ${magenta}Episode ${e:-?}${Default}${white}."
             fi
         done
     }
