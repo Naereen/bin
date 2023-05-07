@@ -1,6 +1,6 @@
 #!/bin/bash
 #	.bashrc for GNU Bash v4+
-#	(c) 2011-2021 Lilian BESSON
+#	(c) 2011-2023 Lilian BESSON
 #	Cr@ns: https://perso.crans.org/besson
 #	On Bitbucket:	https://bitbucket.org/lbesson/home/
 #
@@ -494,10 +494,14 @@ pidof gpg-agent>/dev/null || eval $(gpg-agent --daemon) || echo "Failed to conne
 # From https://rustup.rs/
 source "$HOME/.cargo/env"
 
+# From https://ocaml.org/docs/up-and-running
+eval $(opam env)
+
 ##############################################################################
-# (c) 2011-2021 Lilian BESSON
+# (c) 2011-2023 Lilian BESSON
 # Cr@ns: https://perso.crans.org/besson
 # On Bitbucket: https://bitbucket.org/lbesson/bin/
 #
 # Put a blank line after
 #  to autorize echo "newentry" >> "$HOME"/.bashrc
+
