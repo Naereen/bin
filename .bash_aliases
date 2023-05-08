@@ -211,6 +211,9 @@ function ocamls() {
 # TODO this requires https://github.com/andrewray/iocaml/#installation (and maybe some local hack to make it work)
 # alias jupyter-iocaml='DYLD_LIBRARY_PATH=/home/lilian/.opam/4.04.2/lib/stublibs/ && eval $(opam config env) && jupyter notebook --Session.key="b\"\""'
 
+# Export this parameter, see https://ocaml.org/docs/debugging#printing-a-back-trace-for-an-uncaught-exception
+export OCAMLRUNPARAM=b
+
 # Convert Jupyter notebooks
 alias j='jupyter-notebook'  # might be changed
 alias ju='jupyter-notebook'
