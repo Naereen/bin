@@ -205,7 +205,7 @@ for cu in ${currents:-$dflt}; do
     fi
     if type gmusicbrowser &>/dev/null; then
         echo -e "${blue}Pausing GMusicBrowser (with the 'gmusicbrowser -cmd' CLI tool)...${white}"
-        pidof gmusicbrowser &>/dev/null && gmusicbrowser -cmd Pause || echo -e "${red}Warning: GMusicBrowser not playing.${white}"
+        gmusicbrowser -cmd Pause || echo -e "${red}Warning: GMusicBrowser not playing.${white}"
     fi
 
     # Idée : on pourrait sauvegarder la position de la lecture, afin de pouvoir reprendre exactement là où on en était.
