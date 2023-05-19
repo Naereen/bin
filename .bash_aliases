@@ -477,15 +477,13 @@ function rmLaTeX() {
 function tex2pdf() {
     for i in "$@"; do
         i="${i//.pdf/.tex}"
-        ( pdflatex "$i" && pdflatex "$i" && mv -f "${i%tex}log" "${i%tex}aux" "${i%tex}synctex.gz" "${i%tex}out" "${i%tex}vrb" /tmp/ 2>/dev/null ) || (clear ; chktex "$i" ; alert )
-        mv -f "${i%tex}snm" "${i%tex}nav" "${i%tex}toc" /tmp/ 2>/dev/null
+        ( pdflatex "$i" && pdflatex "$i" && mv -f "${i%tex}log" "${i%tex}aux" "${i%tex}synctex.gz" "${i%tex}out" "${i%tex}vrb" "${i%tex}listing" "${i%tex}records" "${i%tex}snm" "${i%tex}nav" "${i%tex}toc" /tmp/ 2>/dev/null ) || (chktex "$i" ; alert )
     done
 }
 function TEX2PDF() {
     for i in "$@"; do
         i="${i//.pdf/.tex}"
-        ( pdflatex "$i" && pdflatex "$i" && mv -f "${i%tex}log" "${i%tex}aux" "${i%tex}synctex.gz"* "${i%tex}out" "${i%tex}vrb" /tmp/ 2>/dev/null ) || (clear ; chktex "$i" ; alert )
-        mv -f "${i%tex}snm" "${i%tex}nav" "${i%tex}toc" /tmp/ 2>/dev/null
+        ( pdflatex "$i" && pdflatex "$i" && mv -f "${i%tex}log" "${i%tex}aux" "${i%tex}synctex.gz" "${i%tex}out" "${i%tex}vrb" "${i%tex}listing" "${i%tex}records" "${i%tex}snm" "${i%tex}nav" "${i%tex}toc" /tmp/ 2>/dev/null ) || (clear ; chktex "$i" ; alert )
         PDFCompress "${i%tex}pdf"
     done
 }
