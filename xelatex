@@ -16,7 +16,7 @@ nbcols=${COLUMNS:-194}
 echo -e "${reset}$u$yellow .: Starting: PDF LaTeX :.$reset"
 
 # | fmt -w ${nbcols} \
-( /usr/bin/xelatex -synctex=1 -file-line-error $* 2>&1 ) \
+( /usr/bin/xelatex -shell-escape -synctex=1 -file-line-error $* 2>&1 ) \
     | $GREP -vP "^\s*((\[|\]|\(|\))\s*)+$" \
     | GREP_COLOR="01;35"    $GREP -P "^[dD]ocument [cC]lass.*$|$" \
     | GREP_COLOR="01;34"    $GREP -P "^<[^>]+>|$" \
