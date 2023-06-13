@@ -19,7 +19,7 @@ Généralement, chaque script contient une description de sa fonction, avec parf
 Tout est distribué sous les termes de la [Licence GPLv3](http://perso.crans.org/besson/LICENSE.html) (document en anglais).
 
 #### Copyright ?
-Sauf contre-indications, tous les documents stockés dans ce dépôt sont © [Lilian Besson](https://bitbucket.org/lbesson), 2011-2017.
+Sauf contre-indications, tous les documents stockés dans ce dépôt sont © [Lilian Besson](https://bitbucket.org/lbesson), 2011-2023.
 
 ---
 
@@ -43,7 +43,7 @@ and sometimes there is even details on which option you can give to the script !
 Everything here is publicly released under the term of the [GPLv3 Licence](http://perso.crans.org/besson/LICENSE.html).
 
 #### Copyright ?
-Without other indications, every documents stored here are © [Lilian Besson](https://bitbucket.org/lbesson), 2011-2018.
+Without other indications, every documents stored here are © [Lilian Besson](https://bitbucket.org/lbesson), 2011-2023.
 
 [![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://bitbucket.org/lbesson/bin/commits/)
 [![Analytics](https://ga-beacon.appspot.com/UA-38514290-17/bitbucket.org/lbesson/bin/README.md?pixel)](https://bitbucket.org/lbesson/bin)
