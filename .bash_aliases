@@ -938,13 +938,15 @@ function GpgDecrypt() { gpg --decrypt --yes --no-batch --use-agent "$@"; }
 # Pour que ssh-add ne memorise la passphrase que pendant 30 minutes
 alias ssh-add='ssh-add -t 1800'
 
+#alias youtube-dl="yt-dlp"
 # youtube-dl shortcuts (there is also youtube-playlist.sh and youtube-albums.sh)
 function youtube() {
     for i in "$@"; do
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
         echo -e "${green}Launching youtube-dl on ${white}${u}${arg}${U} ${black}(with the good options to download ${cyan}video${black} and ${cyan}mp3${black}).${white}"
-        youtube-dl --restrict-filenames --youtube-skip-dash-manifest --output "%(title)s.%(ext)s" --extract-audio --console-title --keep-video --audio-format=mp3 --no-overwrites -- "$arg"
+        #youtube-dl --restrict-filenames --youtube-skip-dash-manifest --output "%(title)s.%(ext)s" --extract-audio --console-title --keep-video --audio-format=mp3 --no-overwrites -- "$arg"
+        yt-dlp --restrict-filenames --youtube-skip-dash-manifest --output "%(title)s.%(ext)s" --extract-audio --console-title --keep-video --audio-format=mp3 --no-overwrites -- "$arg"
     done
 }
 function youtube-mp3() {
@@ -952,7 +954,8 @@ function youtube-mp3() {
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
         echo -e "${green}Launching youtube-dl on ${white}${u}${arg}${U} ${black}(with the good options to download just the ${cyan}mp3${black}).${white}"
-        youtube-dl --restrict-filenames --youtube-skip-dash-manifest --format worst --output "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 --no-overwrites -- "$arg"
+        #youtube-dl --restrict-filenames --youtube-skip-dash-manifest --format worst --output "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 --no-overwrites -- "$arg"
+        yt-dlp --restrict-filenames --youtube-skip-dash-manifest --format worst --output "%(title)s.%(ext)s" --extract-audio --console-title --audio-format=mp3 --no-overwrites -- "$arg"
     done
 }
 alias y='youtube-mp3'
