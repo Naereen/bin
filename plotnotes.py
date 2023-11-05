@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8; mode: python -*-
 """ A script to automatically plot notes for corrected written exams.
 
@@ -29,10 +29,10 @@ csv_file = sys.argv[1]
 csv_name = csv_file[:-3]
 
 #: Load in the csv file
-csv_file_object = csv.reader(open(csv_file, 'rb'))
+csv_file_object = csv.reader(open(csv_file, 'r'))
 
-#: Skip the fist line as it is a header
-header = csv_file_object.next()
+# #: Skip the fist line as it is a header
+# header = csv_file_object.next()
 
 data = []
 for row in csv_file_object:
@@ -41,7 +41,7 @@ for row in csv_file_object:
 data = np.array(data)
 
 #: Just the notes
-notes = data[::, 1].astype(np.float)
+notes = data[::, 1].astype(np.float64)
 nbnotes = np.size(notes)
 
 #: Sort decreasingly
@@ -52,48 +52,48 @@ notes = notes[ind[::-1]]
 #: The grades are between 0 and this value. Default is the French convention: 20.
 noteMax = 20
 
-###################################################################
-# I want now to produce annex files
-f = file(csv_name + "table", 'w')
-f.write("%% Notes from '%s'" % f.name)
-for i in range(nbnotes):
-    f.write("\n%s & %g/%i \\\\" % (data[i, 0], notes[i], noteMax))
-    print("I wrote <blue>'%s & %g/%i \\\\'<white> in <u>%s<U>..." % (data[i, 0], notes[i], noteMax, f.name))
+# ###################################################################
+# # I want now to produce annex files
+# f = open(csv_name + "table", 'w')
+# f.write("%% Notes from '%s'" % f.name)
+# for i in range(nbnotes):
+#     f.write("\n%s & %g/%i \\\\" % (data[i, 0], notes[i], noteMax))
+#     print("I wrote <blue>'%s & %g/%i \\\\'<white> in <u>%s<U>..." % (data[i, 0], notes[i], noteMax, f.name))
 
-minimale = np.min(notes)
-f = file(csv_name + "minimale", 'w')
-f.write("%g/%i" % (minimale, noteMax))
-print("I wrote the value of minimale (<cyan>%g<white>) to <u>%s<U>..." % (minimale, f.name))
+# minimale = np.min(notes)
+# f = open(csv_name + "minimale", 'w')
+# f.write("%g/%i" % (minimale, noteMax))
+# print("I wrote the value of minimale (<cyan>%g<white>) to <u>%s<U>..." % (minimale, f.name))
 
-argminimale = data[np.argmin(notes), 0]
-f = file(csv_name + "argminimale", 'w')
-f.write("%s" % argminimale)
-print("I wrote the value of argminimale (<cyan>%s<white>) to <u>%s<U>..." % (argminimale, f.name))
+# argminimale = data[np.argmin(notes), 0]
+# f = open(csv_name + "argminimale", 'w')
+# f.write("%s" % argminimale)
+# print("I wrote the value of argminimale (<cyan>%s<white>) to <u>%s<U>..." % (argminimale, f.name))
 
-maximale = np.max(notes)
-f = file(csv_name + "maximale", 'w')
-f.write("%g/%i" % (maximale, noteMax))
-print("I wrote the value of maximale (<cyan>%g<white>) to <u>%s<U>..." % (maximale, f.name))
+# maximale = np.max(notes)
+# f = open(csv_name + "maximale", 'w')
+# f.write("%g/%i" % (maximale, noteMax))
+# print("I wrote the value of maximale (<cyan>%g<white>) to <u>%s<U>..." % (maximale, f.name))
 
-argmaximale = data[np.argmax(notes), 0]
-f = file(csv_name + "argmaximale", 'w')
-f.write("%s" % argmaximale)
-print("I wrote the value of argmaximale (<cyan>%s<white>) to <u>%s<U>..." % (argmaximale, f.name))
+# argmaximale = data[np.argmax(notes), 0]
+# f = open(csv_name + "argmaximale", 'w')
+# f.write("%s" % argmaximale)
+# print("I wrote the value of argmaximale (<cyan>%s<white>) to <u>%s<U>..." % (argmaximale, f.name))
 
-moyenne = np.mean(notes)
-f = file(csv_name + "moyenne", 'w')
-f.write("%2.2g/%i" % (moyenne, noteMax))
-print("I wrote the value of moyenne (<cyan>%2.2g<white>) to <u>%s<U>..." % (moyenne, f.name))
+# moyenne = np.mean(notes)
+# f = open(csv_name + "moyenne", 'w')
+# f.write("%2.2g/%i" % (moyenne, noteMax))
+# print("I wrote the value of moyenne (<cyan>%2.2g<white>) to <u>%s<U>..." % (moyenne, f.name))
 
-ecarttype = np.std(notes)
-f = file(csv_name + "ecarttype", 'w')
-f.write("%2.2g" % ecarttype)
-print("I wrote the value of ecarttype (<cyan>%2.2g<white>) to <u>%s<U>..." % (ecarttype, f.name))
+# ecarttype = np.std(notes)
+# f = open(csv_name + "ecarttype", 'w')
+# f.write("%2.2g" % ecarttype)
+# print("I wrote the value of ecarttype (<cyan>%2.2g<white>) to <u>%s<U>..." % (ecarttype, f.name))
 
-variance = np.var(notes)
-f = file(csv_name + "variance", 'w')
-f.write("%2.2g" % variance)
-print("I wrote the value of variance (<cyan>%2.2g<white>) to <u>%s<U>..." % (variance, f.name))
+# variance = np.var(notes)
+# f = open(csv_name + "variance", 'w')
+# f.write("%2.2g" % variance)
+# print("I wrote the value of variance (<cyan>%2.2g<white>) to <u>%s<U>..." % (variance, f.name))
 
 ###################################################################
 # I want now to plot some graphics about the datas, with matplotlib
