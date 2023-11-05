@@ -964,7 +964,8 @@ function youtube-video() {
         arg="$(echo -e "$i" | grep -o v%3D[a-zA-Z0-9_-]*%26 | sed s/v%3D// | sed s/%26// )"
         if [ "X$arg" = "X" ]; then arg="$i"; fi
         echo -e "${green}Launching youtube-dl on ${white}${u}${arg}${U} ${black}(with the good options to download just the ${cyan}video${black}).${white}"
-        youtube-dl --restrict-filenames --youtube-skip-dash-manifest --output "%(title)s.%(ext)s" --console-title --no-overwrites -- "$arg"
+        #youtube-dl --restrict-filenames --youtube-skip-dash-manifest --output "%(title)s.%(ext)s" --console-title --no-overwrites -- "$arg"
+        yt-dlp --restrict-filenames --youtube-skip-dash-manifest --output "%(title)s.%(ext)s" --console-title --no-overwrites -- "$arg"
     done
 }
 
