@@ -90,7 +90,7 @@ makenew_dialog() {
 ### Print the old one
 printold() {
 	echo -e " Votre message du jour ${green}courant${white} est :"
-	echo -e "${blue}`cat $HOME/motd`${white}"
+	echo -e "\n${blue}`cat $HOME/motd`${white}"
 #	cat $HOME/motd
 }
 

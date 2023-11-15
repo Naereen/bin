@@ -476,7 +476,7 @@ trap _exit EXIT
 # Message of the Day
 if [ -f "$HOME/motd" ]; then
     [ "X$(cat "$HOME/motd")" = "X" ] && echo -e "No motd :(" > "$HOME/motd"
-    echo -e " ${white}${u}Message du jour${U} (from ${black}$HOME/motd${white}):${blue}$(cat "$HOME/motd")${white}"
+    echo -e " ${white}${u}Message du jour${U} (from ${black}$HOME/motd${white}):\n${blue}$(cat "$HOME/motd")${white}"
 fi
 
 pidof gpg-agent>/dev/null || eval $(gpg-agent --daemon) || echo "Failed to connect to gpg-agent daemon ('eval \$(gpg-agent --daemon')"
