@@ -41,7 +41,10 @@ for row in csv_file_object:
 data = np.array(data)
 
 #: Just the notes
-notes = data[::, 1].astype(np.float64)
+try:
+    notes = data[::, 1].astype(np.float64)
+except IndexError:
+    notes = data[::, 0].astype(np.float64)
 nbnotes = np.size(notes)
 
 #: Sort decreasingly
