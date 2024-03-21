@@ -1,6 +1,6 @@
 #!/bin/bash
 #	.bashrc for GNU Bash v4+
-#	(c) 2011-2023 Lilian BESSON
+#	(c) 2011-2024 Lilian BESSON
 #	Cr@ns: https://perso.crans.org/besson
 #	On Bitbucket:	https://bitbucket.org/lbesson/home/
 #
@@ -181,7 +181,7 @@ if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)} \[\033[01;32m\] \u @ \h \[\033[00m\]:\[\033[01;34m\] \w\[\033[00m\]\n>>> '
 else
     # New (March 2017), using a few UTF-8 symbols to have a pretty PS1 prompt!
-    PS1='\[\e[01;32m\]⏰ \t${debian_chroot:+($debian_chroot)}\[\e[01;34m\]  👨 \u\[\e[01;37m\] @\[\e[01;36m\] 💻 \h\[\e[01;37m\] #\[\e[01;31m\]${LINENO} \[\e[01;37m\][ \w ] ✔ \n➤➤➤ '
+    PS1='\[\e[01;32m\]⏰ \t${debian_chroot:+($debian_chroot)}\[\e[01;34m\]  👨 \u\[\e[01;37m\] @\[\e[01;36m\] 💻 \h\[\e[01;37m\] #\[\e[01;31m\]${LINENO} \[\e[01;37m\][ \w ] ok \n>>> '
 fi
 unset color_prompt force_color_prompt
 
@@ -284,12 +284,12 @@ red_if_error_prompt_command() {
     ANSWER="$?"
     if [ "X${ANSWER}" = "X0" ]; then
         # PS1="${PS1OLD%➤➤➤ }\[\e[01;37m\]➤➤➤ "
-        PS1="$(echo "$PS1" | sed s/'\\n.*'/'\\n\\[\\e[01;37m\\]➤➤➤ '/g)"
-        PS1="${PS1//✗/✔}"
+        PS1="$(echo "$PS1" | sed s/'\\n.*'/'\\n\\[\\e[01;37m\\]>>> '/g)"
+        PS1="${PS1//nope/ok}"
     else
         # PS1="${PS1OLD%➤➤➤ }\[\e[01;31m\]Error:$ANSWER\[\e[01;37m\]➤➤➤ "
-        PS1="$(echo "$PS1" | sed s/'\\n.*'/'\\n\\[\\e[01;31m\\]Error:$ANSWER\\[\\e[01;37m\\]➤➤➤ '/g)"
-        PS1="${PS1//✔/✗}"
+        PS1="$(echo "$PS1" | sed s/'\\n.*'/'\\n\\[\\e[01;31m\\]Error:$ANSWER\\[\\e[01;37m\\]>>> '/g)"
+        PS1="${PS1//ok/nope}"
         printf "\a"
     fi
 }
@@ -493,15 +493,15 @@ pidof gpg-agent>/dev/null || eval $(gpg-agent --daemon) || echo "Failed to conne
 
 # From https://rustup.rs/
 source "$HOME/.cargo/env"
+. "$HOME/.cargo/env"
 
 # From https://ocaml.org/docs/up-and-running
 eval $(opam env)
 
 ##############################################################################
-# (c) 2011-2023 Lilian BESSON
+# (c) 2011-2024 Lilian BESSON
 # Cr@ns: https://perso.crans.org/besson
 # On Bitbucket: https://bitbucket.org/lbesson/bin/
 #
 # Put a blank line after
 #  to autorize echo "newentry" >> "$HOME"/.bashrc
-
