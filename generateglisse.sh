@@ -2,20 +2,21 @@
 #
 # Author: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 16/06/2017
-# Web version: http://perso.crans.org/besson/bin/generateglisse.sh
+# Date: 01/05/2024
+# Web version: https://perso.crans.org/besson/bin/generateglisse.sh
+# Web version (2): https://github.com/Naereen/bin/src/master/generateglisse.sh
 # Web version (2): https://bitbucket.org/lbesson/bin/src/master/generateglisse.sh
 #
 # Auto generate an 'index.html' page to show photos with glisse.js
-# Also generate a 'index.htm' page, which works on Windows by fetching the CSS and JS online (http://perso.crans.org/besson/_static/) and not locally (http://0.0.0.0/).
+# Also generate a 'index.htm' page, which works on Windows by fetching the CSS and JS online (https://perso.crans.org/besson/_static/) and not locally (http://0.0.0.0/).
 #
 # FUTURE: use http://dimsemenov.com/plugins/magnific-popup/documentation.html#gallery instead, seems better.
 #
-# A demo is here : http://perso.crans.org/besson/generateglisse.sh/
-# Last version is here : http://perso.crans.org/besson/bin/generateglisse.sh
-# with stylesheets and templates is here : http://perso.crans.org/besson/bin/generateglisse/
+# A demo is here : https://perso.crans.org/besson/generateglisse.sh/
+# Last version is here : https://perso.crans.org/besson/bin/generateglisse.sh
+# with stylesheets and templates is here : https://perso.crans.org/besson/bin/generateglisse/
 #
-version='1.1'
+version='1.2'
 
 GenerateGlisse() {
     # Go to the directory.
@@ -40,6 +41,7 @@ GenerateGlisse() {
     targets=$(find . -maxdepth 1 -type d -iname '*'[A-Za-z]'*' 2>/dev/null)
 
     targets=${targets//' '/%20}
+    targets=${targets//'?'/%3F}
     targets="${targets//'&'/&amp;}"
     echo -e "$red$targets$white" > /dev/stderr
 
@@ -56,6 +58,7 @@ GenerateGlisse() {
 
         for d in $targets; do
             dossier=${d//'%20'/ }
+            dossier=${dossier//'%3F'/?}
             dossier=${dossier//'&amp;'/&}
 
             subphotos=$(find "${dossier}" -maxdepth 1 -type f -iname '*'.jpg -o -iname '*'.png -o -iname '*'.gif -o -iname '*'.jpeg 2>/dev/null)
@@ -100,6 +103,7 @@ GenerateGlisse() {
 
     if [ "X${targets//'%20'/}" != "X" ]; then
         targets="${targets//' '/%20}"
+        targets="${targets//'?'/%3F}"
         targets="${targets//'&'/&amp;}"
         nombre=$(echo "$targets" | grep -c -o "\(jpg\|JPG\|png\|PNG\|gif\|GIF\|jpeg\|JPEG\)")
 
@@ -115,6 +119,7 @@ GenerateGlisse() {
 
         for i in $targets; do
             title=${i//'%20'/ }
+            title=${title//'%3F'/?}
 
             # Other metadata about the file.
             # metadata=$(file -b -p "$title")
@@ -180,11 +185,13 @@ GenerateGlisse() {
 
 targets=$(find . -type d)
 targets=${targets//' '/%20}
+targets=${targets//'?'/%3F}
 echo -e "${blue}${targets}${white}" | less -r
 
 # To find every concerned directory
 for i in $targets; do
     direction=${i//'%20'/ }
+    direction=${direction//'%3F'/?}
     echo -e "For the directory ${blue}'${direction}'${white}........."
 
     ( time GenerateGlisse "${direction}" ) 2>&1 | tee "${direction}/generateglisse.log"
