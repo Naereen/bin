@@ -171,6 +171,7 @@ StrapDown2PDF() {
 	title="$(grep -o -m 1 "<title>[^<]*</title>" "${input}" | grep -o ">.*<" | sed s/">"/""/ | sed s/"<"/""/)"
 	titleYAML="$(grep -o -m 1 "title: [^$]*" "${input}" | sed s/"title: "/""/)"
 	title="${title:-$titleYAML}"
+	title="${title//-->/}"
 	# New: if the title is not in the file, use the filename !
 	defaulttitle="$(echo -e "${name}" | tr _ ' ')"
 	title="${title:-$defaulttitle}"
@@ -189,7 +190,7 @@ StrapDown2PDF() {
 
 	# NEW Convert md -> tex with pandoc (in /tmp/, as always)
 	#pandoc --to latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
-        pandoc --verbose --filter ~/bin/minted-filter-for-pandoc.py --read=markdown --to latex --preserve-tabs --listings --highlight-style=pygments -o "${name}".tex~ /tmp/"${name}".md || exit 21
+        pandoc --verbose --filter ~/bin/minted-filter-for-pandoc.py --read=markdown --to latex --preserve-tabs --variable tables --listings --highlight-style=pygments -o "${name}".tex~ /tmp/"${name}".md || exit 21
 
 	# Because we are proud of this script
 	echo -e "%% -*- coding:utf8; mode:latex -*-\n%% LaTeX file automatically generated with [strapdown2pdf](https://bitbucket.org/lbesson/bin/src/master/strapdown2pdf)" > "${name}".tex
