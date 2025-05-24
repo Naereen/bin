@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: Lilian BESSON, (C) 2015-oo
-# Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 10-06-2018.
+# Email: Lilian.BESSON[AT]crans[DOT]org
+# Date: 24-05-2025.
 # Web: https://bitbucket.org/lbesson/bin/src/master/mymake.sh
 #
 # A top-recursive 'make' command, with two awesome behaviors.
@@ -16,7 +16,7 @@
 #
 # Licence: MIT Licence (http://lbesson.mit-license.org).
 #
-version="1.0.1"
+version="1.0.2"
 returncode="0"  # If success, return 0
 datestarting="$(date "+%T - %D")"
 
@@ -114,7 +114,7 @@ if [ "X${JustBashCompletion}" = "Xtrue" ]; then
 fi
 
 # Working variables
-LogFile="$(tempfile)"
+LogFile="$(mktemp)"
 mv -f -- "${LogFile}" "${LogFile}_mymake.log"
 LogFile="${LogFile}_mymake.log"
 
