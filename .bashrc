@@ -1,9 +1,10 @@
 #!/bin/bash
-#	.bashrc for GNU Bash v4+
-#	(c) 2011-2024 Lilian BESSON
-#	Cr@ns: https://perso.crans.org/besson
-#	On Bitbucket:	https://bitbucket.org/lbesson/home/
-#
+# .bashrc for GNU Bash v6+
+# (c) 2011-2025 Lilian BESSON
+# Cr@ns: https://perso.crans.org/besson
+# On Bitbucket: https://bitbucket.org/lbesson/bin/
+# On GitHub: https://github.com/Naereen/bin/
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -499,9 +500,45 @@ source "$HOME/.cargo/env"
 eval $(opam env)
 
 ##############################################################################
-# (c) 2011-2024 Lilian BESSON
+# (c) 2011-2025 Lilian BESSON
 # Cr@ns: https://perso.crans.org/besson
 # On Bitbucket: https://bitbucket.org/lbesson/bin/
+# On GitHub: https://github.com/Naereen/bin/
 #
 # Put a blank line after
 #  to autorize echo "newentry" >> "$HOME"/.bashrc
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/home/lilian/.lmstudio/bin"
+
+# === Gemini API Key Setup ===
+GEMINI_KEY_FILE="$HOME/.gemini_api.key"
+
+# Check if the private key file exists and is readable
+if [ -f "$GEMINI_KEY_FILE" ] && [ -r "$GEMINI_KEY_FILE" ]; then
+    # Read the key from the file and export it as the environment variable
+    export GEMINI_API_KEY=$(cat "$GEMINI_KEY_FILE")
+    export GOOGLE_API_KEY=$(cat "$GEMINI_KEY_FILE")
+
+    # Optional: Print a confirmation message (you can remove this later)
+    # echo "Gemini API Key loaded successfully."
+fi
+# ============================
+
+
+# ============================
+# Variables Android pour Tauri/Rust
+export ANDROID_HOME=$HOME/Android/Sdk
+export NDK_HOME=$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk 2>/dev/null | sort -V | tail -n 1)
+
+# Mise à jour du PATH
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+# ============================
+
+
