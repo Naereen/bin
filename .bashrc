@@ -1,6 +1,6 @@
 #!/bin/bash
 # .bashrc for GNU Bash v6+
-# (c) 2011-2025 Lilian BESSON
+# (c) 2011-2026 Lilian BESSON
 # Cr@ns: https://perso.crans.org/besson
 # On Bitbucket: https://bitbucket.org/lbesson/bin/
 # On GitHub: https://github.com/Naereen/bin/
@@ -499,15 +499,6 @@ source "$HOME/.cargo/env"
 # From https://ocaml.org/docs/up-and-running
 eval $(opam env)
 
-##############################################################################
-# (c) 2011-2025 Lilian BESSON
-# Cr@ns: https://perso.crans.org/besson
-# On Bitbucket: https://bitbucket.org/lbesson/bin/
-# On GitHub: https://github.com/Naereen/bin/
-#
-# Put a blank line after
-#  to autorize echo "newentry" >> "$HOME"/.bashrc
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -529,16 +520,50 @@ if [ -f "$GEMINI_KEY_FILE" ] && [ -r "$GEMINI_KEY_FILE" ]; then
 fi
 # ============================
 
+# === ILaaS API Key Setup ===
+ILAAS_KEY_FILE="$HOME/.ilaas.key"
+
+# Check if the private key file exists and is readable
+if [ -f "$ILAAS_KEY_FILE" ] && [ -r "$ILAAS_KEY_FILE" ]; then
+    # Read the key from the file and export it as the environment variable
+    export ILAAS_API_KEY=$(cat "$ILAAS_KEY_FILE")
+
+    # Optional: Print a confirmation message (you can remove this later)
+    # echo "ILAAS API Key loaded successfully."
+fi
+# ============================
+
 
 # ============================
 # Variables Android pour Tauri/Rust
 export ANDROID_HOME=$HOME/Android/Sdk
 export NDK_HOME=$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk 2>/dev/null | sort -V | tail -n 1)
 
+# Variables Android pour CapacitorJS.com
+export CAPACITOR_ANDROID_STUDIO_PATH="/opt/android-studio/"
+
 # Mise à jour du PATH
+export PATH=$PATH:$ANDROID_HOME/build-tools/36.1.0/
 export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 # ============================
 
 
+
+# peon-ping quick controls
+alias peon="bash /home/lilian/.claude/hooks/peon-ping/peon.sh"
+[ -f /home/lilian/.claude/hooks/peon-ping/completions.bash ] && source /home/lilian/.claude/hooks/peon-ping/completions.bash
+
+# >>> quarto completions >>>
+[ -r "/home/lilian/.local/share/quarto-completions/quarto.bash" ] && . "/home/lilian/.local/share/quarto-completions/quarto.bash"
+# <<< quarto completions <<<
+
+##############################################################################
+# (c) 2011-2026 Lilian BESSON
+# Cr@ns: https://perso.crans.org/besson
+# On Bitbucket: https://bitbucket.org/lbesson/bin/
+# On GitHub: https://github.com/Naereen/bin/
+#
+# Put a blank line after
+#  to autorize echo "newentry" >> "$HOME"/.bashrc
