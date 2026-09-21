@@ -190,7 +190,7 @@ StrapDown2PDF() {
 
 	# NEW Convert md -> tex with pandoc (in /tmp/, as always)
 	#pandoc --to latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
-        pandoc --verbose --filter ~/bin/minted-filter-for-pandoc.py --read=markdown --to latex --preserve-tabs --variable tables --listings --highlight-style=pygments -o "${name}".tex~ /tmp/"${name}".md || exit 21
+        pandoc --verbose --filter ~/bin/minted-filter-for-pandoc.py --filter ~/bin/add-vertical-lines.lua --read=markdown --to latex --preserve-tabs --variable tables --listings --highlight-style=pygments -o "${name}".tex~ /tmp/"${name}".md || exit 21
 
 	# Because we are proud of this script
 	echo -e "%% -*- coding:utf8; mode:latex -*-\n%% LaTeX file automatically generated with [strapdown2pdf](https://bitbucket.org/lbesson/bin/src/master/strapdown2pdf)" > "${name}".tex
