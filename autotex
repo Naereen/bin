@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # By: Lilian BESSON
 # Email: Lilian.BESSON[AT]ens-cachan[DOT]fr
-# Date: 04-11-2016
+# Date: 21-09-2026
 #
 # autotex, a small wrapper around the input of pdflatex.
 # (http://perso.crans.org/besson/bin/autotex)
@@ -27,7 +27,7 @@
 # Example of a LaTeX2e template to use with autotex :
 # (http://perso.crans.org/besson/publis/latex/template.tex) (and .fr.tex and .en.tex)
 #
-readonly version='2.3'
+readonly version='2.4'
 NOANSI='false'
 
 # Use https://bitbucket.org/lbesson/bin/src/master/.color.sh to add colors in Bash scripts
@@ -99,6 +99,11 @@ autotexf() {
     policesize="${policesize:-11pt}"
     echo -e "PoliceSize: $green${policesize}$white" | tee -a $logfile
 
+    date="$(grep -- "%autotex% Date: " "${p}/${f}")"
+    date="${date#%autotex% Date: }"
+    date="${date:-\\today}"
+    echo -e "Date: $green${date}$white" | tee -a $logfile
+
     # Try to change the template regarding the language
     echo -e "Try to change the template regarding the language (default template is '~/template.tex')..." | tee -a $logfile
     echo -e "We have f='${f}', and {f%.fr.tex}.fr.tex='${f%.fr.tex}.fr.tex', and {f%.en.tex}.en.tex='${f%.en.tex}.en.tex'..." | tee -a $logfile
@@ -123,6 +128,8 @@ autotexf() {
     cat "$HOME"/$template \
     	| sed s/"scale=[0-9\.]*"/"scale=${scale}"/ \
         | sed s/"11pt"/"${policesize}"/ \
+        | sed "s#\\\\today{}#${date}#g" \
+        | sed "s#\\\\today#${date}#g" \
     	| sed s#"MonTitreAChangerViaAutoTeX"#"${title}"# \
     	| sed s/"MyFileNameToChangeWithAutoTex"/"${f%.tex}"/ \
     	> /tmp/$template

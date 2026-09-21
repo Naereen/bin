@@ -40,7 +40,10 @@ nocolor="false"
 
 scale="0.82"
 policesize="11"
-date_document="$(date)"
+date_document="$(LC_TIME=fr_FR.UTF-8 date '+%A %-d %B %Y')"
+date_document="${date_document^}"
+default_date_document="${date_document}"
+date_from_option="false"
 
 # $OPTARG can contain the argument of the option k (if specified with hvk: or hk:v for example)
 # while getopts vhqkmdsi option; do
@@ -95,6 +98,7 @@ for arg in "$@"; do
 			;;
 		--date=*)
 			date_document="${arg#--date=}"
+			date_from_option="true"
 			echo -e "${magenta}Running strapdown2pdf with option --date, to use the date ${date_document}.${white}"
 			shift
 			;;
@@ -178,6 +182,11 @@ StrapDown2PDF() {
 	titleYAML="$(grep -o -m 1 "title: [^$]*" "${input}" | sed s/"title: "/""/)"
 	title="${title:-$titleYAML}"
 	title="${title//-->/}"
+	dateYAML="$(grep -o -m 1 "date: [^$]*" "${input}" | sed s/"date: "/""/)"
+	dateYAML="${dateYAML//-->/}"
+	if [ "$date_from_option" != "true" ]; then
+		date_document="${dateYAML:-$default_date_document}"
+	fi
 	# New: if the title is not in the file, use the filename !
 	defaulttitle="$(echo -e "${name}" | tr _ ' ')"
 	title="${title:-$defaulttitle}"
@@ -209,6 +218,7 @@ StrapDown2PDF() {
 	echo -e "%autotex% Scale: ${scale}" >> "${name}".tex
 	# And one for the police size
 	echo -e "%autotex% PoliceSize: ${policesize}" >> "${name}".tex
+	echo -e "%autotex% Date: ${date_document}" >> "${name}".tex
 
 	# We add the .tex file (it does NOT have any LaTeX headers)
 	# Apparently, I have been able to remove all weird spaced math LaTeX code in the input file ...
