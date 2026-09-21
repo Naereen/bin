@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # By: Lilian BESSON
 # Email: Lilian.BESSON[AT]crans[DOT]org
-# Date: 01-04-2023
+# Date: 21-09-2026
 # Web: https://perso.crans.org/besson/bin/strapdown2pdf
 # Web2: https://lbesson.bitbucket.org/strapdown2pdf.html
 #
@@ -28,7 +28,7 @@
 #     only for MathJax flavored maths formulas, which are all copied in the .tex with escaped $ and { : \{ and \$ every where :(
 #
 #
-version='0.9.4'
+version='0.9.5'
 AUTOTEX="autotex batchmode"
 
 quiet="false"
@@ -40,6 +40,7 @@ nocolor="false"
 
 scale="0.82"
 policesize="11"
+date_document="$(date)"
 
 # $OPTARG can contain the argument of the option k (if specified with hvk: or hk:v for example)
 # while getopts vhqkmdsi option; do
@@ -92,6 +93,11 @@ for arg in "$@"; do
 			keep="true"
 			shift
 			;;
+		--date=*)
+			date_document="${arg#--date=}"
+			echo -e "${magenta}Running strapdown2pdf with option --date, to use the date ${date_document}.${white}"
+			shift
+			;;
 		-m|-htm|--htm)
 			echo -e "${magenta}Running strapdown2pdf with option --htm, to produce a simple HTML file (which do not use StrapDown.js), written to a .htm file.${white}"
 			htm="true"
@@ -124,7 +130,7 @@ for arg in "$@"; do
 			AUTOTEX="autotex errorstopmode"
 			shift
 			;;
-	 esac
+	esac
 done
 
 StrapDown2PDF() {
@@ -190,11 +196,11 @@ StrapDown2PDF() {
 
 	# NEW Convert md -> tex with pandoc (in /tmp/, as always)
 	#pandoc --to latex -o "${name}".tex~ /tmp/"${name}".md || exit 21
-        pandoc --verbose --filter ~/bin/minted-filter-for-pandoc.py --filter ~/bin/add-vertical-lines.lua --read=markdown --to latex --preserve-tabs --variable tables --listings --highlight-style=pygments -o "${name}".tex~ /tmp/"${name}".md || exit 21
+        pandoc --verbose --filter ~/bin/minted-filter-for-pandoc.py --lua-filter ~/bin/add-vertical-lines.lua --read=markdown --to latex --preserve-tabs --variable tables --listings --highlight-style=pygments -o "${name}".tex~ /tmp/"${name}".md || exit 21
 
 	# Because we are proud of this script
 	echo -e "%% -*- coding:utf8; mode:latex -*-\n%% LaTeX file automatically generated with [strapdown2pdf](https://bitbucket.org/lbesson/bin/src/master/strapdown2pdf)" > "${name}".tex
-	echo -e "%% from ${p}/${input}, the $(date)." >> "${name}".tex
+	echo -e "%% from ${p}/${input}, the ${date_document}." >> "${name}".tex
 
 	# Adding two autotex specials comments,
 	# One for the title
