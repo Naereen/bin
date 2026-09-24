@@ -41,21 +41,32 @@ readonly logfile=/tmp/autotex.log
 readonly MAXINCLUDEDFILES=200
 
 # Add here options to use with PDFLaTeX
-case "$1" in
-    batchmode|nonstopmode|scrollmode|errorstopmode )
-        echo -e "${magenta}Using \$1 as an option to pass to pdflatex : -interaction=${1}." | tee -a $logfile
-        # Automatically, my color wrapper [pdflatex](http://perso.crans.org/besson/bin/pdflatex) uses "-synctex=1 -file-line-error"
-        pdflatex="${pdflatex} -interaction=${1}"
-		shift
-	;;
-    -noansi )
-        # Use https://bitbucket.org/lbesson/bin/src/master/.nocolor.sh to disable my colors in Bash scripts
-        [ -f ~/.nocolor.sh ] && . ~/.nocolor.sh
-        NOANSI='true'
-        pdflatex="/usr/bin/pdflatex -synctex=1 -file-line-error -interaction=errorstopmode"
-        shift
-    ;;
-esac
+NOOPEN='false'
+while :; do
+    case "$1" in
+        batchmode|nonstopmode|scrollmode|errorstopmode )
+            echo -e "${magenta}Using \$1 as an option to pass to pdflatex : -interaction=${1}." | tee -a $logfile
+            # Automatically, my color wrapper [pdflatex](http://perso.crans.org/besson/bin/pdflatex) uses "-synctex=1 -file-line-error"
+            pdflatex="${pdflatex} -interaction=${1}"
+            shift
+        ;;
+        -noansi )
+            # Use https://bitbucket.org/lbesson/bin/src/master/.nocolor.sh to disable my colors in Bash scripts
+            [ -f ~/.nocolor.sh ] && . ~/.nocolor.sh
+            NOANSI='true'
+            pdflatex="/usr/bin/pdflatex -synctex=1 -file-line-error -interaction=errorstopmode"
+            shift
+        ;;
+        --no-open )
+            echo -e "${magenta}Using --no-open : the produced PDF will NOT be opened automatically with evince.${white}" | tee -a $logfile
+            NOOPEN='true'
+            shift
+        ;;
+        * )
+            break
+        ;;
+    esac
+done
 
 autotexf() {
     # Back up the original directory, because we have to go back to it after
@@ -190,7 +201,7 @@ autotexf() {
 
     if [ "X${answ}" = "X0" ]; then
         $NOTIFY "<b>Success :)</b>\n autoTeX have been able to compile the file ${f%.tex}.pdf from ${f%.tex}.pdf\n (In the directory <i>$p</i>.)"
-        if [ -f "$p"/"${f%.tex}".pdf ]; then
+        if [ -f "$p"/"${f%.tex}".pdf ] && [ "$NOOPEN" != "true" ]; then
             evince "$p"/"${f%.tex}".pdf &>/dev/null&
         fi
     else

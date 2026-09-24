@@ -44,6 +44,7 @@ date_document="$(LC_TIME=fr_FR.UTF-8 date '+%A %-d %B %Y')"
 date_document="${date_document^}"
 default_date_document="${date_document}"
 date_from_option="false"
+noopen=""
 
 # $OPTARG can contain the argument of the option k (if specified with hvk: or hk:v for example)
 # while getopts vhqkmdsi option; do
@@ -72,6 +73,7 @@ for arg in "$@"; do
 			echo -e ""
 			echo -e "Options:"
 			echo -e "    ${yellow}-i|-interactive${white}	run PDFLaTeX with the interactive (errorstopmode) mode (default is batchmode)."
+			echo -e "    ${yellow}--no-open${white}		forwarded as-is to autotex, so it does NOT open evince with the produced PDF."
 			echo -e "    ${yellow}-q|-quiet${white}		run strapdown2pdf in quiet mode (no output at all, everything is redirected to ${magenta}/tmp/strapdown2pdf.log${white})."
 			echo -e "    ${yellow}-m|-htm${white}		run strapdown2pdf to produce a simple HTML file (which do not use StrapDown.js), written to a .htm file.\n\t\t\t For important document, producing a .htm autonomous file is a good idea."
 			echo -e "    ${yellow}-d|-discrete${white}	run strapdown2pdf is discrete mode, without adding any creditentials in the produced document."
@@ -132,6 +134,11 @@ for arg in "$@"; do
 		-i|-interactive|--interactive)
 			echo -e "${magenta}Using PDFLaTeX with '-interaction=errorstopmode' option (the compilation will pause if a problem occur).${white}"
 			AUTOTEX="autotex errorstopmode"
+			shift
+			;;
+		--no-open)
+			echo -e "${magenta}Running strapdown2pdf with option --no-open, forwarded to autotex to not open evince automatically.${white}"
+			noopen="--no-open"
 			shift
 			;;
 	esac
@@ -254,9 +261,9 @@ StrapDown2PDF() {
 
 	# Compile in batchmode it with autotex, to automatically add headers and packages stuff
 	if [ "$nocolor" = "true" ]; then
-		${AUTOTEX} "${name}".tex | sed -r "s:\x1B\[[0-9;]*[mK]::g"
+		${AUTOTEX} ${noopen} "${name}".tex | sed -r "s:\x1B\[[0-9;]*[mK]::g"
 	else
-		${AUTOTEX} "${name}".tex
+		${AUTOTEX} ${noopen} "${name}".tex
 	fi
 
 	# # Compress it (and even gpg sign it !)
